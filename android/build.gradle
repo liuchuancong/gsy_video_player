@@ -1,18 +1,6 @@
 group 'com.alizda.gsy_video_player'
 version '1.0-SNAPSHOT'
-//最外层
-def localProperties = new Properties()
-def localPropertiesFile = rootProject.file('local.properties')
-if (localPropertiesFile.exists()) {
-    localPropertiesFile.withReader('UTF-8') { reader ->
-        localProperties.load(reader)
-    }
-}
-//获取flutter的sdk路径
-def flutterRoot = localProperties.getProperty('flutter.sdk')
-if (flutterRoot == null) {
-    throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
-}
+
 buildscript {
     ext.kotlin_version = '1.7.10'
     repositories {
@@ -66,7 +54,6 @@ android {
     dependencies {
         testImplementation 'org.jetbrains.kotlin:kotlin-test'
         testImplementation 'org.mockito:mockito-core:5.0.0'
-        compileOnly files("$flutterRoot/bin/cache/artifacts/engine/android-arm/flutter.jar")
         implementation 'com.github.CarGuo.GSYVideoPlayer:GSYVideoPlayer:v8.6.0-release-jitpack'
     }
 
