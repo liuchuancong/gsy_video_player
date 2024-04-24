@@ -1,103 +1,43 @@
 package com.alizda.gsy_video_player
-
-import android.app.Activity
-import android.content.Context
-import io.flutter.embedding.engine.loader.FlutterLoader
-
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
-import io.flutter.plugin.common.BinaryMessenger
-import io.flutter.plugin.common.MethodCall
-import io.flutter.plugin.common.MethodChannel
-import io.flutter.plugin.common.MethodChannel.MethodCallHandler
-import io.flutter.plugin.common.MethodChannel.Result
-import io.flutter.view.TextureRegistry
 
 /** GsyVideoPlayerPlugin */
-class GsyVideoPlayerPlugin: FlutterPlugin, ActivityAware, MethodCallHandler {
-  /// The MethodChannel that will the communication between Flutter and native Android
-  ///
-  /// This local reference serves to register the plugin with the Flutter Engine and unregister it
-  /// when the Flutter Engine is detached from the Activity
-  private lateinit var channel : MethodChannel
-  private var flutterState: FlutterState? = null
-  private var activity: Activity? = null
+class GsyVideoPlayerPlugin: FlutterPlugin, ActivityAware {
+
   override fun onAttachedToEngine(binding: FlutterPlugin.FlutterPluginBinding) {
-    val loader = FlutterLoader()
-    flutterState = FlutterState(
-            binding.applicationContext,
-            binding.binaryMessenger, object : KeyForAssetFn {
-      override fun get(asset: String?): String {
-        return loader.getLookupKeyForAsset(
-                asset!!
-        )
-      }
-
-    }, object : KeyForAssetAndPackageName {
-      override fun get(asset: String?, packageName: String?): String {
-        return loader.getLookupKeyForAsset(
-                asset!!, packageName!!
-        )
-      }
-    },
-            binding.textureRegistry
-    )
-    flutterState?.startListening(this)
+    binding.platformViewRegistry
+      .registerViewFactory(
+        EVENTS_CHANNEL,
+        GsyVideoPlayerFactory(binding.binaryMessenger)
+      )
   }
 
-
-
-  override fun onMethodCall(call: MethodCall, result: Result) {
-    if (flutterState == null || flutterState?.textureRegistry == null) {
-      result.error("no_activity", "better_player plugin requires a foreground activity", null)
-      return
-    }
-  }
-
-  override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) {
-    channel.setMethodCallHandler(null)
-  }
-
+  override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) {}
   override fun onAttachedToActivity(binding: ActivityPluginBinding) {
-    activity = binding.activity
+    GsyVideoShared.activity = binding.activity
+    GsyVideoShared.binding = binding
   }
 
-  override fun onDetachedFromActivityForConfigChanges() {}
-
-  override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) {}
-
-  override fun onDetachedFromActivity() {}
-
-  private interface KeyForAssetAndPackageName {
-    operator fun get(asset: String?, packageName: String?): String
+  override fun onDetachedFromActivityForConfigChanges() {
+    GsyVideoShared.activity = null
+    GsyVideoShared.binding = null
   }
 
-  private interface KeyForAssetFn {
-    operator fun get(asset: String?): String
+  override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) {
+    GsyVideoShared.activity = binding.activity
+    GsyVideoShared.binding = binding
   }
-  private class FlutterState(
-          val applicationContext: Context,
-          val binaryMessenger: BinaryMessenger,
-          val keyForAsset: KeyForAssetFn,
-          val keyForAssetAndPackageName: KeyForAssetAndPackageName,
-          val textureRegistry: TextureRegistry?
-  ) {
-    private val methodChannel: MethodChannel = MethodChannel(binaryMessenger, CHANNEL)
 
-    fun startListening(methodCallHandler: GsyVideoPlayerPlugin?) {
-      methodChannel.setMethodCallHandler(methodCallHandler)
-    }
-
-    fun stopListening() {
-      methodChannel.setMethodCallHandler(null)
-    }
-
+  override fun onDetachedFromActivity() {
+    GsyVideoShared.activity = null
+    GsyVideoShared.binding = null
   }
   companion object {
     private const val TAG = "GsyVideoPlayerPlugin"
     private const val CHANNEL = "gsy_video_player_channel"
-    private const val EVENTS_CHANNEL = "gsy_video_player_channel/videoEvents"
+    private const val EVENTS_CHANNEL = "gsy_video_player_channel/videoView"
     private const val DATA_SOURCE_PARAMETER = "dataSource"
     private const val KEY_PARAMETER = "key"
     private const val HEADERS_PARAMETER = "headers"

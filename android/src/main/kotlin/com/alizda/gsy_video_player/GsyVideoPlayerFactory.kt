@@ -6,8 +6,9 @@ import io.flutter.plugin.common.StandardMessageCodec
 import io.flutter.plugin.platform.PlatformView
 import io.flutter.plugin.platform.PlatformViewFactory
 
-class GsyVideoPlayerFactory(private val context: Context,private var messenger: BinaryMessenger) : PlatformViewFactory(StandardMessageCodec.INSTANCE) {
+class GsyVideoPlayerFactory(private var messenger: BinaryMessenger) : PlatformViewFactory(StandardMessageCodec.INSTANCE) {
     override fun create(context: Context, viewId: Int, args: Any?): PlatformView {
-        return GsyVideoPlayerView(messenger, context, viewId, args)
+        val params = args as HashMap<String, Any>
+        return GsyVideoPlayerView(context, messenger, viewId, params)
     }
 }

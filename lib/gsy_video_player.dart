@@ -1,14 +1,3 @@
-// You have generated a new plugin project without specifying the `--platforms`
-// flag. A plugin project with no platform support was generated. To add a
-// platform, run `flutter create -t plugin --platforms <platforms> .` under the
-// same directory. You can also find a detailed instruction on how to add
-// platforms in the `pubspec.yaml` at
-// https://flutter.dev/docs/development/packages-and-plugins/developing-packages#plugin-platforms.
+library gsy_video_player;
 
-import 'gsy_video_player_platform_interface.dart';
-
-class GsyVideoPlayer {
-  Future<String?> getPlatformVersion() {
-    return GsyVideoPlayerPlatform.instance.getPlatformVersion();
-  }
-}
+export 'src/video_player/video_player.dart';
