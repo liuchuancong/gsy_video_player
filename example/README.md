@@ -1,6 +1,6 @@
-# gsy_video_player_example
+# flutter_application_1
 
-Demonstrates how to use the gsy_video_player plugin.
+A new Flutter project.
 
 ## Getting Started
 
