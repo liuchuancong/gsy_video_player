@@ -8,32 +8,30 @@ import com.shuyu.gsyvideoplayer.builder.GSYVideoOptionBuilder
 import com.shuyu.gsyvideoplayer.listener.VideoAllCallBack
 import com.shuyu.gsyvideoplayer.player.IjkPlayerManager
 import com.shuyu.gsyvideoplayer.player.PlayerFactory
-import com.shuyu.gsyvideoplayer.player.SystemPlayerManager
 import com.shuyu.gsyvideoplayer.utils.GSYVideoType
 import com.shuyu.gsyvideoplayer.utils.OrientationUtils
-import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer
 import io.flutter.plugin.common.BinaryMessenger
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.PluginRegistry
 import io.flutter.plugin.platform.PlatformView
 import tv.danmaku.ijk.media.exo2.Exo2PlayerManager
+import tv.danmaku.ijk.media.player.IjkMediaPlayer
 
 
 class GsyVideoPlayerView(
-        private val context: Context,
-        messenger: BinaryMessenger,
-        private val id: Int,
-        private val params: HashMap<*, *>
+    private val context: Context,
+    messenger: BinaryMessenger,
+    private val id: Int,
+    private val params: Map<String?, Any?>?
 ) : PlatformView, MethodChannel.MethodCallHandler, PluginRegistry.RequestPermissionsResultListener, VideoAllCallBack {
 
     private val channel: MethodChannel = MethodChannel(messenger, "gsy_video_player_channel/videoView_$id")
-    private lateinit var videoPlayer: CustomVideoPlayer
+    private var videoPlayer:CustomVideoPlayer = CustomVideoPlayer(context)
     private var orientationUtils: OrientationUtils? = null
     private var gsyVideoOptionBuilder: GSYVideoOptionBuilder? = null
     private var rotateEnable:Boolean = false
     private var isPlay:Boolean = false
-    private lateinit var mInflater: LayoutInflater
     private var gsyVideoType: Int = GSYVideoType.SCREEN_TYPE_16_9
     private var playerType: Int = 0;
     init {
@@ -47,8 +45,7 @@ class GsyVideoPlayerView(
     override fun getView(): View = initGSYVideoPlayerView()
 
     private fun initGSYVideoPlayerView(): View {
-        val convertView = mInflater.inflate(R.layout.gsy_video_play, GsyVideoShared.activity?.findViewById(R.id.activity_play));
-        return convertView
+        return videoPlayer
     }
 
     private fun  setVideoConfig(){
@@ -62,18 +59,17 @@ class GsyVideoPlayerView(
         gsyVideoOptionBuilder!!.setVideoAllCallBack(this);
         gsyVideoOptionBuilder!!.build(videoPlayer);
         videoPlayer.startPlayLogic()
+
     }
 
     private fun setGlobalConfig(){
         //EXOPlayer内核，支持格式更多
-        PlayerFactory.setPlayManager(IjkPlayerManager::class.java)
+        PlayerFactory.setPlayManager(Exo2PlayerManager::class.java)
         GSYVideoType.setRenderType(GSYVideoType.TEXTURE)
     }
 
     private fun initVideoPlayer() {
-
-        mInflater = LayoutInflater.from(context);
-        videoPlayer = view.findViewById(R.id.gsy_player)!!
+        IjkPlayerManager.setLogLevel(IjkMediaPlayer.IJK_LOG_SILENT);
         //设置旋转
         orientationUtils = OrientationUtils(GsyVideoShared.activity, videoPlayer)
     }

@@ -31,13 +31,21 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-          body: Stack(
-        children: [
-          GsyVideoPlayer(
-            controller: gsyVideoPlayerController,
-          )
-        ],
-      )),
+        appBar: AppBar(
+          title: const Text('Plugin example app'),
+        ),
+        body: Container(
+          color: Colors.black,
+          width: double.infinity,
+          height: double.infinity,
+          child: Container(
+            color: Colors.blue,
+            child: GsyVideoPlayer(
+              controller: gsyVideoPlayerController,
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

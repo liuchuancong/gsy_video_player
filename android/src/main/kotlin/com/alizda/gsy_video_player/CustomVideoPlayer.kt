@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Color
 import android.util.AttributeSet
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.shuyu.gsyvideoplayer.utils.Debuger
@@ -50,7 +51,7 @@ class CustomVideoPlayer : StandardGSYVideoPlayer {
     private var danmakuStartSeekPosition: Long = -1
     private var danmaKuShow = true
     private var mDumakuFile: File? = null
-
+    private lateinit var videoView: View
     constructor(context: Context?, fullFlag: Boolean?) : super(context, fullFlag)
     constructor(context: Context?) : super(context)
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)

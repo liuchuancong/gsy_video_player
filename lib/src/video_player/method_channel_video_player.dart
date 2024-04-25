@@ -1,6 +1,9 @@
 import 'dart:async';
 import 'package:flutter/widgets.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/foundation.dart';
 import 'video_player_platform_interface.dart';
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
@@ -9,7 +12,9 @@ import 'video_player_platform_interface.dart';
 /// An implementation of [VideoPlayerPlatform] that uses method channels.
 class MethodChannelVideoPlayer extends VideoPlayerPlatform {
   late final MethodChannel _channel;
-
+  String viewType = 'gsy_video_player_channel/videoView';
+  // Pass parameters to the platform side.
+  Map<String, dynamic> creationParams = <String, dynamic>{};
   @override
   Future<void> init() {
     return _channel.invokeMethod<void>('init');
@@ -275,7 +280,7 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Stream<VideoEvent> videoEventsFor() {
-    return _eventChannelFor().receiveBroadcastStream().map((dynamic event) {
+    return eventChannelFor().receiveBroadcastStream().map((dynamic event) {
       late Map<dynamic, dynamic> map;
       if (event is Map) {
         map = event;
@@ -374,20 +379,39 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Widget buildView() {
-    return AndroidView(
-      viewType: 'gsy_video_player_channel/videoView',
-      layoutDirection: TextDirection.ltr,
-      onPlatformViewCreated: _onPlatformViewCreated,
-      creationParams: const {},
-      creationParamsCodec: const StandardMessageCodec(),
+    return PlatformViewLink(
+      viewType: viewType,
+      surfaceFactory: (context, controller) {
+        return AndroidViewSurface(
+          controller: controller as AndroidViewController,
+          gestureRecognizers: const <Factory<OneSequenceGestureRecognizer>>{},
+          hitTestBehavior: PlatformViewHitTestBehavior.opaque,
+        );
+      },
+      onCreatePlatformView: (params) {
+        print('create platform view: ${params.id}');
+        onPlatformViewCreated(params.id);
+        return PlatformViewsService.initSurfaceAndroidView(
+          id: params.id,
+          viewType: viewType,
+          layoutDirection: TextDirection.ltr,
+          creationParams: creationParams,
+          creationParamsCodec: const StandardMessageCodec(),
+          onFocus: () {
+            params.onFocusChanged(true);
+          },
+        )
+          ..addOnPlatformViewCreatedListener(params.onPlatformViewCreated)
+          ..create();
+      },
     );
   }
 
-  EventChannel _eventChannelFor() {
+  EventChannel eventChannelFor() {
     return const EventChannel('gsy_video_player_channel/videoView');
   }
 
-  void _onPlatformViewCreated(int id) {
+  void onPlatformViewCreated(int id) {
     _channel = MethodChannel('gsy_video_player_channel/videoView_$id');
   }
 
