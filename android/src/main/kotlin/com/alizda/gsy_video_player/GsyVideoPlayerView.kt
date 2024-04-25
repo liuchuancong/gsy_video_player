@@ -1,14 +1,14 @@
 package com.alizda.gsy_video_player
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.RelativeLayout
 import com.shuyu.gsyvideoplayer.GSYVideoManager
 import com.shuyu.gsyvideoplayer.builder.GSYVideoOptionBuilder
 import com.shuyu.gsyvideoplayer.listener.VideoAllCallBack
+import com.shuyu.gsyvideoplayer.player.IjkPlayerManager
 import com.shuyu.gsyvideoplayer.player.PlayerFactory
+import com.shuyu.gsyvideoplayer.player.SystemPlayerManager
 import com.shuyu.gsyvideoplayer.utils.GSYVideoType
 import com.shuyu.gsyvideoplayer.utils.OrientationUtils
 import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer
@@ -28,11 +28,12 @@ class GsyVideoPlayerView(
 ) : PlatformView, MethodChannel.MethodCallHandler, PluginRegistry.RequestPermissionsResultListener, VideoAllCallBack {
 
     private val channel: MethodChannel = MethodChannel(messenger, "gsy_video_player_channel/videoView_$id")
-    private lateinit var videoPlayer: StandardGSYVideoPlayer
+    private lateinit var videoPlayer: CustomVideoPlayer
     private var orientationUtils: OrientationUtils? = null
     private var gsyVideoOptionBuilder: GSYVideoOptionBuilder? = null
     private var rotateEnable:Boolean = false
     private var isPlay:Boolean = false
+    private lateinit var mInflater: LayoutInflater
     private var gsyVideoType: Int = GSYVideoType.SCREEN_TYPE_16_9
     private var playerType: Int = 0;
     init {
@@ -46,8 +47,8 @@ class GsyVideoPlayerView(
     override fun getView(): View = initGSYVideoPlayerView()
 
     private fun initGSYVideoPlayerView(): View {
-        return LayoutInflater.from(context)
-                .inflate(R.layout.gsy_video_play, null) as RelativeLayout
+        val convertView = mInflater.inflate(R.layout.gsy_video_play, GsyVideoShared.activity?.findViewById(R.id.activity_play));
+        return convertView
     }
 
     private fun  setVideoConfig(){
@@ -56,7 +57,7 @@ class GsyVideoPlayerView(
         mHeader["User-Agent"] = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36 Edg/121.0.0.0";
         gsyVideoOptionBuilder!!.setMapHeadData(mHeader)
         gsyVideoOptionBuilder!!.setUrl("https://cloud.video.taobao.com//play/u/57349687/p/1/e/6/t/1/239880949246.mp4")
-        gsyVideoOptionBuilder!!.setCacheWithPlay(true)
+        gsyVideoOptionBuilder!!.setCacheWithPlay(false)
         gsyVideoOptionBuilder!!.setStartAfterPrepared(true)
         gsyVideoOptionBuilder!!.setVideoAllCallBack(this);
         gsyVideoOptionBuilder!!.build(videoPlayer);
@@ -65,11 +66,13 @@ class GsyVideoPlayerView(
 
     private fun setGlobalConfig(){
         //EXOPlayer内核，支持格式更多
-        PlayerFactory.setPlayManager(Exo2PlayerManager::class.java)
+        PlayerFactory.setPlayManager(IjkPlayerManager::class.java)
         GSYVideoType.setRenderType(GSYVideoType.TEXTURE)
     }
 
     private fun initVideoPlayer() {
+
+        mInflater = LayoutInflater.from(context);
         videoPlayer = view.findViewById(R.id.gsy_player)!!
         //设置旋转
         orientationUtils = OrientationUtils(GsyVideoShared.activity, videoPlayer)

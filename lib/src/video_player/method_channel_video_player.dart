@@ -376,6 +376,7 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
   Widget buildView() {
     return AndroidView(
       viewType: 'gsy_video_player_channel/videoView',
+      layoutDirection: TextDirection.ltr,
       onPlatformViewCreated: _onPlatformViewCreated,
       creationParams: const {},
       creationParamsCodec: const StandardMessageCodec(),
