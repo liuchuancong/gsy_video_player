@@ -57,7 +57,7 @@ abstract class VideoPlayerPlatform {
   }
 
   /// Clears one video.
-  Future<void> dispose(int? textureId) {
+  Future<void> dispose() {
     throw UnimplementedError('dispose() has not been implemented.');
   }
 
@@ -67,79 +67,79 @@ abstract class VideoPlayerPlatform {
   }
 
   /// Set data source of video.
-  Future<void> setDataSource(int? textureId, DataSource dataSource) {
+  Future<void> setDataSource(DataSource dataSource) {
     throw UnimplementedError('setDataSource() has not been implemented.');
   }
 
   /// Returns a Stream of [VideoEventType]s.
-  Stream<VideoEvent> videoEventsFor(int? textureId) {
+  Stream<VideoEvent> videoEventsFor() {
     throw UnimplementedError('videoEventsFor() has not been implemented.');
   }
 
   /// Sets the looping attribute of the video.
-  Future<void> setLooping(int? textureId, bool looping) {
+  Future<void> setLooping(bool looping) {
     throw UnimplementedError('setLooping() has not been implemented.');
   }
 
   /// Starts the video playback.
-  Future<void> play(int? textureId) {
+  Future<void> play() {
     throw UnimplementedError('play() has not been implemented.');
   }
 
   /// Stops the video playback.
-  Future<void> pause(int? textureId) {
+  Future<void> pause() {
     throw UnimplementedError('pause() has not been implemented.');
   }
 
   /// Sets the volume to a range between 0.0 and 1.0.
-  Future<void> setVolume(int? textureId, double volume) {
+  Future<void> setVolume(double volume) {
     throw UnimplementedError('setVolume() has not been implemented.');
   }
 
   /// Sets the video speed to a range between 0.0 and 2.0
-  Future<void> setSpeed(int? textureId, double speed) {
+  Future<void> setSpeed(double speed) {
     throw UnimplementedError('setSpeed() has not been implemented.');
   }
 
   /// Sets the video track parameters (used to select quality of the video)
-  Future<void> setTrackParameters(int? textureId, int? width, int? height, int? bitrate) {
+  Future<void> setTrackParameters(int? width, int? height, int? bitrate) {
     throw UnimplementedError('setTrackParameters() has not been implemented.');
   }
 
   /// Sets the video position to a [Duration] from the start.
-  Future<void> seekTo(int? textureId, Duration? position) {
+  Future<void> seekTo(Duration? position) {
     throw UnimplementedError('seekTo() has not been implemented.');
   }
 
   /// Gets the video position as [Duration] from the start.
-  Future<Duration> getPosition(int? textureId) {
+  Future<Duration> getPosition() {
     throw UnimplementedError('getPosition() has not been implemented.');
   }
 
   /// Gets the video position as [DateTime].
-  Future<DateTime?> getAbsolutePosition(int? textureId) {
+  Future<DateTime?> getAbsolutePosition() {
     throw UnimplementedError('getAbsolutePosition() has not been implemented.');
   }
 
   ///Enables PiP mode.
-  Future<void> enablePictureInPicture(int? textureId, double? top, double? left, double? width, double? height) {
+  Future<void> enablePictureInPicture(double? top, double? left, double? width, double? height) {
     throw UnimplementedError('enablePictureInPicture() has not been implemented.');
   }
 
   ///Disables PiP mode.
-  Future<void> disablePictureInPicture(int? textureId) {
+  Future<void> disablePictureInPicture() {
     throw UnimplementedError('disablePictureInPicture() has not been implemented.');
   }
 
-  Future<bool?> isPictureInPictureEnabled(int? textureId) {
+  Future<bool?> isPictureInPictureEnabled() {
     throw UnimplementedError('isPictureInPictureEnabled() has not been implemented.');
   }
 
-  Future<void> setAudioTrack(int? textureId, String? name, int? index) {
+  Future<void> setAudioTrack(String? name, int? index) {
     throw UnimplementedError('setAudio() has not been implemented.');
   }
 
-  Future<void> setMixWithOthers(int? textureId, bool mixWithOthers) {
+  Future<void> setMixWithOthers(bool mixWithOthers) {
     throw UnimplementedError('setMixWithOthers() has not been implemented.');
   }
 

@@ -7,6 +7,9 @@ import android.view.View
 import android.widget.RelativeLayout
 import com.shuyu.gsyvideoplayer.GSYVideoManager
 import com.shuyu.gsyvideoplayer.builder.GSYVideoOptionBuilder
+import com.shuyu.gsyvideoplayer.listener.VideoAllCallBack
+import com.shuyu.gsyvideoplayer.player.PlayerFactory
+import com.shuyu.gsyvideoplayer.utils.GSYVideoType
 import com.shuyu.gsyvideoplayer.utils.OrientationUtils
 import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer
 import io.flutter.plugin.common.BinaryMessenger
@@ -14,6 +17,7 @@ import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.PluginRegistry
 import io.flutter.plugin.platform.PlatformView
+import tv.danmaku.ijk.media.exo2.Exo2PlayerManager
 
 
 class GsyVideoPlayerView(
@@ -21,15 +25,19 @@ class GsyVideoPlayerView(
         messenger: BinaryMessenger,
         private val id: Int,
         private val params: HashMap<*, *>
-) : PlatformView, MethodChannel.MethodCallHandler, PluginRegistry.RequestPermissionsResultListener {
+) : PlatformView, MethodChannel.MethodCallHandler, PluginRegistry.RequestPermissionsResultListener, VideoAllCallBack {
 
     private val channel: MethodChannel = MethodChannel(messenger, "gsy_video_player_channel/videoView_$id")
     private lateinit var videoPlayer: StandardGSYVideoPlayer
     private var orientationUtils: OrientationUtils? = null
     private var gsyVideoOptionBuilder: GSYVideoOptionBuilder? = null
-
+    private var rotateEnable:Boolean = false
+    private var isPlay:Boolean = false
+    private var gsyVideoType: Int = GSYVideoType.SCREEN_TYPE_16_9
+    private var playerType: Int = 0;
     init {
         channel.setMethodCallHandler(this)
+        setGlobalConfig()
         initVideoPlayer()
         setVideoConfig()
 
@@ -39,27 +47,30 @@ class GsyVideoPlayerView(
 
     private fun initGSYVideoPlayerView(): View {
         return LayoutInflater.from(context)
-                .inflate(R.layout.activity_danmaku_layout, null) as RelativeLayout
+                .inflate(R.layout.gsy_video_play, null) as RelativeLayout
     }
 
     private fun  setVideoConfig(){
         gsyVideoOptionBuilder = GSYVideoOptionBuilder();
         val mHeader = HashMap<String, String>();
-        mHeader["Referer"] = "https://www.huya.com";
         mHeader["User-Agent"] = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36 Edg/121.0.0.0";
         gsyVideoOptionBuilder!!.setMapHeadData(mHeader)
-        gsyVideoOptionBuilder!!.setUrl("http://al.flv.huya.com/src/94525224-2583571962-11096357083652554752-3503038830-10057-A-0-1.flv?wsSecret=1bf7d229ba8516a38298c4a91ba6da12&wsTime=662a4b7c&seqid=10082953683646&ctype=tars_mp&ver=1&fs=bgct&sphdcdn=al_7-tx_3-js_3-ws_7-bd_2-hw_2&sphdDC=huya&sphd=264_%2A-265_%2A&exsphd=264_500%2C264_2000%2C&uid=8368927414786&uuid=3440215989&t=102&sv=2024042514")
+        gsyVideoOptionBuilder!!.setUrl("https://cloud.video.taobao.com//play/u/57349687/p/1/e/6/t/1/239880949246.mp4")
         gsyVideoOptionBuilder!!.setCacheWithPlay(true)
         gsyVideoOptionBuilder!!.setStartAfterPrepared(true)
-        videoPlayer.currentPlayer.startPlayLogic()
+        gsyVideoOptionBuilder!!.setVideoAllCallBack(this);
+        gsyVideoOptionBuilder!!.build(videoPlayer);
+        videoPlayer.startPlayLogic()
+    }
+
+    private fun setGlobalConfig(){
+        //EXOPlayer内核，支持格式更多
+        PlayerFactory.setPlayManager(Exo2PlayerManager::class.java)
+        GSYVideoType.setRenderType(GSYVideoType.TEXTURE)
     }
 
     private fun initVideoPlayer() {
-
-        videoPlayer = view.findViewById(R.id.danmaku_player)!!
-
-        Log.d(TAG, "initVideoPlayer: ${videoPlayer.mapHeadData} ")
-
+        videoPlayer = view.findViewById(R.id.gsy_player)!!
         //设置旋转
         orientationUtils = OrientationUtils(GsyVideoShared.activity, videoPlayer)
     }
@@ -112,4 +123,66 @@ class GsyVideoPlayerView(
     companion object{
         private const val TAG ="GSY_VIDEO_PLAYER"
     }
+
+    override fun onStartPrepared(url: String?, vararg objects: Any?) {}
+
+    override fun onPrepared(url: String?, vararg objects: Any?) {
+        if (orientationUtils == null) {
+            throw NullPointerException("initVideo() or initVideoBuilderMode() first")
+        }
+        //开始播放了才能旋转和全屏
+        orientationUtils!!.isEnable = rotateEnable && !videoPlayer.isAutoFullWithSize
+        isPlay = true
+    }
+
+    override fun onClickStartIcon(url: String?, vararg objects: Any?) {}
+
+    override fun onClickStartError(url: String?, vararg objects: Any?) {}
+
+    override fun onClickStop(url: String?, vararg objects: Any?) {}
+
+    override fun onClickStopFullscreen(url: String?, vararg objects: Any?) {}
+
+    override fun onClickResume(url: String?, vararg objects: Any?) {}
+
+    override fun onClickResumeFullscreen(url: String?, vararg objects: Any?) {}
+
+    override fun onClickSeekbar(url: String?, vararg objects: Any?) {}
+
+    override fun onClickSeekbarFullscreen(url: String?, vararg objects: Any?) {}
+
+    override fun onAutoComplete(url: String?, vararg objects: Any?) {}
+
+    override fun onEnterFullscreen(url: String?, vararg objects: Any?) {}
+
+    override fun onQuitFullscreen(url: String?, vararg objects: Any?) {
+
+        // ------- ！！！如果不需要旋转屏幕，可以不调用！！！-------
+        // 不需要屏幕旋转，还需要设置 setNeedOrientationUtils(false)
+        if (orientationUtils != null) {
+            orientationUtils!!.backToProtVideo()
+        }
+    }
+
+    override fun onQuitSmallWidget(url: String?, vararg objects: Any?) {}
+
+    override fun onEnterSmallWidget(url: String?, vararg objects: Any?) {}
+
+    override fun onTouchScreenSeekVolume(url: String?, vararg objects: Any?) {}
+
+    override fun onTouchScreenSeekPosition(url: String?, vararg objects: Any?) {}
+
+    override fun onTouchScreenSeekLight(url: String?, vararg objects: Any?) {}
+
+    override fun onPlayError(url: String?, vararg objects: Any?) {}
+
+    override fun onClickStartThumb(url: String?, vararg objects: Any?) {}
+
+    override fun onClickBlank(url: String?, vararg objects: Any?) {}
+
+    override fun onClickBlankFullscreen(url: String?, vararg objects: Any?) {}
+
+    override fun onComplete(url: String?, vararg objects: Any?) {}
+
+
 }

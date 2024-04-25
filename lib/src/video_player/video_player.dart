@@ -314,7 +314,7 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
 
     _initializingCompleter = Completer<void>();
 
-    await VideoPlayerPlatform.instance.setDataSource(_textureId, dataSourceDescription);
+    await VideoPlayerPlatform.instance.setDataSource(dataSourceDescription);
     return _initializingCompleter.future;
   }
 
@@ -326,7 +326,7 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
       value = VideoPlayerValue.uninitialized();
       _timer?.cancel();
       await _eventSubscription?.cancel();
-      await _videoPlayerPlatform.dispose(_textureId);
+      await _videoPlayerPlatform.dispose();
       videoEventStreamController.close();
     }
     _isDisposed = true;
@@ -360,7 +360,7 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     if (!_created || _isDisposed) {
       return;
     }
-    await _videoPlayerPlatform.setLooping(_textureId, value.isLooping);
+    await _videoPlayerPlatform.setLooping(value.isLooping);
   }
 
   Future<void> _applyPlayPause() async {
@@ -369,7 +369,7 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     }
     _timer?.cancel();
     if (value.isPlaying) {
-      await _videoPlayerPlatform.play(_textureId);
+      await _videoPlayerPlatform.play();
       _timer = Timer.periodic(
         const Duration(milliseconds: 300),
         (Timer timer) async {
@@ -392,7 +392,7 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
         },
       );
     } else {
-      await _videoPlayerPlatform.pause(_textureId);
+      await _videoPlayerPlatform.pause();
     }
   }
 
@@ -400,14 +400,14 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     if (!_created || _isDisposed) {
       return;
     }
-    await _videoPlayerPlatform.setVolume(_textureId, value.volume);
+    await _videoPlayerPlatform.setVolume(value.volume);
   }
 
   Future<void> _applySpeed() async {
     if (!_created || _isDisposed) {
       return;
     }
-    await _videoPlayerPlatform.setSpeed(_textureId, value.speed);
+    await _videoPlayerPlatform.setSpeed(value.speed);
   }
 
   /// The position in the current video.
@@ -415,7 +415,7 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     if (!value.initialized && _isDisposed) {
       return null;
     }
-    return _videoPlayerPlatform.getPosition(_textureId);
+    return _videoPlayerPlatform.getPosition();
   }
 
   /// The absolute position in the current video stream
@@ -424,7 +424,7 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     if (!value.initialized && _isDisposed) {
       return null;
     }
-    return _videoPlayerPlatform.getAbsolutePosition(_textureId);
+    return _videoPlayerPlatform.getAbsolutePosition();
   }
 
   /// Sets the video's current timestamp to be at [moment]. The next
@@ -453,7 +453,7 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     }
     _seekPosition = positionToSeek;
 
-    await _videoPlayerPlatform.seekTo(_textureId, positionToSeek);
+    await _videoPlayerPlatform.seekTo(positionToSeek);
     _updatePosition(position);
 
     if (isPlaying) {
@@ -492,7 +492,7 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
   /// [height] specifies height of the selected track
   /// [bitrate] specifies bitrate of the selected track
   Future<void> setTrackParameters(int? width, int? height, int? bitrate) async {
-    await _videoPlayerPlatform.setTrackParameters(_textureId, width, height, bitrate);
+    await _videoPlayerPlatform.setTrackParameters(width, height, bitrate);
   }
 
   Future<void> enablePictureInPicture({double? top, double? left, double? width, double? height}) async {}
@@ -510,7 +510,7 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     if (_textureId == null) {
       return false;
     }
-    return _videoPlayerPlatform.isPictureInPictureEnabled(_textureId);
+    return _videoPlayerPlatform.isPictureInPictureEnabled();
   }
 
   void refresh() {
@@ -518,11 +518,11 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
   }
 
   void setAudioTrack(String? name, int? index) {
-    _videoPlayerPlatform.setAudioTrack(_textureId, name, index);
+    _videoPlayerPlatform.setAudioTrack(name, index);
   }
 
   void setMixWithOthers(bool mixWithOthers) {
-    _videoPlayerPlatform.setMixWithOthers(_textureId, mixWithOthers);
+    _videoPlayerPlatform.setMixWithOthers(mixWithOthers);
   }
 
   static Future clearCache() async {
