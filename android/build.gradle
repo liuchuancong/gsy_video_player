@@ -3,6 +3,8 @@ version '1.0-SNAPSHOT'
 
 buildscript {
     ext.kotlin_version = '1.7.10'
+    ext.gsyVideoVersion  = 'v8.6.0-release-jitpack'
+    ext.danmakuFlameMasterSoVersion  = '0.9.25'
     repositories {
         google()
         mavenCentral()
@@ -52,8 +54,14 @@ android {
     dependencies {
         testImplementation 'org.jetbrains.kotlin:kotlin-test'
         testImplementation 'org.mockito:mockito-core:5.0.0'
-        implementation 'com.github.CarGuo.GSYVideoPlayer:GSYVideoPlayer:v8.6.0-release-jitpack'
-        implementation 'androidx.appcompat:appcompat:1.6.1'
+        implementation "com.github.CarGuo.GSYVideoPlayer:GSYVideoPlayer:$gsyVideoVersion"
+        implementation "com.github.CarGuo.DanmakuFlameMaster:DanmakuFlameMaster:${danmakuFlameMasterSoVersion}"
+        implementation "com.github.CarGuo.DanmakuFlameMaster:ndkbitmap-armv7a:${danmakuFlameMasterSoVersion}"
+        implementation "com.github.CarGuo.DanmakuFlameMaster:ndkbitmap-x86:${danmakuFlameMasterSoVersion}"
+        implementation "com.github.CarGuo.DanmakuFlameMaster:ndkbitmap-armv5:${danmakuFlameMasterSoVersion}"
+
+
+        // implementation 'com.github.CarGuo.GSYVideoPlayer:GSYVideoPlayer-aliplay:v8.6.0-release-jitpack'
     }
 
     testOptions {
