@@ -20,10 +20,11 @@ import tv.danmaku.ijk.media.exo2.Exo2PlayerManager
 import tv.danmaku.ijk.media.player.IjkMediaPlayer
 
 
-class GsyVideoPlayerView(private val context: Context, messenger: BinaryMessenger, private val id: Int, private val params: Map<String?, Any?>?) : PlatformView, MethodChannel.MethodCallHandler, PluginRegistry.RequestPermissionsResultListener, VideoAllCallBack {
+class GsyVideoPlayerView(private val context: Context, messenger: BinaryMessenger, private val id: Int, private val params: Map<String?, Any?>?) : PlatformView, MethodChannel.MethodCallHandler,EventChannel.StreamHandler, PluginRegistry.RequestPermissionsResultListener, VideoAllCallBack {
 
     private val channel: MethodChannel = MethodChannel(messenger, METHODS_CHANNEL)
-    private var eventChannel: EventChannel? = null
+    private var sink: EventChannel.EventSink? = null
+    private var event: EventChannel = EventChannel(messenger, EVENTS_CHANNEL + id)
     private var videoPlayer: CustomVideoPlayer = CustomVideoPlayer(context)
     private var binaryMessenger: BinaryMessenger = messenger
     private var orientationUtils: OrientationUtils? = null
@@ -35,6 +36,8 @@ class GsyVideoPlayerView(private val context: Context, messenger: BinaryMessenge
 
     init {
         channel.setMethodCallHandler(this)
+        event.setStreamHandler(this)
+        gsyVideoOptionBuilder = GSYVideoOptionBuilder()
         setGlobalConfig()
     }
 
@@ -45,7 +48,18 @@ class GsyVideoPlayerView(private val context: Context, messenger: BinaryMessenge
     }
 
     private fun setVideoConfig(call: MethodCall, result: MethodChannel.Result) {
+        initVideoPlayer()
         val videoOptions = call.argument<Map<String, Any?>>(BUILDER_PARAMS)!!
+        var url = getParameter(videoOptions,"url","");
+        var autoPlay = getParameter(videoOptions,"autoPlay",true);
+        gsyVideoOptionBuilder!!.setUrl(url).setCacheWithPlay(true)
+            .setVideoTitle("1")
+            .setIsTouchWiget(true)
+            .setRotateViewAuto(false)
+        gsyVideoOptionBuilder!!.build(videoPlayer);
+        if (autoPlay){
+            videoPlayer.startPlayLogic()
+        }
         Log.d(TAG, "setVideoConfig: $videoOptions")
     }
 
@@ -94,7 +108,6 @@ class GsyVideoPlayerView(private val context: Context, messenger: BinaryMessenge
     override fun onMethodCall(call: MethodCall, result: MethodChannel.Result) {
         when (call.method) {
             CREATE_METHOD -> {
-                 eventChannel = EventChannel(binaryMessenger, EVENTS_CHANNEL + id)
                 val reply: MutableMap<String, Any> = HashMap()
                 reply["textureId"] = id
                 result.success(reply)
@@ -105,7 +118,13 @@ class GsyVideoPlayerView(private val context: Context, messenger: BinaryMessenge
             }
         }
     }
+    override fun onListen(arguments: Any?, events: EventChannel.EventSink?) {
+        this.sink = events
+    }
 
+    override fun onCancel(arguments: Any?) {
+        sink = null
+    }
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray): Boolean {
         TODO("Not yet implemented")
     }
@@ -247,6 +266,5 @@ class GsyVideoPlayerView(private val context: Context, messenger: BinaryMessenge
     override fun onClickBlankFullscreen(url: String?, vararg objects: Any?) {}
 
     override fun onComplete(url: String?, vararg objects: Any?) {}
-
 
 }

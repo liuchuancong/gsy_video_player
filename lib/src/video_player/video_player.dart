@@ -192,14 +192,11 @@ class VideoPlayerValue {
 class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
   /// Constructs a [GsyVideoPlayerController] and creates video controller on platform side.
   GsyVideoPlayerController() : super(VideoPlayerValue(duration: null)) {
-    Timer(Duration(milliseconds: 1000), () {
-      _create();
-    });
+    _create();
   }
 
   final StreamController<VideoEvent> videoEventStreamController = StreamController.broadcast();
   final Completer<void> _creatingCompleter = Completer<void>();
-  int? _textureId;
   Timer? _timer;
   bool _isDisposed = false;
   late Completer<void> _initializingCompleter;
@@ -208,7 +205,7 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
   bool get _created => _creatingCompleter.isCompleted;
 
   Duration? _seekPosition;
-  int? get textureId => _textureId;
+
   Future<void> setAssetBuilder(
     String url, {
     int? shrinkImageRes,
@@ -484,11 +481,14 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
 
   /// Attempts to open the given [dataSource] and load metadata about the video.
   Future<void> _create() async {
-    _textureId = await _videoPlayerPlatform.create();
+    await _videoPlayerPlatform.create();
     _creatingCompleter.complete(null);
     unawaited(_applyLooping());
     unawaited(_applyVolume());
+    setEventListener();
+  }
 
+  void setEventListener() {
     void eventListener(VideoEvent event) {
       if (_isDisposed) {
         return;
@@ -797,54 +797,12 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
 }
 
 /// Widget that displays the video controlled by [controller].
-class GsyVideoPlayer extends StatefulWidget {
+class GsyVideoPlayer extends StatelessWidget {
   /// Uses the given [controller] for all video rendered in this widget.
 
   final GsyVideoPlayerController? controller;
 
   const GsyVideoPlayer({super.key, this.controller});
-
-  @override
-  // ignore: library_private_types_in_public_api
-  _GsyVideoPlayerState createState() => _GsyVideoPlayerState();
-}
-
-class _GsyVideoPlayerState extends State<GsyVideoPlayer> {
-  _GsyVideoPlayerState() {
-    _listener = () {
-      final int? newTextureId = widget.controller!.textureId;
-      if (newTextureId != _textureId) {
-        setState(() {
-          _textureId = newTextureId;
-        });
-      }
-    };
-  }
-  late VoidCallback _listener;
-  int? _textureId;
-
-  @override
-  void initState() {
-    super.initState();
-    _textureId = widget.controller!.textureId;
-    // Need to listen for initialization events since the actual texture ID
-    // becomes available after asynchronous initialization finishes.
-    widget.controller!.addListener(_listener);
-  }
-
-  @override
-  void didUpdateWidget(GsyVideoPlayer oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    oldWidget.controller!.removeListener(_listener);
-    _textureId = widget.controller!.textureId;
-    widget.controller!.addListener(_listener);
-  }
-
-  @override
-  void deactivate() {
-    super.deactivate();
-    widget.controller!.removeListener(_listener);
-  }
 
   @override
   Widget build(BuildContext context) {

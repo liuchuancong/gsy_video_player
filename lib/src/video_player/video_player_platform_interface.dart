@@ -23,6 +23,8 @@ abstract class VideoPlayerPlatform {
   ///
   /// Defaults to [MethodChannelVideoPlayer].
   static VideoPlayerPlatform get instance => _instance;
+
+  final Completer<int> initialized = Completer<int>();
   // https://github.com/flutter/flutter/issues/43368
   static set instance(VideoPlayerPlatform instance) {
     instance._verifyProvidesDefaultImplementations();

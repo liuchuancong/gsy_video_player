@@ -515,7 +515,7 @@ class VideoOptionBuilder {
   Map<String, dynamic> toJson() {
     return {
       "url": url,
-      "playVideoDataSourceType": playVideoDataSourceType.toString(),
+      "playVideoDataSourceType": playVideoDataSourceType?.index,
       "autoPlay": autoPlay,
       "shrinkImageRes": shrinkImageRes,
       "enlargeImageRes": enlargeImageRes,

@@ -18,26 +18,46 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
   // Pass parameters to the platform side.
   Map<String, dynamic> creationParams = <String, dynamic>{};
 
+  Timer? _timer;
+
+  int? textureId;
+  MethodChannelVideoPlayer() {
+    _timer = Timer.periodic(const Duration(milliseconds: 100), (Timer timer) async {
+      try {
+        late final Map<String, dynamic>? response;
+        response = await _channel.invokeMapMethod<String, dynamic>('create');
+        textureId = response?['textureId'] as int?;
+        initialized.complete(textureId);
+        _timer?.cancel();
+        // ignore: empty_catches
+      } catch (e) {}
+    });
+  }
+
   @override
-  Future<void> init() {
+  Future<void> init() async {
+    await initialized.future;
     return _channel.invokeMethod<void>('init');
   }
 
   @override
-  Future<void> dispose() {
+  Future<void> dispose() async {
+    await initialized.future;
     return _channel.invokeMethod<void>('dispose');
   }
 
   @override
   Future<int?> create() async {
+    await initialized.future;
     late final Map<String, dynamic>? response;
     response = await _channel.invokeMapMethod<String, dynamic>('create');
-    print(response.toString());
-    return response?['textureId'] as int?;
+    textureId = response?['textureId'] as int?;
+    return textureId;
   }
 
   @override
   Future<void> setVideoOptionBuilder(VideoOptionBuilder builder) async {
+    await initialized.future;
     Map<String, dynamic>? builderParams = builder.toJson();
     await _channel.invokeMethod<void>(
       'setVideoOptionBuilder',
@@ -49,7 +69,8 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
   }
 
   @override
-  Future<void> setLooping(bool looping) {
+  Future<void> setLooping(bool looping) async {
+    await initialized.future;
     return _channel.invokeMethod<void>(
       'setLooping',
       <String, dynamic>{
@@ -59,21 +80,24 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
   }
 
   @override
-  Future<void> play() {
+  Future<void> play() async {
+    await initialized.future;
     return _channel.invokeMethod<void>(
       'play',
     );
   }
 
   @override
-  Future<void> pause() {
+  Future<void> pause() async {
+    await initialized.future;
     return _channel.invokeMethod<void>(
       'pause',
     );
   }
 
   @override
-  Future<void> setVolume(double volume) {
+  Future<void> setVolume(double volume) async {
+    await initialized.future;
     return _channel.invokeMethod<void>(
       'setVolume',
       <String, dynamic>{
@@ -83,7 +107,8 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
   }
 
   @override
-  Future<void> setSpeed(double speed) {
+  Future<void> setSpeed(double speed) async {
+    await initialized.future;
     return _channel.invokeMethod<void>(
       'setSpeed',
       <String, dynamic>{
@@ -93,7 +118,8 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
   }
 
   @override
-  Future<void> setTrackParameters(int? width, int? height, int? bitrate) {
+  Future<void> setTrackParameters(int? width, int? height, int? bitrate) async {
+    await initialized.future;
     return _channel.invokeMethod<void>(
       'setTrackParameters',
       <String, dynamic>{
@@ -105,7 +131,8 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
   }
 
   @override
-  Future<void> seekTo(Duration? position) {
+  Future<void> seekTo(Duration? position) async {
+    await initialized.future;
     return _channel.invokeMethod<void>(
       'seekTo',
       <String, dynamic>{
@@ -116,6 +143,7 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<Duration> getPosition() async {
+    await initialized.future;
     return Duration(
         milliseconds: await _channel.invokeMethod<int>(
               'position',
@@ -125,6 +153,7 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<DateTime?> getAbsolutePosition() async {
+    await initialized.future;
     final int milliseconds = await _channel.invokeMethod<int>(
           'absolutePosition',
         ) ??
@@ -137,6 +166,7 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<void> enablePictureInPicture(double? top, double? left, double? width, double? height) async {
+    await initialized.future;
     return _channel.invokeMethod<void>(
       'enablePictureInPicture',
       <String, dynamic>{
@@ -149,7 +179,8 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
   }
 
   @override
-  Future<bool?> isPictureInPictureEnabled() {
+  Future<bool?> isPictureInPictureEnabled() async {
+    await initialized.future;
     return _channel.invokeMethod<bool>(
       'isPictureInPictureSupported',
       <String, dynamic>{},
@@ -157,7 +188,8 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
   }
 
   @override
-  Future<void> disablePictureInPicture() {
+  Future<bool?> disablePictureInPicture() async {
+    await initialized.future;
     return _channel.invokeMethod<bool>(
       'disablePictureInPicture',
       <String, dynamic>{},
@@ -165,7 +197,8 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
   }
 
   @override
-  Future<void> setAudioTrack(String? name, int? index) {
+  Future<void> setAudioTrack(String? name, int? index) async {
+    await initialized.future;
     return _channel.invokeMethod<void>(
       'setAudioTrack',
       <String, dynamic>{
@@ -176,7 +209,8 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
   }
 
   @override
-  Future<void> setMixWithOthers(bool mixWithOthers) {
+  Future<void> setMixWithOthers(bool mixWithOthers) async {
+    await initialized.future;
     return _channel.invokeMethod<void>(
       'setMixWithOthers',
       <String, dynamic>{
@@ -186,14 +220,16 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
   }
 
   @override
-  Future<void> clearCache() {
+  Future<void> clearCache() async {
+    await initialized.future;
     return _channel.invokeMethod<void>(
       'clearCache',
       <String, dynamic>{},
     );
   }
 
-  Future<void> stopPreCache(String url, String? cacheKey) {
+  Future<void> stopPreCache(String url, String? cacheKey) async {
+    await initialized.future;
     return _channel.invokeMethod<void>(
       'stopPreCache',
       <String, dynamic>{'url': url, 'cacheKey': cacheKey},
@@ -298,6 +334,8 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
       }
     });
   }
+  // flutter有bug 在第一次打开的时候会出现PlatformView被创建已经创建成功但是methodChannel 出现MissingPluginException(No implementation found for method
+  // 此处添加轮询进行获取是否初始化完成
 
   @override
   Widget buildView() {
@@ -328,7 +366,7 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
   }
 
   EventChannel eventChannelFor() {
-    return const EventChannel('gsy_video_player_channel/platform_view_methods');
+    return EventChannel('gsy_video_player_channel/platform_view_events$textureId');
   }
 
   DurationRange _toDurationRange(dynamic value) {

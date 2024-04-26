@@ -14,7 +14,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  late GsyVideoPlayerController gsyVideoPlayerController;
+  GsyVideoPlayerController gsyVideoPlayerController = GsyVideoPlayerController();
 
   @override
   void initState() {
@@ -24,7 +24,6 @@ class _MyAppState extends State<MyApp> {
 
   // Platform messages are asynchronous, so we initialize in an async method.
   Future<void> initPlayer() async {
-    gsyVideoPlayerController = GsyVideoPlayerController();
     gsyVideoPlayerController.setNetWorkBuilder(
         'https://cloud.video.taobao.com//play/u/57349687/p/1/e/6/t/1/239880949246.mp4',
         autoPlay: true);
