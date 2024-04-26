@@ -473,7 +473,7 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     );
   }
 
-  Future<void> _setDataSource(VideoOptionBuilder dataSourceDescription) async {
+  Future<void> _setDataSource(VideoOptionBuilder builder) async {
     if (_isDisposed) {
       return;
     }
@@ -487,7 +487,7 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
 
     _initializingCompleter = Completer<void>();
 
-    await VideoPlayerPlatform.instance.setVideoOptionBuilder(dataSourceDescription);
+    await VideoPlayerPlatform.instance.setVideoOptionBuilder(builder);
     return _initializingCompleter.future;
   }
 
