@@ -1,6 +1,8 @@
 import 'package:gsy_video_player/src/configuration/play_video_datasource_type.dart';
 
 class VideoOptionBuilder {
+  //是否自动播放
+  static const bool mAutoPlay = true;
   //退出全屏显示的案件图片
   static const int mShrinkImageRes = -1;
   //全屏显示的案件图片
@@ -116,6 +118,9 @@ class VideoOptionBuilder {
   String url;
   // 播放类型
   PlayVideoDataSourceType? playVideoDataSourceType;
+
+  // 是否自动播放
+  bool? autoPlay;
   //退出全屏显示的案件图片
   int? shrinkImageRes;
   //
@@ -197,6 +202,7 @@ class VideoOptionBuilder {
   VideoOptionBuilder({
     required this.url,
     this.playVideoDataSourceType = PlayVideoDataSourceType.network,
+    this.autoPlay = mAutoPlay,
     this.shrinkImageRes = mShrinkImageRes,
     this.enlargeImageRes = mEnlargeImageRes,
     this.playPosition = mPlayPosition,
@@ -510,6 +516,7 @@ class VideoOptionBuilder {
     return {
       "url": url,
       "playVideoDataSourceType": playVideoDataSourceType.toString(),
+      "autoPlay": autoPlay,
       "shrinkImageRes": shrinkImageRes,
       "enlargeImageRes": enlargeImageRes,
       "playPosition": playPosition,
@@ -518,6 +525,8 @@ class VideoOptionBuilder {
       "dismissControlTime": dismissControlTime,
       "seekOnStart": seekOnStart,
       "hideKey": hideKey,
+      "speed": speed,
+      "seekRatio": seekRatio,
       "showFullAnimation": showFullAnimation,
       "autoFullWithSize": autoFullWithSize,
       "needShowWifiTip": needShowWifiTip,

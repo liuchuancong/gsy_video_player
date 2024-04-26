@@ -92,6 +92,11 @@ abstract class VideoPlayerPlatform {
     throw UnimplementedError('seekTo() has not been implemented.');
   }
 
+  /// Sets the playback speed to a [speed] value indicating the playback rate.
+  Future<void> setPlaybackSpeed(double speed) {
+    throw UnimplementedError('setPlaybackSpeed() has not been implemented.');
+  }
+
   /// Gets the video position as [Duration] from the start.
   Future<Duration> getPosition() {
     throw UnimplementedError('getPosition() has not been implemented.');

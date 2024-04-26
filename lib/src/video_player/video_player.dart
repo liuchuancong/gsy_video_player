@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'closed_caption_file.dart';
 import 'package:flutter/material.dart';
 import 'video_player_platform_interface.dart';
 import 'package:gsy_video_player/src/builder/video_option_builder.dart';
@@ -21,21 +22,24 @@ class VideoPlayerValue {
   /// rest will initialize with default values when unset.
   VideoPlayerValue({
     required this.duration,
-    this.size,
-    this.position = const Duration(),
+    this.size = Size.zero,
     this.absolutePosition,
+    this.position = Duration.zero,
+    this.caption = Caption.none,
     this.buffered = const <DurationRange>[],
+    this.isInitialized = false,
     this.isPlaying = false,
     this.isLooping = false,
     this.isBuffering = false,
     this.volume = 1.0,
     this.speed = 1.0,
+    this.playbackSpeed = 1.0,
     this.errorDescription,
     this.isPip = false,
   });
 
-  /// Returns an instance with a `null` [Duration].
-  VideoPlayerValue.uninitialized() : this(duration: null);
+  /// Returns an instance for a video that hasn't been loaded.
+  VideoPlayerValue.uninitialized() : this(duration: Duration.zero, isInitialized: false);
 
   /// Returns an instance with a `null` [Duration] and the given
   /// [errorDescription].
@@ -72,6 +76,9 @@ class VideoPlayerValue {
   /// The current speed of the playback
   final double speed;
 
+  /// Indicates whether or not the video has been loaded and is ready to play.
+  final bool isInitialized;
+
   /// A description of the error if present.
   ///
   /// If [hasError] is false this is [null].
@@ -82,8 +89,17 @@ class VideoPlayerValue {
   /// Is null when [initialized] is false.
   final Size? size;
 
+  /// The current speed of the playback.
+  final double playbackSpeed;
+
   ///Is in Picture in Picture Mode
   final bool isPip;
+
+  /// The [Caption] that should be displayed based on the current [position].
+  ///
+  /// This field will never be null. If there is no caption for the current
+  /// [position], this will be a [Caption.none] object.
+  final Caption caption;
 
   /// Indicates whether or not the video has been loaded and is ready to play.
   bool get initialized => duration != null;
@@ -112,11 +128,14 @@ class VideoPlayerValue {
     Size? size,
     Duration? position,
     DateTime? absolutePosition,
+    Caption? caption,
     List<DurationRange>? buffered,
+    bool? isInitialized,
     bool? isPlaying,
     bool? isLooping,
     bool? isBuffering,
     double? volume,
+    double? playbackSpeed,
     String? errorDescription,
     double? speed,
     bool? isPip,
@@ -126,12 +145,14 @@ class VideoPlayerValue {
       size: size ?? this.size,
       position: position ?? this.position,
       absolutePosition: absolutePosition ?? this.absolutePosition,
+      caption: caption ?? this.caption,
       buffered: buffered ?? this.buffered,
+      isInitialized: isInitialized ?? this.isInitialized,
       isPlaying: isPlaying ?? this.isPlaying,
       isLooping: isLooping ?? this.isLooping,
       isBuffering: isBuffering ?? this.isBuffering,
       volume: volume ?? this.volume,
-      speed: speed ?? this.speed,
+      playbackSpeed: playbackSpeed ?? this.playbackSpeed,
       errorDescription: errorDescription ?? this.errorDescription,
       isPip: isPip ?? this.isPip,
     );
@@ -139,18 +160,21 @@ class VideoPlayerValue {
 
   @override
   String toString() {
-    // ignore: no_runtimetype_tostring
     return '$runtimeType('
         'duration: $duration, '
         'size: $size, '
         'position: $position, '
         'absolutePosition: $absolutePosition, '
+        'caption: $caption, '
         'buffered: [${buffered.join(', ')}], '
+        'isInitialized: $isInitialized, '
         'isPlaying: $isPlaying, '
         'isLooping: $isLooping, '
         'isBuffering: $isBuffering, '
         'volume: $volume, '
-        'errorDescription: $errorDescription)';
+        'playbackSpeed: $playbackSpeed, '
+        'isPip: $isPip, '
+        'errorDescription: $errorDescription,)';
   }
 }
 
@@ -170,7 +194,6 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
 
   final StreamController<VideoEvent> videoEventStreamController = StreamController.broadcast();
   final Completer<void> _creatingCompleter = Completer<void>();
-  int? _textureId;
 
   Timer? _timer;
   bool _isDisposed = false;
@@ -221,10 +244,12 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     Map<String, String>? mapHeadData,
     bool? needOrientationUtils,
     PlayVideoDataSourceType? playVideoDataSourceType,
+    bool? autoPlay,
   }) {
     return _setDataSource(
       VideoOptionBuilder(
         url: url,
+        autoPlay: autoPlay,
         shrinkImageRes: shrinkImageRes,
         enlargeImageRes: enlargeImageRes,
         playPosition: playPosition,
@@ -270,6 +295,7 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
 
   Future<void> setNetWorkBuilder(
     String url, {
+    bool? autoPlay,
     int? shrinkImageRes,
     int? enlargeImageRes,
     int? playPosition,
@@ -313,6 +339,7 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     return _setDataSource(
       VideoOptionBuilder(
         url: url,
+        autoPlay: autoPlay,
         shrinkImageRes: shrinkImageRes,
         enlargeImageRes: enlargeImageRes,
         playPosition: playPosition,
@@ -358,6 +385,7 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
 
   Future<void> setFileBuilder(
     String url, {
+    bool? autoPlay,
     int? shrinkImageRes,
     int? enlargeImageRes,
     int? playPosition,
@@ -401,6 +429,7 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     return _setDataSource(
       VideoOptionBuilder(
         url: url,
+        autoPlay: autoPlay,
         shrinkImageRes: shrinkImageRes,
         enlargeImageRes: enlargeImageRes,
         playPosition: playPosition,
@@ -535,9 +564,25 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
           }
         },
       );
+      // This ensures that the correct playback speed is always applied when
+      // playing back. This is necessary because we do not set playback speed
+      // when paused.
+      await _applyPlaybackSpeed();
     } else {
       await _videoPlayerPlatform.pause();
     }
+  }
+
+  Future<void> _applyPlaybackSpeed() async {
+    if (!value.isInitialized || _isDisposed) {
+      return;
+    }
+    // Setting the playback speed on iOS will trigger the video to play. We
+    // prevent this from happening by not applying the playback speed until
+    // the video is manually played from Flutter.
+    if (!value.isPlaying) return;
+
+    await _videoPlayerPlatform.setPlaybackSpeed(value.playbackSpeed);
   }
 
   Future<void> _applyVolume() async {
@@ -598,8 +643,6 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     _seekPosition = positionToSeek;
 
     await _videoPlayerPlatform.seekTo(positionToSeek);
-    _updatePosition(position);
-
     if (isPlaying) {
       play();
     } else {
@@ -643,18 +686,15 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
 
   Future<void> disablePictureInPicture() async {}
 
+  Future<bool?> isPictureInPictureSupported() async {
+    return _videoPlayerPlatform.isPictureInPictureEnabled();
+  }
+
   void _updatePosition(Duration? position, {DateTime? absolutePosition}) {
     value = value.copyWith(position: _seekPosition ?? position);
     if (_seekPosition == null) {
       value = value.copyWith(absolutePosition: absolutePosition);
     }
-  }
-
-  Future<bool?> isPictureInPictureSupported() async {
-    if (_textureId == null) {
-      return false;
-    }
-    return _videoPlayerPlatform.isPictureInPictureEnabled();
   }
 
   void refresh() {
