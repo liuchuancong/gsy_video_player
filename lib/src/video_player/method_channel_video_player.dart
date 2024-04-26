@@ -6,16 +6,18 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/foundation.dart';
 import 'video_player_platform_interface.dart';
 import 'package:gsy_video_player/src/builder/video_option_builder.dart';
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
+const _channel = MethodChannel('gsy_video_player_channel/platform_view_methods');
 
 /// An implementation of [VideoPlayerPlatform] that uses method channels.
 class MethodChannelVideoPlayer extends VideoPlayerPlatform {
-  late final MethodChannel _channel;
-  String viewType = 'gsy_video_player_channel/videoView';
+  String viewType = 'gsy_video_player_channel/platform_view';
   // Pass parameters to the platform side.
   Map<String, dynamic> creationParams = <String, dynamic>{};
+
   @override
   Future<void> init() {
     return _channel.invokeMethod<void>('init');
@@ -30,6 +32,7 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
   Future<int?> create() async {
     late final Map<String, dynamic>? response;
     response = await _channel.invokeMapMethod<String, dynamic>('create');
+    print(response.toString());
     return response?['textureId'] as int?;
   }
 
@@ -308,7 +311,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
         );
       },
       onCreatePlatformView: (params) {
-        onPlatformViewCreated(params.id);
         return PlatformViewsService.initSurfaceAndroidView(
           id: params.id,
           viewType: viewType,
@@ -326,11 +328,7 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
   }
 
   EventChannel eventChannelFor() {
-    return const EventChannel('gsy_video_player_channel/videoView');
-  }
-
-  void onPlatformViewCreated(int id) {
-    _channel = MethodChannel('gsy_video_player_channel/videoView_$id');
+    return const EventChannel('gsy_video_player_channel/platform_view_methods');
   }
 
   DurationRange _toDurationRange(dynamic value) {

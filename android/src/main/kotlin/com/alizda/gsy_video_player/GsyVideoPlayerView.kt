@@ -2,7 +2,6 @@ package com.alizda.gsy_video_player
 
 import android.content.Context
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
 import com.shuyu.gsyvideoplayer.GSYVideoManager
 import com.shuyu.gsyvideoplayer.builder.GSYVideoOptionBuilder
@@ -12,6 +11,7 @@ import com.shuyu.gsyvideoplayer.player.PlayerFactory
 import com.shuyu.gsyvideoplayer.utils.GSYVideoType
 import com.shuyu.gsyvideoplayer.utils.OrientationUtils
 import io.flutter.plugin.common.BinaryMessenger
+import io.flutter.plugin.common.EventChannel
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.PluginRegistry
@@ -20,21 +20,19 @@ import tv.danmaku.ijk.media.exo2.Exo2PlayerManager
 import tv.danmaku.ijk.media.player.IjkMediaPlayer
 
 
-class GsyVideoPlayerView(
-    private val context: Context,
-    messenger: BinaryMessenger,
-    private val id: Int,
-    private val params: Map<String?, Any?>?
-) : PlatformView, MethodChannel.MethodCallHandler, PluginRegistry.RequestPermissionsResultListener, VideoAllCallBack {
+class GsyVideoPlayerView(private val context: Context, messenger: BinaryMessenger, private val id: Int, private val params: Map<String?, Any?>?) : PlatformView, MethodChannel.MethodCallHandler, PluginRegistry.RequestPermissionsResultListener, VideoAllCallBack {
 
-    private val channel: MethodChannel = MethodChannel(messenger, "gsy_video_player_channel/videoView_$id")
-    private var videoPlayer:CustomVideoPlayer = CustomVideoPlayer(context)
+    private val channel: MethodChannel = MethodChannel(messenger, METHODS_CHANNEL)
+    private var eventChannel: EventChannel? = null
+    private var videoPlayer: CustomVideoPlayer = CustomVideoPlayer(context)
+    private var binaryMessenger: BinaryMessenger = messenger
     private var orientationUtils: OrientationUtils? = null
     private var gsyVideoOptionBuilder: GSYVideoOptionBuilder? = null
-    private var rotateEnable:Boolean = false
-    private var isPlay:Boolean = false
+    private var rotateEnable: Boolean = false
+    private var isPlay: Boolean = false
     private var gsyVideoType: Int = GSYVideoType.SCREEN_TYPE_16_9
     private var playerType: Int = 0;
+
     init {
         channel.setMethodCallHandler(this)
         setGlobalConfig()
@@ -46,12 +44,12 @@ class GsyVideoPlayerView(
         return videoPlayer
     }
 
-    private fun  setVideoConfig(call: MethodCall, result: MethodChannel.Result){
-        val videoOptions = call.argument<Map<String, Any?>>(SET_VIDEO_OPTION_BUILDER)!!
+    private fun setVideoConfig(call: MethodCall, result: MethodChannel.Result) {
+        val videoOptions = call.argument<Map<String, Any?>>(BUILDER_PARAMS)!!
         Log.d(TAG, "setVideoConfig: $videoOptions")
     }
 
-    private fun setGlobalConfig(){
+    private fun setGlobalConfig() {
         //EXOPlayer内核，支持格式更多
         PlayerFactory.setPlayManager(Exo2PlayerManager::class.java)
         GSYVideoType.setRenderType(GSYVideoType.TEXTURE)
@@ -95,25 +93,40 @@ class GsyVideoPlayerView(
 
     override fun onMethodCall(call: MethodCall, result: MethodChannel.Result) {
         when (call.method) {
-            SET_VIDEO_OPTION_BUILDER->{
-                setVideoConfig(call,result)
+            CREATE_METHOD -> {
+                 eventChannel = EventChannel(binaryMessenger, EVENTS_CHANNEL + id)
+                val reply: MutableMap<String, Any> = HashMap()
+                reply["textureId"] = id
+                result.success(reply)
+            }
+            SET_VIDEO_OPTION_BUILDER -> {
+                Log.d(TAG, "onMethodCall: 方法被调用")
+                setVideoConfig(call, result)
             }
         }
     }
 
-    override fun onRequestPermissionsResult(
-            requestCode: Int,
-            permissions: Array<out String>,
-            grantResults: IntArray
-    ): Boolean {
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray): Boolean {
         TODO("Not yet implemented")
     }
 
+    @Suppress("UNCHECKED_CAST")
+    private fun <T> getParameter(parameters: Map<String, Any?>?, key: String, defaultValue: T): T {
+        if (parameters?.containsKey(key) == true) {
+            val value = parameters[key]
+            if (value != null) {
+                return value as T
+            }
+        }
+        return defaultValue
+    }
 
-    companion object{
-        private const val TAG ="GSY_VIDEO_PLAYER"
+    companion object {
+        private const val TAG = "GSY_VIDEO_PLAYER"
         private const val SET_VIDEO_OPTION_BUILDER = "setVideoOptionBuilder"
-        private const val KEY_PARAMETER = "key"
+        private const val METHODS_CHANNEL = "gsy_video_player_channel/platform_view_methods"
+        private const val EVENTS_CHANNEL = "gsy_video_player_channel/platform_view_events"
+        private const val BUILDER_PARAMS = "builderParams"
         private const val HEADERS_PARAMETER = "headers"
         private const val USE_CACHE_PARAMETER = "useCache"
         private const val ASSET_PARAMETER = "asset"

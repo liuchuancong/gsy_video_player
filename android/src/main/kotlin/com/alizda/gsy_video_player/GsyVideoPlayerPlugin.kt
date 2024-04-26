@@ -9,7 +9,7 @@ class GsyVideoPlayerPlugin: FlutterPlugin, ActivityAware {
   override fun onAttachedToEngine(binding: FlutterPlugin.FlutterPluginBinding) {
     binding.platformViewRegistry
       .registerViewFactory(
-        EVENTS_CHANNEL,
+        CHANNEL,
         GsyVideoPlayerFactory(binding.binaryMessenger)
       )
   }
@@ -35,10 +35,7 @@ class GsyVideoPlayerPlugin: FlutterPlugin, ActivityAware {
     GsyVideoShared.binding = null
   }
   companion object {
-    private const val TAG = "GsyVideoPlayerPlugin"
-    private const val CHANNEL = "gsy_video_player_channel"
-    private const val EVENTS_CHANNEL = "gsy_video_player_channel/videoView"
-
+    private const val CHANNEL = "gsy_video_player_channel/platform_view"
   }
 }
 
