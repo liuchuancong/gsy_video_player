@@ -1,7 +1,9 @@
-import 'dart:io';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'video_player_platform_interface.dart';
+import 'package:gsy_video_player/src/builder/video_option_builder.dart';
+import 'package:gsy_video_player/src/configuration/play_video_datasource_type.dart';
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -178,132 +180,274 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
   bool get _created => _creatingCompleter.isCompleted;
   Duration? _seekPosition;
 
-  /// Set data source for playing a video from an asset.
-  ///
-  /// The name of the asset is given by the [dataSource] argument and must not be
-  /// null. The [package] argument must be non-null when the asset comes from a
-  /// package and null otherwise.
-  Future<void> setAssetDataSource(
-    String dataSource, {
-    String? package,
-    bool? showNotification,
-    String? title,
-    String? author,
-    String? imageUrl,
-    String? notificationChannelName,
-    Duration? overriddenDuration,
-    String? activityName,
-    String? packageName,
+  Future<void> setAssetBuilder(
+    String url, {
+    int? shrinkImageRes,
+    int? enlargeImageRes,
+    int? playPosition,
+    int? dialogProgressHighLightColor,
+    int? dialogProgressNormalColor,
+    int? dismissControlTime,
+    int? seekOnStart,
+    double? seekRatio,
+    double? speed,
+    bool? hideKey,
+    bool? showFullAnimation,
+    bool? autoFullWithSize,
+    bool? needShowWifiTip,
+    bool? rotateViewAuto,
+    bool? lockLand,
+    bool? looping,
+    bool? isTouchWiget,
+    bool? isTouchWigetFull,
+    bool? showPauseCover,
+    bool? rotateWithSystem,
+    bool? surfaceErrorPlay,
+    bool? cacheWithPlay,
+    bool? needLockFull,
+    bool? thumbPlay,
+    bool? sounchTouch,
+    bool? startAfterPrepared,
+    bool? releaseWhenLossAudio,
+    bool? actionBar,
+    bool? statusBar,
+    bool? isShowDragProgressTextOnSeekBar,
+    String? playTag,
+    String? videoTitle,
+    String? overrideExtension,
+    bool? isOnlyRotateLand,
+    bool? isUseCustomCachePath,
+    String? cachePath,
+    Map<String, String>? mapHeadData,
+    bool? needOrientationUtils,
+    PlayVideoDataSourceType? playVideoDataSourceType,
   }) {
     return _setDataSource(
-      DataSource(
-        sourceType: DataSourceType.asset,
-        asset: dataSource,
-        package: package,
-        showNotification: showNotification,
-        title: title,
-        author: author,
-        imageUrl: imageUrl,
-        notificationChannelName: notificationChannelName,
-        overriddenDuration: overriddenDuration,
-        activityName: activityName,
-        packageName: packageName,
+      VideoOptionBuilder(
+        url: url,
+        shrinkImageRes: shrinkImageRes,
+        enlargeImageRes: enlargeImageRes,
+        playPosition: playPosition,
+        dialogProgressHighLightColor: dialogProgressHighLightColor,
+        dialogProgressNormalColor: dialogProgressNormalColor,
+        dismissControlTime: dismissControlTime,
+        seekOnStart: seekOnStart,
+        seekRatio: seekRatio,
+        speed: speed,
+        hideKey: hideKey,
+        showFullAnimation: showFullAnimation,
+        autoFullWithSize: autoFullWithSize,
+        needShowWifiTip: needShowWifiTip,
+        rotateViewAuto: rotateViewAuto,
+        lockLand: lockLand,
+        looping: looping,
+        isTouchWiget: isTouchWiget,
+        isTouchWigetFull: isTouchWigetFull,
+        showPauseCover: showPauseCover,
+        rotateWithSystem: rotateWithSystem,
+        surfaceErrorPlay: surfaceErrorPlay,
+        cacheWithPlay: cacheWithPlay,
+        needLockFull: needLockFull,
+        thumbPlay: thumbPlay,
+        sounchTouch: sounchTouch,
+        startAfterPrepared: startAfterPrepared,
+        releaseWhenLossAudio: releaseWhenLossAudio,
+        actionBar: actionBar,
+        statusBar: statusBar,
+        isShowDragProgressTextOnSeekBar: isShowDragProgressTextOnSeekBar,
+        playTag: playTag,
+        videoTitle: videoTitle,
+        overrideExtension: overrideExtension,
+        isOnlyRotateLand: isOnlyRotateLand,
+        isUseCustomCachePath: isUseCustomCachePath,
+        cachePath: cachePath,
+        mapHeadData: mapHeadData,
+        needOrientationUtils: needOrientationUtils,
+        playVideoDataSourceType: PlayVideoDataSourceType.asset,
       ),
     );
   }
 
-  /// Set data source for playing a video from obtained from
-  /// the network.
-  ///
-  /// The URI for the video is given by the [dataSource] argument and must not be
-  /// null.
-  /// **Android only**: The [formatHint] option allows the caller to override
-  /// the video format detection code.
-  /// ClearKey DRM only supported on Android.
-  Future<void> setNetworkDataSource(
-    String dataSource, {
-    VideoFormat? formatHint,
-    Map<String, String?>? headers,
-    bool useCache = false,
-    int? maxCacheSize,
-    int? maxCacheFileSize,
-    String? cacheKey,
-    bool? showNotification,
-    String? title,
-    String? author,
-    String? imageUrl,
-    String? notificationChannelName,
-    Duration? overriddenDuration,
-    String? licenseUrl,
-    String? certificateUrl,
-    Map<String, String>? drmHeaders,
-    String? activityName,
-    String? packageName,
-    String? clearKey,
-    String? videoExtension,
+  Future<void> setNetWorkBuilder(
+    String url, {
+    int? shrinkImageRes,
+    int? enlargeImageRes,
+    int? playPosition,
+    int? dialogProgressHighLightColor,
+    int? dialogProgressNormalColor,
+    int? dismissControlTime,
+    int? seekOnStart,
+    double? seekRatio,
+    double? speed,
+    bool? hideKey,
+    bool? showFullAnimation,
+    bool? autoFullWithSize,
+    bool? needShowWifiTip,
+    bool? rotateViewAuto,
+    bool? lockLand,
+    bool? looping,
+    bool? isTouchWiget,
+    bool? isTouchWigetFull,
+    bool? showPauseCover,
+    bool? rotateWithSystem,
+    bool? surfaceErrorPlay,
+    bool? cacheWithPlay,
+    bool? needLockFull,
+    bool? thumbPlay,
+    bool? sounchTouch,
+    bool? startAfterPrepared,
+    bool? releaseWhenLossAudio,
+    bool? actionBar,
+    bool? statusBar,
+    bool? isShowDragProgressTextOnSeekBar,
+    String? playTag,
+    String? videoTitle,
+    String? overrideExtension,
+    bool? isOnlyRotateLand,
+    bool? isUseCustomCachePath,
+    String? cachePath,
+    Map<String, String>? mapHeadData,
+    bool? needOrientationUtils,
+    PlayVideoDataSourceType? playVideoDataSourceType,
   }) {
     return _setDataSource(
-      DataSource(
-        sourceType: DataSourceType.network,
-        uri: dataSource,
-        formatHint: formatHint,
-        headers: headers,
-        useCache: useCache,
-        maxCacheSize: maxCacheSize,
-        maxCacheFileSize: maxCacheFileSize,
-        cacheKey: cacheKey,
-        showNotification: showNotification,
-        title: title,
-        author: author,
-        imageUrl: imageUrl,
-        notificationChannelName: notificationChannelName,
-        overriddenDuration: overriddenDuration,
-        licenseUrl: licenseUrl,
-        certificateUrl: certificateUrl,
-        drmHeaders: drmHeaders,
-        activityName: activityName,
-        packageName: packageName,
-        clearKey: clearKey,
-        videoExtension: videoExtension,
+      VideoOptionBuilder(
+        url: url,
+        shrinkImageRes: shrinkImageRes,
+        enlargeImageRes: enlargeImageRes,
+        playPosition: playPosition,
+        dialogProgressHighLightColor: dialogProgressHighLightColor,
+        dialogProgressNormalColor: dialogProgressNormalColor,
+        dismissControlTime: dismissControlTime,
+        seekOnStart: seekOnStart,
+        seekRatio: seekRatio,
+        speed: speed,
+        hideKey: hideKey,
+        showFullAnimation: showFullAnimation,
+        autoFullWithSize: autoFullWithSize,
+        needShowWifiTip: needShowWifiTip,
+        rotateViewAuto: rotateViewAuto,
+        lockLand: lockLand,
+        looping: looping,
+        isTouchWiget: isTouchWiget,
+        isTouchWigetFull: isTouchWigetFull,
+        showPauseCover: showPauseCover,
+        rotateWithSystem: rotateWithSystem,
+        surfaceErrorPlay: surfaceErrorPlay,
+        cacheWithPlay: cacheWithPlay,
+        needLockFull: needLockFull,
+        thumbPlay: thumbPlay,
+        sounchTouch: sounchTouch,
+        startAfterPrepared: startAfterPrepared,
+        releaseWhenLossAudio: releaseWhenLossAudio,
+        actionBar: actionBar,
+        statusBar: statusBar,
+        isShowDragProgressTextOnSeekBar: isShowDragProgressTextOnSeekBar,
+        playTag: playTag,
+        videoTitle: videoTitle,
+        overrideExtension: overrideExtension,
+        isOnlyRotateLand: isOnlyRotateLand,
+        isUseCustomCachePath: isUseCustomCachePath,
+        cachePath: cachePath,
+        mapHeadData: mapHeadData,
+        needOrientationUtils: needOrientationUtils,
+        playVideoDataSourceType: PlayVideoDataSourceType.network,
       ),
     );
   }
 
-  /// Set data source for playing a video from a file.
-  ///
-  /// This will load the file from the file-URI given by:
-  /// `'file://${file.path}'`.
-  Future<void> setFileDataSource(File file,
-      {bool? showNotification,
-      String? title,
-      String? author,
-      String? imageUrl,
-      String? notificationChannelName,
-      Duration? overriddenDuration,
-      String? activityName,
-      String? packageName,
-      String? clearKey}) {
+  Future<void> setFileBuilder(
+    String url, {
+    int? shrinkImageRes,
+    int? enlargeImageRes,
+    int? playPosition,
+    int? dialogProgressHighLightColor,
+    int? dialogProgressNormalColor,
+    int? dismissControlTime,
+    int? seekOnStart,
+    double? seekRatio,
+    double? speed,
+    bool? hideKey,
+    bool? showFullAnimation,
+    bool? autoFullWithSize,
+    bool? needShowWifiTip,
+    bool? rotateViewAuto,
+    bool? lockLand,
+    bool? looping,
+    bool? isTouchWiget,
+    bool? isTouchWigetFull,
+    bool? showPauseCover,
+    bool? rotateWithSystem,
+    bool? surfaceErrorPlay,
+    bool? cacheWithPlay,
+    bool? needLockFull,
+    bool? thumbPlay,
+    bool? sounchTouch,
+    bool? startAfterPrepared,
+    bool? releaseWhenLossAudio,
+    bool? actionBar,
+    bool? statusBar,
+    bool? isShowDragProgressTextOnSeekBar,
+    String? playTag,
+    String? videoTitle,
+    String? overrideExtension,
+    bool? isOnlyRotateLand,
+    bool? isUseCustomCachePath,
+    String? cachePath,
+    Map<String, String>? mapHeadData,
+    bool? needOrientationUtils,
+    PlayVideoDataSourceType? playVideoDataSourceType,
+  }) {
     return _setDataSource(
-      DataSource(
-          sourceType: DataSourceType.file,
-          uri: 'file://${file.path}',
-          showNotification: showNotification,
-          title: title,
-          author: author,
-          imageUrl: imageUrl,
-          notificationChannelName: notificationChannelName,
-          overriddenDuration: overriddenDuration,
-          activityName: activityName,
-          packageName: packageName,
-          clearKey: clearKey),
+      VideoOptionBuilder(
+        url: url,
+        shrinkImageRes: shrinkImageRes,
+        enlargeImageRes: enlargeImageRes,
+        playPosition: playPosition,
+        dialogProgressHighLightColor: dialogProgressHighLightColor,
+        dialogProgressNormalColor: dialogProgressNormalColor,
+        dismissControlTime: dismissControlTime,
+        seekOnStart: seekOnStart,
+        seekRatio: seekRatio,
+        speed: speed,
+        hideKey: hideKey,
+        showFullAnimation: showFullAnimation,
+        autoFullWithSize: autoFullWithSize,
+        needShowWifiTip: needShowWifiTip,
+        rotateViewAuto: rotateViewAuto,
+        lockLand: lockLand,
+        looping: looping,
+        isTouchWiget: isTouchWiget,
+        isTouchWigetFull: isTouchWigetFull,
+        showPauseCover: showPauseCover,
+        rotateWithSystem: rotateWithSystem,
+        surfaceErrorPlay: surfaceErrorPlay,
+        cacheWithPlay: cacheWithPlay,
+        needLockFull: needLockFull,
+        thumbPlay: thumbPlay,
+        sounchTouch: sounchTouch,
+        startAfterPrepared: startAfterPrepared,
+        releaseWhenLossAudio: releaseWhenLossAudio,
+        actionBar: actionBar,
+        statusBar: statusBar,
+        isShowDragProgressTextOnSeekBar: isShowDragProgressTextOnSeekBar,
+        playTag: playTag,
+        videoTitle: videoTitle,
+        overrideExtension: overrideExtension,
+        isOnlyRotateLand: isOnlyRotateLand,
+        isUseCustomCachePath: isUseCustomCachePath,
+        cachePath: cachePath,
+        mapHeadData: mapHeadData,
+        needOrientationUtils: needOrientationUtils,
+        playVideoDataSourceType: PlayVideoDataSourceType.file,
+      ),
     );
   }
 
-  Future<void> _setDataSource(DataSource dataSourceDescription) async {
+  Future<void> _setDataSource(VideoOptionBuilder dataSourceDescription) async {
     if (_isDisposed) {
       return;
     }
-
     value = VideoPlayerValue(
       duration: null,
       isLooping: value.isLooping,
@@ -314,7 +458,7 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
 
     _initializingCompleter = Completer<void>();
 
-    await VideoPlayerPlatform.instance.setDataSource(dataSourceDescription);
+    await VideoPlayerPlatform.instance.setVideoOptionBuilder(dataSourceDescription);
     return _initializingCompleter.future;
   }
 
@@ -528,10 +672,6 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
   static Future clearCache() async {
     return _videoPlayerPlatform.clearCache();
   }
-
-  static Future preCache(DataSource dataSource, int preCacheSize) async {}
-
-  static Future stopPreCache(String url, String? cacheKey) async {}
 }
 
 /// Widget that displays the video controlled by [controller].

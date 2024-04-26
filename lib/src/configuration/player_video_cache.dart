@@ -1,0 +1,4 @@
+enum PlayerVideoCache {
+  exoCache,
+  proxyCache,
+}

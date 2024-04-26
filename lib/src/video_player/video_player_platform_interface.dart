@@ -2,14 +2,9 @@ import 'dart:async';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/foundation.dart';
 import 'method_channel_video_player.dart';
+import 'package:gsy_video_player/src/builder/video_option_builder.dart';
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
-
-// Dart imports:
-
-// Flutter imports:
-
 /// The interface that implementations of video_player must implement.
 ///
 /// Platform implementations should extend this class rather than implement it as `video_player`
@@ -18,14 +13,6 @@ import 'method_channel_video_player.dart';
 /// platform implementations that `implements` this interface will be broken by newly added
 /// [VideoPlayerPlatform] methods.
 abstract class VideoPlayerPlatform {
-  /// Only mock implementations should set this to true.
-  ///
-  /// Mockito mocks are implementing this class with `implements` which is forbidden for anything
-  /// other than mocks (see class docs). This property provides a backdoor for mockito mocks to
-  /// skip the verification that the class isn't implemented with `implements`.
-  @visibleForTesting
-  bool get isMock => false;
-
   static VideoPlayerPlatform _instance = MethodChannelVideoPlayer();
 
   /// The default instance of [VideoPlayerPlatform] to use.
@@ -38,13 +25,7 @@ abstract class VideoPlayerPlatform {
   static VideoPlayerPlatform get instance => _instance;
   // https://github.com/flutter/flutter/issues/43368
   static set instance(VideoPlayerPlatform instance) {
-    if (!instance.isMock) {
-      try {
-        instance._verifyProvidesDefaultImplementations();
-      } catch (_) {
-        throw AssertionError('Platform interfaces must not be implemented with `implements`');
-      }
-    }
+    instance._verifyProvidesDefaultImplementations();
     _instance = instance;
   }
 
@@ -67,8 +48,8 @@ abstract class VideoPlayerPlatform {
   }
 
   /// Set data source of video.
-  Future<void> setDataSource(DataSource dataSource) {
-    throw UnimplementedError('setDataSource() has not been implemented.');
+  Future<void> setVideoOptionBuilder(VideoOptionBuilder builder) {
+    throw UnimplementedError('setVideoOptionBuilder() has not been implemented.');
   }
 
   /// Returns a Stream of [VideoEventType]s.
@@ -159,198 +140,6 @@ abstract class VideoPlayerPlatform {
   // This private method is called by the instance setter, which fails if the class is
   // implemented with `implements`.
   void _verifyProvidesDefaultImplementations() {}
-}
-
-/// Description of the data source used to create an instance of
-/// the video player.
-class DataSource {
-  /// The maximum cache size to keep on disk in bytes.
-  static const int _maxCacheSize = 100 * 1024 * 1024;
-
-  /// The maximum size of each individual file in bytes.
-  static const int _maxCacheFileSize = 10 * 1024 * 1024;
-
-  /// Constructs an instance of [DataSource].
-  ///
-  /// The [sourceType] is always required.
-  ///
-  /// The [uri] argument takes the form of `'https://example.com/video.mp4'` or
-  /// `'file://${file.path}'`.
-  ///
-  /// The [formatHint] argument can be null.
-  ///
-  /// The [asset] argument takes the form of `'assets/video.mp4'`.
-  ///
-  /// The [package] argument must be non-null when the asset comes from a
-  /// package and null otherwise.
-  ///
-  DataSource({
-    required this.sourceType,
-    this.uri,
-    this.formatHint,
-    this.asset,
-    this.package,
-    this.headers,
-    this.useCache = false,
-    this.maxCacheSize = _maxCacheSize,
-    this.maxCacheFileSize = _maxCacheFileSize,
-    this.cacheKey,
-    this.showNotification = false,
-    this.title,
-    this.author,
-    this.imageUrl,
-    this.notificationChannelName,
-    this.overriddenDuration,
-    this.licenseUrl,
-    this.certificateUrl,
-    this.drmHeaders,
-    this.activityName,
-    this.packageName,
-    this.clearKey,
-    this.videoExtension,
-  }) : assert(uri == null || asset == null);
-
-  /// Describes the type of data source this [VideoPlayerController]
-  /// is constructed with.
-  ///
-  /// The way in which the video was originally loaded.
-  ///
-  /// This has nothing to do with the video's file type. It's just the place
-  /// from which the video is fetched from.
-  final DataSourceType sourceType;
-
-  /// The URI to the video file.
-  ///
-  /// This will be in different formats depending on the [DataSourceType] of
-  /// the original video.
-  final String? uri;
-
-  /// **Android only**. Will override the platform's generic file format
-  /// detection with whatever is set here.
-  final VideoFormat? formatHint;
-
-  /// **Android only**. String representation of a formatHint.
-  String? get rawFormalHint {
-    switch (formatHint) {
-      case VideoFormat.ss:
-        return 'ss';
-      case VideoFormat.hls:
-        return 'hls';
-      case VideoFormat.dash:
-        return 'dash';
-      case VideoFormat.rtsp:
-        return 'rtsp';
-      case VideoFormat.other:
-        return 'other';
-      default:
-        return null;
-    }
-  }
-
-  /// The name of the asset. Only set for [DataSourceType.asset] videos.
-  final String? asset;
-
-  /// The package that the asset was loaded from. Only set for
-  /// [DataSourceType.asset] videos.
-  final String? package;
-
-  final Map<String, String?>? headers;
-
-  final bool useCache;
-
-  final int? maxCacheSize;
-
-  final int? maxCacheFileSize;
-
-  final String? cacheKey;
-
-  final bool? showNotification;
-
-  final String? title;
-
-  final String? author;
-
-  final String? imageUrl;
-
-  final String? notificationChannelName;
-
-  final Duration? overriddenDuration;
-
-  final String? licenseUrl;
-
-  final String? certificateUrl;
-
-  final Map<String, String>? drmHeaders;
-
-  final String? activityName;
-
-  final String? packageName;
-
-  final String? clearKey;
-
-  final String? videoExtension;
-
-  /// Key to compare DataSource
-  String get key {
-    String? result = "";
-
-    if (uri != null && uri!.isNotEmpty) {
-      result = uri;
-    } else if (package != null && package!.isNotEmpty) {
-      result = "$package:$asset";
-    } else {
-      result = asset;
-    }
-
-    if (formatHint != null) {
-      result = "$result:$rawFormalHint";
-    }
-
-    return result!;
-  }
-
-  @override
-  String toString() {
-    return 'DataSource{sourceType: $sourceType, uri: $uri certificateUrl: $certificateUrl, formatHint:'
-        ' $formatHint, asset: $asset, package: $package, headers: $headers,'
-        ' useCache: $useCache,maxCacheSize: $maxCacheSize, maxCacheFileSize: '
-        '$maxCacheFileSize, showNotification: $showNotification, title: $title,'
-        ' author: $author}';
-  }
-}
-
-/// The way in which the video was originally loaded.
-///
-/// This has nothing to do with the video's file type. It's just the place
-/// from which the video is fetched from.
-enum DataSourceType {
-  /// The video was included in the app's asset files.
-  asset,
-
-  /// The video was downloaded from the internet.
-  network,
-
-  /// The video was loaded off of the local filesystem.
-  file
-}
-
-/// The file format of the given video.
-enum VideoFormat {
-  /// Dynamic Adaptive Streaming over HTTP, also known as MPEG-DASH.
-  dash,
-
-  /// HTTP Live Streaming.
-  hls,
-
-  /// Smooth Streaming.
-  ss,
-
-  /// RTSP Streaming.
-  rtsp,
-
-  /// Any format other than the other ones defined in this enum.
-  ///
-  other
 }
 
 /// Event emitted from the platform implementation.

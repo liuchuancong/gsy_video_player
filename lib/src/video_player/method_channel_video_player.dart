@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/foundation.dart';
 import 'video_player_platform_interface.dart';
+import 'package:gsy_video_player/src/builder/video_option_builder.dart';
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -22,9 +23,7 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<void> dispose() {
-    return _channel.invokeMethod<void>(
-      'dispose',
-    );
+    return _channel.invokeMethod<void>('dispose');
   }
 
   @override
@@ -35,72 +34,12 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
   }
 
   @override
-  Future<void> setDataSource(DataSource dataSource) async {
-    Map<String, dynamic>? dataSourceDescription;
-    switch (dataSource.sourceType) {
-      case DataSourceType.asset:
-        dataSourceDescription = <String, dynamic>{
-          'key': dataSource.key,
-          'asset': dataSource.asset,
-          'package': dataSource.package,
-          'useCache': false,
-          'maxCacheSize': 0,
-          'maxCacheFileSize': 0,
-          'showNotification': dataSource.showNotification,
-          'title': dataSource.title,
-          'author': dataSource.author,
-          'imageUrl': dataSource.imageUrl,
-          'notificationChannelName': dataSource.notificationChannelName,
-          'overriddenDuration': dataSource.overriddenDuration?.inMilliseconds,
-          'activityName': dataSource.activityName
-        };
-        break;
-      case DataSourceType.network:
-        dataSourceDescription = <String, dynamic>{
-          'key': dataSource.key,
-          'uri': dataSource.uri,
-          'formatHint': dataSource.rawFormalHint,
-          'headers': dataSource.headers,
-          'useCache': dataSource.useCache,
-          'maxCacheSize': dataSource.maxCacheSize,
-          'maxCacheFileSize': dataSource.maxCacheFileSize,
-          'cacheKey': dataSource.cacheKey,
-          'showNotification': dataSource.showNotification,
-          'title': dataSource.title,
-          'author': dataSource.author,
-          'imageUrl': dataSource.imageUrl,
-          'notificationChannelName': dataSource.notificationChannelName,
-          'overriddenDuration': dataSource.overriddenDuration?.inMilliseconds,
-          'licenseUrl': dataSource.licenseUrl,
-          'certificateUrl': dataSource.certificateUrl,
-          'drmHeaders': dataSource.drmHeaders,
-          'activityName': dataSource.activityName,
-          'clearKey': dataSource.clearKey,
-          'videoExtension': dataSource.videoExtension,
-        };
-        break;
-      case DataSourceType.file:
-        dataSourceDescription = <String, dynamic>{
-          'key': dataSource.key,
-          'uri': dataSource.uri,
-          'useCache': false,
-          'maxCacheSize': 0,
-          'maxCacheFileSize': 0,
-          'showNotification': dataSource.showNotification,
-          'title': dataSource.title,
-          'author': dataSource.author,
-          'imageUrl': dataSource.imageUrl,
-          'notificationChannelName': dataSource.notificationChannelName,
-          'overriddenDuration': dataSource.overriddenDuration?.inMilliseconds,
-          'activityName': dataSource.activityName,
-          'clearKey': dataSource.clearKey
-        };
-        break;
-    }
+  Future<void> setVideoOptionBuilder(VideoOptionBuilder builder) async {
+    Map<String, dynamic>? builderParams = builder.toJson();
     await _channel.invokeMethod<void>(
-      'setDataSource',
+      'setVideoOptionBuilder',
       <String, dynamic>{
-        'dataSource': dataSourceDescription,
+        'builderParams': builderParams,
       },
     );
     return;
@@ -251,26 +190,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
     );
   }
 
-  Future<void> preCache(DataSource dataSource, int preCacheSize) {
-    final Map<String, dynamic> dataSourceDescription = <String, dynamic>{
-      'key': dataSource.key,
-      'uri': dataSource.uri,
-      'certificateUrl': dataSource.certificateUrl,
-      'headers': dataSource.headers,
-      'maxCacheSize': dataSource.maxCacheSize,
-      'maxCacheFileSize': dataSource.maxCacheFileSize,
-      'preCacheSize': preCacheSize,
-      'cacheKey': dataSource.cacheKey,
-      'videoExtension': dataSource.videoExtension,
-    };
-    return _channel.invokeMethod<void>(
-      'preCache',
-      <String, dynamic>{
-        'dataSource': dataSourceDescription,
-      },
-    );
-  }
-
   Future<void> stopPreCache(String url, String? cacheKey) {
     return _channel.invokeMethod<void>(
       'stopPreCache',
@@ -389,7 +308,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
         );
       },
       onCreatePlatformView: (params) {
-        print('create platform view: ${params.id}');
         onPlatformViewCreated(params.id);
         return PlatformViewsService.initSurfaceAndroidView(
           id: params.id,
