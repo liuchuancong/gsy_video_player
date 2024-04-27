@@ -1,6 +1,8 @@
 package com.alizda.gsy_video_player
 
+import android.R.attr.key
 import android.content.Context
+import android.content.res.AssetManager
 import android.util.Log
 import android.view.View
 import com.shuyu.gsyvideoplayer.GSYVideoManager
@@ -18,6 +20,7 @@ import io.flutter.plugin.common.PluginRegistry
 import io.flutter.plugin.platform.PlatformView
 import tv.danmaku.ijk.media.exo2.Exo2PlayerManager
 import tv.danmaku.ijk.media.player.IjkMediaPlayer
+import java.io.File
 
 
 class GsyVideoPlayerView(private val context: Context, messenger: BinaryMessenger, private val id: Int, private val params: Map<String?, Any?>?) : PlatformView, MethodChannel.MethodCallHandler,EventChannel.StreamHandler, PluginRegistry.RequestPermissionsResultListener, VideoAllCallBack {
@@ -48,18 +51,112 @@ class GsyVideoPlayerView(private val context: Context, messenger: BinaryMessenge
     }
 
     private fun setVideoConfig(call: MethodCall, result: MethodChannel.Result) {
+
         initVideoPlayer()
         val videoOptions = call.argument<Map<String, Any?>>(BUILDER_PARAMS)!!
         var url = getParameter(videoOptions,"url","");
-        var autoPlay = getParameter(videoOptions,"autoPlay",true);
-        gsyVideoOptionBuilder!!.setUrl(url).setCacheWithPlay(true)
-            .setVideoTitle("1")
-            .setIsTouchWiget(true)
-            .setRotateViewAuto(false)
+        var playVideoDataSourceType = getParameter(videoOptions,"playVideoDataSourceType",0);
+        if(playVideoDataSourceType == 0){
+            var context = GsyVideoShared.activity?.applicationContext
+            // 现在你可以使用 context 来获取 AssetManager
+            val assetManager: AssetManager? = context?.assets
+            val fd = assetManager!!.openFd(url)
+            gsyVideoOptionBuilder!!.setUrl("asset:///$fd")
+        }else{
+            gsyVideoOptionBuilder!!.setUrl(url)
+        }
+        var releaseWhenLossAudio =  getParameter(videoOptions,"releaseWhenLossAudio",true);
+        gsyVideoOptionBuilder!!.setReleaseWhenLossAudio(releaseWhenLossAudio)
+        var seekRatio = getParameter(videoOptions,"seekRatio",1.0);
+        gsyVideoOptionBuilder!!.setSeekRatio(seekRatio.toFloat())
+        var startAfterPrepared = getParameter(videoOptions,"startAfterPrepared",true);
+        gsyVideoOptionBuilder!!.setStartAfterPrepared(startAfterPrepared)
+        var dismissControlTime = getParameter(videoOptions,"dismissControlTime",2500);
+        gsyVideoOptionBuilder!!.setDismissControlTime(dismissControlTime)
+        var isTouchWiget = getParameter(videoOptions,"isTouchWiget",true);
+        gsyVideoOptionBuilder!!.setIsTouchWiget(isTouchWiget)
+        var isShowDragProgressTextOnSeekBar = getParameter(videoOptions,"isShowDragProgressTextOnSeekBar",false);
+        gsyVideoOptionBuilder!!.setShowDragProgressTextOnSeekBar(isShowDragProgressTextOnSeekBar)
+        var speed = getParameter(videoOptions,"speed",1.0);
+        gsyVideoOptionBuilder!!.setSpeed(speed.toFloat())
+        var header : MutableMap<String, String> = HashMap()
+        var mapHeadData = getParameter(videoOptions,"mapHeadData", header);
+        gsyVideoOptionBuilder!!.setMapHeadData(mapHeadData)
+        var playTag = getParameter(videoOptions,"playTag","");
+        if(playTag.isNotEmpty()){
+            gsyVideoOptionBuilder!!.setPlayTag(playTag)
+        }
+        var needOrientationUtils = getParameter(videoOptions,"needOrientationUtils",true);
+        gsyVideoOptionBuilder!!.setNeedOrientationUtils(needOrientationUtils)
+        var hideKey = getParameter(videoOptions,"hideKey",true);
+        gsyVideoOptionBuilder!!.setHideKey(hideKey)
+        var showPauseCover = getParameter(videoOptions,"showPauseCover",true);
+        gsyVideoOptionBuilder!!.setShowPauseCover(showPauseCover)
+        var statusBar = getParameter(videoOptions,"statusBar",false);
+        gsyVideoOptionBuilder!!.setFullHideStatusBar(statusBar)
+        var showFullAnimation = getParameter(videoOptions,"showFullAnimation",true);
+        gsyVideoOptionBuilder!!.setShowFullAnimation(showFullAnimation)
+        var rotateWithSystem = getParameter(videoOptions,"rotateWithSystem",true);
+        gsyVideoOptionBuilder!!.setRotateWithSystem(rotateWithSystem)
+        var enlargeImageRes = getParameter(videoOptions,"enlargeImageRes",-1);
+        gsyVideoOptionBuilder!!.setEnlargeImageRes(enlargeImageRes)
+        var shrinkImageRes = getParameter(videoOptions,"shrinkImageRes",-1);
+        gsyVideoOptionBuilder!!.setShrinkImageRes(shrinkImageRes)
+        var isUseCustomCachePath = getParameter(videoOptions,"isUseCustomCachePath",false);
+        var cachePath = getParameter(videoOptions,"cachePath","");
+        if(isUseCustomCachePath && cachePath.isNotEmpty()){
+            gsyVideoOptionBuilder!!.setCachePath(File(cachePath))
+        }
+        var looping = getParameter(videoOptions,"looping",false);
+        gsyVideoOptionBuilder!!.setLooping(looping)
+        var dialogProgressHighLightColor = getParameter(videoOptions,"dialogProgressHighLightColor",-11);
+        var dialogProgressNormalColor = getParameter(videoOptions,"dialogProgressNormalColor",-11);
+        gsyVideoOptionBuilder!!.setDialogProgressColor(dialogProgressHighLightColor,dialogProgressNormalColor)
+        var thumbPlay = getParameter(videoOptions,"thumbPlay",true);
+        gsyVideoOptionBuilder!!.setThumbPlay(thumbPlay)
+        var actionBar = getParameter(videoOptions,"actionBar",false);
+       gsyVideoOptionBuilder!!.setFullHideActionBar(actionBar)
+        var videoTitle = getParameter(videoOptions,"videoTitle","");
+        if(videoTitle.isNotEmpty()){
+            gsyVideoOptionBuilder!!.setVideoTitle(videoTitle)
+        }else{
+            videoPlayer.titleTextView.visibility = View.GONE;
+        }
+        var playPosition = getParameter(videoOptions,"playPosition",-22);
+        gsyVideoOptionBuilder!!.setPlayPosition(playPosition)
+        var isTouchWigetFull = getParameter(videoOptions,"isTouchWigetFull",true);
+        gsyVideoOptionBuilder!!.setIsTouchWigetFull(isTouchWigetFull)
+        var autoFullWithSize = getParameter(videoOptions,"autoFullWithSize",false);
+        gsyVideoOptionBuilder!!.setAutoFullWithSize(autoFullWithSize)
+        var cacheWithPlay = getParameter(videoOptions,"cacheWithPlay",true);
+        gsyVideoOptionBuilder!!.setCacheWithPlay(cacheWithPlay)
+        var sounchTouch = getParameter(videoOptions,"sounchTouch",true);
+        gsyVideoOptionBuilder!!.setSoundTouch(sounchTouch)
+        var rotateViewAuto = getParameter(videoOptions,"rotateViewAuto",true);
+        gsyVideoOptionBuilder!!.setRotateViewAuto(rotateViewAuto)
+        var isOnlyRotateLand = getParameter(videoOptions,"isOnlyRotateLand",false);
+        gsyVideoOptionBuilder!!.setOnlyRotateLand(isOnlyRotateLand)
+        var needLockFull = getParameter(videoOptions,"needLockFull",true);
+        gsyVideoOptionBuilder!!.setNeedLockFull(needLockFull)
+        var seekOnStart = getParameter(videoOptions,"seekOnStart",-1);
+        gsyVideoOptionBuilder!!.setSeekOnStart(seekOnStart.toLong())
+        var needShowWifiTip = getParameter(videoOptions,"needShowWifiTip",true);
+        gsyVideoOptionBuilder!!.setNeedShowWifiTip(needShowWifiTip)
+        var surfaceErrorPlay = getParameter(videoOptions,"surfaceErrorPlay",true);
+        gsyVideoOptionBuilder!!.setSurfaceErrorPlay(surfaceErrorPlay)
+        var lockLand = getParameter(videoOptions,"lockLand",false);
+        gsyVideoOptionBuilder!!.setLockLand(lockLand)
+        var overrideExtension = getParameter(videoOptions,"overrideExtension","");
+        if(overrideExtension.isNotEmpty()){
+            gsyVideoOptionBuilder!!.setOverrideExtension(overrideExtension)
+        }
+        videoPlayer.backButton.visibility = View.GONE
         gsyVideoOptionBuilder!!.build(videoPlayer);
+        var autoPlay = getParameter(videoOptions,"autoPlay",true);
         if (autoPlay){
             videoPlayer.startPlayLogic()
         }
+
         Log.d(TAG, "setVideoConfig: $videoOptions")
     }
 
