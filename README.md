@@ -1,4 +1,4 @@
-# gsy_video_player
+# gsy_video_player[developing]
 
 A new Flutter plugin project.
 
