@@ -6,6 +6,9 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/foundation.dart';
 import 'video_player_platform_interface.dart';
 import 'package:gsy_video_player/src/builder/video_option_builder.dart';
+import 'package:gsy_video_player/src/configuration/player_video_type.dart';
+import 'package:gsy_video_player/src/configuration/player_video_show_type.dart';
+import 'package:gsy_video_player/src/configuration/player_video_render_type.dart';
 
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
@@ -35,9 +38,48 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
   }
 
   @override
-  Future<void> init() async {
+  Future<void> setMediaCodec(bool enableCodec) async {
     await initialized.future;
-    return _channel.invokeMethod<void>('init');
+    return _channel.invokeMethod<void>(
+      'enableCodec',
+      <String, dynamic>{"enableCodec": enableCodec},
+    );
+  }
+
+  @override
+  Future<void> setMediaCodecTexture(bool enableCodecTexture) {
+    return _channel.invokeMethod<void>(
+      'enableCodecTexture',
+      <String, dynamic>{"enableCodecTexture": enableCodecTexture},
+    );
+  }
+
+  @override
+  Future<void> init(
+      {GsyVideoPlayerType playerType = GsyVideoPlayerType.exo,
+      GsyVideoPlayerRenderType renderType = GsyVideoPlayerRenderType.textureView}) async {
+    await initialized.future;
+    return _channel.invokeMethod<void>(
+      'init',
+      <String, dynamic>{
+        "playerOptions": {
+          'playerType': playerType.index,
+          'renderType': renderType.index,
+        }
+      },
+    );
+  }
+
+  /// 设置显示比例,注意，这是全局生效的 画面比例 宽高比 PlayerVideoShowType.screenTypeCustom screenScaleRatio 为必传参数 否则为默认
+  @override
+  Future<void> setShowType(PlayerVideoShowType showType, {double? screenScaleRatio}) async {
+    await initialized.future;
+    return _channel.invokeMethod<void>(
+      'setShowType',
+      <String, dynamic>{
+        "showTypeOptions": {"showType": showType.index, "screenScaleRatio": screenScaleRatio}
+      },
+    );
   }
 
   @override

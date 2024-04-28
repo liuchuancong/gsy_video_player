@@ -8,5 +8,9 @@ enum PlayerVideoShowType {
   //全屏裁减显示
   screenTypeFull,
   //全屏拉伸显示
-  screenTypeMatchFull
+  screenTypeMatchFull,
+  //18:9
+  screenType18_9,
+  //自定义
+  screenTypeCustom,
 }

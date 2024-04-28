@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter/foundation.dart';
 import 'method_channel_video_player.dart';
 import 'package:gsy_video_player/src/builder/video_option_builder.dart';
+import 'package:gsy_video_player/src/configuration/player_video_show_type.dart';
 
 // Copyright 2017 The Chromium Authors. All rights reserved.
 /// The interface that implementations of video_player must implement.
@@ -52,6 +53,21 @@ abstract class VideoPlayerPlatform {
   /// Set data source of video.
   Future<void> setVideoOptionBuilder(VideoOptionBuilder builder) {
     throw UnimplementedError('setVideoOptionBuilder() has not been implemented.');
+  }
+
+  /// Set boxfit  of video.
+  Future<void> setShowType(PlayerVideoShowType showType) {
+    throw UnimplementedError('setShowType() has not been implemented.');
+  }
+
+  /// Set MediaCodec  of video.
+  Future<void> setMediaCodec(bool enableCodec) {
+    throw UnimplementedError('setMediaCodec() has not been implemented.');
+  }
+
+  /// Set MediaCodecTexture  of video.
+  Future<void> setMediaCodecTexture(bool enableCodecTexture) {
+    throw UnimplementedError('setMediaCodecTexture() has not been implemented.');
   }
 
   /// Returns a Stream of [VideoEventType]s.
