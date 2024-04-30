@@ -36,16 +36,39 @@ class _MyAppState extends State<MyApp> {
         appBar: AppBar(
           title: const Text('Plugin example app'),
         ),
-        body: Container(
-          color: Colors.black,
-          width: double.infinity,
-          height: double.infinity,
-          child: Container(
-            color: Colors.blue,
-            child: GsyVideoPlayer(
-              controller: gsyVideoPlayerController,
+        body: Column(
+          children: [
+            Container(
+              color: Colors.black,
+              width: 300,
+              height: 200,
+              child: Container(
+                color: Colors.blue,
+                child: GsyVideoPlayer(
+                  controller: gsyVideoPlayerController,
+                ),
+              ),
             ),
-          ),
+            Row(
+              children: [
+                ElevatedButton(
+                    onPressed: () {
+                      gsyVideoPlayerController.play();
+                    },
+                    child: const Text('play')),
+                ElevatedButton(
+                    onPressed: () {
+                      gsyVideoPlayerController.pause();
+                    },
+                    child: const Text('pause')),
+                ElevatedButton(
+                    onPressed: () {
+                      gsyVideoPlayerController.seekTo(const Duration(seconds: 10));
+                    },
+                    child: const Text('seekTo 10s')),
+              ],
+            )
+          ],
         ),
       ),
     );
