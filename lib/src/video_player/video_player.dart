@@ -611,6 +611,12 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     await _applyPlayPause();
   }
 
+  /// resume the video.
+  Future<void> resume() async {
+    value = value.copyWith(isPlaying: true);
+    await _applyPlayPause();
+  }
+
   Future<void> _applyLooping() async {
     if (!_created || _isDisposed) {
       return;
@@ -624,7 +630,7 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     }
     _timer?.cancel();
     if (value.isPlaying) {
-      await _videoPlayerPlatform.play();
+      await _videoPlayerPlatform.resume();
       _timer = Timer.periodic(
         const Duration(milliseconds: 300),
         (Timer timer) async {
@@ -704,32 +710,7 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
   /// If [moment] is outside of the video's full range it will be automatically
   /// and silently clamped.
   Future<void> seekTo(Duration? position) async {
-    _timer?.cancel();
-    bool isPlaying = value.isPlaying;
-    final int positionInMs = value.position.inMilliseconds;
-    final int durationInMs = value.duration?.inMilliseconds ?? 0;
-
-    if (positionInMs >= durationInMs && position?.inMilliseconds == 0) {
-      isPlaying = true;
-    }
-    if (_isDisposed) {
-      return;
-    }
-
-    Duration? positionToSeek = position;
-    if (position! > value.duration!) {
-      positionToSeek = value.duration;
-    } else if (position < const Duration()) {
-      positionToSeek = const Duration();
-    }
-    _seekPosition = positionToSeek;
-
-    await _videoPlayerPlatform.seekTo(positionToSeek);
-    if (isPlaying) {
-      play();
-    } else {
-      pause();
-    }
+    await _videoPlayerPlatform.seekTo(position);
   }
 
   /// Sets the audio volume of [this].

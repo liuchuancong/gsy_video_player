@@ -1,6 +1,8 @@
 package com.alizda.gsy_video_player
 
+import android.app.Activity
 import android.content.Context
+import android.content.res.Configuration
 import android.graphics.Color
 import android.util.AttributeSet
 import android.util.Log
@@ -8,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.shuyu.gsyvideoplayer.utils.Debuger
+import com.shuyu.gsyvideoplayer.utils.OrientationUtils
 import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer
 import com.shuyu.gsyvideoplayer.video.base.GSYBaseVideoPlayer
 import com.shuyu.gsyvideoplayer.video.base.GSYVideoPlayer
@@ -326,4 +329,20 @@ class CustomVideoPlayer : StandardGSYVideoPlayer {
         danmaku.borderColor = Color.GREEN
         danmakuView!!.addDanmaku(danmaku)
     }
+    /**
+     * 旋转处理
+     *
+     * @param activity         页面
+     * @param newConfig        配置
+     * @param orientationUtils 旋转工具类
+     */
+    override fun onConfigurationChanged(
+        activity: Activity?,
+        newConfig: Configuration?,
+        orientationUtils: OrientationUtils?
+    ) {
+        super.onConfigurationChanged(activity, newConfig, orientationUtils)
+
+    }
+
 }

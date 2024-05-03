@@ -1,7 +1,9 @@
 package com.alizda.gsy_video_player
 
+import android.app.Activity
 import android.content.Context
 import android.content.res.AssetManager
+import android.content.res.Configuration
 import android.view.View
 import com.shuyu.aliplay.AliPlayerManager
 import com.shuyu.gsyvideoplayer.GSYVideoManager
@@ -161,6 +163,7 @@ class GsyVideoPlayerView(private val context: Context, messenger: BinaryMessenge
         result.success(reply)
     }
 
+
     private fun setGlobalConfig(call: MethodCall, result: MethodChannel.Result) {
         val playerOptions = call.argument<Map<String, Any?>>(PLAYER_OPTIONS)!!
         playerType = getParameter(playerOptions, "playerType", 0);
@@ -244,9 +247,13 @@ class GsyVideoPlayerView(private val context: Context, messenger: BinaryMessenge
     }
 
     //快进
-    private fun onSeekTo(location: Int) {
-        videoPlayer.seekTo(location.toLong())
+    private fun onSeekTo(call: MethodCall, result: MethodChannel.Result) {
+        val location = (call.argument<Any>("location") as Number?)!!.toInt()
+        if (location != null) {
+            videoPlayer.seekTo(location.toLong())
+        }
     }
+
 
     private fun onDestroy() {
         GSYVideoManager.releaseAllVideos()
@@ -297,7 +304,9 @@ class GsyVideoPlayerView(private val context: Context, messenger: BinaryMessenge
             RESUME_METHOD -> {
                 onResume()
             }
-
+            SEEK_TO_METHOD ->{
+                onSeekTo(call, result)
+            }
             SET_VOLUME_METHOD -> {
 
             }
@@ -340,18 +349,22 @@ class GsyVideoPlayerView(private val context: Context, messenger: BinaryMessenge
         //设置播放器以及渲染方式
         private const val INIT_PLAYER_CONFIG = "init"
         private const val PLAYER_OPTIONS = "playerOptions"
+        private const val  GET_RENDER_TYPE = "getRenderType"
+        private const val  SET_RENDER_TYPE = "setRenderType"
 
         //创建应答检测
         private const val CREATE_METHOD = "create"
 
         //切换渲染模式
-        private const val SET_SHOW_TYPE = "setShowType"
+        private const val  GET_SHOW_TYPE = "getShowType"
+        private const val  SET_SHOW_TYPE = "setShowType"
         private const val SHOW_TYPE_OPTIONS = "showTypeOptions"
         private const val SHOW_TYPE = "showType"
         private const val SCREEN_SCALE_RATIO = "screenScaleRatio"
 
         //是否开启硬解码
-
+        private const val IS_ENABLE_CODEC = "isMediaCodec"
+        private const val IS_ENABLE_CODEC_TEXTURE = "isMediaCodecTexture"
         private const val ENABLE_CODEC = "enableCodec"
         private const val ENABLE_CODEC_TEXTURE = "enableCodecTexture"
 
@@ -369,16 +382,12 @@ class GsyVideoPlayerView(private val context: Context, messenger: BinaryMessenge
         private const val SET_UP = "setUp"
         private const val PAUSE_METHOD = "pause"
         private const val RESUME_METHOD = "resume"
+        private const val SEEK_TO_METHOD = "seekTo"
         private const val CLEAR_CURRENT_CACHE = "clearCurrentCache"
         private const val GET_CURRENT_POSITION_WHEN_PLAYING = "getCurrentPositionWhenPlaying"
         private const val GET_DURATION = "getDuration"
-        private const val GET_CURRENT_STATE = "getCurrentState"
-        private const val SET_PLAYING_TAG = "setPlayTag"
-        private const val SET_PLAYING_POSITION = "setPlayPosition"
-        private const val GET_NET_SPEED = "getNetSpeed"
-        private const val GET_NET_SPEED_TEXT = "getNetSpeedText"
-        private const val SET_SEEK_ON_START = "setSeekOnStart"
-        private const val GET_BUFFER_POINT = "getBufferPoint"
+
+
 
         //OrientationUtils
 
@@ -391,11 +400,181 @@ class GsyVideoPlayerView(private val context: Context, messenger: BinaryMessenge
         private const val ORIENTATION_GET_SCREEN_TYPE = "orientationutilsGetScreenType"
         private const val ORIENTATION_SET_ROTATE_WITH_SYSTEM = "orientationutilsSetRotateWithSystem"
 
+
+        //基础Player API
+        //全屏效果
+        private const val START_WINDOW_FULL_SCREEN = "startWindowFullscreen"
+        //显示小窗口
+        private const val SHOW_SMALL_VIDEO = "showSmallVideo"
+        private const val HIDE_SMALL_VIDEO = "hideSmallVideo"
+        //全屏动画
+        private const val IS_SHOW_FULL_ANIMATION = "isShowFullAnimation"
+        private const val SET_SHOW_FULL_ANIMATION = "setShowFullAnimation"
+        //是否开启自动旋转
+        private const val IS_ROTATE_VIEW_AUTO = "isRotateViewAuto"
+        private const val SET_ROTATE_VIEW_AUTO = "setRotateViewAuto"
+        //一全屏就锁屏横屏，默认false竖屏，可配合setRotateViewAuto使用
+        private const val IS_LOCK_LAND = "isLockLand"
+        private const val SET_LOCK_LAND = "setLockLand"
+        //是否更新系统旋转，false的话，系统禁止旋转也会跟着旋转
+        private const val IS_ROTATE_WITH_SYSTEM = "isRotateWithSystem"
+        private const val SET_ROTATE_WITH_SYSTEM = "setRotateWithSystem"
+        //获取全屏播放器对象
+        private const val GET_FULL_WINDOW_PLAYER = "getFullWindowPlayer"
+        private const val GET_CURRENT_PLAYER = "getCurrentPlayer"
+        //全屏返回监听
+        private const val SET_BACK_FROM_FULL_SCREEN_LISTENER = "setBackFromFullScreenListener"
+        private const val BACK_FROM_WINDOW_FULL = "backFromWindowFull"
+        //初始化为正常状态
+        private const val INIT_UI_STATE = "initUIState"
+        //封面布局
+        private const val GET_THUMB_IMAGE_VIEW_LAYOUT = "getThumbImageViewLayout"
+        private const val SET_THUMB_IMAGE_VIEW = "setThumbImageView"
+        //清除封面
+        private const val CLEAR_THUMB_IMAGE_VIEW = "clearThumbImageView"
+        private const val GET_THUMB_IMAGE_VIEW = "getThumbImageView"
+        //title
+        private const val GET_TITLE_TEXT_VIEW = "getTitleTextView"
+        //获取播放按键
+        private const val GET_START_BUTTON = "getStartButton"
+        //获取全屏按键
+        private const val GET_FULLSCREEN_BUTTON = "getFullscreenButton"
+        //获取返回按键
+        private const val GET_BACK_BUTTON = "getBackButton"
+        //设置右下角 显示切换到全屏 的按键资源
+        private const val GET_ENLARGE_IMAGE_RES = "getEnlargeImageRes"
+        private const val SET_ENLARGE_IMAGE_RES = "setEnlargeImageRes"
+        private const val GET_SHRINK_IMAGE_RES = "getShrinkImageRes"
+        private const val SET_SHRINK_IMAGE_RES = "setShrinkImageRes"
+        //是否可以全屏滑动界面改变进度，声音等
+        private const val SET_IS_TOUCH_WIGET_FULL = "setIsTouchWigetFull"
+        //是否点击封面可以播放
+        private const val SET_THUMB_PLAY = "setThumbPlay"
+        // 全屏隐藏虚拟按键，默认打开
+        private const val IS_HIDE_KEY = "isHideKey"
+        private const val SET_HIDE_KEY = "setHideKey"
+
+
+
+        //是否可以滑动界面改变进度，声音等
+        private const val IS_TOUCH_WIGET = "isTouchWiget"
+        private const val SET_IS_TOUCH_WIGET = "setIsTouchWiget"
+        private const val IS_TOUCH_WIGET_FULL = "isTouchWigetFull"
+        //是否需要显示流量提示,默认true
+        private const val IS_NEED_SHOW_WIFI_TIP = "isNeedShowWifiTip"
+        private const val SET_NEED_SHOW_WIFI_TIP = "setNeedShowWifiTip"
+
+        //滑动快进的比例，默认1。数值越大，滑动的产生的seek越小
+        private const val SET_SEEK_RATIO = "setSeekRatio"
+        private const val GET_SEEK_RATIO = "getSeekRatio"
+        //是否需要全屏锁定屏幕功能  如果单独使用请设置setIfCurrentIsFullscreen为true
+        private const val IS_NEED_LOCK_FULL = "isNeedLockFull"
+        private const val SET_NEED_LOCK_FULL = "setNeedLockFull"
+        //锁屏点击
+        private const val SET_LOCK_CLICK_LISTENER = "setLockClickListener"
+        //设置触摸显示控制ui的消失时间
+        private const val SET_DISMISS_CONTROL_TIME = "setDismissControlTime"
+        private const val GET_DISMISS_CONTROL_TIME = "getDismissControlTime"
+        //设置自定义so包加载类，必须在setUp之前调用
+        private const val SET_IJK_LIB_LOADER = "setIjkLibLoader"
+        //播放tag防止错误，因为普通的url也可能重复
+        private const val GET_PLAY_TAG = "getPlayTag"
+        //播放tag防止错误，因为普通的url也可能重复
+        private const val SET_PLAY_TAG = "setPlayTag"
+        //设置播放位置防止错位
+        private const val GET_PLAY_POSITION = "getPlayPosition"
+        private const val SET_PLAY_POSITION = "setPlayPosition"
+        //网络速度
+        private const val GET_NET_SPEED = "getNetSpeed"
+        private const val GET_NET_SPEED_TEXT = "getNetSpeedText"
+        //从哪里开始播放 目前有时候前几秒有跳动问题，毫秒 需要在startPlayLogic之前，即播放开始之前
+        private const val GET_SEEK_ON_START = "getSeekOnStart"
+        private const val SET_SEEK_ON_START = "setSeekOnStart"
+        //缓冲进度/缓存进度
+        private const val GET_BUFFTER_POINT = "getBuffterPoint"
+        // 获取当前播放状态
+        private const val GET_CURRENT_STATE = "getCurrentState"
+        //是否全屏
+        private const val IS_IF_CURRENT_IS_FULLSCREEN = "isIfCurrentIsFullscreen"
+        private const val SET_IF_CURRENT_IS_FULLSCREEN = "setIfCurrentIsFullscreen"
+        //设置循环
+        private const val IS_LOOPING = "isLooping"
+        private const val SET_LOOPING = "setLooping"
+        //播放速度 是否对6.0下开启变速不变调
+        private const val GET_SPEED = "getSpeed"
+        private const val SET_SPEED = "setSpeed"
+        private const val SET_SPEED_PLAYING = "setSpeedPlaying"
+        //是否需要加载显示暂停的cover图片
+        private const val IS_SHOW_PAUSE_COVER = "isShowPauseCover"
+        private const val SET_SHOW_PAUSE_COVER = "setShowPauseCover"
+        // 获取渲染的代理层
+        private const val GET_RENDER_PROXY = "getRenderProxy"
+        //设置滤镜效果
+        private const val SET_EFFECT_FILTER = "setEffectFilter"
+        //GL模式下的画面matrix效果
+        private const val SET_MATRIX_G_L = "setMatrixGL"
+        //自定义GL的渲染render
+        private const val SET_CUSTOM_G_L_RENDERER = "setCustomGLRenderer"
+        //底部进度条-弹出的
+        private const val SET_BOTTOM_SHOW_PROGRESS_BAR_DRAWABLE = "setBottomShowProgressBarDrawable"
+        //底部进度条-非弹出
+        private const val SET_BOTTOM_PROGRESS_BAR_DRAWABLE = "setBottomProgressBarDrawable"
+        //声音进度条
+        private const val SET_DIALOG_VOLUME_PROGRESS_BAR = "setDialogVolumeProgressBar"
+        //中间进度条
+        private const val SET_DIALOG_PROGRESS_BAR = "setDialogProgressBar"
+        // 中间进度条字体颜色
+        private const val SET_DIALOG_PROGRESS_COLOR = "setDialogProgressColor"
+        //获取截图
+        private const val TASK_SHOT_PIC = "taskShotPic"
+        //保存截图
+        private const val SAVE_FRAME = "saveFrame"
+        //长时间失去音频焦点，暂停播放器
+        private const val SET_RELEASE_WHEN_LOSS_AUDIO = "setReleaseWhenLossAudio"
+        //是否根据视频尺寸，自动选择竖屏全屏或者横屏全屏，注意，这时候默认旋转无效
+        private const val SET_AUTO_FULL_WITH_SIZE = "setAutoFullWithSize"
+
+        //管理器GSYVideoManager API
+        //自定义so包加载类
+        private const val  GET_IJK_LIB_LOADER = "getIjkLibLoader"
+
+        //删除默认所有缓存文件
+        private const val  CLEAR_ALL_DEFAULT_CACHE = "clearAllDefaultCache"
+        //删除url对应默认缓存文件
+        private const val  CLEAR_DEFAULT_CACHE = "clearDefaultCache"
+        //媒体播放器
+        private const val  GET_MEDIA_PLAYER = "getMediaPlayer"
+        private const val  RELEASE_MEDIA_PLAYER = "releaseMediaPlayer"
+
+        //设置IJK视频的option
+        private const val  GET_OPTION_MODEL_LIST = "getOptionModelList"
+        private const val  SET_OPTION_MODEL_LIST = "setOptionModelList"
+        //是否需要静音
+        private const val  IS_NEED_MUTE = "isNeedMute"
+        private const val  SET_NEED_MUTE = "setNeedMute"
+        //是否需要在buffer缓冲时，增加外部超时判断
+        //超时时间，毫秒 默认8000
+        private const val  GET_TIME_OUT = "getTimeOut"
+        private const val  SET_TIME_OUT = "setTimeOut"
+        private const val  IS_NEED_TIME_OUT_OTHER = "isNeedTimeOutOther"
+        //设置log输入等级
+        private const val  SET_LOG_LEVEL = "setLogLevel"
+
+
         // 销毁
         private const val DISPOSE_METHOD = "dispose"
     }
 
-    override fun onStartPrepared(url: String, vararg objects: Any) {}
+    override fun onStartPrepared(url: String, vararg objects: Any) {
+        val event: MutableMap<String, Any> = HashMap()
+        val reply: MutableMap<String, Any> = HashMap()
+        event["event"] = "onStartPrepared"
+        event["reply"] = reply
+        reply["url"] = url
+        reply["title"] = objects[0]
+        reply["player"] = objects[1]
+        sink?.success(event)
+    }
 
     //加载成功，objects[0]是title，object[1]是当前所处播放器（全屏或非全屏）
     override fun onPrepared(url: String, vararg objects: Any) {

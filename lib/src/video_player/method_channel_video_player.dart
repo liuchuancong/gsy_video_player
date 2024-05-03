@@ -138,6 +138,14 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
   }
 
   @override
+  Future<void> resume() async {
+    await initialized.future;
+    return _channel.invokeMethod<void>(
+      'resume',
+    );
+  }
+
+  @override
   Future<void> setVolume(double volume) async {
     await initialized.future;
     return _channel.invokeMethod<void>(

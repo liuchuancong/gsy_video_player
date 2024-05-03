@@ -60,6 +60,11 @@ class _MyAppState extends State<MyApp> {
                     onPressed: () {
                       gsyVideoPlayerController.pause();
                     },
+                    child: const Text('resume')),
+                ElevatedButton(
+                    onPressed: () {
+                      gsyVideoPlayerController.pause();
+                    },
                     child: const Text('pause')),
                 ElevatedButton(
                     onPressed: () {
