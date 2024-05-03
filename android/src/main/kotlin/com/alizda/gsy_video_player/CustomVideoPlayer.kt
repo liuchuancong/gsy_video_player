@@ -6,7 +6,6 @@ import android.content.res.Configuration
 import android.graphics.Color
 import android.util.AttributeSet
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.shuyu.gsyvideoplayer.utils.Debuger
@@ -14,13 +13,14 @@ import com.shuyu.gsyvideoplayer.utils.OrientationUtils
 import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer
 import com.shuyu.gsyvideoplayer.video.base.GSYBaseVideoPlayer
 import com.shuyu.gsyvideoplayer.video.base.GSYVideoPlayer
+import master.flame.danmaku.controller.DrawHandler
 import master.flame.danmaku.controller.IDanmakuView
 import master.flame.danmaku.danmaku.loader.IllegalDataException
 import master.flame.danmaku.danmaku.loader.android.DanmakuLoaderFactory
 import master.flame.danmaku.danmaku.model.BaseDanmaku
+import master.flame.danmaku.danmaku.model.DanmakuTimer
 import master.flame.danmaku.danmaku.model.IDisplayer
 import master.flame.danmaku.danmaku.model.android.DanmakuContext
-import master.flame.danmaku.danmaku.model.android.Danmakus
 import master.flame.danmaku.danmaku.model.android.SpannedCacheStuffer
 import master.flame.danmaku.danmaku.parser.BaseDanmakuParser
 import master.flame.danmaku.ui.widget.DanmakuView
@@ -54,7 +54,6 @@ class CustomVideoPlayer : StandardGSYVideoPlayer {
     private var danmakuStartSeekPosition: Long = -1
     private var danmaKuShow = true
     private var mDumakuFile: File? = null
-    private lateinit var videoView: View
     constructor(context: Context?, fullFlag: Boolean?) : super(context, fullFlag)
     constructor(context: Context?) : super(context)
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
@@ -166,7 +165,7 @@ class CustomVideoPlayer : StandardGSYVideoPlayer {
         }
     }
 
-    private fun initDanmaku() {
+    private fun initDanmaku(uri: String) {
         // 设置最大显示行数
         val maxLinesPair = HashMap<Int, Int>()
         maxLinesPair[BaseDanmaku.TYPE_SCROLL_RL] = 5 // 滚动弹幕最大显示5行
@@ -181,53 +180,32 @@ class CustomVideoPlayer : StandardGSYVideoPlayer {
                 .setMaximumLines(maxLinesPair)
                 .preventOverlapping(overlappingEnablePair)
         if (danmakuView != null) {
-            if (mDumakuFile != null) {
-                mParser = createParser(getIsStream(mDumakuFile!!))
-            }
+            mParser = createParser(uri)
+            danmakuView!!.setCallback(object : DrawHandler.Callback {
+                override fun danmakuShown(danmaku: BaseDanmaku?) {
 
-            //todo 这是为了demo效果，实际上需要去掉这个，外部传输文件进来
-//            mParser = createParser()
-//            danmakuView!!.setCallback(object : DrawHandler.Callback {
-//                override fun updateTimer(timer: DanmakuTimer) {}
-//                override fun drawingFinished() {}
-//                override fun danmakuShown(danmaku: BaseDanmaku) {}
-//                override fun prepared() {
-//                    if (danmakuView != null) {
-//                        danmakuView!!.start()
-//                        if (danmakuStartSeekPosition != -1L) {
-//                            resolveDanmakuSeek(this@CustomVideoPlayer, danmakuStartSeekPosition)
-//                            danmakuStartSeekPosition = -1
-//                        }
-//                        resolveDanmakuShow()
-//                    }
-//                }
-//            })
-//            danmakuView!!.enableDanmakuDrawingCache(true)
-        }
-    }
+                }
 
-    private fun getIsStream(file: File): InputStream? {
-        try {
-            val instream: InputStream = FileInputStream(file)
-            val inputreader = InputStreamReader(instream)
-            val buffreader = BufferedReader(inputreader)
-            var line: String?
-            val sb1 = StringBuilder()
-            sb1.append("<i>")
-            //分行读取
-            while (buffreader.readLine().also { line = it } != null) {
-                sb1.append(line)
-            }
-            sb1.append("</i>")
-            Log.e("3333333", sb1.toString())
-            instream.close()
-            return ByteArrayInputStream(sb1.toString().toByteArray())
-        } catch (e: FileNotFoundException) {
-            Log.d("TestFile", "The File doesn't not exist.")
-        } catch (e: IOException) {
-            Log.d("TestFile", e.message!!)
+                override fun updateTimer(timer: DanmakuTimer) {
+
+                }
+
+                override fun drawingFinished() {
+
+                }
+
+                override fun prepared() {
+
+                    danmakuView!!.start(currentPositionWhenPlaying.toLong())
+                    if (currentState != GSYVideoPlayer.CURRENT_STATE_PLAYING) {
+                        danmakuView!!.pause()
+                    }
+                }
+
+            })
+            danmakuView!!.prepare(mParser, danmakuContext)
+            danmakuView!!.enableDanmakuDrawingCache(true)
         }
-        return null
     }
 
     /**
@@ -249,8 +227,8 @@ class CustomVideoPlayer : StandardGSYVideoPlayer {
      * 开始播放弹幕
      */
     private fun onPrepareDanmaku(gsyVideoPlayer: CustomVideoPlayer) {
-        if (gsyVideoPlayer.danmakuView != null && !gsyVideoPlayer.danmakuView!!.isPrepared && gsyVideoPlayer.parser != null) {
-            gsyVideoPlayer.danmakuView!!.prepare(gsyVideoPlayer.parser,
+        if (gsyVideoPlayer.danmakuView != null && !gsyVideoPlayer.danmakuView!!.isPrepared && mParser != null) {
+            gsyVideoPlayer.danmakuView!!.prepare(gsyVideoPlayer.mParser,
                     gsyVideoPlayer.danmakuContext)
         }
     }
@@ -270,21 +248,15 @@ class CustomVideoPlayer : StandardGSYVideoPlayer {
      * @param stream
      * @return
      */
-    private fun createParser(stream: InputStream?): BaseDanmakuParser {
-        if (stream == null) {
-            return object : BaseDanmakuParser() {
-                override fun parse(): Danmakus {
-                    return Danmakus()
-                }
-            }
-        }
+    private fun createParser(uri: String): BaseDanmakuParser {
         val loader = DanmakuLoaderFactory.create(DanmakuLoaderFactory.TAG_BILI)
+
         try {
-            loader.load(stream)
+            loader.load(uri)
         } catch (e: IllegalDataException) {
             e.printStackTrace()
         }
-        val parser: BaseDanmakuParser = BiliDanmukuParser()
+        val parser = CustomDanmukuParser()
         val dataSource = loader.dataSource
         parser.load(dataSource)
         return parser
@@ -300,16 +272,6 @@ class CustomVideoPlayer : StandardGSYVideoPlayer {
         }
     }
 
-    private val parser: BaseDanmakuParser?
-        get() {
-            if (mParser == null) {
-                if (mDumakuFile != null) {
-                    mParser = createParser(getIsStream(mDumakuFile!!))
-                }
-            }
-            return mParser
-        }
-
     /**
      * 模拟添加弹幕数据
      */
@@ -322,7 +284,7 @@ class CustomVideoPlayer : StandardGSYVideoPlayer {
         danmaku.padding = 5
         danmaku.priority = 8 // 可能会被各种过滤器过滤并隐藏显示，所以提高等级
         danmaku.isLive = islive
-        danmaku.setTime(danmakuView!!.currentTime + 500)
+        danmaku.setTime(danmakuView!!.currentTime + 1200)
         danmaku.textSize = 25f * (mParser!!.displayer.density - 0.6f)
         danmaku.textColor = Color.RED
         danmaku.textShadowColor = Color.WHITE
