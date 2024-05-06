@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.res.Configuration
 import android.graphics.Color
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import com.shuyu.gsyvideoplayer.utils.Debuger
@@ -24,29 +23,8 @@ import master.flame.danmaku.danmaku.model.android.DanmakuContext
 import master.flame.danmaku.danmaku.model.android.SpannedCacheStuffer
 import master.flame.danmaku.danmaku.parser.BaseDanmakuParser
 import master.flame.danmaku.ui.widget.DanmakuView
-import java.io.BufferedReader
-import java.io.ByteArrayInputStream
 import java.io.File
-import java.io.FileInputStream
-import java.io.FileNotFoundException
-import java.io.IOException
-import java.io.InputStream
-import java.io.InputStreamReader
 
-
-/**
- * Created by guoshuyu on 2017/2/16.
- *
- *
- * 配置弹幕使用的播放器，目前使用的是本地模拟数据。
- *
- *
- * 模拟数据的弹幕时常比较短，后面的时长点是没有数据的。
- *
- *
- * 注意：这只是一个例子，演示如何集合弹幕，需要完善如弹出输入弹幕等的，可以自行完善。
- * 注意：b站的弹幕so只有v5 v7 x86、没有64，所以记得配置上ndk过滤。
- */
 class CustomVideoPlayer : StandardGSYVideoPlayer {
     private var mParser: BaseDanmakuParser? = null //解析器对象
     private var danmakuView: IDanmakuView? = null //弹幕view
@@ -158,13 +136,6 @@ class CustomVideoPlayer : StandardGSYVideoPlayer {
         }
     }
 
-    fun setDanmaKuStream(`is`: File?) {
-        mDumakuFile = `is`
-        if (!danmakuView!!.isPrepared) {
-            onPrepareDanmaku(currentPlayer as CustomVideoPlayer)
-        }
-    }
-
     private fun initDanmaku(uri: String) {
         // 设置最大显示行数
         val maxLinesPair = HashMap<Int, Int>()
@@ -195,13 +166,11 @@ class CustomVideoPlayer : StandardGSYVideoPlayer {
                 }
 
                 override fun prepared() {
-
                     danmakuView!!.start(currentPositionWhenPlaying.toLong())
                     if (currentState != GSYVideoPlayer.CURRENT_STATE_PLAYING) {
                         danmakuView!!.pause()
                     }
                 }
-
             })
             danmakuView!!.prepare(mParser, danmakuContext)
             danmakuView!!.enableDanmakuDrawingCache(true)
@@ -245,7 +214,6 @@ class CustomVideoPlayer : StandardGSYVideoPlayer {
     /**
      * 创建解析器对象，解析输入流
      *
-     * @param stream
      * @return
      */
     private fun createParser(uri: String): BaseDanmakuParser {
