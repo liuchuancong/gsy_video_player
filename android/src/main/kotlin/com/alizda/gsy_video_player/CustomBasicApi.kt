@@ -1,7 +1,6 @@
 package com.alizda.gsy_video_player
 
 import android.content.Context
-import android.os.Build
 import android.graphics.Point
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel

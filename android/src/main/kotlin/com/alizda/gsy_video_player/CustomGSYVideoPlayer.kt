@@ -6,8 +6,13 @@ import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import java.io.File
 
-class CustomGSYVideoPlayer(private var videoPlayer: CustomVideoPlayer,private val context: Context) {
+class GSYVideoPlayer(private var videoPlayer: CustomVideoPlayer,private val context: Context,private val id: Int) {
     //当前UI
+    fun create(call: MethodCall, result: MethodChannel.Result){
+        val reply: MutableMap<String, Any> = HashMap()
+        reply["textureId"] = id
+        result.success(reply)
+    }
     fun getLayoutId(call: MethodCall, result: MethodChannel.Result) {
         val reply: MutableMap<String, Any> = HashMap()
         reply["layoutId"] = videoPlayer.layoutId

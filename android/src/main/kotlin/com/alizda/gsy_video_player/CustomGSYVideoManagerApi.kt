@@ -1,6 +1,12 @@
 package com.alizda.gsy_video_player
 
 import android.content.Context
+import androidx.annotation.OptIn
+import androidx.media3.common.util.UnstableApi
+import androidx.media3.datasource.DataSink
+import androidx.media3.datasource.DataSource
+import androidx.media3.datasource.TransferListener
+import androidx.media3.exoplayer.source.MediaSource
 import com.shuyu.aliplay.AliPlayerManager
 import com.shuyu.gsyvideoplayer.GSYVideoManager
 import com.shuyu.gsyvideoplayer.cache.CacheFactory
@@ -12,8 +18,9 @@ import com.shuyu.gsyvideoplayer.player.SystemPlayerManager
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import tv.danmaku.ijk.media.exo2.Exo2PlayerManager
+import tv.danmaku.ijk.media.exo2.ExoMediaSourceInterceptListener
 import tv.danmaku.ijk.media.exo2.ExoPlayerCacheManager
-import tv.danmaku.ijk.media.player.IjkMediaPlayer
+import tv.danmaku.ijk.media.exo2.ExoSourceManager
 import java.io.File
 
 
@@ -158,5 +165,23 @@ class CustomGSYVideoManagerApi(private val context: Context) {
     fun setLogLevel(call: MethodCall, result: MethodChannel.Result){
         val logLevel = (call.argument<Any>("logLevel") as Number).toInt()
         IjkPlayerManager.setLogLevel(logLevel)
+    }
+
+    fun customExoMediaSource(call: MethodCall, result: MethodChannel.Result){
+        ExoSourceManager.setExoMediaSourceInterceptListener(object : ExoMediaSourceInterceptListener {
+            override fun getMediaSource(dataSource: String, preview: Boolean, cacheEnable: Boolean, isLooping: Boolean, cacheDir: File): MediaSource? {
+                //如果返回 null，就使用默认的
+                return null;
+            }
+
+            @OptIn(UnstableApi::class) override fun getHttpDataSourceFactory(userAgent: String?, listener: TransferListener?, connectTimeoutMillis: Int, readTimeoutMillis: Int, mapHeadData: MutableMap<String, String>?, allowCrossProtocolRedirects: Boolean): DataSource.Factory? {
+
+                return ExoSourceManager.getDataSourceFactory(context,true,null,mapHeadData)
+            }
+
+            @OptIn(UnstableApi::class) override fun cacheWriteDataSinkFactory(p0: String?, p1: String?): DataSink.Factory? {
+                return null
+            }
+        })
     }
 }

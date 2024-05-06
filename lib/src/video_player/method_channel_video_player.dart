@@ -116,7 +116,7 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
     return _channel.invokeMethod<void>(
       'setLooping',
       <String, dynamic>{
-        'looping': looping,
+        'isLooping': looping,
       },
     );
   }
@@ -289,6 +289,7 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
   @override
   Stream<VideoEvent> videoEventsFor() {
     return eventChannelFor().receiveBroadcastStream().map((dynamic event) {
+      print(event.toString());
       late Map<dynamic, dynamic> map;
       if (event is Map) {
         map = event;

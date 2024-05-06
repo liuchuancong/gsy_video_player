@@ -1,16 +1,9 @@
 package com.alizda.gsy_video_player
 
 import com.alizda.gsy_video_player.GsyVideoPlayerView.Companion.getParameter
-import com.shuyu.aliplay.AliPlayerManager
-import com.shuyu.gsyvideoplayer.player.IjkPlayerManager
-import com.shuyu.gsyvideoplayer.player.PlayerFactory
-import com.shuyu.gsyvideoplayer.player.SystemPlayerManager
 import com.shuyu.gsyvideoplayer.utils.GSYVideoType
-import com.shuyu.gsyvideoplayer.utils.OrientationUtils
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
-import tv.danmaku.ijk.media.exo2.Exo2PlayerManager
-import tv.danmaku.ijk.media.player.IjkMediaPlayer
 
 class CustomGSYVideoType() {
 
@@ -43,7 +36,7 @@ class CustomGSYVideoType() {
         result.success(reply)
     }
 
-    private fun setShowType(call: MethodCall, result: MethodChannel.Result) {
+    fun setShowType(call: MethodCall, result: MethodChannel.Result) {
         val showTypeOptions = call.argument<Map<String, Any?>>("showTypeOptions")!!
         val showType = getParameter(showTypeOptions, "showType", 0);
         val screenScaleRatio = getParameter(showTypeOptions, "screenScaleRatio", 0.0F);
@@ -70,7 +63,7 @@ class CustomGSYVideoType() {
         result.success(reply)
     }
 
-    private fun setRenderType(call: MethodCall, result: MethodChannel.Result) {
+    fun setRenderType(call: MethodCall, result: MethodChannel.Result) {
         val renderType = (call.argument<Any>("renderType") as Number?)!!.toInt()
         when (renderType) {
             0 -> GSYVideoType.setRenderType(GSYVideoType.TEXTURE)

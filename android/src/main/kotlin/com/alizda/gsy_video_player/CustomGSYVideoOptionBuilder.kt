@@ -8,7 +8,7 @@ import io.flutter.plugin.common.MethodChannel
 import java.io.File
 
 class CustomGSYVideoOptionBuilder(private var videoPlayer: CustomVideoPlayer): GSYVideoOptionBuilder() {
-    private fun setVideoConfig(call: MethodCall, result: MethodChannel.Result) {
+    fun setVideoConfig(call: MethodCall, result: MethodChannel.Result) {
         val videoOptions = call.argument<Map<String, Any?>>("builderParams")!!
         val url = GsyVideoPlayerView.getParameter(videoOptions, "url", "")
         val playVideoDataSourceType = GsyVideoPlayerView.getParameter(videoOptions, "playVideoDataSourceType", 0)

@@ -36,12 +36,12 @@ class _MyAppState extends State<MyApp> {
         appBar: AppBar(
           title: const Text('Plugin example app'),
         ),
-        body: Column(
+        body: ListView(
           children: [
             Container(
               color: Colors.black,
-              width: 300,
-              height: 200,
+              width: double.infinity,
+              height: 300,
               child: Container(
                 color: Colors.blue,
                 child: GsyVideoPlayer(
