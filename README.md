@@ -76,4 +76,4 @@ class _MyAppState extends State<MyApp> {
 ```
 
 ## 灵感
-(https://github.com/CarGuo/GSYVideoPlayer)[GSYVideoPlayer]
+(GSYVideoPlayer)[https://github.com/CarGuo/GSYVideoPlayer]
