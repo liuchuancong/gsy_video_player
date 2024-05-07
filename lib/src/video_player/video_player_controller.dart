@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'video_player_platform_interface.dart';
 import 'package:gsy_video_player/gsy_video_player.dart';
+import 'package:gsy_video_player/src/video_player/video_event.dart';
 import 'package:gsy_video_player/src/builder/video_option_builder.dart';
 import 'package:gsy_video_player/src/configuration/play_video_datasource_type.dart';
 
@@ -26,14 +27,12 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
 
   final StreamController<VideoEvent> videoEventStreamController = StreamController.broadcast();
   final Completer<void> _creatingCompleter = Completer<void>();
-  Timer? _timer;
+
   bool _isDisposed = false;
   late Completer<void> _initializingCompleter;
   StreamSubscription<dynamic>? _eventSubscription;
 
   bool get _created => _creatingCompleter.isCompleted;
-
-  Duration? _seekPosition;
 
   Future<void> setAssetBuilder(
     String url, {
@@ -312,7 +311,6 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
   Future<void> _create() async {
     await _videoPlayerPlatform.create();
     _creatingCompleter.complete(null);
-    unawaited(_applyLooping());
     unawaited(_applyVolume());
     setEventListener();
   }
@@ -442,7 +440,6 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
       } else {
         value.copyWith(errorDescription: object.toString());
       }
-      _timer?.cancel();
       if (!_initializingCompleter.isCompleted) {
         _initializingCompleter.completeError(object);
       }
@@ -475,7 +472,6 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     if (!_isDisposed) {
       _isDisposed = true;
       value = VideoPlayerValue.uninitialized();
-      _timer?.cancel();
       await _eventSubscription?.cancel();
       await _videoPlayerPlatform.dispose();
       videoEventStreamController.close();
@@ -524,49 +520,11 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     if (!_created || _isDisposed) {
       return;
     }
-    _timer?.cancel();
     if (value.isPlaying) {
-      await _videoPlayerPlatform.resume();
-      _timer = Timer.periodic(
-        const Duration(milliseconds: 300),
-        (Timer timer) async {
-          if (_isDisposed) {
-            return;
-          }
-          final Duration? newPosition = await position;
-          final DateTime? newAbsolutePosition = await absolutePosition;
-          // ignore: invariant_booleans
-          if (_isDisposed) {
-            return;
-          }
-          _updatePosition(newPosition, absolutePosition: newAbsolutePosition);
-          if (_seekPosition != null && newPosition != null) {
-            final difference = newPosition.inMilliseconds - _seekPosition!.inMilliseconds;
-            if (difference > 0) {
-              _seekPosition = null;
-            }
-          }
-        },
-      );
-      // This ensures that the correct playback speed is always applied when
-      // playing back. This is necessary because we do not set playback speed
-      // when paused.
-      await _applyPlaybackSpeed();
+      await _videoPlayerPlatform.onPause();
     } else {
-      await _videoPlayerPlatform.pause();
+      await _videoPlayerPlatform.onResume();
     }
-  }
-
-  Future<void> _applyPlaybackSpeed() async {
-    if (!value.isInitialized || _isDisposed) {
-      return;
-    }
-    // Setting the playback speed on iOS will trigger the video to play. We
-    // prevent this from happening by not applying the playback speed until
-    // the video is manually played from Flutter.
-    if (!value.isPlaying) return;
-
-    await _videoPlayerPlatform.setPlaybackSpeed(value.playbackSpeed);
   }
 
   Future<void> _applyVolume() async {
@@ -584,29 +542,11 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
   }
 
   /// The position in the current video.
-  Future<Duration?> get position async {
+  Future<int?> get position async {
     if (!value.initialized && _isDisposed) {
       return null;
     }
-    return _videoPlayerPlatform.getPosition();
-  }
-
-  /// The absolute position in the current video stream
-  /// (i.e. EXT-X-PROGRAM-DATE-TIME in HLS).
-  Future<DateTime?> get absolutePosition async {
-    if (!value.initialized && _isDisposed) {
-      return null;
-    }
-    return _videoPlayerPlatform.getAbsolutePosition();
-  }
-
-  /// Sets the video's current timestamp to be at [moment]. The next
-  /// time the video is played it will resume from the given [moment].
-  ///
-  /// If [moment] is outside of the video's full range it will be automatically
-  /// and silently clamped.
-  Future<void> seekTo(Duration? position) async {
-    await _videoPlayerPlatform.seekTo(position);
+    return await _videoPlayerPlatform.getPlayPosition();
   }
 
   /// Sets the audio volume of [this].
@@ -632,44 +572,8 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     }
   }
 
-  /// Sets the video track parameters of [this]
-  ///
-  /// [width] specifies width of the selected track
-  /// [height] specifies height of the selected track
-  /// [bitrate] specifies bitrate of the selected track
-  Future<void> setTrackParameters(int? width, int? height, int? bitrate) async {
-    await _videoPlayerPlatform.setTrackParameters(width, height, bitrate);
-  }
-
-  Future<void> enablePictureInPicture({double? top, double? left, double? width, double? height}) async {}
-
-  Future<void> disablePictureInPicture() async {}
-
-  Future<bool?> isPictureInPictureSupported() async {
-    return _videoPlayerPlatform.isPictureInPictureEnabled();
-  }
-
-  void _updatePosition(Duration? position, {DateTime? absolutePosition}) {
-    value = value.copyWith(position: _seekPosition ?? position);
-    if (_seekPosition == null) {
-      value = value.copyWith(absolutePosition: absolutePosition);
-    }
-  }
-
   void refresh() {
     value = value.copyWith();
-  }
-
-  void setAudioTrack(String? name, int? index) {
-    _videoPlayerPlatform.setAudioTrack(name, index);
-  }
-
-  void setMixWithOthers(bool mixWithOthers) {
-    _videoPlayerPlatform.setMixWithOthers(mixWithOthers);
-  }
-
-  static Future clearCache() async {
-    return _videoPlayerPlatform.clearCache();
   }
 }
 

@@ -1,6 +1,6 @@
 enum VideoPlayState { normal, prepareing, playing, playingBufferingStart, pause, completed, error, unknown }
 
-getVideoPlayStateName(int state) {
+VideoPlayState getVideoPlayStateName(int state) {
   switch (state) {
     case 0:
       return VideoPlayState.normal;

@@ -1,5 +1,7 @@
 package com.alizda.gsy_video_player
 
+import com.shuyu.gsyvideoplayer.GSYVideoManager
+
 
 class CustomGSYMediaPlayerListener(private var videoPlayer: CustomVideoPlayer) {
     private var lastSendBufferedPosition: Int = 0
@@ -7,6 +9,7 @@ class CustomGSYMediaPlayerListener(private var videoPlayer: CustomVideoPlayer) {
 
     private fun getPosition(): Int = videoPlayer.playPosition
 
+    private fun isPlaying(): Boolean = GSYVideoManager.instance().isPlaying
     private fun getCurrentState(): Int = videoPlayer.currentState
     private fun sendBufferingUpdate(eventSink:QueuingEventSink,percent: Int) {
         val bufferedPosition = videoPlayer.buffterPoint
@@ -16,7 +19,8 @@ class CustomGSYMediaPlayerListener(private var videoPlayer: CustomVideoPlayer) {
             val range: List<Number?> = listOf(0, bufferedPosition)
             event["event"] = "onListenerBufferingUpdate"
             reply["duration"] = getDuration()
-            reply["position"] =getPosition()
+            reply["position"] = getPosition()
+            reply["isPlaying"] = isPlaying()
             reply["percent"] = percent
             reply["currentState"] = getCurrentState()
             reply["values"] = listOf(range)
@@ -30,8 +34,15 @@ class CustomGSYMediaPlayerListener(private var videoPlayer: CustomVideoPlayer) {
             val reply: MutableMap<String, Any> = HashMap()
             event["event"] = "initialized"
             reply["duration"] = getDuration()
-            reply["position"] =getPosition()
+            reply["position"] = getPosition()
+            reply["isPlaying"] = isPlaying()
             reply["currentState"] = getCurrentState()
+            reply["width"] = GSYVideoManager.instance().player.videoWidth
+            reply["height"] = GSYVideoManager.instance().player.videoHeight
+            reply["videoSarDen"] = GSYVideoManager.instance().player.videoWidth
+            reply["videoSarNum"] = GSYVideoManager.instance().player.videoSarNum
+            reply["width"] = getCurrentState()
+
             event["reply"] = reply
             sink.success(event)
         }
@@ -42,6 +53,7 @@ class CustomGSYMediaPlayerListener(private var videoPlayer: CustomVideoPlayer) {
          event["event"] = "onPrepared"
          reply["duration"] = getDuration()
          reply["position"] =getPosition()
+         reply["isPlaying"] = isPlaying()
          reply["currentState"] = getCurrentState()
          event["reply"] = reply
          sink.success(event)
@@ -52,6 +64,7 @@ class CustomGSYMediaPlayerListener(private var videoPlayer: CustomVideoPlayer) {
          val reply: MutableMap<String, Any> = HashMap()
          event["event"] = "onListenerVideoResumeWithSeek"
          reply["duration"] = getDuration()
+         reply["isPlaying"] = isPlaying()
          reply["position"] =getPosition()
          reply["currentState"] = getCurrentState()
          event["reply"] = reply
@@ -64,6 +77,7 @@ class CustomGSYMediaPlayerListener(private var videoPlayer: CustomVideoPlayer) {
          event["event"] = "onListenerVideoResumeWithSeek"
          reply["duration"] = getDuration()
          reply["position"] =getPosition()
+         reply["isPlaying"] = isPlaying()
          reply["currentState"] = getCurrentState()
          event["reply"] = reply
          sink.success(event)
@@ -79,6 +93,7 @@ class CustomGSYMediaPlayerListener(private var videoPlayer: CustomVideoPlayer) {
          event["event"] = "onSeekComplete"
          reply["duration"] = getDuration()
          reply["position"] =getPosition()
+         reply["isPlaying"] = isPlaying()
          reply["currentState"] = getCurrentState()
          event["reply"] = reply
          sink.success(event)
@@ -94,6 +109,7 @@ class CustomGSYMediaPlayerListener(private var videoPlayer: CustomVideoPlayer) {
          reply["currentState"] = getCurrentState()
          reply["duration"] = getDuration()
          reply["position"] =getPosition()
+         reply["isPlaying"] = isPlaying()
          sink.error(what.toString(),extra.toString(),reply)
     }
 
@@ -101,6 +117,7 @@ class CustomGSYMediaPlayerListener(private var videoPlayer: CustomVideoPlayer) {
          val event: MutableMap<String, Any> = HashMap()
          val reply: MutableMap<String, Any> = HashMap()
          event["event"] = "onListenerInfo"
+         reply["isPlaying"] = isPlaying()
          event["reply"] = reply
          reply["what"] = what
          reply["extra"] = extra
@@ -116,6 +133,7 @@ class CustomGSYMediaPlayerListener(private var videoPlayer: CustomVideoPlayer) {
          event["event"] = "onVideoSizeChanged"
          reply["duration"] = getDuration()
          reply["position"] =getPosition()
+         reply["isPlaying"] = isPlaying()
          reply["currentState"] = getCurrentState()
          event["reply"] = reply
          sink.success(event)
@@ -127,6 +145,7 @@ class CustomGSYMediaPlayerListener(private var videoPlayer: CustomVideoPlayer) {
          event["event"] = "onBackFullscreen"
          reply["duration"] = getDuration()
          reply["position"] =getPosition()
+         reply["isPlaying"] = isPlaying()
          reply["currentState"] = getCurrentState()
          event["reply"] = reply
          sink.success(event)
@@ -139,6 +158,7 @@ class CustomGSYMediaPlayerListener(private var videoPlayer: CustomVideoPlayer) {
          reply["duration"] = getDuration()
          reply["currentState"] = getCurrentState()
          reply["position"] =getPosition()
+         reply["isPlaying"] = isPlaying()
          event["reply"] = reply
          sink.success(event)
     }
@@ -148,6 +168,7 @@ class CustomGSYMediaPlayerListener(private var videoPlayer: CustomVideoPlayer) {
          val reply: MutableMap<String, Any> = HashMap()
          event["event"] = "onVideoResume"
          reply["duration"] = getDuration()
+         reply["isPlaying"] = isPlaying()
          reply["currentState"] = getCurrentState()
          reply["position"] =getPosition()
          event["reply"] = reply
@@ -162,6 +183,7 @@ class CustomGSYMediaPlayerListener(private var videoPlayer: CustomVideoPlayer) {
          reply["position"] =getPosition()
          reply["currentState"] = getCurrentState()
          reply["seek"] = seek
+         reply["isPlaying"] = isPlaying()
          event["reply"] = reply
          sink.success(event)
     }

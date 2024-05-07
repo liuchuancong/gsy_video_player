@@ -21,6 +21,7 @@ import tv.danmaku.ijk.media.exo2.Exo2PlayerManager
 import tv.danmaku.ijk.media.exo2.ExoMediaSourceInterceptListener
 import tv.danmaku.ijk.media.exo2.ExoPlayerCacheManager
 import tv.danmaku.ijk.media.exo2.ExoSourceManager
+import tv.danmaku.ijk.media.player.IjkMediaPlayer
 import java.io.File
 
 
@@ -182,5 +183,10 @@ class CustomGSYVideoManagerApi(private val context: Context) {
                 return null
             }
         })
+    }
+
+    fun  setVolume(call: MethodCall, result: MethodChannel.Result){
+        val volume = (call.argument<Any>("volume") as Number).toFloat()
+        GSYVideoManager.instance().player.setVolume(volume,volume);
     }
 }

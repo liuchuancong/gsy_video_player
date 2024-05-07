@@ -1,6 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
-import 'video_player_platform_interface.dart';
+import 'package:gsy_video_player/src/video_player/video_event.dart';
 
 /// The duration, current position, buffering state, error state and settings
 /// of a [GsyVideoPlayerController].
@@ -10,7 +10,6 @@ class VideoPlayerValue {
   VideoPlayerValue({
     required this.duration,
     this.size = Size.zero,
-    this.absolutePosition,
     this.position = Duration.zero,
     this.buffered = const <DurationRange>[],
     this.isInitialized = false,
@@ -50,11 +49,6 @@ class VideoPlayerValue {
 
   /// The current playback position.
   final Duration position;
-
-  /// The current absolute playback position.
-  ///
-  /// Is null when is not available.
-  final DateTime? absolutePosition;
 
   /// The currently buffered ranges.
   final List<DurationRange> buffered;
@@ -119,7 +113,6 @@ class VideoPlayerValue {
     Duration? duration,
     Size? size,
     Duration? position,
-    DateTime? absolutePosition,
     List<DurationRange>? buffered,
     bool? isInitialized,
     bool? isPlaying,
@@ -139,7 +132,6 @@ class VideoPlayerValue {
       duration: duration ?? this.duration,
       size: size ?? this.size,
       position: position ?? this.position,
-      absolutePosition: absolutePosition ?? this.absolutePosition,
       buffered: buffered ?? this.buffered,
       isInitialized: isInitialized ?? this.isInitialized,
       isPlaying: isPlaying ?? this.isPlaying,
@@ -162,7 +154,6 @@ class VideoPlayerValue {
         'duration: $duration, '
         'size: $size, '
         'position: $position, '
-        'absolutePosition: $absolutePosition, '
         'buffered: [${buffered.join(', ')}], '
         'isInitialized: $isInitialized, '
         'isPlaying: $isPlaying, '

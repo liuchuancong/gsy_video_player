@@ -14,3 +14,24 @@ enum PlayerVideoShowType {
   //自定义
   screenTypeCustom,
 }
+
+PlayerVideoShowType getPlayerVideoShowType(int showType) {
+  switch (showType) {
+    case 0:
+      return PlayerVideoShowType.screenTypeDefault;
+    case 1:
+      return PlayerVideoShowType.screenType16_9;
+    case 2:
+      return PlayerVideoShowType.screenType4_3;
+    case 3:
+      return PlayerVideoShowType.screenTypeFull;
+    case 4:
+      return PlayerVideoShowType.screenTypeMatchFull;
+    case 5:
+      return PlayerVideoShowType.screenType18_9;
+    case 6:
+      return PlayerVideoShowType.screenTypeCustom;
+    default:
+      return PlayerVideoShowType.screenTypeDefault;
+  }
+}

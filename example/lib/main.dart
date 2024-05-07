@@ -53,7 +53,7 @@ class _MyAppState extends State<MyApp> {
               children: [
                 ElevatedButton(
                     onPressed: () {
-                      gsyVideoPlayerController.play();
+                      // gsyVideoPlayerController
                     },
                     child: const Text('play')),
                 ElevatedButton(
@@ -66,11 +66,7 @@ class _MyAppState extends State<MyApp> {
                       gsyVideoPlayerController.pause();
                     },
                     child: const Text('pause')),
-                ElevatedButton(
-                    onPressed: () {
-                      gsyVideoPlayerController.seekTo(const Duration(seconds: 10));
-                    },
-                    child: const Text('seekTo 10s')),
+                ElevatedButton(onPressed: () {}, child: const Text('seekTo 10s')),
               ],
             )
           ],

@@ -303,7 +303,7 @@ class CustomBasicApi(private var videoPlayer: CustomVideoPlayer, private val con
         val speedOptions = call.argument<Map<String, Any?>>("speedPlayingOptions")!!
         val speed = GsyVideoPlayerView.getParameter(speedOptions, "speed", 1.0F);
         val soundTouch = GsyVideoPlayerView.getParameter(speedOptions, "soundTouch", true);
-        videoPlayer.setSpeed(speed, soundTouch)
+        videoPlayer.setSpeedPlaying(speed, soundTouch)
     }
 
     fun isShowPauseCover(call: MethodCall, result: MethodChannel.Result) {

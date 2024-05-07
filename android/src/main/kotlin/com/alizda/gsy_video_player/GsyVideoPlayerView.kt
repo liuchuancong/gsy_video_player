@@ -2,6 +2,7 @@ package com.alizda.gsy_video_player
 
 import android.content.Context
 import android.view.View
+import com.shuyu.gsyvideoplayer.GSYVideoManager
 import com.shuyu.gsyvideoplayer.listener.GSYMediaPlayerListener
 import com.shuyu.gsyvideoplayer.listener.GSYVideoProgressListener
 import com.shuyu.gsyvideoplayer.listener.VideoAllCallBack
@@ -36,7 +37,10 @@ class GsyVideoPlayerView(private val context: Context, messenger: BinaryMessenge
     }
     override fun getView(): View = videoPlayer
     override fun dispose() {
-
+        if(isInitialized){
+            isInitialized = false
+            GSYVideoManager.instance().releaseMediaPlayer();
+        }
     }
 
     override fun onMethodCall(call: MethodCall, result: MethodChannel.Result) {

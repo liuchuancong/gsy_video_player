@@ -6,3 +6,16 @@ enum GsyVideoPlayerRenderType {
   //GLSurfaceView、支持滤镜
   gLSurfaceView,
 }
+
+GsyVideoPlayerRenderType getGsyVideoPlayerRenderType(int index) {
+  switch (index) {
+    case 0:
+      return GsyVideoPlayerRenderType.textureView;
+    case 1:
+      return GsyVideoPlayerRenderType.surfaceView;
+    case 2:
+      return GsyVideoPlayerRenderType.gLSurfaceView;
+    default:
+      return GsyVideoPlayerRenderType.textureView;
+  }
+}

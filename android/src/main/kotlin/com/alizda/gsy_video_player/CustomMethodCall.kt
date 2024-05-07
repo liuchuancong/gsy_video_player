@@ -21,6 +21,9 @@ class CustomMethodCall(
             "create" -> {
                 gSYVideoPlayer.create(call, result)
             }
+            "dispose"->{
+                gSYVideoPlayer.dispose()
+            }
             // --------------------- CustomGSYVideoOptionBuilder  start ----------------------------
             "setVideoOptionBuilder" -> {
                 gsyVideoOptionBuilder.setVideoConfig(call, result)
@@ -164,6 +167,9 @@ class CustomMethodCall(
 
             "setLogLevel" -> {
                 customGSYVideoManagerApi.setLogLevel(call, result)
+            }
+            "setVolume" ->{
+                customGSYVideoManagerApi.setVolume(call, result)
             }
             // --------------------- CustomGSYVideoType  start --------
             "isMediaCodec" -> {
@@ -324,6 +330,10 @@ class CustomMethodCall(
 
             "setDismissControlTime" -> {
                 customBasicApi.setDismissControlTime(call, result)
+            }
+
+            "getDismissControlTime" ->{
+                customBasicApi.getDismissControlTime(call, result)
             }
 
             "getSeekOnStart" -> {
