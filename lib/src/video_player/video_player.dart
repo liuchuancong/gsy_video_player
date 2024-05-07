@@ -1,6 +1,7 @@
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:gsy_video_player/src/video_player/video_event.dart';
+import 'package:gsy_video_player/src/constants/video_play_state.dart';
 
 /// The duration, current position, buffering state, error state and settings
 /// of a [GsyVideoPlayerController].
@@ -24,6 +25,7 @@ class VideoPlayerValue {
     this.percent,
     this.seek,
     this.errorDescription,
+    this.playState,
     this.isPip = false,
   });
 
@@ -41,6 +43,8 @@ class VideoPlayerValue {
   final int? percent;
 
   final bool? seek;
+
+  final VideoPlayState? playState;
 
   /// The total duration of the video.
   ///
@@ -127,6 +131,7 @@ class VideoPlayerValue {
     int? extra,
     int? percent,
     bool? seek,
+    VideoPlayState? playState,
   }) {
     return VideoPlayerValue(
       duration: duration ?? this.duration,
@@ -145,6 +150,8 @@ class VideoPlayerValue {
       seek: seek ?? this.seek,
       errorDescription: errorDescription ?? this.errorDescription,
       isPip: isPip ?? this.isPip,
+      speed: speed ?? this.speed,
+      playState: playState ?? this.playState,
     );
   }
 
@@ -163,6 +170,7 @@ class VideoPlayerValue {
         'errorDescription: $errorDescription, '
         'playbackSpeed: $playbackSpeed, '
         'isPip: $isPip, '
+        'playState: $playState, '
         'what: $what, '
         'extra: $extra, '
         'percent: $percent, '

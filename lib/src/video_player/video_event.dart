@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:gsy_video_player/gsy_video_player.dart';
-import 'package:gsy_video_player/src/constants/video_play_state.dart';
 
 /// Event emitted from the platform implementation.
 class VideoEvent {

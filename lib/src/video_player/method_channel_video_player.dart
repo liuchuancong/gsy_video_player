@@ -4,17 +4,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/foundation.dart';
-import 'video_player_platform_interface.dart';
 import 'package:gsy_video_player/gsy_video_player.dart';
-import 'package:gsy_video_player/src/constants/log_level.dart';
-import 'package:gsy_video_player/src/constants/ijk_option.dart';
-import 'package:gsy_video_player/src/constants/ijk_category.dart';
-import 'package:gsy_video_player/src/video_player/video_event.dart';
-import 'package:gsy_video_player/src/constants/video_play_state.dart';
-import 'package:gsy_video_player/src/builder/video_option_builder.dart';
-import 'package:gsy_video_player/src/configuration/player_video_type.dart';
-import 'package:gsy_video_player/src/configuration/player_video_show_type.dart';
-import 'package:gsy_video_player/src/configuration/player_video_render_type.dart';
 
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
@@ -786,7 +776,7 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
   }
 
   @override
-  Future<void> seekTo(double msec) async {
+  Future<void> seekTo(int msec) async {
     await initialized.future;
     await _channel.invokeMethod<void>("seekTo", <String, dynamic>{
       "position": msec,

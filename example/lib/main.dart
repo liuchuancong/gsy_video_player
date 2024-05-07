@@ -24,9 +24,15 @@ class _MyAppState extends State<MyApp> {
 
   // Platform messages are asynchronous, so we initialize in an async method.
   Future<void> initPlayer() async {
+    gsyVideoPlayerController.setLogLevel(LogLevel.logError);
     gsyVideoPlayerController.setNetWorkBuilder(
         'https://cloud.video.taobao.com//play/u/57349687/p/1/e/6/t/1/239880949246.mp4',
-        autoPlay: true);
+        autoPlay: false);
+    gsyVideoPlayerController.addEventsListener((VideoEventType event) {
+      print(
+          "video event--------------------------------------------------------------------------------------------------- $event");
+      if (gsyVideoPlayerController.value.initialized) {}
+    });
   }
 
   @override
@@ -36,7 +42,7 @@ class _MyAppState extends State<MyApp> {
         appBar: AppBar(
           title: const Text('Plugin example app'),
         ),
-        body: ListView(
+        body: Column(
           children: [
             Container(
               color: Colors.black,
@@ -49,16 +55,16 @@ class _MyAppState extends State<MyApp> {
                 ),
               ),
             ),
-            Row(
+            Wrap(
               children: [
                 ElevatedButton(
                     onPressed: () {
-                      // gsyVideoPlayerController
+                      gsyVideoPlayerController.startPlayLogic();
                     },
                     child: const Text('play')),
                 ElevatedButton(
                     onPressed: () {
-                      gsyVideoPlayerController.pause();
+                      gsyVideoPlayerController.resume();
                     },
                     child: const Text('resume')),
                 ElevatedButton(
@@ -66,7 +72,16 @@ class _MyAppState extends State<MyApp> {
                       gsyVideoPlayerController.pause();
                     },
                     child: const Text('pause')),
-                ElevatedButton(onPressed: () {}, child: const Text('seekTo 10s')),
+                ElevatedButton(
+                    onPressed: () {
+                      gsyVideoPlayerController.setLogLevel(LogLevel.logSilent);
+                    },
+                    child: const Text('LogLevel')),
+                ElevatedButton(
+                    onPressed: () {
+                      gsyVideoPlayerController.seekTo(const Duration(seconds: 11));
+                    },
+                    child: const Text('seekTo 10s')),
               ],
             )
           ],

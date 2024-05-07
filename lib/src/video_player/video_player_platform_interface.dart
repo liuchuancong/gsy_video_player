@@ -470,7 +470,7 @@ abstract class VideoPlayerPlatform {
   }
 
   /// Sets the show loading cover of the video.
-  Future<void> seekTo(double msec) {
+  Future<void> seekTo(int msec) {
     throw UnimplementedError('seekTo() has not been implemented.');
   }
 

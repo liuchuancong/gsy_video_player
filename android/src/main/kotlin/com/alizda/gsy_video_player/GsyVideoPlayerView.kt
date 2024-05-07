@@ -21,7 +21,7 @@ class GsyVideoPlayerView(private val context: Context, messenger: BinaryMessenge
     private var event: EventChannel = EventChannel(messenger, EVENTS_CHANNEL + id)
     private var videoPlayer: CustomVideoPlayer = CustomVideoPlayer(context)
     private var gsyVideoOptionBuilder: CustomGSYVideoOptionBuilder = CustomGSYVideoOptionBuilder(videoPlayer)
-    private var customVideoAllCallBack: CustomVideoAllCallBack = CustomVideoAllCallBack()
+    private var customVideoAllCallBack: CustomVideoAllCallBack = CustomVideoAllCallBack(videoPlayer)
     private var customGSYMediaPlayerListener: CustomGSYMediaPlayerListener = CustomGSYMediaPlayerListener(videoPlayer)
     private var customBasicApi: CustomBasicApi = CustomBasicApi(videoPlayer,context)
     private var orientationUtils: CustomOrientationUtils = CustomOrientationUtils(videoPlayer, context)
@@ -33,7 +33,9 @@ class GsyVideoPlayerView(private val context: Context, messenger: BinaryMessenge
     init {
         channel.setMethodCallHandler(this)
         event.setStreamHandler(this)
-        gsyVideoOptionBuilder.setGSYVideoProgressListener(this)
+        videoPlayer.setGSYVideoProgressListener(this)
+        videoPlayer.setVideoAllCallBack(this)
+        GSYVideoManager.instance().setListener(this)
     }
     override fun getView(): View = videoPlayer
     override fun dispose() {
@@ -62,7 +64,7 @@ class GsyVideoPlayerView(private val context: Context, messenger: BinaryMessenge
 
     companion object {
 
-        private const val TAG = "GSY_VIDEO_PLAYER"
+        const val TAG = "GSY_VIDEO_PLAYER"
         private const val METHODS_CHANNEL = "gsy_video_player_channel/platform_view_methods"
         private const val EVENTS_CHANNEL = "gsy_video_player_channel/platform_view_events"
         var isInitialized = false
@@ -104,7 +106,6 @@ class GsyVideoPlayerView(private val context: Context, messenger: BinaryMessenge
     override fun onClickStopFullscreen(url: String, vararg objects: Any) {
         customVideoAllCallBack.onClickStopFullscreen(eventSink, url, objects)
     }
-
     //点击了暂停状态下的开始按键--->播放，objects[0]是title，object[1]是当前所处播放器（全屏或非全屏）
     override fun onClickResume(url: String, vararg objects: Any) {
         customVideoAllCallBack.onClickResume(eventSink, url, objects)
@@ -155,7 +156,7 @@ class GsyVideoPlayerView(private val context: Context, messenger: BinaryMessenge
     }
 
     override fun onTouchScreenSeekLight(url: String, vararg objects: Any) {
-        customVideoAllCallBack.onComplete(eventSink, url, objects)
+        customVideoAllCallBack.onTouchScreenSeekLight(eventSink, url, objects)
     }
 
     override fun onPlayError(url: String, vararg objects: Any) {
