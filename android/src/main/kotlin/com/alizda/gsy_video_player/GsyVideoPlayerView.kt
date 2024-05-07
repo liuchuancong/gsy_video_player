@@ -21,12 +21,13 @@ class GsyVideoPlayerView(private val context: Context, messenger: BinaryMessenge
     private var videoPlayer: CustomVideoPlayer = CustomVideoPlayer(context)
     private var gsyVideoOptionBuilder: CustomGSYVideoOptionBuilder = CustomGSYVideoOptionBuilder(videoPlayer)
     private var customVideoAllCallBack: CustomVideoAllCallBack = CustomVideoAllCallBack()
-    private var customGSYMediaPlayerListener: CustomGSYMediaPlayerListener = CustomGSYMediaPlayerListener()
+    private var customGSYMediaPlayerListener: CustomGSYMediaPlayerListener = CustomGSYMediaPlayerListener(videoPlayer)
     private var customBasicApi: CustomBasicApi = CustomBasicApi(videoPlayer,context)
     private var orientationUtils: CustomOrientationUtils = CustomOrientationUtils(videoPlayer, context)
     private  var customGSYVideoManagerApi :CustomGSYVideoManagerApi = CustomGSYVideoManagerApi(context)
     private var gSYVideoPlayer: GSYVideoPlayer = GSYVideoPlayer(videoPlayer, context, id)
     private var customGSYVideoType: CustomGSYVideoType = CustomGSYVideoType()
+
     private var  customMethodCall:CustomMethodCall = CustomMethodCall(videoPlayer,context,id,gsyVideoOptionBuilder,customGSYVideoManagerApi,customBasicApi,gSYVideoPlayer,customGSYVideoType)
     init {
         channel.setMethodCallHandler(this)
@@ -60,7 +61,7 @@ class GsyVideoPlayerView(private val context: Context, messenger: BinaryMessenge
         private const val TAG = "GSY_VIDEO_PLAYER"
         private const val METHODS_CHANNEL = "gsy_video_player_channel/platform_view_methods"
         private const val EVENTS_CHANNEL = "gsy_video_player_channel/platform_view_events"
-
+        var isInitialized = false
         @Suppress("UNCHECKED_CAST")
         fun <T> getParameter(parameters: Map<String, Any?>?, key: String, defaultValue: T): T {
             if (parameters?.containsKey(key) == true) {
@@ -72,7 +73,6 @@ class GsyVideoPlayerView(private val context: Context, messenger: BinaryMessenge
             return defaultValue
         }
     }
-
     override fun onStartPrepared(url: String, vararg objects: Any) {
         customVideoAllCallBack.onStartPrepared(eventSink, url, objects)
     }
@@ -179,6 +179,10 @@ class GsyVideoPlayerView(private val context: Context, messenger: BinaryMessenge
     }
 
     override fun onPrepared() {
+        if (!isInitialized) {
+            isInitialized = true
+            customGSYMediaPlayerListener.sendInitialized(eventSink)
+        }
         customGSYMediaPlayerListener.onPrepared(eventSink)
     }
 

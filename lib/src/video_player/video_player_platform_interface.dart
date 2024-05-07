@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter/foundation.dart';
 import 'method_channel_video_player.dart';
 import 'package:gsy_video_player/gsy_video_player.dart';
+import 'package:gsy_video_player/src/constants/video_play_state.dart';
 import 'package:gsy_video_player/src/builder/video_option_builder.dart';
 import 'package:gsy_video_player/src/configuration/player_video_show_type.dart';
 
@@ -189,6 +190,7 @@ class VideoEvent {
     this.extra,
     this.percent,
     this.seek,
+    this.playState = VideoPlayState.unknown,
   });
 
   /// The type of the event.
@@ -201,6 +203,8 @@ class VideoEvent {
   final int? percent;
 
   final bool? seek;
+
+  final VideoPlayState playState;
 
   /// Data source of the video.
 

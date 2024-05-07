@@ -6,6 +6,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/foundation.dart';
 import 'video_player_platform_interface.dart';
 import 'package:gsy_video_player/gsy_video_player.dart';
+import 'package:gsy_video_player/src/constants/video_play_state.dart';
 import 'package:gsy_video_player/src/builder/video_option_builder.dart';
 import 'package:gsy_video_player/src/configuration/player_video_type.dart';
 import 'package:gsy_video_player/src/configuration/player_video_show_type.dart';
@@ -294,7 +295,9 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
       if (event is Map) {
         map = event;
       }
+
       final String? eventType = map["event"] as String?;
+      final Map<dynamic, dynamic>? reply = map["reply"];
       switch (eventType) {
         case 'initialized':
           return VideoEvent(eventType: VideoEventType.initialized);
@@ -345,45 +348,149 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
         case 'onEventComplete':
           return VideoEvent(eventType: VideoEventType.onEventComplete);
         case 'onEventProgress':
-          final int position = map["currentPosition"] as int;
-          final int duration = map["duration"] as int;
+          final int position = reply!["position"] as int;
+          final int duration = reply["duration"] as int;
+          final int currentState = reply["currentState"] as int;
           return VideoEvent(
             eventType: VideoEventType.onEventProgress,
             position: Duration(milliseconds: position),
             duration: Duration(milliseconds: duration),
+            playState: getVideoPlayStateName(currentState),
           );
         case 'onListenerPrepared':
-          return VideoEvent(eventType: VideoEventType.onListenerPrepared);
+          final int position = reply!["position"] as int;
+          final int duration = reply["duration"] as int;
+          final int currentState = reply["currentState"] as int;
+          return VideoEvent(
+            eventType: VideoEventType.onListenerPrepared,
+            position: Duration(milliseconds: position),
+            duration: Duration(milliseconds: duration),
+            playState: getVideoPlayStateName(currentState),
+          );
         case 'onListenerAutoCompletion':
-          return VideoEvent(eventType: VideoEventType.onListenerAutoCompletion);
+          final int position = reply!["position"] as int;
+          final int duration = reply["duration"] as int;
+          final int currentState = reply["currentState"] as int;
+          return VideoEvent(
+            eventType: VideoEventType.onListenerAutoCompletion,
+            position: Duration(milliseconds: position),
+            duration: Duration(milliseconds: duration),
+            playState: getVideoPlayStateName(currentState),
+          );
         case 'onListenerCompletion':
-          return VideoEvent(eventType: VideoEventType.onListenerCompletion);
+          final int position = reply!["position"] as int;
+          final int duration = reply["duration"] as int;
+          final int currentState = reply["currentState"] as int;
+          return VideoEvent(
+            eventType: VideoEventType.onListenerCompletion,
+            position: Duration(milliseconds: position),
+            duration: Duration(milliseconds: duration),
+            playState: getVideoPlayStateName(currentState),
+          );
         case 'onListenerBufferingUpdate':
-          final int percent = map["percent"] as int;
+          final int position = reply!["position"] as int;
+          final int duration = reply["duration"] as int;
+          final int currentState = reply["currentState"] as int;
+          final int percent = reply["percent"] as int;
+          final List<dynamic> values = reply['values'] as List;
           return VideoEvent(
             eventType: VideoEventType.onListenerBufferingUpdate,
+            position: Duration(milliseconds: position),
+            duration: Duration(milliseconds: duration),
+            buffered: values.map<DurationRange>(_toDurationRange).toList(),
+            playState: getVideoPlayStateName(currentState),
             percent: percent,
           );
         case 'onListenerSeekComplete':
-          return VideoEvent(eventType: VideoEventType.onListenerSeekComplete);
+          final int position = reply!["position"] as int;
+          final int duration = reply["duration"] as int;
+          final int currentState = reply["currentState"] as int;
+          return VideoEvent(
+            eventType: VideoEventType.onListenerSeekComplete,
+            position: Duration(milliseconds: position),
+            duration: Duration(milliseconds: duration),
+            playState: getVideoPlayStateName(currentState),
+          );
         case 'onListenerError':
-          final int what = map["what"] as int;
-          final int extra = map["extra"] as int;
-          return VideoEvent(eventType: VideoEventType.onListenerError, what: what, extra: extra);
+          final int position = reply!["position"] as int;
+          final int duration = reply["duration"] as int;
+          final int currentState = reply["currentState"] as int;
+          final int what = reply["what"] as int;
+          final int extra = reply["extra"] as int;
+          return VideoEvent(
+            eventType: VideoEventType.onListenerError,
+            position: Duration(milliseconds: position),
+            duration: Duration(milliseconds: duration),
+            playState: getVideoPlayStateName(currentState),
+            what: what,
+            extra: extra,
+          );
         case 'onListenerInfo':
-          final int what = map["what"] as int;
-          final int extra = map["extra"] as int;
-          return VideoEvent(eventType: VideoEventType.onListenerInfo, what: what, extra: extra);
+          final int position = reply!["position"] as int;
+          final int duration = reply["duration"] as int;
+          final int currentState = reply["currentState"] as int;
+          final int what = reply["what"] as int;
+          final int extra = reply["extra"] as int;
+          return VideoEvent(
+            eventType: VideoEventType.onListenerInfo,
+            position: Duration(milliseconds: position),
+            duration: Duration(milliseconds: duration),
+            playState: getVideoPlayStateName(currentState),
+            what: what,
+            extra: extra,
+          );
         case 'onListenerVideoSizeChanged':
-          return VideoEvent(eventType: VideoEventType.onListenerVideoSizeChanged);
+          final int position = reply!["position"] as int;
+          final int duration = reply["duration"] as int;
+          final int currentState = reply["currentState"] as int;
+          return VideoEvent(
+            eventType: VideoEventType.onListenerVideoSizeChanged,
+            position: Duration(milliseconds: position),
+            duration: Duration(milliseconds: duration),
+            playState: getVideoPlayStateName(currentState),
+          );
         case 'onListenerBackFullscreen':
-          return VideoEvent(eventType: VideoEventType.onListenerBackFullscreen);
+          final int position = reply!["position"] as int;
+          final int duration = reply["duration"] as int;
+          final int currentState = reply["currentState"] as int;
+          return VideoEvent(
+            eventType: VideoEventType.onListenerBackFullscreen,
+            position: Duration(milliseconds: position),
+            duration: Duration(milliseconds: duration),
+            playState: getVideoPlayStateName(currentState),
+          );
         case 'onListenerVideoPause':
-          return VideoEvent(eventType: VideoEventType.onListenerVideoPause);
+          final int position = reply!["position"] as int;
+          final int duration = reply["duration"] as int;
+          final int currentState = reply["currentState"] as int;
+          return VideoEvent(
+            eventType: VideoEventType.onListenerVideoPause,
+            position: Duration(milliseconds: position),
+            duration: Duration(milliseconds: duration),
+            playState: getVideoPlayStateName(currentState),
+          );
         case 'onListenerVideoResume':
-          return VideoEvent(eventType: VideoEventType.onListenerVideoResume);
+          final int position = reply!["position"] as int;
+          final int duration = reply["duration"] as int;
+          final int currentState = reply["currentState"] as int;
+          return VideoEvent(
+            eventType: VideoEventType.onListenerVideoResume,
+            position: Duration(milliseconds: position),
+            duration: Duration(milliseconds: duration),
+            playState: getVideoPlayStateName(currentState),
+          );
         case 'onListenerVideoResumeWithSeek':
-          return VideoEvent(eventType: VideoEventType.onListenerVideoResumeWithSeek);
+          final int position = reply!["position"] as int;
+          final int duration = reply["duration"] as int;
+          final int currentState = reply["currentState"] as int;
+          final bool seek = reply["seek"] as bool;
+          return VideoEvent(
+            eventType: VideoEventType.onListenerVideoResumeWithSeek,
+            seek: seek,
+            position: Duration(milliseconds: position),
+            duration: Duration(milliseconds: duration),
+            playState: getVideoPlayStateName(currentState),
+          );
         default:
           return VideoEvent(
             eventType: VideoEventType.unknown,
