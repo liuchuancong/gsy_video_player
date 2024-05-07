@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/foundation.dart';
 import 'method_channel_video_player.dart';
+import 'package:gsy_video_player/gsy_video_player.dart';
 import 'package:gsy_video_player/src/builder/video_option_builder.dart';
 import 'package:gsy_video_player/src/configuration/player_video_show_type.dart';
 
@@ -180,20 +181,28 @@ class VideoEvent {
   /// arguments can be null.
   VideoEvent({
     required this.eventType,
-    required this.key,
     this.duration,
     this.size,
     this.buffered,
     this.position,
+    this.what,
+    this.extra,
+    this.percent,
+    this.seek,
   });
 
   /// The type of the event.
   final VideoEventType eventType;
 
+  final int? what;
+
+  final int? extra;
+
+  final int? percent;
+
+  final bool? seek;
+
   /// Data source of the video.
-  ///
-  /// Used to determine which video the event belongs to.
-  final String? key;
 
   /// Duration of the video.
   ///
@@ -218,7 +227,6 @@ class VideoEvent {
     return identical(this, other) ||
         other is VideoEvent &&
             runtimeType == other.runtimeType &&
-            key == other.key &&
             eventType == other.eventType &&
             duration == other.duration &&
             size == other.size &&
@@ -227,45 +235,6 @@ class VideoEvent {
 
   @override
   int get hashCode => eventType.hashCode ^ duration.hashCode ^ size.hashCode ^ buffered.hashCode;
-}
-
-/// Type of the event.
-///
-/// Emitted by the platform implementation when the video is initialized or
-/// completed or to communicate buffering events.
-enum VideoEventType {
-  /// The video has been initialized.
-  initialized,
-
-  /// The playback has ended.
-  completed,
-
-  /// Updated information on the buffering state.
-  bufferingUpdate,
-
-  /// The video started to buffer.
-  bufferingStart,
-
-  /// The video stopped to buffer.
-  bufferingEnd,
-
-  /// The video is set to play
-  play,
-
-  /// The video is set to pause
-  pause,
-
-  /// The video is set to given to position
-  seek,
-
-  /// The video is displayed in Picture in Picture mode
-  pipStart,
-
-  /// Picture in picture mode has been dismissed
-  pipStop,
-
-  /// An unknown event has been received.
-  unknown,
 }
 
 /// Describes a discrete segment of time within a video using a [start] and

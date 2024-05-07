@@ -2,6 +2,7 @@ package com.alizda.gsy_video_player
 
 import android.content.Context
 import android.view.View
+import com.shuyu.gsyvideoplayer.listener.GSYMediaPlayerListener
 import com.shuyu.gsyvideoplayer.listener.GSYVideoProgressListener
 import com.shuyu.gsyvideoplayer.listener.VideoAllCallBack
 import io.flutter.plugin.common.BinaryMessenger
@@ -12,14 +13,15 @@ import io.flutter.plugin.common.PluginRegistry
 import io.flutter.plugin.platform.PlatformView
 
 
-class GsyVideoPlayerView(private val context: Context, messenger: BinaryMessenger, private val id: Int, private val params: Map<*, *>?) : PlatformView, MethodChannel.MethodCallHandler, EventChannel.StreamHandler, PluginRegistry.RequestPermissionsResultListener, VideoAllCallBack, GSYVideoProgressListener {
+class GsyVideoPlayerView(private val context: Context, messenger: BinaryMessenger, private val id: Int, private val params: Map<*, *>?) : PlatformView, MethodChannel.MethodCallHandler, EventChannel.StreamHandler, PluginRegistry.RequestPermissionsResultListener, VideoAllCallBack, GSYVideoProgressListener, GSYMediaPlayerListener {
 
     private val channel: MethodChannel = MethodChannel(messenger, METHODS_CHANNEL)
-    private var sink: EventChannel.EventSink? = null
+    private val eventSink = QueuingEventSink()
     private var event: EventChannel = EventChannel(messenger, EVENTS_CHANNEL + id)
     private var videoPlayer: CustomVideoPlayer = CustomVideoPlayer(context)
     private var gsyVideoOptionBuilder: CustomGSYVideoOptionBuilder = CustomGSYVideoOptionBuilder(videoPlayer)
     private var customVideoAllCallBack: CustomVideoAllCallBack = CustomVideoAllCallBack()
+    private var customGSYMediaPlayerListener: CustomGSYMediaPlayerListener = CustomGSYMediaPlayerListener()
     private var customBasicApi: CustomBasicApi = CustomBasicApi(videoPlayer,context)
     private var orientationUtils: CustomOrientationUtils = CustomOrientationUtils(videoPlayer, context)
     private  var customGSYVideoManagerApi :CustomGSYVideoManagerApi = CustomGSYVideoManagerApi(context)
@@ -41,12 +43,12 @@ class GsyVideoPlayerView(private val context: Context, messenger: BinaryMessenge
     }
 
 
-    override fun onListen(arguments: Any?, events: EventChannel.EventSink?) {
-        this.sink = events
+    override fun onListen(arguments: Any?, sink: EventChannel.EventSink?) {
+        eventSink.setDelegate(sink)
     }
 
     override fun onCancel(arguments: Any?) {
-        sink = null
+        eventSink.setDelegate(null)
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray): Boolean {
@@ -72,107 +74,155 @@ class GsyVideoPlayerView(private val context: Context, messenger: BinaryMessenge
     }
 
     override fun onStartPrepared(url: String, vararg objects: Any) {
-        customVideoAllCallBack.onStartPrepared(sink!!, url, objects)
+        customVideoAllCallBack.onStartPrepared(eventSink, url, objects)
     }
 
     //加载成功，objects[0]是title，object[1]是当前所处播放器（全屏或非全屏）
     override fun onPrepared(url: String, vararg objects: Any) {
-        customVideoAllCallBack.onPrepared(sink!!, url, objects)
+        customVideoAllCallBack.onPrepared(eventSink, url, objects)
     }
 
     //点击了开始按键播放，objects[0]是title，object[1]是当前所处播放器（全屏或非全屏）
     override fun onClickStartIcon(url: String, vararg objects: Any) {
-        customVideoAllCallBack.onClickStartIcon(sink!!, url, objects)
+        customVideoAllCallBack.onClickStartIcon(eventSink, url, objects)
     }
 
     //点击了错误状态下的开始按键，objects[0]是title，object[1]是当前所处播放器（全屏或非全屏）
     override fun onClickStartError(url: String, vararg objects: Any) {
-        customVideoAllCallBack.onClickStartError(sink!!, url, objects)
+        customVideoAllCallBack.onClickStartError(eventSink, url, objects)
     }
 
     //点击了播放状态下的开始按键--->停止，objects[0]是title，object[1]是当前所处播放器（全屏或非全屏）
     override fun onClickStop(url: String, vararg objects: Any) {
-        customVideoAllCallBack.onClickStop(sink!!, url, objects)
+        customVideoAllCallBack.onClickStop(eventSink, url, objects)
     }
 
     override fun onClickStopFullscreen(url: String, vararg objects: Any) {
-        customVideoAllCallBack.onClickStopFullscreen(sink!!, url, objects)
+        customVideoAllCallBack.onClickStopFullscreen(eventSink, url, objects)
     }
 
     //点击了暂停状态下的开始按键--->播放，objects[0]是title，object[1]是当前所处播放器（全屏或非全屏）
     override fun onClickResume(url: String, vararg objects: Any) {
-        customVideoAllCallBack.onClickResume(sink!!, url, objects)
+        customVideoAllCallBack.onClickResume(eventSink, url, objects)
     }
 
     //点击了全屏暂停状态下的开始按键--->播放，objects[0]是title，object[1]是当前所处播放器（全屏或非全屏）
     override fun onClickResumeFullscreen(url: String, vararg objects: Any) {
-        customVideoAllCallBack.onClickResumeFullscreen(sink!!, url, objects)
+        customVideoAllCallBack.onClickResumeFullscreen(eventSink, url, objects)
     }
 
     //点击了空白弹出seekbar，objects[0]是title，object[1]是当前所处播放器（全屏或非全屏）
     override fun onClickSeekbar(url: String, vararg objects: Any) {
-        customVideoAllCallBack.onClickSeekbar(sink!!, url, objects)
+        customVideoAllCallBack.onClickSeekbar(eventSink, url, objects)
     }
 
     //点击了全屏的seekbar，objects[0]是title，object[1]是当前所处播放器（全屏或非全屏）
     override fun onClickSeekbarFullscreen(url: String, vararg objects: Any) {
-        customVideoAllCallBack.onClickSeekbarFullscreen(sink!!, url, objects)
+        customVideoAllCallBack.onClickSeekbarFullscreen(eventSink, url, objects)
     }
 
     //播放完了，objects[0]是title，object[1]是当前所处播放器（全屏或非全屏）
     override fun onAutoComplete(url: String, vararg objects: Any) {
-        customVideoAllCallBack.onAutoComplete(sink!!, url, objects)
+        customVideoAllCallBack.onAutoComplete(eventSink, url, objects)
     }
 
     override fun onEnterFullscreen(url: String, vararg objects: Any) {
-        customVideoAllCallBack.onEnterFullscreen(sink!!, url, objects)
+        customVideoAllCallBack.onEnterFullscreen(eventSink, url, objects)
     }
 
     override fun onQuitFullscreen(url: String, vararg objects: Any) {
-        customVideoAllCallBack.onQuitFullscreen(sink!!, url, objects)
+        customVideoAllCallBack.onQuitFullscreen(eventSink, url, objects)
     }
 
     override fun onQuitSmallWidget(url: String, vararg objects: Any) {
-        customVideoAllCallBack.onQuitSmallWidget(sink!!, url, objects)
+        customVideoAllCallBack.onQuitSmallWidget(eventSink, url, objects)
     }
 
     override fun onEnterSmallWidget(url: String, vararg objects: Any) {
-        customVideoAllCallBack.onEnterSmallWidget(sink!!, url, objects)
+        customVideoAllCallBack.onEnterSmallWidget(eventSink, url, objects)
     }
 
     override fun onTouchScreenSeekVolume(url: String, vararg objects: Any) {
-        customVideoAllCallBack.onTouchScreenSeekVolume(sink!!, url, objects)
+        customVideoAllCallBack.onTouchScreenSeekVolume(eventSink, url, objects)
     }
 
     override fun onTouchScreenSeekPosition(url: String, vararg objects: Any) {
-        customVideoAllCallBack.onTouchScreenSeekPosition(sink!!, url, objects)
+        customVideoAllCallBack.onTouchScreenSeekPosition(eventSink, url, objects)
     }
 
     override fun onTouchScreenSeekLight(url: String, vararg objects: Any) {
-        customVideoAllCallBack.onComplete(sink!!, url, objects)
+        customVideoAllCallBack.onComplete(eventSink, url, objects)
     }
 
     override fun onPlayError(url: String, vararg objects: Any) {
-        customVideoAllCallBack.onPlayError(sink!!, url, objects)
+        customVideoAllCallBack.onPlayError(eventSink, url, objects)
     }
 
     override fun onClickStartThumb(url: String, vararg objects: Any) {
-        customVideoAllCallBack.onClickStartThumb(sink!!, url, objects)
+        customVideoAllCallBack.onClickStartThumb(eventSink, url, objects)
     }
 
     override fun onClickBlank(url: String, vararg objects: Any) {
-        customVideoAllCallBack.onClickBlank(sink!!, url, objects)
+        customVideoAllCallBack.onClickBlank(eventSink, url, objects)
     }
 
     override fun onClickBlankFullscreen(url: String, vararg objects: Any) {
-        customVideoAllCallBack.onClickBlankFullscreen(sink!!, url, objects)
+        customVideoAllCallBack.onClickBlankFullscreen(eventSink, url, objects)
     }
 
     override fun onComplete(url: String, vararg objects: Any) {
-        customVideoAllCallBack.onComplete(sink!!, url, objects)
+        customVideoAllCallBack.onComplete(eventSink, url, objects)
     }
 
     override fun onProgress(progress: Long, secProgress: Long, currentPosition: Long, duration: Long) {
-        customVideoAllCallBack.onProgress(sink!!, progress, secProgress, currentPosition, duration)
+        customVideoAllCallBack.onProgress(eventSink, progress, secProgress, currentPosition, duration)
+    }
+
+    override fun onPrepared() {
+        customGSYMediaPlayerListener.onPrepared(eventSink)
+    }
+
+    override fun onAutoCompletion() {
+        customGSYMediaPlayerListener.onAutoCompletion(eventSink)
+    }
+
+    override fun onCompletion() {
+        customGSYMediaPlayerListener.onCompletion(eventSink)
+    }
+
+    override fun onBufferingUpdate(percent: Int) {
+        customGSYMediaPlayerListener.onBufferingUpdate(eventSink,percent)
+    }
+
+    override fun onSeekComplete() {
+        customGSYMediaPlayerListener.onSeekComplete(eventSink)
+    }
+
+    override fun onError(what: Int, extra: Int) {
+        customGSYMediaPlayerListener.onError(eventSink,what,extra)
+    }
+
+    override fun onInfo(what: Int, extra: Int) {
+        customGSYMediaPlayerListener.onInfo(eventSink,what,extra)
+    }
+
+    override fun onVideoSizeChanged() {
+        customGSYMediaPlayerListener.onVideoSizeChanged(eventSink)
+    }
+
+    override fun onBackFullscreen() {
+        customGSYMediaPlayerListener.onBackFullscreen(eventSink)
+    }
+
+    override fun onVideoPause() {
+        customGSYMediaPlayerListener.onVideoPause(eventSink)
+    }
+
+    override fun onVideoResume() {
+        customGSYMediaPlayerListener.onVideoResume(eventSink)
+    }
+
+    override fun onVideoResume(seek: Boolean) {
+        customGSYMediaPlayerListener.onVideoResume(eventSink,seek)
     }
 }

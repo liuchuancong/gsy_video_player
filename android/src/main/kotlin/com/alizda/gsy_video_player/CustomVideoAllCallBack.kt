@@ -3,10 +3,10 @@ package com.alizda.gsy_video_player
 import io.flutter.plugin.common.EventChannel
 
 class CustomVideoAllCallBack() {
-     fun onStartPrepared(sink: EventChannel.EventSink,url: String, vararg objects: Any) {
+     fun onStartPrepared(sink: QueuingEventSink,url: String, vararg objects: Any) {
         val event: MutableMap<String, Any> = HashMap()
         val reply: MutableMap<String, Any> = HashMap()
-        event["event"] = "onStartPrepared"
+        event["event"] = "onEventStartPrepared"
         event["reply"] = reply
         reply["url"] = url
         reply["title"] = objects[0]
@@ -14,10 +14,10 @@ class CustomVideoAllCallBack() {
          sink.success(event)
     }
 
-     fun onPrepared(sink: EventChannel.EventSink,url: String, vararg objects: Any) {
+     fun onPrepared(sink: QueuingEventSink,url: String, vararg objects: Any) {
         val event: MutableMap<String, Any> = HashMap()
         val reply: MutableMap<String, Any> = HashMap()
-        event["event"] = "onPrepared"
+        event["event"] = "onEventPrepared"
         event["reply"] = reply
         reply["url"] = url
         reply["title"] = objects[0]
@@ -26,10 +26,10 @@ class CustomVideoAllCallBack() {
     }
 
     //点击了开始按键播放，objects[0]是title，object[1]是当前所处播放器（全屏或非全屏）
-     fun onClickStartIcon(sink: EventChannel.EventSink,url: String, vararg objects: Any) {
+     fun onClickStartIcon(sink: QueuingEventSink,url: String, vararg objects: Any) {
         val event: MutableMap<String, Any> = HashMap()
         val reply: MutableMap<String, Any> = HashMap()
-        event["event"] = "onClickStartIcon"
+        event["event"] = "onEventClickStartIcon"
         event["reply"] = reply
         reply["url"] = url
         reply["title"] = objects[0]
@@ -38,10 +38,10 @@ class CustomVideoAllCallBack() {
     }
 
     //点击了错误状态下的开始按键，objects[0]是title，object[1]是当前所处播放器（全屏或非全屏）
-     fun onClickStartError(sink: EventChannel.EventSink,url: String, vararg objects: Any) {
+     fun onClickStartError(sink: QueuingEventSink,url: String, vararg objects: Any) {
         val event: MutableMap<String, Any> = HashMap()
         val reply: MutableMap<String, Any> = HashMap()
-        event["event"] = "onClickStartIcon"
+        event["event"] = "onEventClickStartError"
         event["reply"] = reply
         reply["url"] = url
         reply["title"] = objects[0]
@@ -50,10 +50,10 @@ class CustomVideoAllCallBack() {
     }
 
     //点击了播放状态下的开始按键--->停止，objects[0]是title，object[1]是当前所处播放器（全屏或非全屏）
-     fun onClickStop(sink: EventChannel.EventSink,url: String, vararg objects: Any) {
+     fun onClickStop(sink: QueuingEventSink,url: String, vararg objects: Any) {
         val event: MutableMap<String, Any> = HashMap()
         val reply: MutableMap<String, Any> = HashMap()
-        event["event"] = "onClickStop"
+        event["event"] = "onEventClickStop"
         event["reply"] = reply
         reply["url"] = url
         reply["title"] = objects[0]
@@ -61,10 +61,10 @@ class CustomVideoAllCallBack() {
         sink.success(event)
     }
 
-     fun onClickStopFullscreen(sink: EventChannel.EventSink,url: String, vararg objects: Any) {
+     fun onClickStopFullscreen(sink: QueuingEventSink,url: String, vararg objects: Any) {
         val event: MutableMap<String, Any> = HashMap()
         val reply: MutableMap<String, Any> = HashMap()
-        event["event"] = "onClickStopFullscreen"
+        event["event"] = "onEventClickStopFullscreen"
         event["reply"] = reply
         reply["url"] = url
         reply["title"] = objects[0]
@@ -73,10 +73,10 @@ class CustomVideoAllCallBack() {
     }
 
     //点击了暂停状态下的开始按键--->播放，objects[0]是title，object[1]是当前所处播放器（全屏或非全屏）
-     fun onClickResume(sink: EventChannel.EventSink,url: String, vararg objects: Any) {
+     fun onClickResume(sink: QueuingEventSink,url: String, vararg objects: Any) {
         val event: MutableMap<String, Any> = HashMap()
         val reply: MutableMap<String, Any> = HashMap()
-        event["event"] = "onClickResume"
+        event["event"] = "onEventClickResume"
         event["reply"] = reply
         reply["url"] = url
         reply["title"] = objects[0]
@@ -85,10 +85,10 @@ class CustomVideoAllCallBack() {
     }
 
     //点击了全屏暂停状态下的开始按键--->播放，objects[0]是title，object[1]是当前所处播放器（全屏或非全屏）
-     fun onClickResumeFullscreen(sink: EventChannel.EventSink,url: String, vararg objects: Any) {
+     fun onClickResumeFullscreen(sink: QueuingEventSink,url: String, vararg objects: Any) {
         val event: MutableMap<String, Any> = HashMap()
         val reply: MutableMap<String, Any> = HashMap()
-        event["event"] = "onClickResumeFullscreen"
+        event["event"] = "onEventClickResumeFullscreen"
         event["reply"] = reply
         reply["url"] = url
         reply["title"] = objects[0]
@@ -97,10 +97,10 @@ class CustomVideoAllCallBack() {
     }
 
     //点击了空白弹出seekbar，objects[0]是title，object[1]是当前所处播放器（全屏或非全屏）
-     fun onClickSeekbar(sink: EventChannel.EventSink,url: String, vararg objects: Any) {
+     fun onClickSeekbar(sink: QueuingEventSink,url: String, vararg objects: Any) {
         val event: MutableMap<String, Any> = HashMap()
         val reply: MutableMap<String, Any> = HashMap()
-        event["event"] = "onClickSeekbar"
+        event["event"] = "onEventClickSeekbar"
         event["reply"] = reply
         reply["url"] = url
         reply["title"] = objects[0]
@@ -109,10 +109,10 @@ class CustomVideoAllCallBack() {
     }
 
     //点击了全屏的seekbar，objects[0]是title，object[1]是当前所处播放器（全屏或非全屏）
-     fun onClickSeekbarFullscreen(sink: EventChannel.EventSink,url: String, vararg objects: Any) {
+     fun onClickSeekbarFullscreen(sink: QueuingEventSink,url: String, vararg objects: Any) {
         val event: MutableMap<String, Any> = HashMap()
         val reply: MutableMap<String, Any> = HashMap()
-        event["event"] = "onClickSeekbarFullscreen"
+        event["event"] = "onEventClickSeekbarFullscreen"
         event["reply"] = reply
         reply["url"] = url
         reply["title"] = objects[0]
@@ -121,10 +121,10 @@ class CustomVideoAllCallBack() {
     }
 
     //播放完了，objects[0]是title，object[1]是当前所处播放器（全屏或非全屏）
-     fun onAutoComplete(sink: EventChannel.EventSink,url: String, vararg objects: Any) {
+     fun onAutoComplete(sink: QueuingEventSink,url: String, vararg objects: Any) {
         val event: MutableMap<String, Any> = HashMap()
         val reply: MutableMap<String, Any> = HashMap()
-        event["event"] = "onAutoComplete"
+        event["event"] = "onEventAutoComplete"
         event["reply"] = reply
         reply["url"] = url
         reply["title"] = objects[0]
@@ -132,10 +132,10 @@ class CustomVideoAllCallBack() {
         sink.success(event)
     }
 
-     fun onEnterFullscreen(sink: EventChannel.EventSink,url: String, vararg objects: Any) {
+     fun onEnterFullscreen(sink: QueuingEventSink,url: String, vararg objects: Any) {
         val event: MutableMap<String, Any> = HashMap()
         val reply: MutableMap<String, Any> = HashMap()
-        event["event"] = "onEnterFullscreen"
+        event["event"] = "onEventEnterFullscreen"
         event["reply"] = reply
         reply["url"] = url
         reply["title"] = objects[0]
@@ -143,10 +143,10 @@ class CustomVideoAllCallBack() {
         sink.success(event)
     }
 
-     fun onQuitFullscreen(sink: EventChannel.EventSink,url: String, vararg objects: Any) {
+     fun onQuitFullscreen(sink: QueuingEventSink,url: String, vararg objects: Any) {
         val event: MutableMap<String, Any> = HashMap()
         val reply: MutableMap<String, Any> = HashMap()
-        event["event"] = "onQuitFullscreen"
+        event["event"] = "onEventQuitFullscreen"
         event["reply"] = reply
         reply["url"] = url
         reply["title"] = objects[0]
@@ -154,10 +154,10 @@ class CustomVideoAllCallBack() {
         sink.success(event)
     }
 
-     fun onQuitSmallWidget(sink: EventChannel.EventSink,url: String, vararg objects: Any) {
+     fun onQuitSmallWidget(sink: QueuingEventSink,url: String, vararg objects: Any) {
         val event: MutableMap<String, Any> = HashMap()
         val reply: MutableMap<String, Any> = HashMap()
-        event["event"] = "onQuitSmallWidget"
+        event["event"] = "onEventQuitSmallWidget"
         event["reply"] = reply
         reply["url"] = url
         reply["title"] = objects[0]
@@ -165,10 +165,10 @@ class CustomVideoAllCallBack() {
         sink.success(event)
     }
 
-     fun onEnterSmallWidget(sink: EventChannel.EventSink,url: String, vararg objects: Any) {
+     fun onEnterSmallWidget(sink: QueuingEventSink,url: String, vararg objects: Any) {
         val event: MutableMap<String, Any> = HashMap()
         val reply: MutableMap<String, Any> = HashMap()
-        event["event"] = "onEnterSmallWidget"
+        event["event"] = "onEventEnterSmallWidget"
         event["reply"] = reply
         reply["url"] = url
         reply["title"] = objects[0]
@@ -176,10 +176,10 @@ class CustomVideoAllCallBack() {
         sink.success(event)
     }
 
-     fun onTouchScreenSeekVolume(sink: EventChannel.EventSink,url: String, vararg objects: Any) {
+     fun onTouchScreenSeekVolume(sink: QueuingEventSink,url: String, vararg objects: Any) {
         val event: MutableMap<String, Any> = HashMap()
         val reply: MutableMap<String, Any> = HashMap()
-        event["event"] = "onTouchScreenSeekVolume"
+        event["event"] = "onEventTouchScreenSeekVolume"
         event["reply"] = reply
         reply["url"] = url
         reply["title"] = objects[0]
@@ -187,10 +187,10 @@ class CustomVideoAllCallBack() {
         sink.success(event)
     }
 
-     fun onTouchScreenSeekPosition(sink: EventChannel.EventSink,url: String, vararg objects: Any) {
+     fun onTouchScreenSeekPosition(sink: QueuingEventSink,url: String, vararg objects: Any) {
         val event: MutableMap<String, Any> = HashMap()
         val reply: MutableMap<String, Any> = HashMap()
-        event["event"] = "onTouchScreenSeekPosition"
+        event["event"] = "onEventTouchScreenSeekPosition"
         event["reply"] = reply
         reply["url"] = url
         reply["title"] = objects[0]
@@ -198,10 +198,10 @@ class CustomVideoAllCallBack() {
         sink.success(event)
     }
 
-     fun onTouchScreenSeekLight(sink: EventChannel.EventSink,url: String, vararg objects: Any) {
+     fun onTouchScreenSeekLight(sink: QueuingEventSink,url: String, vararg objects: Any) {
         val event: MutableMap<String, Any> = HashMap()
         val reply: MutableMap<String, Any> = HashMap()
-        event["event"] = "onTouchScreenSeekLight"
+        event["event"] = "onEventTouchScreenSeekLight"
         event["reply"] = reply
         reply["url"] = url
         reply["title"] = objects[0]
@@ -209,10 +209,10 @@ class CustomVideoAllCallBack() {
         sink.success(event)
     }
 
-     fun onPlayError(sink: EventChannel.EventSink,url: String, vararg objects: Any) {
+     fun onPlayError(sink: QueuingEventSink,url: String, vararg objects: Any) {
         val event: MutableMap<String, Any> = HashMap()
         val reply: MutableMap<String, Any> = HashMap()
-        event["event"] = "onPlayError"
+        event["event"] = "onEventPlayError"
         event["reply"] = reply
         reply["url"] = url
         reply["title"] = objects[0]
@@ -220,10 +220,10 @@ class CustomVideoAllCallBack() {
         sink.success(event)
     }
 
-     fun onClickStartThumb(sink: EventChannel.EventSink,url: String, vararg objects: Any) {
+     fun onClickStartThumb(sink: QueuingEventSink,url: String, vararg objects: Any) {
         val event: MutableMap<String, Any> = HashMap()
         val reply: MutableMap<String, Any> = HashMap()
-        event["event"] = "onClickStartThumb"
+        event["event"] = "onEventClickStartThumb"
         event["reply"] = reply
         reply["url"] = url
         reply["title"] = objects[0]
@@ -231,10 +231,10 @@ class CustomVideoAllCallBack() {
         sink.success(event)
     }
 
-     fun onClickBlank(sink: EventChannel.EventSink,url: String, vararg objects: Any) {
+     fun onClickBlank(sink: QueuingEventSink,url: String, vararg objects: Any) {
         val event: MutableMap<String, Any> = HashMap()
         val reply: MutableMap<String, Any> = HashMap()
-        event["event"] = "onClickBlank"
+        event["event"] = "onEventClickBlank"
         event["reply"] = reply
         reply["url"] = url
         reply["title"] = objects[0]
@@ -242,10 +242,10 @@ class CustomVideoAllCallBack() {
         sink.success(event)
     }
 
-     fun onClickBlankFullscreen(sink: EventChannel.EventSink,url: String, vararg objects: Any) {
+     fun onClickBlankFullscreen(sink: QueuingEventSink,url: String, vararg objects: Any) {
         val event: MutableMap<String, Any> = HashMap()
         val reply: MutableMap<String, Any> = HashMap()
-        event["event"] = "onClickBlankFullscreen"
+        event["event"] = "onEventClickBlankFullscreen"
         event["reply"] = reply
         reply["url"] = url
         reply["title"] = objects[0]
@@ -253,10 +253,10 @@ class CustomVideoAllCallBack() {
         sink.success(event)
     }
 
-     fun onComplete(sink: EventChannel.EventSink,url: String, vararg objects: Any) {
+     fun onComplete(sink: QueuingEventSink,url: String, vararg objects: Any) {
         val event: MutableMap<String, Any> = HashMap()
         val reply: MutableMap<String, Any> = HashMap()
-        event["event"] = "onComplete"
+        event["event"] = "onEventComplete"
         event["reply"] = reply
         reply["url"] = url
         reply["title"] = objects[0]
@@ -264,10 +264,10 @@ class CustomVideoAllCallBack() {
         sink.success(event)
     }
 
-     fun onProgress(sink: EventChannel.EventSink,progress: Long, secProgress: Long, currentPosition: Long, duration: Long) {
+     fun onProgress(sink: QueuingEventSink,progress: Long, secProgress: Long, currentPosition: Long, duration: Long) {
         val event: MutableMap<String, Any> = HashMap()
         val reply: MutableMap<String, Any> = HashMap()
-        event["event"] = "onProgress"
+        event["event"] = "onEventProgress"
         event["reply"] = reply
         reply["duration"] = duration
         reply["currentPosition"] = currentPosition

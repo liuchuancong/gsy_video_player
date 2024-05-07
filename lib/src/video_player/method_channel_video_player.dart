@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/foundation.dart';
 import 'video_player_platform_interface.dart';
+import 'package:gsy_video_player/gsy_video_player.dart';
 import 'package:gsy_video_player/src/builder/video_option_builder.dart';
 import 'package:gsy_video_player/src/configuration/player_video_type.dart';
 import 'package:gsy_video_player/src/configuration/player_video_show_type.dart';
@@ -289,98 +290,103 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
   @override
   Stream<VideoEvent> videoEventsFor() {
     return eventChannelFor().receiveBroadcastStream().map((dynamic event) {
-      print(event.toString());
       late Map<dynamic, dynamic> map;
       if (event is Map) {
         map = event;
       }
       final String? eventType = map["event"] as String?;
-      final String? key = map["key"] as String?;
       switch (eventType) {
         case 'initialized':
-          double width = 0;
-          double height = 0;
-
-          try {
-            if (map.containsKey("width")) {
-              final num widthNum = map["width"] as num;
-              width = widthNum.toDouble();
-            }
-            if (map.containsKey("height")) {
-              final num heightNum = map["height"] as num;
-              height = heightNum.toDouble();
-            }
-          } catch (exception) {
-            debugPrint(exception.toString());
-          }
-
-          final Size size = Size(width, height);
-
+          return VideoEvent(eventType: VideoEventType.initialized);
+        case 'onEventStartPrepared':
+          return VideoEvent(eventType: VideoEventType.onEventStartPrepared);
+        case 'onEventPrepared':
+          return VideoEvent(eventType: VideoEventType.onEventPrepared);
+        case 'onEventClickStartIcon':
+          return VideoEvent(eventType: VideoEventType.onEventClickStartIcon);
+        case 'onEventClickStartError':
+          return VideoEvent(eventType: VideoEventType.onEventClickStartError);
+        case 'onEventClickStop':
+          return VideoEvent(eventType: VideoEventType.onEventClickStop);
+        case 'onEventClickStopFullscreen':
+          return VideoEvent(eventType: VideoEventType.onEventClickStopFullscreen);
+        case 'onEventClickResume':
+          return VideoEvent(eventType: VideoEventType.onEventClickResume);
+        case 'onEventClickResumeFullscreen':
+          return VideoEvent(eventType: VideoEventType.onEventClickResumeFullscreen);
+        case 'onEventClickSeekbar':
+          return VideoEvent(eventType: VideoEventType.onEventClickSeekbar);
+        case 'onEventClickSeekbarFullscreen':
+          return VideoEvent(eventType: VideoEventType.onEventClickSeekbarFullscreen);
+        case 'onEventAutoComplete':
+          return VideoEvent(eventType: VideoEventType.onEventAutoComplete);
+        case 'onEventEnterFullscreen':
+          return VideoEvent(eventType: VideoEventType.onEventEnterFullscreen);
+        case 'onEventQuitFullscreen':
+          return VideoEvent(eventType: VideoEventType.onEventQuitFullscreen);
+        case 'onEventQuitSmallWidget':
+          return VideoEvent(eventType: VideoEventType.onEventQuitSmallWidget);
+        case 'onEventEnterSmallWidget':
+          return VideoEvent(eventType: VideoEventType.onEventEnterSmallWidget);
+        case 'onEventTouchScreenSeekVolume':
+          return VideoEvent(eventType: VideoEventType.onEventTouchScreenSeekVolume);
+        case 'onEventTouchScreenSeekPosition':
+          return VideoEvent(eventType: VideoEventType.onEventTouchScreenSeekPosition);
+        case 'onEventTouchScreenSeekLight':
+          return VideoEvent(eventType: VideoEventType.onEventTouchScreenSeekLight);
+        case 'onEventPlayError':
+          return VideoEvent(eventType: VideoEventType.onEventPlayError);
+        case 'onEventClickStartThumb':
+          return VideoEvent(eventType: VideoEventType.onEventClickStartThumb);
+        case 'onEventClickBlank':
+          return VideoEvent(eventType: VideoEventType.onEventClickBlank);
+        case 'onEventClickBlankFullscreen':
+          return VideoEvent(eventType: VideoEventType.onEventClickBlankFullscreen);
+        case 'onEventComplete':
+          return VideoEvent(eventType: VideoEventType.onEventComplete);
+        case 'onEventProgress':
+          final int position = map["currentPosition"] as int;
+          final int duration = map["duration"] as int;
           return VideoEvent(
-            eventType: VideoEventType.initialized,
-            key: key,
-            duration: Duration(milliseconds: map['duration'] as int),
-            size: size,
+            eventType: VideoEventType.onEventProgress,
+            position: Duration(milliseconds: position),
+            duration: Duration(milliseconds: duration),
           );
-        case 'completed':
+        case 'onListenerPrepared':
+          return VideoEvent(eventType: VideoEventType.onListenerPrepared);
+        case 'onListenerAutoCompletion':
+          return VideoEvent(eventType: VideoEventType.onListenerAutoCompletion);
+        case 'onListenerCompletion':
+          return VideoEvent(eventType: VideoEventType.onListenerCompletion);
+        case 'onListenerBufferingUpdate':
+          final int percent = map["percent"] as int;
           return VideoEvent(
-            eventType: VideoEventType.completed,
-            key: key,
+            eventType: VideoEventType.onListenerBufferingUpdate,
+            percent: percent,
           );
-        case 'bufferingUpdate':
-          final List<dynamic> values = map['values'] as List;
-
-          return VideoEvent(
-            eventType: VideoEventType.bufferingUpdate,
-            key: key,
-            buffered: values.map<DurationRange>(_toDurationRange).toList(),
-          );
-        case 'bufferingStart':
-          return VideoEvent(
-            eventType: VideoEventType.bufferingStart,
-            key: key,
-          );
-        case 'bufferingEnd':
-          return VideoEvent(
-            eventType: VideoEventType.bufferingEnd,
-            key: key,
-          );
-
-        case 'play':
-          return VideoEvent(
-            eventType: VideoEventType.play,
-            key: key,
-          );
-
-        case 'pause':
-          return VideoEvent(
-            eventType: VideoEventType.pause,
-            key: key,
-          );
-
-        case 'seek':
-          return VideoEvent(
-            eventType: VideoEventType.seek,
-            key: key,
-            position: Duration(milliseconds: map['position'] as int),
-          );
-
-        case 'pipStart':
-          return VideoEvent(
-            eventType: VideoEventType.pipStart,
-            key: key,
-          );
-
-        case 'pipStop':
-          return VideoEvent(
-            eventType: VideoEventType.pipStop,
-            key: key,
-          );
-
+        case 'onListenerSeekComplete':
+          return VideoEvent(eventType: VideoEventType.onListenerSeekComplete);
+        case 'onListenerError':
+          final int what = map["what"] as int;
+          final int extra = map["extra"] as int;
+          return VideoEvent(eventType: VideoEventType.onListenerError, what: what, extra: extra);
+        case 'onListenerInfo':
+          final int what = map["what"] as int;
+          final int extra = map["extra"] as int;
+          return VideoEvent(eventType: VideoEventType.onListenerInfo, what: what, extra: extra);
+        case 'onListenerVideoSizeChanged':
+          return VideoEvent(eventType: VideoEventType.onListenerVideoSizeChanged);
+        case 'onListenerBackFullscreen':
+          return VideoEvent(eventType: VideoEventType.onListenerBackFullscreen);
+        case 'onListenerVideoPause':
+          return VideoEvent(eventType: VideoEventType.onListenerVideoPause);
+        case 'onListenerVideoResume':
+          return VideoEvent(eventType: VideoEventType.onListenerVideoResume);
+        case 'onListenerVideoResumeWithSeek':
+          return VideoEvent(eventType: VideoEventType.onListenerVideoResumeWithSeek);
         default:
           return VideoEvent(
             eventType: VideoEventType.unknown,
-            key: key,
           );
       }
     });

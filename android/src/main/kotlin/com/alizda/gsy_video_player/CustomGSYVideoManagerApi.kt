@@ -175,7 +175,6 @@ class CustomGSYVideoManagerApi(private val context: Context) {
             }
 
             @OptIn(UnstableApi::class) override fun getHttpDataSourceFactory(userAgent: String?, listener: TransferListener?, connectTimeoutMillis: Int, readTimeoutMillis: Int, mapHeadData: MutableMap<String, String>?, allowCrossProtocolRedirects: Boolean): DataSource.Factory? {
-
                 return ExoSourceManager.getDataSourceFactory(context,true,null,mapHeadData)
             }
 
