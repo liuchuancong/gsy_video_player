@@ -369,7 +369,7 @@ abstract class VideoPlayerPlatform {
     throw UnimplementedError('setThumbPlay() has not been implemented.');
   }
 
-  Future<void> isHideKeyBoard() {
+  Future<bool> isHideKeyBoard() {
     throw UnimplementedError('isHideKeyBoard() has not been implemented.');
   }
 
@@ -377,7 +377,7 @@ abstract class VideoPlayerPlatform {
     throw UnimplementedError('setHideKeyBoard() has not been implemented.');
   }
 
-  Future<void> isNeedShowWifiTip() {
+  Future<bool> isNeedShowWifiTip() {
     throw UnimplementedError('isNeedShowWifiTip() has not been implemented.');
   }
 
@@ -385,7 +385,7 @@ abstract class VideoPlayerPlatform {
     throw UnimplementedError('setNeedShowWifiTip() has not been implemented.');
   }
 
-  Future<void> isTouchWiget() {
+  Future<bool> isTouchWiget() {
     throw UnimplementedError('isTouchWiget() has not been implemented.');
   }
 
@@ -401,7 +401,7 @@ abstract class VideoPlayerPlatform {
     throw UnimplementedError('getSeekRatio() has not been implemented.');
   }
 
-  Future<void> isNeedLockFull() {
+  Future<bool> isNeedLockFull() {
     throw UnimplementedError('isNeedLockFull() has not been implemented.');
   }
 
@@ -425,7 +425,7 @@ abstract class VideoPlayerPlatform {
     throw UnimplementedError('getSeekOnStart() has not been implemented.');
   }
 
-  Future<void> isIfCurrentIsFullscreen() {
+  Future<bool> isIfCurrentIsFullscreen() {
     throw UnimplementedError('isIfCurrentIsFullscreen() has not been implemented.');
   }
 
@@ -492,7 +492,7 @@ abstract class VideoPlayerPlatform {
     throw UnimplementedError('setAutoFullWithSize() has not been implemented.');
   }
 
-  Future<void> getAutoFullWithSize() {
+  Future<bool> getAutoFullWithSize() {
     throw UnimplementedError('getAutoFullWithSize() has not been implemented.');
   }
 
