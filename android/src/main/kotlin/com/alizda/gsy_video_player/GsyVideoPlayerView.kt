@@ -35,7 +35,10 @@ class GsyVideoPlayerView(private val context: Context, messenger: BinaryMessenge
         event.setStreamHandler(this)
         videoPlayer.setGSYVideoProgressListener(this)
         videoPlayer.setVideoAllCallBack(this)
-        GSYVideoManager.instance().setListener(this)
+        if (GSYVideoManager.instance().listener() != null) {
+            GSYVideoManager.instance().listener().onCompletion();
+        }
+        GSYVideoManager.instance().setListener(this);
     }
     override fun getView(): View = videoPlayer
     override fun dispose() {
