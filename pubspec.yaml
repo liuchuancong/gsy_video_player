@@ -1,7 +1,7 @@
 name: gsy_video_player
 description: "A new Flutter plugin project."
 version: 0.0.1
-
+homepage: https://github.com/liuchuancong/gsy_video_player
 environment:
   sdk: '>=3.3.0 <4.0.0'
   flutter: '>=3.3.0'
