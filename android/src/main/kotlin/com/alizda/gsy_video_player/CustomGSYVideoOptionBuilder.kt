@@ -1,6 +1,7 @@
 package com.alizda.gsy_video_player
 
 import android.content.res.AssetManager
+import android.util.Log
 import android.view.View
 import com.shuyu.gsyvideoplayer.builder.GSYVideoOptionBuilder
 import io.flutter.plugin.common.MethodCall
@@ -9,6 +10,7 @@ import java.io.File
 
 class CustomGSYVideoOptionBuilder(private var videoPlayer: CustomVideoPlayer): GSYVideoOptionBuilder() {
     fun setVideoConfig(call: MethodCall, result: MethodChannel.Result) {
+        videoPlayer.release()
         val videoOptions = call.argument<Map<String, Any?>>("builderParams")!!
         val url = GsyVideoPlayerView.getParameter(videoOptions, "url", "")
         val playVideoDataSourceType = GsyVideoPlayerView.getParameter(videoOptions, "playVideoDataSourceType", 0)

@@ -3,7 +3,6 @@ package com.alizda.gsy_video_player
 import android.content.Context
 import android.view.View
 import com.shuyu.gsyvideoplayer.GSYVideoManager
-import com.shuyu.gsyvideoplayer.listener.GSYMediaPlayerListener
 import com.shuyu.gsyvideoplayer.listener.GSYVideoProgressListener
 import com.shuyu.gsyvideoplayer.listener.VideoAllCallBack
 import io.flutter.plugin.common.BinaryMessenger
@@ -14,15 +13,13 @@ import io.flutter.plugin.common.PluginRegistry
 import io.flutter.plugin.platform.PlatformView
 
 
-class GsyVideoPlayerView(private val context: Context, messenger: BinaryMessenger, private val id: Int, private val params: Map<*, *>?) : PlatformView, MethodChannel.MethodCallHandler, EventChannel.StreamHandler, PluginRegistry.RequestPermissionsResultListener, VideoAllCallBack, GSYVideoProgressListener, GSYMediaPlayerListener {
+class GsyVideoPlayerView(private val context: Context, messenger: BinaryMessenger, private val id: Int, private val params: Map<*, *>?) : PlatformView, MethodChannel.MethodCallHandler, EventChannel.StreamHandler, PluginRegistry.RequestPermissionsResultListener, VideoAllCallBack, GSYVideoProgressListener {
 
     private val channel: MethodChannel = MethodChannel(messenger, METHODS_CHANNEL)
-    private val eventSink = QueuingEventSink()
     private var event: EventChannel = EventChannel(messenger, EVENTS_CHANNEL + id)
     private var videoPlayer: CustomVideoPlayer = CustomVideoPlayer(context)
     private var gsyVideoOptionBuilder: CustomGSYVideoOptionBuilder = CustomGSYVideoOptionBuilder(videoPlayer)
     private var customVideoAllCallBack: CustomVideoAllCallBack = CustomVideoAllCallBack(videoPlayer)
-    private var customGSYMediaPlayerListener: CustomGSYMediaPlayerListener = CustomGSYMediaPlayerListener(videoPlayer)
     private var customBasicApi: CustomBasicApi = CustomBasicApi(videoPlayer,context)
     private var orientationUtils: CustomOrientationUtils = CustomOrientationUtils(videoPlayer, context)
     private  var customGSYVideoManagerApi :CustomGSYVideoManagerApi = CustomGSYVideoManagerApi(context)
@@ -35,10 +32,6 @@ class GsyVideoPlayerView(private val context: Context, messenger: BinaryMessenge
         event.setStreamHandler(this)
         videoPlayer.setGSYVideoProgressListener(this)
         videoPlayer.setVideoAllCallBack(this)
-        if (GSYVideoManager.instance().listener() != null) {
-            GSYVideoManager.instance().listener().onCompletion();
-        }
-        GSYVideoManager.instance().setListener(this);
     }
     override fun getView(): View = videoPlayer
     override fun dispose() {
@@ -68,6 +61,7 @@ class GsyVideoPlayerView(private val context: Context, messenger: BinaryMessenge
     companion object {
 
         const val TAG = "GSY_VIDEO_PLAYER"
+        val eventSink = QueuingEventSink()
         private const val METHODS_CHANNEL = "gsy_video_player_channel/platform_view_methods"
         private const val EVENTS_CHANNEL = "gsy_video_player_channel/platform_view_events"
         var isInitialized = false
@@ -186,55 +180,5 @@ class GsyVideoPlayerView(private val context: Context, messenger: BinaryMessenge
         customVideoAllCallBack.onProgress(eventSink, progress, secProgress, currentPosition, duration)
     }
 
-    override fun onPrepared() {
-        if (!isInitialized) {
-            isInitialized = true
-            customGSYMediaPlayerListener.sendInitialized(eventSink)
-        }
-        customGSYMediaPlayerListener.onPrepared(eventSink)
-    }
 
-    override fun onAutoCompletion() {
-        customGSYMediaPlayerListener.onAutoCompletion(eventSink)
-    }
-
-    override fun onCompletion() {
-        customGSYMediaPlayerListener.onCompletion(eventSink)
-    }
-
-    override fun onBufferingUpdate(percent: Int) {
-        customGSYMediaPlayerListener.onBufferingUpdate(eventSink,percent)
-    }
-
-    override fun onSeekComplete() {
-        customGSYMediaPlayerListener.onSeekComplete(eventSink)
-    }
-
-    override fun onError(what: Int, extra: Int) {
-        customGSYMediaPlayerListener.onError(eventSink,what,extra)
-    }
-
-    override fun onInfo(what: Int, extra: Int) {
-        customGSYMediaPlayerListener.onInfo(eventSink,what,extra)
-    }
-
-    override fun onVideoSizeChanged() {
-        customGSYMediaPlayerListener.onVideoSizeChanged(eventSink)
-    }
-
-    override fun onBackFullscreen() {
-        customGSYMediaPlayerListener.onBackFullscreen(eventSink)
-    }
-
-    override fun onVideoPause() {
-        customGSYMediaPlayerListener.onVideoPause(eventSink)
-    }
-
-    override fun onVideoResume() {
-        customGSYMediaPlayerListener.onVideoResume(eventSink)
-    }
-
-    override fun onVideoResume(seek: Boolean) {
-        customGSYMediaPlayerListener.onVideoResume(eventSink,seek)
-    }
 }

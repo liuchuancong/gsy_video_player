@@ -37,9 +37,9 @@ class VideoEvent {
 
   final bool? seek;
 
-  final double? videoSarDen;
+  final int? videoSarDen;
 
-  final double? videoSarNum;
+  final int? videoSarNum;
 
   final VideoPlayState playState;
 

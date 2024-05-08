@@ -7,6 +7,7 @@ import android.graphics.Color
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
+import com.alizda.gsy_video_player.GsyVideoPlayerView.Companion.eventSink
 import com.shuyu.gsyvideoplayer.utils.Debuger
 import com.shuyu.gsyvideoplayer.utils.OrientationUtils
 import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer
@@ -26,6 +27,7 @@ import master.flame.danmaku.ui.widget.DanmakuView
 import java.io.File
 
 class CustomVideoPlayer : StandardGSYVideoPlayer {
+    private var customGSYMediaPlayerListener: CustomGSYMediaPlayerListener = CustomGSYMediaPlayerListener(this)
     private var mParser: BaseDanmakuParser? = null //解析器对象
     private var danmakuView: IDanmakuView? = null //弹幕view
     private var danmakuContext: DanmakuContext? = null
@@ -47,44 +49,12 @@ class CustomVideoPlayer : StandardGSYVideoPlayer {
 //        initDanmaku()
     }
 
-    override fun onPrepared() {
-        super.onPrepared()
-        onPrepareDanmaku(this)
-    }
-
-    override fun onVideoPause() {
-        super.onVideoPause()
-        danmakuOnPause()
-    }
-
-    override fun onVideoResume(isResume: Boolean) {
-        super.onVideoResume(isResume)
-        danmakuOnResume()
-    }
-
     override fun clickStartIcon() {
         super.clickStartIcon()
         if (mCurrentState == CURRENT_STATE_PLAYING) {
             danmakuOnResume()
         } else if (mCurrentState == CURRENT_STATE_PAUSE) {
             danmakuOnPause()
-        }
-    }
-
-    override fun onCompletion() {
-        super.onCompletion()
-        releaseDanmaku(this)
-    }
-
-    override fun onSeekComplete() {
-        super.onSeekComplete()
-        val time = mProgressBar.progress * duration / 100
-        //如果已经初始化过的，直接seek到对于位置
-        if (mHadPlay && danmakuView != null && danmakuView!!.isPrepared) {
-            resolveDanmakuSeek(this, time)
-        } else if (mHadPlay && danmakuView != null && !danmakuView!!.isPrepared) {
-            //如果没有初始化过的，记录位置等待
-            danmakuStartSeekPosition = time
         }
     }
 
@@ -272,7 +242,84 @@ class CustomVideoPlayer : StandardGSYVideoPlayer {
         orientationUtils: OrientationUtils?
     ) {
         super.onConfigurationChanged(activity, newConfig, orientationUtils)
-
+        customGSYMediaPlayerListener.onConfigurationChanged(eventSink)
     }
 
+
+
+    override fun onPrepared() {
+        super.onPrepared()
+        if (!GsyVideoPlayerView.isInitialized) {
+            GsyVideoPlayerView.isInitialized = true
+            customGSYMediaPlayerListener.sendInitialized(eventSink)
+        }
+        customGSYMediaPlayerListener.onPrepared(eventSink)
+        onPrepareDanmaku(this)
+    }
+
+    override fun onAutoCompletion() {
+        super.onAutoCompletion()
+        customGSYMediaPlayerListener.onAutoCompletion(eventSink)
+    }
+
+    override fun onCompletion() {
+        super.onCompletion()
+        customGSYMediaPlayerListener.onCompletion(eventSink)
+        releaseDanmaku(this)
+    }
+
+    override fun onBufferingUpdate(percent: Int) {
+        super.onBufferingUpdate(percent)
+        customGSYMediaPlayerListener.onBufferingUpdate(eventSink,percent)
+    }
+
+    override fun onSeekComplete() {
+        super.onSeekComplete()
+        customGSYMediaPlayerListener.onSeekComplete(eventSink)
+        val time = mProgressBar.progress * duration / 100
+        //如果已经初始化过的，直接seek到对于位置
+        if (mHadPlay && danmakuView != null && danmakuView!!.isPrepared) {
+            resolveDanmakuSeek(this, time)
+        } else if (mHadPlay && danmakuView != null && !danmakuView!!.isPrepared) {
+            //如果没有初始化过的，记录位置等待
+            danmakuStartSeekPosition = time
+        }
+    }
+
+    override fun onError(what: Int, extra: Int) {
+        super.onError(what, extra)
+        customGSYMediaPlayerListener.onError(eventSink,what,extra)
+    }
+
+    override fun onInfo(what: Int, extra: Int) {
+        super.onInfo(what, extra)
+        customGSYMediaPlayerListener.onInfo(eventSink,what,extra)
+    }
+
+    override fun onVideoSizeChanged() {
+        super.onVideoSizeChanged()
+        customGSYMediaPlayerListener.onVideoSizeChanged(eventSink)
+    }
+
+    override fun onBackFullscreen() {
+        super.onBackFullscreen()
+        customGSYMediaPlayerListener.onBackFullscreen(eventSink)
+    }
+
+    override fun onVideoPause() {
+        super.onVideoPause()
+        customGSYMediaPlayerListener.onVideoPause(eventSink)
+    }
+
+    override fun onVideoResume() {
+        super.onVideoResume()
+        customGSYMediaPlayerListener.onVideoResume(eventSink)
+        danmakuOnResume()
+    }
+
+    override fun onVideoResume(seek: Boolean) {
+        super.onVideoResume(seek)
+        customGSYMediaPlayerListener.onVideoResume(eventSink,seek)
+        danmakuOnPause()
+    }
 }

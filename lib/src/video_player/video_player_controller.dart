@@ -215,15 +215,12 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
       case VideoEventType.onListenerVideoPause:
         _postEvent(VideoEventType.onListenerVideoPause);
         break;
-
       case VideoEventType.onListenerVideoResume:
         _postEvent(VideoEventType.onListenerVideoResume);
         break;
-
       case VideoEventType.onListenerVideoResumeWithSeek:
         _postEvent(VideoEventType.onListenerVideoResumeWithSeek);
         break;
-
       case VideoEventType.unknown:
         _postEvent(VideoEventType.unknown);
         break;
@@ -509,6 +506,7 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
   Future<void> _create() async {
     await _videoPlayerPlatform.create();
     _creatingCompleter.complete(null);
+    _initializingCompleter = Completer<void>();
     setEventListener();
   }
 
@@ -526,7 +524,6 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
             size: event.size,
           );
           _initializingCompleter.complete(null);
-          _applyPlayPause();
           break;
         case VideoEventType.onEventStartPrepared:
           value = value.copyWith(isPlaying: false);
@@ -559,7 +556,6 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
         case VideoEventType.onEventEnterFullscreen:
           break;
         case VideoEventType.onEventQuitFullscreen:
-          value = value.copyWith(isPlaying: true);
           break;
         case VideoEventType.onEventQuitSmallWidget:
           break;
@@ -584,6 +580,14 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
           value = value.copyWith(isPlaying: false);
           break;
         case VideoEventType.onEventProgress:
+          value = value.copyWith(
+            isPlaying: event.isPlaying,
+            position: Duration(milliseconds: event.position!.inMilliseconds),
+            duration: Duration(milliseconds: event.duration!.inMilliseconds),
+            playState: event.playState,
+          );
+          break;
+        case VideoEventType.onListenerConfigurationChanged:
           value = value.copyWith(
             isPlaying: event.isPlaying,
             position: Duration(milliseconds: event.position!.inMilliseconds),
@@ -639,6 +643,8 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
             position: Duration(milliseconds: event.position!.inMilliseconds),
             duration: Duration(milliseconds: event.duration!.inMilliseconds),
             playState: event.playState,
+            what: event.what,
+            extra: event.extra,
           );
           break;
         case VideoEventType.onListenerInfo:
@@ -647,6 +653,8 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
             position: Duration(milliseconds: event.position!.inMilliseconds),
             duration: Duration(milliseconds: event.duration!.inMilliseconds),
             playState: event.playState,
+            what: event.what,
+            extra: event.extra,
           );
           break;
         case VideoEventType.onListenerVideoSizeChanged:
@@ -687,6 +695,7 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
             position: Duration(milliseconds: event.position!.inMilliseconds),
             duration: Duration(milliseconds: event.duration!.inMilliseconds),
             playState: event.playState,
+            seek: value.seek,
           );
           break;
         case VideoEventType.unknown:
@@ -720,11 +729,6 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
       isLooping: value.isLooping,
       volume: value.volume,
     );
-
-    if (!_creatingCompleter.isCompleted) await _creatingCompleter.future;
-
-    _initializingCompleter = Completer<void>();
-
     await VideoPlayerPlatform.instance.setVideoOptionBuilder(builder);
   }
 

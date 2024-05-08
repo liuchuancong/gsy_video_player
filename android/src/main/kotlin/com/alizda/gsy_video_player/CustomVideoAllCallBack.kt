@@ -3,11 +3,6 @@ package com.alizda.gsy_video_player
 import com.shuyu.gsyvideoplayer.GSYVideoManager
 
 class CustomVideoAllCallBack(private var videoPlayer: CustomVideoPlayer) {
-
-    private fun getDuration(): Long = videoPlayer.duration
-
-    private fun getPosition(): Int = videoPlayer.playPosition
-
     private fun isPlaying(): Boolean = GSYVideoManager.instance().isPlaying
     private fun getCurrentState(): Int = videoPlayer.currentState
     fun onStartPrepared(sink: QueuingEventSink, url: String, vararg objects: Any) {
@@ -16,8 +11,8 @@ class CustomVideoAllCallBack(private var videoPlayer: CustomVideoPlayer) {
         event["event"] = "onEventStartPrepared"
         event["reply"] = reply
         reply["url"] = url
-        reply["duration"] = getDuration()
-        reply["position"] = getPosition()
+        reply["duration"] = videoDuration
+        reply["position"] = videoPosition
         reply["currentState"] = getCurrentState()
         reply["isPlaying"] = isPlaying()
         sink.success(event)
@@ -29,8 +24,8 @@ class CustomVideoAllCallBack(private var videoPlayer: CustomVideoPlayer) {
         event["event"] = "onEventPrepared"
         event["reply"] = reply
         reply["url"] = url
-        reply["duration"] = getDuration()
-        reply["position"] = getPosition()
+        reply["duration"] = videoDuration
+        reply["position"] = videoPosition
         reply["currentState"] = getCurrentState()
         reply["isPlaying"] = isPlaying()
         sink.success(event)
@@ -43,8 +38,8 @@ class CustomVideoAllCallBack(private var videoPlayer: CustomVideoPlayer) {
         event["event"] = "onEventClickStartIcon"
         event["reply"] = reply
         reply["url"] = url
-        reply["duration"] = getDuration()
-        reply["position"] = getPosition()
+        reply["duration"] = videoDuration
+        reply["position"] = videoPosition
         reply["currentState"] = getCurrentState()
         reply["isPlaying"] = isPlaying()
         sink.success(event)
@@ -57,8 +52,8 @@ class CustomVideoAllCallBack(private var videoPlayer: CustomVideoPlayer) {
         event["event"] = "onEventClickStartError"
         event["reply"] = reply
         reply["url"] = url
-        reply["duration"] = getDuration()
-        reply["position"] = getPosition()
+        reply["duration"] = videoDuration
+        reply["position"] = videoPosition
         reply["currentState"] = getCurrentState()
         reply["isPlaying"] = isPlaying()
         sink.success(event)
@@ -71,8 +66,8 @@ class CustomVideoAllCallBack(private var videoPlayer: CustomVideoPlayer) {
         event["event"] = "onEventClickStop"
         event["reply"] = reply
         reply["url"] = url
-        reply["duration"] = getDuration()
-        reply["position"] = getPosition()
+        reply["duration"] = videoDuration
+        reply["position"] = videoPosition
         reply["currentState"] = getCurrentState()
         reply["isPlaying"] = isPlaying()
         sink.success(event)
@@ -84,8 +79,8 @@ class CustomVideoAllCallBack(private var videoPlayer: CustomVideoPlayer) {
         event["event"] = "onEventClickStopFullscreen"
         event["reply"] = reply
         reply["url"] = url
-        reply["duration"] = getDuration()
-        reply["position"] = getPosition()
+        reply["duration"] = videoDuration
+        reply["position"] = videoPosition
         reply["currentState"] = getCurrentState()
         reply["isPlaying"] = isPlaying()
         sink.success(event)
@@ -98,8 +93,8 @@ class CustomVideoAllCallBack(private var videoPlayer: CustomVideoPlayer) {
         event["event"] = "onEventClickResume"
         event["reply"] = reply
         reply["url"] = url
-        reply["duration"] = getDuration()
-        reply["position"] = getPosition()
+        reply["duration"] = videoDuration
+        reply["position"] = videoPosition
         reply["currentState"] = getCurrentState()
         reply["isPlaying"] = isPlaying()
         sink.success(event)
@@ -112,8 +107,8 @@ class CustomVideoAllCallBack(private var videoPlayer: CustomVideoPlayer) {
         event["event"] = "onEventClickResumeFullscreen"
         event["reply"] = reply
         reply["url"] = url
-        reply["duration"] = getDuration()
-        reply["position"] = getPosition()
+        reply["duration"] = videoDuration
+        reply["position"] = videoPosition
         reply["currentState"] = getCurrentState()
         reply["isPlaying"] = isPlaying()
         sink.success(event)
@@ -126,8 +121,8 @@ class CustomVideoAllCallBack(private var videoPlayer: CustomVideoPlayer) {
         event["event"] = "onEventClickSeekbar"
         event["reply"] = reply
         reply["url"] = url
-        reply["duration"] = getDuration()
-        reply["position"] = getPosition()
+        reply["duration"] = videoDuration
+        reply["position"] = videoPosition
         reply["currentState"] = getCurrentState()
         reply["isPlaying"] = isPlaying()
         sink.success(event)
@@ -140,8 +135,8 @@ class CustomVideoAllCallBack(private var videoPlayer: CustomVideoPlayer) {
         event["event"] = "onEventClickSeekbarFullscreen"
         event["reply"] = reply
         reply["url"] = url
-        reply["duration"] = getDuration()
-        reply["position"] = getPosition()
+        reply["duration"] = videoDuration
+        reply["position"] = videoPosition
         reply["currentState"] = getCurrentState()
         reply["isPlaying"] = isPlaying()
         sink.success(event)
@@ -154,8 +149,8 @@ class CustomVideoAllCallBack(private var videoPlayer: CustomVideoPlayer) {
         event["event"] = "onEventAutoComplete"
         event["reply"] = reply
         reply["url"] = url
-        reply["duration"] = getDuration()
-        reply["position"] = getPosition()
+        reply["duration"] = videoDuration
+        reply["position"] = videoPosition
         reply["currentState"] = getCurrentState()
         reply["isPlaying"] = isPlaying()
         sink.success(event)
@@ -167,8 +162,8 @@ class CustomVideoAllCallBack(private var videoPlayer: CustomVideoPlayer) {
         event["event"] = "onEventEnterFullscreen"
         event["reply"] = reply
         reply["url"] = url
-        reply["duration"] = getDuration()
-        reply["position"] = getPosition()
+        reply["duration"] = videoDuration
+        reply["position"] = videoPosition
         reply["currentState"] = getCurrentState()
         reply["isPlaying"] = isPlaying()
         sink.success(event)
@@ -180,8 +175,8 @@ class CustomVideoAllCallBack(private var videoPlayer: CustomVideoPlayer) {
         event["event"] = "onEventQuitFullscreen"
         event["reply"] = reply
         reply["url"] = url
-        reply["duration"] = getDuration()
-        reply["position"] = getPosition()
+        reply["duration"] = videoDuration
+        reply["position"] = videoPosition
         reply["currentState"] = getCurrentState()
         reply["isPlaying"] = isPlaying()
         sink.success(event)
@@ -193,8 +188,8 @@ class CustomVideoAllCallBack(private var videoPlayer: CustomVideoPlayer) {
         event["event"] = "onEventQuitSmallWidget"
         event["reply"] = reply
         reply["url"] = url
-        reply["duration"] = getDuration()
-        reply["position"] = getPosition()
+        reply["duration"] = videoDuration
+        reply["position"] = videoPosition
         reply["currentState"] = getCurrentState()
         reply["isPlaying"] = isPlaying()
         sink.success(event)
@@ -206,8 +201,8 @@ class CustomVideoAllCallBack(private var videoPlayer: CustomVideoPlayer) {
         event["event"] = "onEventEnterSmallWidget"
         event["reply"] = reply
         reply["url"] = url
-        reply["duration"] = getDuration()
-        reply["position"] = getPosition()
+        reply["duration"] = videoDuration
+        reply["position"] = videoPosition
         reply["currentState"] = getCurrentState()
         reply["isPlaying"] = isPlaying()
         sink.success(event)
@@ -219,8 +214,8 @@ class CustomVideoAllCallBack(private var videoPlayer: CustomVideoPlayer) {
         event["event"] = "onEventTouchScreenSeekVolume"
         event["reply"] = reply
         reply["url"] = url
-        reply["duration"] = getDuration()
-        reply["position"] = getPosition()
+        reply["duration"] = videoDuration
+        reply["position"] = videoPosition
         reply["currentState"] = getCurrentState()
         reply["isPlaying"] = isPlaying()
         sink.success(event)
@@ -232,8 +227,8 @@ class CustomVideoAllCallBack(private var videoPlayer: CustomVideoPlayer) {
         event["event"] = "onEventTouchScreenSeekPosition"
         event["reply"] = reply
         reply["url"] = url
-        reply["duration"] = getDuration()
-        reply["position"] = getPosition()
+        reply["duration"] = videoDuration
+        reply["position"] = videoPosition
         reply["currentState"] = getCurrentState()
         reply["isPlaying"] = isPlaying()
         sink.success(event)
@@ -245,8 +240,8 @@ class CustomVideoAllCallBack(private var videoPlayer: CustomVideoPlayer) {
         event["event"] = "onEventTouchScreenSeekLight"
         event["reply"] = reply
         reply["url"] = url
-        reply["duration"] = getDuration()
-        reply["position"] = getPosition()
+        reply["duration"] = videoDuration
+        reply["position"] = videoPosition
         reply["currentState"] = getCurrentState()
         reply["isPlaying"] = isPlaying()
         sink.success(event)
@@ -258,8 +253,8 @@ class CustomVideoAllCallBack(private var videoPlayer: CustomVideoPlayer) {
         event["event"] = "onEventPlayError"
         event["reply"] = reply
         reply["url"] = url
-        reply["duration"] = getDuration()
-        reply["position"] = getPosition()
+        reply["duration"] = videoDuration
+        reply["position"] = videoPosition
         reply["currentState"] = getCurrentState()
         reply["isPlaying"] = isPlaying()
         sink.success(event)
@@ -271,8 +266,8 @@ class CustomVideoAllCallBack(private var videoPlayer: CustomVideoPlayer) {
         event["event"] = "onEventClickStartThumb"
         event["reply"] = reply
         reply["url"] = url
-        reply["duration"] = getDuration()
-        reply["position"] = getPosition()
+        reply["duration"] = videoDuration
+        reply["position"] = videoPosition
         reply["currentState"] = getCurrentState()
         reply["isPlaying"] = isPlaying()
         sink.success(event)
@@ -284,8 +279,8 @@ class CustomVideoAllCallBack(private var videoPlayer: CustomVideoPlayer) {
         event["event"] = "onEventClickBlank"
         event["reply"] = reply
         reply["url"] = url
-        reply["duration"] = getDuration()
-        reply["position"] = getPosition()
+        reply["duration"] = videoDuration
+        reply["position"] = videoPosition
         reply["currentState"] = getCurrentState()
         reply["isPlaying"] = isPlaying()
         sink.success(event)
@@ -297,8 +292,8 @@ class CustomVideoAllCallBack(private var videoPlayer: CustomVideoPlayer) {
         event["event"] = "onEventClickBlankFullscreen"
         event["reply"] = reply
         reply["url"] = url
-        reply["duration"] = getDuration()
-        reply["position"] = getPosition()
+        reply["duration"] = videoDuration
+        reply["position"] = videoPosition
         reply["currentState"] = getCurrentState()
         reply["isPlaying"] = isPlaying()
         sink.success(event)
@@ -310,20 +305,14 @@ class CustomVideoAllCallBack(private var videoPlayer: CustomVideoPlayer) {
         event["event"] = "onEventComplete"
         event["reply"] = reply
         reply["url"] = url
-        reply["duration"] = getDuration()
-        reply["position"] = getPosition()
+        reply["duration"] = videoDuration
+        reply["position"] = videoPosition
         reply["currentState"] = getCurrentState()
         reply["isPlaying"] = isPlaying()
         sink.success(event)
     }
 
-    fun onProgress(
-        sink: QueuingEventSink,
-        progress: Long,
-        secProgress: Long,
-        currentPosition: Long,
-        duration: Long
-    ) {
+    fun onProgress(sink: QueuingEventSink, progress: Long, secProgress: Long, currentPosition: Long, duration: Long) {
         val event: MutableMap<String, Any> = HashMap()
         val reply: MutableMap<String, Any> = HashMap()
         event["event"] = "onEventProgress"
@@ -332,6 +321,13 @@ class CustomVideoAllCallBack(private var videoPlayer: CustomVideoPlayer) {
         reply["position"] = currentPosition
         reply["currentState"] = getCurrentState()
         reply["isPlaying"] = isPlaying()
+        videoPosition = currentPosition
+        videoDuration = duration
         sink.success(event)
+    }
+
+    companion object {
+        var videoPosition: Long = 0L
+        var videoDuration: Long = 0L
     }
 }

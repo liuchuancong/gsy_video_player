@@ -59,6 +59,8 @@ enum VideoEventType {
   //进度回调
   onEventProgress,
 
+  onListenerConfigurationChanged,
+
   onListenerPrepared,
 
   onListenerAutoCompletion,

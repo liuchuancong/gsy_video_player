@@ -23,7 +23,7 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
       try {
         late final Map<String, dynamic>? response;
         response = await _channel.invokeMapMethod<String, dynamic>('create');
-        textureId = response?['textureId'] as int?;
+        textureId = response?['textureId'];
         initialized.complete(textureId);
         _timer?.cancel();
         // ignore: empty_catches
@@ -35,7 +35,7 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
     await initialized.future;
     late final Map<String, dynamic>? response;
     response = await _channel.invokeMapMethod<String, dynamic>('create');
-    textureId = response?['textureId'] as int?;
+    textureId = response?['textureId'];
     return textureId;
   }
 
@@ -62,7 +62,7 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
     await initialized.future;
     late final Map<String, dynamic>? response;
     response = await _channel.invokeMethod<Map<String, dynamic>?>('getLayoutId');
-    return response!["layoutId"] as int;
+    return response!["layoutId"];
   }
 
   @override
@@ -110,7 +110,7 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
     await initialized.future;
     late final Map<String, dynamic>? response;
     response = await _channel.invokeMethod<Map<String, dynamic>?>('getCurrentPositionWhenPlaying');
-    return response!["currentPosition"] as int;
+    return response!["currentPosition"];
   }
 
   @override
@@ -124,7 +124,7 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
     await initialized.future;
     late final Map<String, dynamic>? response;
     response = await _channel.invokeMethod<Map<String, dynamic>?>("getCurrentState");
-    return getVideoPlayStateName(response!["currentState"] as int);
+    return getVideoPlayStateName(response!["currentState"]);
   }
 
   @override
@@ -154,7 +154,7 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
     await initialized.future;
     late final Map<String, dynamic>? response;
     response = await _channel.invokeMethod<Map<String, dynamic>?>("getNetSpeed");
-    return response!["netSpeed"] as int;
+    return response!["netSpeed"];
   }
 
   @override
@@ -178,7 +178,7 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
     await initialized.future;
     late final Map<String, dynamic>? response;
     response = await _channel.invokeMethod<Map<String, dynamic>?>("getBuffterPoint");
-    return response!["buffterPoint"] as int;
+    return response!["buffterPoint"];
   }
 
   @override
@@ -192,7 +192,7 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
     );
     late final Map<String, dynamic>? response;
     response = await _channel.invokeMethod<Map<String, dynamic>?>("getPlayManager");
-    return getVideoPlayerType(response!["currentPlayer"] as int);
+    return getVideoPlayerType(response!["currentPlayer"]);
   }
 
   @override
@@ -200,7 +200,7 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
     await initialized.future;
     late final Map<String, dynamic>? response;
     response = await _channel.invokeMethod<Map<String, dynamic>?>("getPlayManager");
-    return getVideoPlayerType(response!["currentPlayer"] as int);
+    return getVideoPlayerType(response!["currentPlayer"]);
   }
 
   @override
@@ -281,8 +281,8 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
       for (dynamic option in optionList) {
         optionModelList.add(IjkOption(
           name: option['name'],
-          value: option['value'] as int,
-          category: getIjkCategory(option['category'] as int),
+          value: option['value'],
+          category: getIjkCategory(option['category']),
         ));
       }
     }
@@ -395,7 +395,7 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
     await initialized.future;
     late final Map<String, dynamic>? response;
     response = await _channel.invokeMethod<Map<String, dynamic>?>("getShowType");
-    return getPlayerVideoShowType(response!["type"] as int);
+    return getPlayerVideoShowType(response!["type"]);
   }
 
   @override
@@ -414,7 +414,7 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
     await initialized.future;
     late final Map<String, dynamic>? response;
     response = await _channel.invokeMethod<Map<String, dynamic>?>("getRenderType");
-    return getGsyVideoPlayerRenderType(response!["renderType"] as int);
+    return getGsyVideoPlayerRenderType(response!["renderType"]);
   }
 
   @override
@@ -548,7 +548,7 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
     await initialized.future;
     late final Map<String, dynamic>? response;
     response = await _channel.invokeMethod<Map<String, dynamic>?>("getEnlargeImageRes");
-    return response!["enlargeImageRes"] as int;
+    return response!["enlargeImageRes"];
   }
 
   @override
@@ -564,7 +564,7 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
     await initialized.future;
     late final Map<String, dynamic>? response;
     response = await _channel.invokeMethod<Map<String, dynamic>?>("getShrinkImageRes");
-    return response!["shrinkImageRes"] as int;
+    return response!["shrinkImageRes"];
   }
 
   @override
@@ -700,7 +700,7 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
     await initialized.future;
     late final Map<String, dynamic>? response;
     response = await _channel.invokeMethod<Map<String, dynamic>?>("getSeekOnStart");
-    return response!["seekOnStart"] as int;
+    return response!["seekOnStart"];
   }
 
   @override
@@ -708,7 +708,7 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
     await initialized.future;
     late final Map<String, dynamic>? response;
     response = await _channel.invokeMethod<Map<String, dynamic>?>("isIfCurrentIsFullscreen");
-    return response!["isIfCurrentIsFullscreen"] as bool;
+    return response!["isIfCurrentIsFullscreen"];
   }
 
   @override
@@ -724,7 +724,7 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
     await initialized.future;
     late final Map<String, dynamic>? response;
     response = await _channel.invokeMethod<Map<String, dynamic>?>("isLooping");
-    return response!["isLooping"] as bool;
+    return response!["isLooping"];
   }
 
   @override
@@ -764,7 +764,7 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
     await initialized.future;
     late final Map<String, dynamic>? response;
     response = await _channel.invokeMethod<Map<String, dynamic>?>("isShowPauseCover");
-    return response!["isShowPauseCover"] as bool;
+    return response!["isShowPauseCover"];
   }
 
   @override
@@ -810,7 +810,7 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
     await initialized.future;
     late final Map<String, dynamic>? response;
     response = await _channel.invokeMethod<Map<String, dynamic>?>("autoFullWithSize");
-    return response!["autoFullWithSize"] as bool;
+    return response!["autoFullWithSize"];
   }
 
   @override
@@ -828,26 +828,25 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
       if (event is Map) {
         map = event;
       }
-
       final String? eventType = map["event"] as String?;
       final Map<dynamic, dynamic>? reply = map["reply"];
       switch (eventType) {
         case 'initialized':
-          final int position = reply!["position"] as int;
-          final int duration = reply["duration"] as int;
-          final int currentState = reply["currentState"] as int;
-          final bool isPlaying = reply["isPlaying"] as bool;
-          final double width = reply["width"] as double;
-          final double height = reply["height"] as double;
-          final double videoSarDen = reply["videoSarDen"] as double;
-          final double videoSarNum = reply["videoSarNum"] as double;
+          final int position = reply!["position"];
+          final int duration = reply["duration"];
+          final int currentState = reply["currentState"];
+          final bool isPlaying = reply["isPlaying"];
+          final int width = reply["width"];
+          final int height = reply["height"];
+          final int videoSarDen = reply["videoSarDen"];
+          final int videoSarNum = reply["videoSarNum"];
           return VideoEvent(
             eventType: VideoEventType.initialized,
             isPlaying: isPlaying,
             position: Duration(milliseconds: position),
             duration: Duration(milliseconds: duration),
             playState: getVideoPlayStateName(currentState),
-            size: Size(width, height),
+            size: Size(width.toDouble(), height.toDouble()),
             videoSarDen: videoSarDen,
             videoSarNum: videoSarNum,
           );
@@ -898,10 +897,10 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
         case 'onEventComplete':
           return VideoEvent(eventType: VideoEventType.onEventComplete);
         case 'onEventProgress':
-          final int position = reply!["position"] as int;
-          final int duration = reply["duration"] as int;
-          final int currentState = reply["currentState"] as int;
-          final bool isPlaying = reply["isPlaying"] as bool;
+          final int position = reply!["position"];
+          final int duration = reply["duration"];
+          final int currentState = reply["currentState"];
+          final bool isPlaying = reply["isPlaying"];
 
           return VideoEvent(
             eventType: VideoEventType.onEventProgress,
@@ -910,11 +909,23 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
             duration: Duration(milliseconds: duration),
             playState: getVideoPlayStateName(currentState),
           );
+        case 'onListenerConfigurationChanged':
+          final int position = reply!["position"];
+          final int duration = reply["duration"];
+          final bool isPlaying = reply["isPlaying"];
+          final int currentState = reply["currentState"];
+          return VideoEvent(
+            eventType: VideoEventType.onListenerConfigurationChanged,
+            position: Duration(milliseconds: position),
+            isPlaying: isPlaying,
+            duration: Duration(milliseconds: duration),
+            playState: getVideoPlayStateName(currentState),
+          );
         case 'onListenerPrepared':
-          final int position = reply!["position"] as int;
-          final int duration = reply["duration"] as int;
-          final bool isPlaying = reply["isPlaying"] as bool;
-          final int currentState = reply["currentState"] as int;
+          final int position = reply!["position"];
+          final int duration = reply["duration"];
+          final bool isPlaying = reply["isPlaying"];
+          final int currentState = reply["currentState"];
           return VideoEvent(
             eventType: VideoEventType.onListenerPrepared,
             position: Duration(milliseconds: position),
@@ -923,10 +934,10 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
             playState: getVideoPlayStateName(currentState),
           );
         case 'onListenerAutoCompletion':
-          final int position = reply!["position"] as int;
-          final int duration = reply["duration"] as int;
-          final int currentState = reply["currentState"] as int;
-          final bool isPlaying = reply["isPlaying"] as bool;
+          final int position = reply!["position"];
+          final int duration = reply["duration"];
+          final int currentState = reply["currentState"];
+          final bool isPlaying = reply["isPlaying"];
           return VideoEvent(
             eventType: VideoEventType.onListenerAutoCompletion,
             position: Duration(milliseconds: position),
@@ -935,11 +946,11 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
             playState: getVideoPlayStateName(currentState),
           );
         case 'onListenerCompletion':
-          final int position = reply!["position"] as int;
-          final int duration = reply["duration"] as int;
-          final int currentState = reply["currentState"] as int;
+          final int position = reply!["position"];
+          final int duration = reply["duration"];
+          final int currentState = reply["currentState"];
 
-          final bool isPlaying = reply["isPlaying"] as bool;
+          final bool isPlaying = reply["isPlaying"];
           return VideoEvent(
             eventType: VideoEventType.onListenerCompletion,
             position: Duration(milliseconds: position),
@@ -948,11 +959,11 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
             playState: getVideoPlayStateName(currentState),
           );
         case 'onListenerBufferingUpdate':
-          final int position = reply!["position"] as int;
-          final int duration = reply["duration"] as int;
-          final bool isPlaying = reply["isPlaying"] as bool;
-          final int currentState = reply["currentState"] as int;
-          final int percent = reply["percent"] as int;
+          final int position = reply!["position"];
+          final int duration = reply["duration"];
+          final bool isPlaying = reply["isPlaying"];
+          final int currentState = reply["currentState"];
+          final int percent = reply["percent"];
           final List<dynamic> values = reply['values'] as List;
           return VideoEvent(
             eventType: VideoEventType.onListenerBufferingUpdate,
@@ -964,10 +975,10 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
             percent: percent,
           );
         case 'onListenerSeekComplete':
-          final int position = reply!["position"] as int;
-          final bool isPlaying = reply["isPlaying"] as bool;
-          final int duration = reply["duration"] as int;
-          final int currentState = reply["currentState"] as int;
+          final int position = reply!["position"];
+          final bool isPlaying = reply["isPlaying"];
+          final int duration = reply["duration"];
+          final int currentState = reply["currentState"];
           return VideoEvent(
             eventType: VideoEventType.onListenerSeekComplete,
             position: Duration(milliseconds: position),
@@ -976,12 +987,12 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
             playState: getVideoPlayStateName(currentState),
           );
         case 'onListenerError':
-          final int position = reply!["position"] as int;
-          final int duration = reply["duration"] as int;
-          final bool isPlaying = reply["isPlaying"] as bool;
-          final int currentState = reply["currentState"] as int;
-          final int what = reply["what"] as int;
-          final int extra = reply["extra"] as int;
+          final int position = reply!["position"];
+          final int duration = reply["duration"];
+          final bool isPlaying = reply["isPlaying"];
+          final int currentState = reply["currentState"];
+          final int what = reply["what"];
+          final int extra = reply["extra"];
           return VideoEvent(
             eventType: VideoEventType.onListenerError,
             position: Duration(milliseconds: position),
@@ -992,12 +1003,12 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
             extra: extra,
           );
         case 'onListenerInfo':
-          final int position = reply!["position"] as int;
-          final int duration = reply["duration"] as int;
-          final bool isPlaying = reply["isPlaying"] as bool;
-          final int currentState = reply["currentState"] as int;
-          final int what = reply["what"] as int;
-          final int extra = reply["extra"] as int;
+          final int position = reply!["position"];
+          final int duration = reply["duration"];
+          final bool isPlaying = reply["isPlaying"];
+          final int currentState = reply["currentState"];
+          final int what = reply["what"];
+          final int extra = reply["extra"];
           return VideoEvent(
             eventType: VideoEventType.onListenerInfo,
             position: Duration(milliseconds: position),
@@ -1008,10 +1019,10 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
             extra: extra,
           );
         case 'onListenerVideoSizeChanged':
-          final int position = reply!["position"] as int;
-          final int duration = reply["duration"] as int;
-          final int currentState = reply["currentState"] as int;
-          final bool isPlaying = reply["isPlaying"] as bool;
+          final int position = reply!["position"];
+          final int duration = reply["duration"];
+          final int currentState = reply["currentState"];
+          final bool isPlaying = reply["isPlaying"];
           return VideoEvent(
             eventType: VideoEventType.onListenerVideoSizeChanged,
             position: Duration(milliseconds: position),
@@ -1020,10 +1031,10 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
             playState: getVideoPlayStateName(currentState),
           );
         case 'onListenerBackFullscreen':
-          final int position = reply!["position"] as int;
-          final int duration = reply["duration"] as int;
-          final int currentState = reply["currentState"] as int;
-          final bool isPlaying = reply["isPlaying"] as bool;
+          final int position = reply!["position"];
+          final int duration = reply["duration"];
+          final int currentState = reply["currentState"];
+          final bool isPlaying = reply["isPlaying"];
           return VideoEvent(
             eventType: VideoEventType.onListenerBackFullscreen,
             position: Duration(milliseconds: position),
@@ -1032,10 +1043,10 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
             playState: getVideoPlayStateName(currentState),
           );
         case 'onListenerVideoPause':
-          final int position = reply!["position"] as int;
-          final int duration = reply["duration"] as int;
-          final int currentState = reply["currentState"] as int;
-          final bool isPlaying = reply["isPlaying"] as bool;
+          final int position = reply!["position"];
+          final int duration = reply["duration"];
+          final int currentState = reply["currentState"];
+          final bool isPlaying = reply["isPlaying"];
           return VideoEvent(
             eventType: VideoEventType.onListenerVideoPause,
             position: Duration(milliseconds: position),
@@ -1044,10 +1055,10 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
             playState: getVideoPlayStateName(currentState),
           );
         case 'onListenerVideoResume':
-          final int position = reply!["position"] as int;
-          final int duration = reply["duration"] as int;
-          final bool isPlaying = reply["isPlaying"] as bool;
-          final int currentState = reply["currentState"] as int;
+          final int position = reply!["position"];
+          final int duration = reply["duration"];
+          final bool isPlaying = reply["isPlaying"];
+          final int currentState = reply["currentState"];
           return VideoEvent(
             eventType: VideoEventType.onListenerVideoResume,
             position: Duration(milliseconds: position),
@@ -1056,11 +1067,11 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
             playState: getVideoPlayStateName(currentState),
           );
         case 'onListenerVideoResumeWithSeek':
-          final int position = reply!["position"] as int;
-          final int duration = reply["duration"] as int;
-          final bool isPlaying = reply["isPlaying"] as bool;
-          final int currentState = reply["currentState"] as int;
-          final bool seek = reply["seek"] as bool;
+          final int position = reply!["position"];
+          final int duration = reply["duration"];
+          final bool isPlaying = reply["isPlaying"];
+          final int currentState = reply["currentState"];
+          final bool seek = reply["seek"];
           return VideoEvent(
             eventType: VideoEventType.onListenerVideoResumeWithSeek,
             seek: seek,
@@ -1114,8 +1125,8 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
   DurationRange _toDurationRange(dynamic value) {
     final List<dynamic> pair = value as List;
     return DurationRange(
-      Duration(milliseconds: pair[0] as int),
-      Duration(milliseconds: pair[1] as int),
+      Duration(milliseconds: pair[0]),
+      Duration(milliseconds: pair[1]),
     );
   }
 }

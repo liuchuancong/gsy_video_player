@@ -12,7 +12,8 @@ export 'src/constants/ijk_option.dart';
 export 'src/constants/log_level.dart';
 export 'src/constants/video_event_type.dart';
 export 'src/constants/video_play_state.dart';
-
+export 'src/constants/media_info_category.dart';
+export 'src/constants/media_error_category.dart';
 export 'src/setting/player_cache_configuration.dart';
 
 export 'src/video_player/method_channel_video_player.dart';
