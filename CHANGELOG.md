@@ -1,8 +1,12 @@
 
+## 0.0.2+1
+
+* Updated links in README.md.
+
 ## 0.0.2
 
-* 更新readme文档
+* Fixed a bug related to hot restart on Android.
 
 ## 0.0.1
 
-* 添加视频播放器功能 以及静态函数
+* Initial release
