@@ -449,7 +449,8 @@ class VideoOptionBuilder {
   }
 
   /// 中间进度条字体颜色
-  VideoOptionBuilder setDialogProgressColor(int dialogProgressHighLightColor, int dialogProgressNormalColor) {
+  VideoOptionBuilder setDialogProgressColor(
+      int dialogProgressHighLightColor, int dialogProgressNormalColor) {
     this.dialogProgressHighLightColor = dialogProgressHighLightColor;
     this.dialogProgressNormalColor = dialogProgressNormalColor;
     return this;
@@ -489,7 +490,8 @@ class VideoOptionBuilder {
     return this;
   }
 
-  VideoOptionBuilder setShowDragProgressTextOnSeekBar(bool isShowDragProgressTextOnSeekBar) {
+  VideoOptionBuilder setShowDragProgressTextOnSeekBar(
+      bool isShowDragProgressTextOnSeekBar) {
     this.isShowDragProgressTextOnSeekBar = isShowDragProgressTextOnSeekBar;
     return this;
   }

@@ -30,7 +30,8 @@ class VideoPlayerValue {
   });
 
   /// Returns an instance for a video that hasn't been loaded.
-  VideoPlayerValue.uninitialized() : this(duration: Duration.zero, isInitialized: false);
+  VideoPlayerValue.uninitialized()
+      : this(duration: Duration.zero, isInitialized: false);
 
   /// Returns an instance with a `null` [Duration] and the given
   /// [errorDescription].
