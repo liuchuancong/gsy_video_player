@@ -14,8 +14,16 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  GsyVideoPlayerController gsyVideoPlayerController =
-      GsyVideoPlayerController();
+  GsyVideoPlayerController gsyVideoPlayerController = GsyVideoPlayerController(
+    danmakuSettings: const DanmakuSettings(
+      danmakuStyle: DanmakuStyle.danmuStyleStroked,
+      strokenWidth: 5.0,
+      showDanmaku: true,
+      maxLinesPair: {
+        DanmakuTypeScroll.scrollRL: 5,
+      },
+    ),
+  );
 
   @override
   void initState() {
@@ -26,18 +34,12 @@ class _MyAppState extends State<MyApp> {
   // Platform messages are asynchronous, so we initialize in an async method.
   Future<void> initPlayer() async {
     gsyVideoPlayerController.setLogLevel(LogLevel.logError);
-    gsyVideoPlayerController.setNetWorkBuilder(
-        'https://cloud.video.taobao.com//play/u/27349687/p/1/e/6/t/1/239880949246.mp4');
+    gsyVideoPlayerController
+        .setNetWorkBuilder('https://cloud.video.taobao.com//play/u/27349687/p/1/e/6/t/1/239880949246.mp4');
     gsyVideoPlayerController.addEventsListener((VideoEventType event) {
       if (gsyVideoPlayerController.value.initialized) {
-        if (event == VideoEventType.onListenerError) {
-          print(
-              '11111111111111111111111111111: ${gsyVideoPlayerController.value.toString()}');
-          print(
-              '11111111111111111111111111111: ${gsyVideoPlayerController.value.what}');
-          print(
-              '11111111111111111111111111111: ${gsyVideoPlayerController.value.extra}');
-          print(mediaErrorCategoryForInt(gsyVideoPlayerController.value.what!));
+        if (event == VideoEventType.onListenerInitDanmakuSuccess) {
+          print('初始化弹幕成功');
         }
       }
     });
@@ -87,8 +89,30 @@ class _MyAppState extends State<MyApp> {
                     child: const Text('LogLevel')),
                 ElevatedButton(
                     onPressed: () {
-                      gsyVideoPlayerController
-                          .seekTo(const Duration(seconds: 11));
+                      gsyVideoPlayerController.danmakuController.showDanmaku();
+                    },
+                    child: const Text('showDanmaku')),
+                ElevatedButton(
+                    onPressed: () {
+                      gsyVideoPlayerController.danmakuController.hideDanmaku();
+                    },
+                    child: const Text('hideDanmaku')),
+                ElevatedButton(
+                    onPressed: () {
+                      gsyVideoPlayerController.danmakuController.addDanmaku(BaseDanmaku(
+                        text: '弹幕222测试',
+                        textColor: Colors.red,
+                        textSize: 24,
+                        duration: const Duration(seconds: 5),
+                        time: 5000,
+                        priority: 10,
+                        rotationY: 10.0,
+                      ));
+                    },
+                    child: const Text('sendDanmaku')),
+                ElevatedButton(
+                    onPressed: () {
+                      gsyVideoPlayerController.seekTo(const Duration(seconds: 11));
                     },
                     child: const Text('seekTo 10s')),
               ],

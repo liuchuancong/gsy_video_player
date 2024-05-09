@@ -824,17 +824,16 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
   @override
   Future<void> initDanmaku({required DanmakuSettings settings}) async {
     await initialized.future;
+    print(settings.toJson());
     await _channel.invokeMethod<void>("initDanmaku", <String, dynamic>{
       "danmakuSettings": settings.toJson(),
     });
   }
 
   @override
-  Future<void> showDanmaku(bool show) async {
+  Future<void> showDanmaku() async {
     await initialized.future;
-    await _channel.invokeMethod<void>("showDanmaku", <String, dynamic>{
-      "showDanmaku": show,
-    });
+    await _channel.invokeMethod<void>("showDanmaku");
   }
 
   @override
@@ -846,11 +845,9 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
   }
 
   @override
-  Future<void> hideDanmaku(bool show) async {
+  Future<void> hideDanmaku() async {
     await initialized.future;
-    await _channel.invokeMethod<void>("hideDanmaku", <String, dynamic>{
-      "showDanmaku": show,
-    });
+    await _channel.invokeMethod<void>("hideDanmaku");
   }
 
   @override
@@ -862,7 +859,7 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
       double danmuStyleProjectionAlpha = 255.0}) async {
     await initialized.future;
     await _channel.invokeMethod<void>("setDanmakuStyle", <String, dynamic>{
-      "danmakuStyle": danmakuStyle.index,
+      "danmakuStyle": danmakuStyleToInt(danmakuStyle),
       "danmuStyleShadow": danmuStyleShadow,
       "danmuStyleStroked": danmuStyleStroked,
       "danmuStyleProjectionOffsetX": danmuStyleProjectionOffsetX,
@@ -899,7 +896,7 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
   Future<void> setMaximumLines(Map<DanmakuTypeScroll, int> maxLinesPair) async {
     await initialized.future;
     await _channel.invokeMethod<void>("setMaximumLines", <String, dynamic>{
-      "maxLinesPair": maxLinesPair,
+      "maxLinesPair": maxLinesPair.map((key, value) => MapEntry(danmakuTypeScrollToInt(key), value)),
     });
   }
 
@@ -907,7 +904,7 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
   Future<void> preventOverlapping(Map<DanmakuTypeScroll, bool> preventPair) async {
     await initialized.future;
     await _channel.invokeMethod<void>("preventOverlapping", <String, dynamic>{
-      "preventPair": preventPair,
+      "preventPair": preventPair.map((key, value) => MapEntry(danmakuTypeScrollToInt(key), value)),
     });
   }
 
@@ -954,6 +951,7 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
   @override
   Future<void> addDanmaku(BaseDanmaku danmaku) async {
     await initialized.future;
+    print(danmaku.toJson());
     await _channel.invokeMethod<void>("addDanmaku", <String, dynamic>{
       "danmaku": danmaku.toJson(),
     });
@@ -1218,6 +1216,8 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
             isPlaying: isPlaying,
             playState: getVideoPlayStateName(currentState),
           );
+        case 'onListenerInitDanmakuSuccess':
+          return VideoEvent(eventType: VideoEventType.onListenerInitDanmakuSuccess);
         default:
           return VideoEvent(
             eventType: VideoEventType.unknown,

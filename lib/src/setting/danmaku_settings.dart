@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:gsy_video_player/src/constants/maximum_visible_size_in_screen.dart';
 
 enum DanmakuStyle {
-  // 自动
-  danmuStyleDefault,
   //无
   danmuStyleNone,
   //阴影
@@ -16,8 +14,6 @@ enum DanmakuStyle {
 
 DanmakuStyle danmakuStyleFromInt(int style) {
   switch (style) {
-    case -1:
-      return DanmakuStyle.danmuStyleDefault;
     case 0:
       return DanmakuStyle.danmuStyleNone;
     case 1:
@@ -27,14 +23,12 @@ DanmakuStyle danmakuStyleFromInt(int style) {
     case 3:
       return DanmakuStyle.danmuStyleProjection;
     default:
-      return DanmakuStyle.danmuStyleDefault;
+      return DanmakuStyle.danmuStyleNone;
   }
 }
 
 int danmakuStyleToInt(DanmakuStyle style) {
   switch (style) {
-    case DanmakuStyle.danmuStyleDefault:
-      return -1;
     case DanmakuStyle.danmuStyleNone:
       return 0;
     case DanmakuStyle.danmuStyleShadow:
@@ -44,7 +38,7 @@ int danmakuStyleToInt(DanmakuStyle style) {
     case DanmakuStyle.danmuStyleProjection:
       return 3;
     default:
-      return -1;
+      return 0;
   }
 }
 
@@ -96,48 +90,59 @@ int danmakuTypeScrollToInt(DanmakuTypeScroll type) {
 }
 
 class DanmakuSettings {
-  DanmakuStyle? danmakuStyle;
+  final String? url;
+
+  final bool? showDanmaku;
+
+  final bool? isLinkFile;
+
+  final DanmakuStyle? danmakuStyle;
   //danmuStyleShadow 阴影模式下，values传入阴影半径
-  double? shadowRadius;
+  final double? shadowRadius;
   //danmuStyleStroked 阴影模式下，values传入描边宽度
-  double? strokenWidth;
+  final double? strokenWidth;
   //danmuStyleProjection 投影模式下，values传入offsetX, offsetY, alpha
-  double? projectionOffsetX;
+  final double? projectionOffsetX;
 
-  double? projectionOffsetY;
+  final double? projectionOffsetY;
 
-  double? projectionAlpha;
+  final double? projectionAlpha;
 
-  bool? isBold;
+  final bool? isBold;
 
-  bool? pauseWhenVideoPaused;
+  final bool? pauseWhenVideoPaused;
 
-  DanmakuTypeScroll? danmakuTypeScroll;
+  final DanmakuTypeScroll? danmakuTypeScroll;
   //设置弹幕滚动速度系数,只对滚动弹幕有效
-  double? scrollSpeedFactor;
+  final double? scrollSpeedFactor;
   //是否开启重复弹幕合并
-  bool? duplicateMergingEnabled;
+  final bool? duplicateMergingEnabled;
   // 设置是否禁止重叠弹幕
-  Map<DanmakuTypeScroll, bool>? overlappingEnablePair;
+  final Map<DanmakuTypeScroll, bool>? overlappingEnablePair;
 
   //设置最大显示行数
-  Map<DanmakuTypeScroll, int>? maxLinesPair;
+  final Map<DanmakuTypeScroll, int>? maxLinesPair;
   //弹幕透明度[0-255]
-  int? opacity;
+  final int? opacity;
   //弹幕缩放系数
-  double? scaleTextSize;
+  final double? scaleTextSize;
   //弹幕间距
-  int? margin;
+  final int? margin;
 
   //弹幕顶部间距
-  int? marginTop;
+  final int? marginTop;
 
-  MaximumVisibleSizeInScreen? maximumVisibleSizeInScreen;
+  final MaximumVisibleSizeInScreen? maximumVisibleSizeInScreen;
 
-  bool? enableDanmakuDrawingCache;
+  final bool? enableDanmakuDrawingCache;
 
-  DanmakuSettings({
-    this.danmakuStyle = DanmakuStyle.danmuStyleDefault,
+  static const defaultOverlappingEnablePair = {DanmakuTypeScroll.scrollRL: true};
+
+  const DanmakuSettings({
+    this.danmakuStyle = DanmakuStyle.danmuStyleNone,
+    this.url = '',
+    this.showDanmaku = false,
+    this.isLinkFile = false,
     this.shadowRadius = 0.0,
     this.strokenWidth = 0.0,
     this.projectionOffsetX = 0.0,
@@ -147,7 +152,7 @@ class DanmakuSettings {
     this.danmakuTypeScroll = DanmakuTypeScroll.scrollRL,
     this.scrollSpeedFactor = 1.0,
     this.duplicateMergingEnabled = true,
-    this.overlappingEnablePair,
+    this.overlappingEnablePair = defaultOverlappingEnablePair,
     this.maxLinesPair,
     this.opacity = 255,
     this.scaleTextSize = 1.0,
@@ -156,25 +161,26 @@ class DanmakuSettings {
     this.maximumVisibleSizeInScreen = MaximumVisibleSizeInScreen.auto,
     this.pauseWhenVideoPaused = false,
     this.enableDanmakuDrawingCache = true,
-  }) {
-    overlappingEnablePair ??= {DanmakuTypeScroll.scrollRL: true};
-  }
+  });
 
   Map<String, dynamic> toJson() {
     return {
       "danmakuStyle": danmakuStyleToInt(danmakuStyle!),
+      "url": url,
+      "showDanmaku": showDanmaku,
+      "isLinkFile": isLinkFile,
       "shadowRadius": shadowRadius,
       "strokenWidth": strokenWidth,
       "projectionOffsetX": projectionOffsetX,
       "projectionOffsetY": projectionOffsetY,
-      "projectionAlpha": projectionAlpha,
+      "projectionAlpha": projectionAlpha!.clamp(0, 255),
       "isBold": isBold,
       "danmakuTypeScroll": danmakuTypeScrollToInt(danmakuTypeScroll!),
       "scrollSpeedFactor": scrollSpeedFactor,
       "duplicateMergingEnabled": duplicateMergingEnabled,
-      "overlappingEnablePair": overlappingEnablePair,
-      "maxLinesPair": maxLinesPair,
-      "opacity": opacity,
+      "overlappingEnablePair": overlappingEnablePair!.map((key, value) => MapEntry(danmakuTypeScrollToInt(key), value)),
+      "maxLinesPair": maxLinesPair?.map((key, value) => MapEntry(danmakuTypeScrollToInt(key), value)),
+      "opacity": opacity!.clamp(0, 255),
       "scaleTextSize": scaleTextSize,
       "margin": margin,
       "marginTop": marginTop,
@@ -223,7 +229,7 @@ class BaseDanmaku {
   //索引/编号
   int? index;
   //是否可见
-  int? visibility;
+  bool? visibility;
   //是否是直播弹幕
   bool? isLive;
   //临时, 是否在同线程创建缓存
@@ -252,17 +258,17 @@ class BaseDanmaku {
     this.textSize = 14,
     this.borderColor,
     this.padding = 0,
-    this.priority = 0,
-    this.paintWidth,
-    this.paintHeight,
+    this.priority = 10,
+    this.paintWidth = -1,
+    this.paintHeight = -1,
     this.duration,
     this.index,
-    this.visibility,
-    this.isLive,
-    this.forceBuildCacheInSameThread,
+    this.visibility = true,
+    this.isLive = true,
+    this.forceBuildCacheInSameThread = true,
     this.userId,
     this.userHash,
-    this.isGuest,
+    this.isGuest = true,
     this.alpha = 255,
   });
 

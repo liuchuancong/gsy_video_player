@@ -32,6 +32,6 @@
     <com.alizda.gsy_video_player.CustomVideoPlayer
         android:id="@+id/video_player"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/post_media_height" />
+        android:layout_height="match_parent" />
 
 </RelativeLayout>

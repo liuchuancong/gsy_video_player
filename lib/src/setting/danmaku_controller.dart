@@ -4,21 +4,20 @@ class DanmakuController {
   // 是否显示弹幕
   bool _isDanmakuShow = false;
   bool get danmakuShow => _isDanmakuShow;
-  DanmakuSettings get settings => _settings;
+  DanmakuSettings get settings => _controller.danmakuSettings;
   late GsyVideoPlayerController _controller;
-  late DanmakuSettings _settings;
   DanmakuController(GsyVideoPlayerController controller) {
     _controller = controller;
   }
   // 初始化弹幕
-  Future<void> initDanmaku({required DanmakuSettings settings}) async {
-    _settings = settings;
+  Future<void> initDanmaku() async {
+    _controller.initDanmaku(settings: settings);
   }
 
   // 显示弹幕
-  Future<void> showDanmaku(bool show) async {
-    _controller.showDanmaku(show);
-    _isDanmakuShow = show;
+  Future<void> showDanmaku() async {
+    _controller.showDanmaku();
+    _isDanmakuShow = false;
   }
 
   Future<bool> getDanmakuShow() async {
@@ -26,7 +25,10 @@ class DanmakuController {
   }
 
   // 隐藏弹幕
-  Future<void> hideDanmaku(bool show) async {}
+  Future<void> hideDanmaku() async {
+    _controller.hideDanmaku();
+    _isDanmakuShow = false;
+  }
 
   Future<void> setDanmakuStyle(
     DanmakuStyle danmakuStyle, {
@@ -35,27 +37,58 @@ class DanmakuController {
     double danmuStyleProjectionOffsetX = 0.0,
     double danmuStyleProjectionOffsetY = 0.0,
     double danmuStyleProjectionAlpha = 255.0,
-  }) async {}
+  }) async {
+    _controller.setDanmakuStyle(
+      danmakuStyle,
+      danmuStyleShadow: danmuStyleShadow,
+      danmuStyleStroked: danmuStyleStroked,
+      danmuStyleProjectionOffsetX: danmuStyleProjectionOffsetX,
+      danmuStyleProjectionOffsetY: danmuStyleProjectionOffsetY,
+      danmuStyleProjectionAlpha: danmuStyleProjectionAlpha,
+    );
+  }
 
-  Future<void> setDanmakuBold(bool bold) async {}
+  Future<void> setDanmakuBold(bool bold) async {
+    _controller.setDanmakuBold(bold);
+  }
 
-  Future<void> setScrollSpeedFactor(double speedFactor) async {}
+  Future<void> setScrollSpeedFactor(double speedFactor) async {
+    _controller.setScrollSpeedFactor(speedFactor);
+  }
 
-  Future<void> setDuplicateMergingEnabled(bool enabled) async {}
+  Future<void> setDuplicateMergingEnabled(bool enabled) async {
+    _controller.setDuplicateMergingEnabled(enabled);
+  }
 
-  Future<void> setMaximumLines(Map<DanmakuTypeScroll, int> maxLinesPair) async {}
+  Future<void> setMaximumLines(Map<DanmakuTypeScroll, int> maxLinesPair) async {
+    _controller.setMaximumLines(maxLinesPair);
+  }
 
-  Future<void> preventOverlapping(Map<DanmakuTypeScroll, bool> preventPair) async {}
+  Future<void> preventOverlapping(Map<DanmakuTypeScroll, bool> preventPair) async {
+    _controller.preventOverlapping(preventPair);
+  }
 
-  Future<void> setMarginTop(double marginTop) async {}
+  Future<void> setMarginTop(double marginTop) async {
+    _controller.setMarginTop(marginTop);
+  }
 
-  Future<void> setDanmakuTransparency(double transparency) async {}
+  Future<void> setDanmakuTransparency(double transparency) async {
+    _controller.setDanmakuTransparency(transparency);
+  }
 
-  Future<void> setDanmakuMargin(double margin) async {}
+  Future<void> setDanmakuMargin(double margin) async {
+    _controller.setDanmakuMargin(margin);
+  }
 
-  Future<void> setScaleTextSize(double scale) async {}
+  Future<void> setScaleTextSize(double scale) async {
+    _controller.setScaleTextSize(scale);
+  }
 
-  Future<void> setMaximumVisibleSizeInScreen(MaximumVisibleSizeInScreen maximumVisibleSizeInScreen) async {}
+  Future<void> setMaximumVisibleSizeInScreen(MaximumVisibleSizeInScreen maximumVisibleSizeInScreen) async {
+    _controller.setMaximumVisibleSizeInScreen(maximumVisibleSizeInScreen);
+  }
 
-  Future<void> addDanmaku(BaseDanmaku danmaku) async {}
+  Future<void> addDanmaku(BaseDanmaku danmaku) async {
+    _controller.addDanmaku(danmaku);
+  }
 }

@@ -496,7 +496,7 @@ abstract class VideoPlayerPlatform {
     throw UnimplementedError('initDanmaku() has not been implemented.');
   }
 
-  Future<void> showDanmaku(bool show) async {
+  Future<void> showDanmaku() async {
     throw UnimplementedError('showDanmaku() has not been implemented.');
   }
 
@@ -504,7 +504,7 @@ abstract class VideoPlayerPlatform {
     throw UnimplementedError('getDanmakuShow() has not been implemented.');
   }
 
-  Future<void> hideDanmaku(bool show) async {
+  Future<void> hideDanmaku() async {
     throw UnimplementedError('hideDanmaku() has not been implemented.');
   }
 

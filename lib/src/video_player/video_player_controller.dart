@@ -17,11 +17,19 @@ final VideoPlayerPlatform _videoPlayerPlatform = VideoPlayerPlatform.instance;
 /// After [dispose] all further calls are ignored.
 class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
   /// Constructs a [GsyVideoPlayerController] and creates video controller on platform side.
-  GsyVideoPlayerController() : super(VideoPlayerValue(duration: null)) {
+  GsyVideoPlayerController({this.danmakuSettings = const DanmakuSettings()}) : super(VideoPlayerValue(duration: null)) {
     _create();
   }
 
+  final DanmakuSettings danmakuSettings;
+
+  /// Initializes the video controller on platform side.
+
   final StreamController<VideoEvent> videoEventStreamController = StreamController.broadcast();
+
+  late final DanmakuController _danmakuController;
+
+  DanmakuController get danmakuController => _danmakuController;
 
   ///StreamSubscription for VideoEvent listener
   StreamSubscription<VideoEvent>? _videoEventStreamSubscription;
@@ -221,10 +229,14 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
       case VideoEventType.onListenerVideoResumeWithSeek:
         _postEvent(VideoEventType.onListenerVideoResumeWithSeek);
         break;
+      case VideoEventType.onListenerInitDanmakuSuccess:
+        _postEvent(VideoEventType.onListenerInitDanmakuSuccess);
+        break;
       case VideoEventType.unknown:
         _postEvent(VideoEventType.unknown);
         break;
       default:
+        _postEvent(VideoEventType.unknown);
         break;
     }
   }
@@ -524,6 +536,8 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
             size: event.size,
           );
           _initializingCompleter.complete(null);
+          _danmakuController = DanmakuController(this);
+          _danmakuController.initDanmaku();
           break;
         case VideoEventType.onEventStartPrepared:
           value = value.copyWith(isPlaying: false);
@@ -697,6 +711,8 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
             playState: event.playState,
             seek: value.seek,
           );
+          break;
+        case VideoEventType.onListenerInitDanmakuSuccess:
           break;
         case VideoEventType.unknown:
           break;
@@ -1288,9 +1304,9 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     await _videoPlayerPlatform.initDanmaku(settings: settings);
   }
 
-  Future<void> showDanmaku(bool show) async {
+  Future<void> showDanmaku() async {
     await _creatingCompleter.future;
-    await _videoPlayerPlatform.showDanmaku(show);
+    await _videoPlayerPlatform.showDanmaku();
   }
 
   Future<bool> getDanmakuShow() async {
@@ -1298,9 +1314,9 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     return await _videoPlayerPlatform.getDanmakuShow();
   }
 
-  Future<void> hideDanmaku(bool show) async {
+  Future<void> hideDanmaku() async {
     await _creatingCompleter.future;
-    await _videoPlayerPlatform.hideDanmaku(show);
+    await _videoPlayerPlatform.hideDanmaku();
   }
 
   Future<void> setDanmakuStyle(DanmakuStyle danmakuStyle,

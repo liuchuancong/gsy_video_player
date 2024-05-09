@@ -85,5 +85,7 @@ enum VideoEventType {
 
   onListenerVideoResumeWithSeek,
 
+  onListenerInitDanmakuSuccess,
+
   unknown
 }
