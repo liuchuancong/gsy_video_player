@@ -23,6 +23,7 @@ import master.flame.danmaku.danmaku.loader.IllegalDataException
 import master.flame.danmaku.danmaku.loader.android.DanmakuLoaderFactory
 import master.flame.danmaku.danmaku.model.BaseDanmaku
 import master.flame.danmaku.danmaku.model.DanmakuTimer
+import master.flame.danmaku.danmaku.model.Duration
 import master.flame.danmaku.danmaku.model.IDisplayer.DANMAKU_STYLE_DEFAULT
 import master.flame.danmaku.danmaku.model.IDisplayer.DANMAKU_STYLE_NONE
 import master.flame.danmaku.danmaku.model.IDisplayer.DANMAKU_STYLE_PROJECTION
@@ -318,128 +319,113 @@ open class CustomVideoPlayer : StandardGSYVideoPlayer {
      */
     @RequiresApi(Build.VERSION_CODES.O)
     fun addDanmaku(call: MethodCall, result: MethodChannel.Result) {
-        Log.d(GsyVideoPlayerView.TAG, "addDanmaku: ${danmakuContext}")
+        val danmakuOptions = call.argument<Map<String, Any?>>("danmaku")!!
+        val type =
+            GsyVideoPlayerView.getParameter(danmakuOptions, "type", BaseDanmaku.TYPE_SCROLL_RL)
+        val time =
+            (GsyVideoPlayerView.getParameter(danmakuOptions, "time", 0) as Number).toInt().toLong()
+        val timeOffset =
+            (GsyVideoPlayerView.getParameter(danmakuOptions, "timeOffset", 0) as Number).toInt()
+                .toLong()
+        val text = GsyVideoPlayerView.getParameter(danmakuOptions, "text", "")
+        val emptyLinesArray = arrayOf<String>()
+        val lines = GsyVideoPlayerView.getParameter(danmakuOptions, "lines", emptyLinesArray)
+        val textColor =
+            (GsyVideoPlayerView.getParameter(danmakuOptions, "textColor", 0) as Number).toInt()
+                .toLong()
+        val rotationZ =
+            (GsyVideoPlayerView.getParameter(danmakuOptions, "rotationZ", 0.0F) as Number).toFloat()
+        val rotationY =
+            (GsyVideoPlayerView.getParameter(danmakuOptions, "rotationY", 0.0F) as Number).toFloat()
+        val textShadowColor = (GsyVideoPlayerView.getParameter(
+            danmakuOptions, "textShadowColor", 0
+        ) as Number).toInt().toLong()
+        val underlineColor =
+            (GsyVideoPlayerView.getParameter(danmakuOptions, "underlineColor", 0) as Number).toInt()
+                .toLong()
+        val textSize = GsyVideoPlayerView.getParameter(danmakuOptions, "textSize", -1)
+        val borderColor =
+            (GsyVideoPlayerView.getParameter(danmakuOptions, "borderColor", 0) as Number).toFloat()
+                .toLong()
+        val padding = GsyVideoPlayerView.getParameter(danmakuOptions, "padding", 0)
+        val priority = GsyVideoPlayerView.getParameter(danmakuOptions, "priority", 10)
+        val paintWidth = GsyVideoPlayerView.getParameter(danmakuOptions, "paintWidth", -1)
+        val paintHeight = GsyVideoPlayerView.getParameter(danmakuOptions, "paintHeight", -1)
+        val duration =
+            (GsyVideoPlayerView.getParameter(danmakuOptions, "duration", 0) as Number).toInt()
+        val index = GsyVideoPlayerView.getParameter(danmakuOptions, "index", -1)
+        val visibility = GsyVideoPlayerView.getParameter(danmakuOptions, "visibility", true)
+        val isLive = GsyVideoPlayerView.getParameter(danmakuOptions, "isLive", true)
+        val userId = GsyVideoPlayerView.getParameter(danmakuOptions, "userId", 0)
+        val userHash = GsyVideoPlayerView.getParameter(danmakuOptions, "userHash", "")
+        val isGuest = GsyVideoPlayerView.getParameter(danmakuOptions, "isGuest", true)
+        val forceBuildCacheInSameThread =
+            GsyVideoPlayerView.getParameter(danmakuOptions, "forceBuildCacheInSameThread", true)
 
-        val danmaku: BaseDanmaku = danmakuContext!!.mDanmakuFactory.createDanmaku(BaseDanmaku.TYPE_SCROLL_RL)
-        Log.d(GsyVideoPlayerView.TAG, "danmakuView == null ${danmakuView == null}")
-        Log.d(GsyVideoPlayerView.TAG, "danmaku == null ${danmaku == null}")
+
+        val danmaku = danmakuContext!!.mDanmakuFactory.createDanmaku(type)
+        Log.d("currentTime", "addDanmaku: mDanmakuView.getCurrentTime() ${danmakuView!!.currentTime}")
+        Log.d("currentTime", "addDanmaku: mDanmakuView.transferColor() ${transferColor(textColor)}")
         if (danmaku == null || danmakuView == null) {
             return
         }
-        Log.d(GsyVideoPlayerView.TAG, "danmakuView == null ${danmakuView == null}")
-        danmaku.text = "这是一条弹幕 $currentPositionWhenPlaying"
-        danmaku.padding = 5
-        danmaku.priority = 10 // 可能会被各种过滤器过滤并隐藏显示，所以提高等级
+        if (time.toInt() != 0) {
+            danmaku.time = danmakuView!!.currentTime + time
+        }else{
+            danmaku.time =  danmakuView!!.currentTime
+        }
+        if (timeOffset.toInt() != 0) {
+            danmaku.timeOffset = timeOffset
+        }
+        danmaku.text = text
+        if (lines.isNotEmpty()) {
+            danmaku.lines = lines
+        }
+        if (textColor.toInt() != 0) {
 
-        danmaku.isLive = true
-        danmaku.setTime(danmakuView!!.currentTime + 500)
-        danmaku.textSize = 25f * (mParser!!.displayer.density - 0.6f)
-        danmaku.textColor = Color.RED
-        danmaku.textShadowColor = Color.WHITE
-        danmaku.borderColor = Color.GREEN
+            danmaku.textColor = transferColor(textColor)
+        }
+        if (rotationZ != 0.0f) {
+            danmaku.rotationZ = rotationZ
+        }
+        if (rotationY != 0.0f) {
+            danmaku.rotationY = rotationY
+        }
+        if (textShadowColor.toInt() != 0) {
+            danmaku.textShadowColor = transferColor(textShadowColor)
+        }
+        if (underlineColor.toInt() != 0) {
+            danmaku.underlineColor = transferColor(underlineColor)
+        }
+        if (borderColor.toInt() != 0) {
+            danmaku.borderColor = transferColor(borderColor)
+        }
+        if (textSize != -1) {
+            danmaku.textSize = (textSize as Number?)!!.toFloat()
+        }
+        if (padding != 0) {
+            danmaku.padding = padding
+        }
+        danmaku.priority = (priority as Number?)!!.toInt().toByte()
+        if (paintWidth != -1) {
+            danmaku.paintWidth = (paintWidth as Number?)!!.toFloat()
+        }
+        if (paintHeight != -1) {
+            danmaku.paintHeight = (paintHeight as Number?)!!.toFloat()
+        }
+        if (duration != 0) {
+            danmaku.duration = Duration(duration.toLong())
+        }
+        if (index != -1) {
+            danmaku.index = index
+        }
+        danmaku.visibility = isBoolean(visibility)
+        danmaku.isLive = isLive
+        danmaku.userId = userId
+        danmaku.isGuest = isGuest
+        danmaku.userHash = userHash
+        danmaku.forceBuildCacheInSameThread = forceBuildCacheInSameThread
         danmakuView!!.addDanmaku(danmaku)
-//        val danmakuOptions = call.argument<Map<String, Any?>>("danmaku")!!
-//        val type =
-//            GsyVideoPlayerView.getParameter(danmakuOptions, "type", BaseDanmaku.TYPE_SCROLL_RL)
-//        val time =
-//            (GsyVideoPlayerView.getParameter(danmakuOptions, "time", 0) as Number).toInt().toLong()
-//        val timeOffset =
-//            (GsyVideoPlayerView.getParameter(danmakuOptions, "timeOffset", 0) as Number).toInt()
-//                .toLong()
-//        val text = GsyVideoPlayerView.getParameter(danmakuOptions, "text", "")
-//        val emptyLinesArray = arrayOf<String>()
-//        val lines = GsyVideoPlayerView.getParameter(danmakuOptions, "lines", emptyLinesArray)
-//        val textColor =
-//            (GsyVideoPlayerView.getParameter(danmakuOptions, "textColor", 0) as Number).toInt()
-//                .toLong()
-//        val rotationZ =
-//            (GsyVideoPlayerView.getParameter(danmakuOptions, "rotationZ", 0.0F) as Number).toFloat()
-//        val rotationY =
-//            (GsyVideoPlayerView.getParameter(danmakuOptions, "rotationY", 0.0F) as Number).toFloat()
-//        val textShadowColor = (GsyVideoPlayerView.getParameter(
-//            danmakuOptions, "textShadowColor", 0
-//        ) as Number).toInt().toLong()
-//        val underlineColor =
-//            (GsyVideoPlayerView.getParameter(danmakuOptions, "underlineColor", 0) as Number).toInt()
-//                .toLong()
-//        val textSize = GsyVideoPlayerView.getParameter(danmakuOptions, "textSize", -1)
-//        val borderColor =
-//            (GsyVideoPlayerView.getParameter(danmakuOptions, "borderColor", 0) as Number).toFloat()
-//                .toLong()
-//        val padding = GsyVideoPlayerView.getParameter(danmakuOptions, "padding", 0)
-//        val priority = GsyVideoPlayerView.getParameter(danmakuOptions, "priority", 10)
-//        val paintWidth = GsyVideoPlayerView.getParameter(danmakuOptions, "paintWidth", -1)
-//        val paintHeight = GsyVideoPlayerView.getParameter(danmakuOptions, "paintHeight", -1)
-//        val duration =
-//            (GsyVideoPlayerView.getParameter(danmakuOptions, "duration", 0) as Number).toInt()
-//        val index = GsyVideoPlayerView.getParameter(danmakuOptions, "index", -1)
-//        val visibility = GsyVideoPlayerView.getParameter(danmakuOptions, "visibility", true)
-//        val isLive = GsyVideoPlayerView.getParameter(danmakuOptions, "isLive", true)
-//        val userId = GsyVideoPlayerView.getParameter(danmakuOptions, "userId", 0)
-//        val userHash = GsyVideoPlayerView.getParameter(danmakuOptions, "userHash", "")
-//        val isGuest = GsyVideoPlayerView.getParameter(danmakuOptions, "isGuest", true)
-//        val forceBuildCacheInSameThread =
-//            GsyVideoPlayerView.getParameter(danmakuOptions, "forceBuildCacheInSameThread", true)
-//
-//
-//        val danmaku = danmakuContext!!.mDanmakuFactory.createDanmaku(type)
-//        if (danmaku == null || danmakuView == null) {
-//            return
-//        }
-//        if (time.toInt() != 0) {
-//            danmaku.time = time
-//        }
-//        if (timeOffset.toInt() != 0) {
-//            danmaku.timeOffset = timeOffset
-//        }
-//        danmaku.text = text
-//        if (lines.isNotEmpty()) {
-//            danmaku.lines = lines
-//        }
-//        if (textColor.toInt() != 0) {
-//            danmaku.textColor = transferColor(textColor)
-//        }
-//        if (rotationZ != 0.0f) {
-//            danmaku.rotationZ = rotationZ
-//        }
-//        if (rotationY != 0.0f) {
-//            danmaku.rotationY = rotationY
-//        }
-//        if (textShadowColor.toInt() != 0) {
-//            danmaku.textShadowColor = transferColor(textShadowColor)
-//        }
-//        if (underlineColor.toInt() != 0) {
-//            danmaku.textShadowColor = transferColor(underlineColor)
-//        }
-//        if (borderColor.toInt() != 0) {
-//            danmaku.borderColor = transferColor(borderColor)
-//        }
-//        if (textSize != -1) {
-//            danmaku.textSize = (textSize as Number?)!!.toFloat()
-//        }
-//        if (padding != 0) {
-//            danmaku.padding = padding
-//        }
-//        danmaku.priority = (priority as Number?)!!.toInt().toByte()
-//        if (paintWidth != -1) {
-//            danmaku.paintWidth = (paintWidth as Number?)!!.toFloat()
-//        }
-//        if (paintHeight != -1) {
-//            danmaku.paintHeight = (paintHeight as Number?)!!.toFloat()
-//        }
-//        if (duration != 0) {
-//            danmaku.duration = Duration(duration.toLong())
-//        }
-//        if (index != -1) {
-//            danmaku.index = index
-//        }
-//        danmaku.visibility = isBoolean(visibility)
-//        danmaku.isLive = isLive
-//        danmaku.userId = userId
-//        danmaku.isGuest = isGuest
-//        danmaku.userHash = userHash
-//        danmaku.forceBuildCacheInSameThread = forceBuildCacheInSameThread
-//        danmakuView!!.addDanmaku(danmaku)
     }
 
 
@@ -453,11 +439,7 @@ open class CustomVideoPlayer : StandardGSYVideoPlayer {
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun transferColor(transColor: Long): Int {
-        val alpha = Color.alpha(transColor)
-        val red = Color.red(transColor)
-        val green = Color.green(transColor)
-        val blue = Color.blue(transColor)
-        return Color.argb(alpha, red, green, blue)
+       return Integer.toHexString(transColor.toInt()).toInt()
     }
 
     /**

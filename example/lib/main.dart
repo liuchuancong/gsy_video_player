@@ -104,9 +104,8 @@ class _MyAppState extends State<MyApp> {
                         textColor: Colors.red,
                         textSize: 24,
                         duration: const Duration(seconds: 5),
-                        time: 5000,
-                        priority: 10,
-                        rotationY: 10.0,
+                        time: 500,
+                        priority: 8,
                       ));
                     },
                     child: const Text('sendDanmaku')),
