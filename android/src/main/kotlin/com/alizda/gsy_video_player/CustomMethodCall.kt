@@ -399,8 +399,71 @@ class CustomMethodCall(
             "getAutoFullWithSize" -> {
                 customBasicApi.getAutoFullWithSize(call, result)
             }
-            // --------------------- CustomBasicApi [end] ----------------------------
+            "initDanmaku" -> {
+                videoPlayer.initDanmaku(call, result)
+            }
 
+
+            "showDanmaku" -> {
+                videoPlayer.showDanmaku(call, result)
+            }
+
+            "getDanmakuShow" -> {
+                videoPlayer.getDanmakuShow(call, result)
+            }
+
+            "hideDanmaku" -> {
+                videoPlayer.hideDanmaku(call, result)
+            }
+
+            "setDanmakuStyle" -> {
+                videoPlayer.setDanmakuStyle(call, result)
+            }
+
+            "setDanmakuBold" -> {
+                videoPlayer.setDanmakuBold(call, result)
+            }
+
+            "setScrollSpeedFactor" -> {
+                videoPlayer.setScrollSpeedFactor(call, result)
+            }
+
+            "setDuplicateMergingEnabled" -> {
+                videoPlayer.setDuplicateMergingEnabled(call, result)
+            }
+
+            "setMaximumLines" -> {
+                videoPlayer.setMaximumLines(call, result)
+            }
+
+            "preventOverlapping" -> {
+                videoPlayer.preventOverlapping(call, result)
+            }
+
+            "setMarginTop" -> {
+                videoPlayer.setMarginTop(call, result)
+            }
+
+            "setDanmakuTransparency" -> {
+                videoPlayer.setDanmakuTransparency(call, result)
+            }
+
+            "setDanmakuMargin" -> {
+                videoPlayer.setDanmakuMargin(call, result)
+            }
+
+            "setScaleTextSize" -> {
+                videoPlayer.setScaleTextSize(call, result)
+            }
+
+            "setMaximumVisibleSizeInScreen" -> {
+                videoPlayer.setMaximumVisibleSizeInScreen(call, result)
+            }
+
+            "addDanmaku" -> {
+                videoPlayer.addDanmaku(call, result)
+            }
+            else -> result.notImplemented()
         }
     }
 }

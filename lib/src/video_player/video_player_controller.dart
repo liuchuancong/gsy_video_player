@@ -21,8 +21,7 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     _create();
   }
 
-  final StreamController<VideoEvent> videoEventStreamController =
-      StreamController.broadcast();
+  final StreamController<VideoEvent> videoEventStreamController = StreamController.broadcast();
 
   ///StreamSubscription for VideoEvent listener
   StreamSubscription<VideoEvent>? _videoEventStreamSubscription;
@@ -41,14 +40,12 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
   final List<Function(VideoEventType)?> _eventListeners = [];
 
   ///Expose all active eventListeners
-  List<Function(VideoEventType)?> get eventListeners =>
-      _eventListeners.sublist(1);
+  List<Function(VideoEventType)?> get eventListeners => _eventListeners.sublist(1);
 
   Future _initializeVideo() async {
     _videoEventStreamSubscription?.cancel();
     _videoEventStreamSubscription = null;
-    _videoEventStreamSubscription =
-        videoEventStreamController.stream.listen(_handleVideoEvent);
+    _videoEventStreamSubscription = videoEventStreamController.stream.listen(_handleVideoEvent);
   }
 
   ///Send player event. Shouldn't be used manually.
@@ -282,56 +279,42 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
         shrinkImageRes: shrinkImageRes ?? VideoOptionBuilder.mShrinkImageRes,
         enlargeImageRes: enlargeImageRes ?? VideoOptionBuilder.mEnlargeImageRes,
         playPosition: playPosition ?? VideoOptionBuilder.mPlayPosition,
-        dialogProgressHighLightColor: dialogProgressHighLightColor ??
-            VideoOptionBuilder.mDialogProgressHighLightColor,
-        dialogProgressNormalColor: dialogProgressNormalColor ??
-            VideoOptionBuilder.mDialogProgressNormalColor,
-        dismissControlTime:
-            dismissControlTime ?? VideoOptionBuilder.mDismissControlTime,
+        dialogProgressHighLightColor: dialogProgressHighLightColor ?? VideoOptionBuilder.mDialogProgressHighLightColor,
+        dialogProgressNormalColor: dialogProgressNormalColor ?? VideoOptionBuilder.mDialogProgressNormalColor,
+        dismissControlTime: dismissControlTime ?? VideoOptionBuilder.mDismissControlTime,
         seekOnStart: seekOnStart ?? VideoOptionBuilder.mSeekOnStart,
         seekRatio: seekRatio ?? VideoOptionBuilder.mSeekRatio,
         speed: speed ?? VideoOptionBuilder.mSpeed,
         hideKey: hideKey ?? VideoOptionBuilder.mHideKey,
-        showFullAnimation:
-            showFullAnimation ?? VideoOptionBuilder.mShowFullAnimation,
-        autoFullWithSize:
-            autoFullWithSize ?? VideoOptionBuilder.mAutoFullWithSize,
+        showFullAnimation: showFullAnimation ?? VideoOptionBuilder.mShowFullAnimation,
+        autoFullWithSize: autoFullWithSize ?? VideoOptionBuilder.mAutoFullWithSize,
         needShowWifiTip: needShowWifiTip ?? VideoOptionBuilder.mNeedShowWifiTip,
         rotateViewAuto: rotateViewAuto ?? VideoOptionBuilder.mRotateViewAuto,
         lockLand: lockLand ?? VideoOptionBuilder.mLockLand,
         looping: looping ?? VideoOptionBuilder.mLooping,
         isTouchWiget: isTouchWiget ?? VideoOptionBuilder.mIsTouchWiget,
-        isTouchWigetFull:
-            isTouchWigetFull ?? VideoOptionBuilder.mIsTouchWigetFull,
+        isTouchWigetFull: isTouchWigetFull ?? VideoOptionBuilder.mIsTouchWigetFull,
         showPauseCover: showPauseCover ?? VideoOptionBuilder.mShowPauseCover,
-        rotateWithSystem:
-            rotateWithSystem ?? VideoOptionBuilder.mRotateWithSystem,
-        surfaceErrorPlay:
-            surfaceErrorPlay ?? VideoOptionBuilder.mSurfaceErrorPlay,
+        rotateWithSystem: rotateWithSystem ?? VideoOptionBuilder.mRotateWithSystem,
+        surfaceErrorPlay: surfaceErrorPlay ?? VideoOptionBuilder.mSurfaceErrorPlay,
         cacheWithPlay: cacheWithPlay ?? VideoOptionBuilder.mCacheWithPlay,
         needLockFull: needLockFull ?? VideoOptionBuilder.mNeedLockFull,
         thumbPlay: thumbPlay ?? VideoOptionBuilder.mThumbPlay,
         sounchTouch: sounchTouch ?? VideoOptionBuilder.mSounchTouch,
-        startAfterPrepared:
-            startAfterPrepared ?? VideoOptionBuilder.mStartAfterPrepared,
-        releaseWhenLossAudio:
-            releaseWhenLossAudio ?? VideoOptionBuilder.mReleaseWhenLossAudio,
+        startAfterPrepared: startAfterPrepared ?? VideoOptionBuilder.mStartAfterPrepared,
+        releaseWhenLossAudio: releaseWhenLossAudio ?? VideoOptionBuilder.mReleaseWhenLossAudio,
         actionBar: actionBar ?? VideoOptionBuilder.mActionBar,
         statusBar: statusBar ?? VideoOptionBuilder.mStatusBar,
-        isShowDragProgressTextOnSeekBar: isShowDragProgressTextOnSeekBar ??
-            VideoOptionBuilder.mShowDragProgressTextOnSeekBar,
+        isShowDragProgressTextOnSeekBar:
+            isShowDragProgressTextOnSeekBar ?? VideoOptionBuilder.mShowDragProgressTextOnSeekBar,
         playTag: playTag ?? VideoOptionBuilder.mPlayTag,
         videoTitle: videoTitle ?? VideoOptionBuilder.mVideoTitle,
-        overrideExtension:
-            overrideExtension ?? VideoOptionBuilder.mOverrideExtension,
-        isOnlyRotateLand:
-            isOnlyRotateLand ?? VideoOptionBuilder.mIsOnlyRotateLand,
-        isUseCustomCachePath:
-            isUseCustomCachePath ?? VideoOptionBuilder.mIsUseCustomCachePath,
+        overrideExtension: overrideExtension ?? VideoOptionBuilder.mOverrideExtension,
+        isOnlyRotateLand: isOnlyRotateLand ?? VideoOptionBuilder.mIsOnlyRotateLand,
+        isUseCustomCachePath: isUseCustomCachePath ?? VideoOptionBuilder.mIsUseCustomCachePath,
         cachePath: cachePath ?? VideoOptionBuilder.mCachePath,
         mapHeadData: mapHeadData ?? VideoOptionBuilder.mMapHeadData,
-        needOrientationUtils:
-            needOrientationUtils ?? VideoOptionBuilder.mNeedOrientationUtils,
+        needOrientationUtils: needOrientationUtils ?? VideoOptionBuilder.mNeedOrientationUtils,
         playVideoDataSourceType: PlayVideoDataSourceType.asset,
       ),
     );
@@ -387,56 +370,42 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
         shrinkImageRes: shrinkImageRes ?? VideoOptionBuilder.mShrinkImageRes,
         enlargeImageRes: enlargeImageRes ?? VideoOptionBuilder.mEnlargeImageRes,
         playPosition: playPosition ?? VideoOptionBuilder.mPlayPosition,
-        dialogProgressHighLightColor: dialogProgressHighLightColor ??
-            VideoOptionBuilder.mDialogProgressHighLightColor,
-        dialogProgressNormalColor: dialogProgressNormalColor ??
-            VideoOptionBuilder.mDialogProgressNormalColor,
-        dismissControlTime:
-            dismissControlTime ?? VideoOptionBuilder.mDismissControlTime,
+        dialogProgressHighLightColor: dialogProgressHighLightColor ?? VideoOptionBuilder.mDialogProgressHighLightColor,
+        dialogProgressNormalColor: dialogProgressNormalColor ?? VideoOptionBuilder.mDialogProgressNormalColor,
+        dismissControlTime: dismissControlTime ?? VideoOptionBuilder.mDismissControlTime,
         seekOnStart: seekOnStart ?? VideoOptionBuilder.mSeekOnStart,
         seekRatio: seekRatio ?? VideoOptionBuilder.mSeekRatio,
         speed: speed ?? VideoOptionBuilder.mSpeed,
         hideKey: hideKey ?? VideoOptionBuilder.mHideKey,
-        showFullAnimation:
-            showFullAnimation ?? VideoOptionBuilder.mShowFullAnimation,
-        autoFullWithSize:
-            autoFullWithSize ?? VideoOptionBuilder.mAutoFullWithSize,
+        showFullAnimation: showFullAnimation ?? VideoOptionBuilder.mShowFullAnimation,
+        autoFullWithSize: autoFullWithSize ?? VideoOptionBuilder.mAutoFullWithSize,
         needShowWifiTip: needShowWifiTip ?? VideoOptionBuilder.mNeedShowWifiTip,
         rotateViewAuto: rotateViewAuto ?? VideoOptionBuilder.mRotateViewAuto,
         lockLand: lockLand ?? VideoOptionBuilder.mLockLand,
         looping: looping ?? VideoOptionBuilder.mLooping,
         isTouchWiget: isTouchWiget ?? VideoOptionBuilder.mIsTouchWiget,
-        isTouchWigetFull:
-            isTouchWigetFull ?? VideoOptionBuilder.mIsTouchWigetFull,
+        isTouchWigetFull: isTouchWigetFull ?? VideoOptionBuilder.mIsTouchWigetFull,
         showPauseCover: showPauseCover ?? VideoOptionBuilder.mShowPauseCover,
-        rotateWithSystem:
-            rotateWithSystem ?? VideoOptionBuilder.mRotateWithSystem,
-        surfaceErrorPlay:
-            surfaceErrorPlay ?? VideoOptionBuilder.mSurfaceErrorPlay,
+        rotateWithSystem: rotateWithSystem ?? VideoOptionBuilder.mRotateWithSystem,
+        surfaceErrorPlay: surfaceErrorPlay ?? VideoOptionBuilder.mSurfaceErrorPlay,
         cacheWithPlay: cacheWithPlay ?? VideoOptionBuilder.mCacheWithPlay,
         needLockFull: needLockFull ?? VideoOptionBuilder.mNeedLockFull,
         thumbPlay: thumbPlay ?? VideoOptionBuilder.mThumbPlay,
         sounchTouch: sounchTouch ?? VideoOptionBuilder.mSounchTouch,
-        startAfterPrepared:
-            startAfterPrepared ?? VideoOptionBuilder.mStartAfterPrepared,
-        releaseWhenLossAudio:
-            releaseWhenLossAudio ?? VideoOptionBuilder.mReleaseWhenLossAudio,
+        startAfterPrepared: startAfterPrepared ?? VideoOptionBuilder.mStartAfterPrepared,
+        releaseWhenLossAudio: releaseWhenLossAudio ?? VideoOptionBuilder.mReleaseWhenLossAudio,
         actionBar: actionBar ?? VideoOptionBuilder.mActionBar,
         statusBar: statusBar ?? VideoOptionBuilder.mStatusBar,
-        isShowDragProgressTextOnSeekBar: isShowDragProgressTextOnSeekBar ??
-            VideoOptionBuilder.mShowDragProgressTextOnSeekBar,
+        isShowDragProgressTextOnSeekBar:
+            isShowDragProgressTextOnSeekBar ?? VideoOptionBuilder.mShowDragProgressTextOnSeekBar,
         playTag: playTag ?? VideoOptionBuilder.mPlayTag,
         videoTitle: videoTitle ?? VideoOptionBuilder.mVideoTitle,
-        overrideExtension:
-            overrideExtension ?? VideoOptionBuilder.mOverrideExtension,
-        isOnlyRotateLand:
-            isOnlyRotateLand ?? VideoOptionBuilder.mIsOnlyRotateLand,
-        isUseCustomCachePath:
-            isUseCustomCachePath ?? VideoOptionBuilder.mIsUseCustomCachePath,
+        overrideExtension: overrideExtension ?? VideoOptionBuilder.mOverrideExtension,
+        isOnlyRotateLand: isOnlyRotateLand ?? VideoOptionBuilder.mIsOnlyRotateLand,
+        isUseCustomCachePath: isUseCustomCachePath ?? VideoOptionBuilder.mIsUseCustomCachePath,
         cachePath: cachePath ?? VideoOptionBuilder.mCachePath,
         mapHeadData: mapHeadData ?? VideoOptionBuilder.mMapHeadData,
-        needOrientationUtils:
-            needOrientationUtils ?? VideoOptionBuilder.mNeedOrientationUtils,
+        needOrientationUtils: needOrientationUtils ?? VideoOptionBuilder.mNeedOrientationUtils,
         playVideoDataSourceType: PlayVideoDataSourceType.network,
       ),
     );
@@ -492,56 +461,42 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
         shrinkImageRes: shrinkImageRes ?? VideoOptionBuilder.mShrinkImageRes,
         enlargeImageRes: enlargeImageRes ?? VideoOptionBuilder.mEnlargeImageRes,
         playPosition: playPosition ?? VideoOptionBuilder.mPlayPosition,
-        dialogProgressHighLightColor: dialogProgressHighLightColor ??
-            VideoOptionBuilder.mDialogProgressHighLightColor,
-        dialogProgressNormalColor: dialogProgressNormalColor ??
-            VideoOptionBuilder.mDialogProgressNormalColor,
-        dismissControlTime:
-            dismissControlTime ?? VideoOptionBuilder.mDismissControlTime,
+        dialogProgressHighLightColor: dialogProgressHighLightColor ?? VideoOptionBuilder.mDialogProgressHighLightColor,
+        dialogProgressNormalColor: dialogProgressNormalColor ?? VideoOptionBuilder.mDialogProgressNormalColor,
+        dismissControlTime: dismissControlTime ?? VideoOptionBuilder.mDismissControlTime,
         seekOnStart: seekOnStart ?? VideoOptionBuilder.mSeekOnStart,
         seekRatio: seekRatio ?? VideoOptionBuilder.mSeekRatio,
         speed: speed ?? VideoOptionBuilder.mSpeed,
         hideKey: hideKey ?? VideoOptionBuilder.mHideKey,
-        showFullAnimation:
-            showFullAnimation ?? VideoOptionBuilder.mShowFullAnimation,
-        autoFullWithSize:
-            autoFullWithSize ?? VideoOptionBuilder.mAutoFullWithSize,
+        showFullAnimation: showFullAnimation ?? VideoOptionBuilder.mShowFullAnimation,
+        autoFullWithSize: autoFullWithSize ?? VideoOptionBuilder.mAutoFullWithSize,
         needShowWifiTip: needShowWifiTip ?? VideoOptionBuilder.mNeedShowWifiTip,
         rotateViewAuto: rotateViewAuto ?? VideoOptionBuilder.mRotateViewAuto,
         lockLand: lockLand ?? VideoOptionBuilder.mLockLand,
         looping: looping ?? VideoOptionBuilder.mLooping,
         isTouchWiget: isTouchWiget ?? VideoOptionBuilder.mIsTouchWiget,
-        isTouchWigetFull:
-            isTouchWigetFull ?? VideoOptionBuilder.mIsTouchWigetFull,
+        isTouchWigetFull: isTouchWigetFull ?? VideoOptionBuilder.mIsTouchWigetFull,
         showPauseCover: showPauseCover ?? VideoOptionBuilder.mShowPauseCover,
-        rotateWithSystem:
-            rotateWithSystem ?? VideoOptionBuilder.mRotateWithSystem,
-        surfaceErrorPlay:
-            surfaceErrorPlay ?? VideoOptionBuilder.mSurfaceErrorPlay,
+        rotateWithSystem: rotateWithSystem ?? VideoOptionBuilder.mRotateWithSystem,
+        surfaceErrorPlay: surfaceErrorPlay ?? VideoOptionBuilder.mSurfaceErrorPlay,
         cacheWithPlay: cacheWithPlay ?? VideoOptionBuilder.mCacheWithPlay,
         needLockFull: needLockFull ?? VideoOptionBuilder.mNeedLockFull,
         thumbPlay: thumbPlay ?? VideoOptionBuilder.mThumbPlay,
         sounchTouch: sounchTouch ?? VideoOptionBuilder.mSounchTouch,
-        startAfterPrepared:
-            startAfterPrepared ?? VideoOptionBuilder.mStartAfterPrepared,
-        releaseWhenLossAudio:
-            releaseWhenLossAudio ?? VideoOptionBuilder.mReleaseWhenLossAudio,
+        startAfterPrepared: startAfterPrepared ?? VideoOptionBuilder.mStartAfterPrepared,
+        releaseWhenLossAudio: releaseWhenLossAudio ?? VideoOptionBuilder.mReleaseWhenLossAudio,
         actionBar: actionBar ?? VideoOptionBuilder.mActionBar,
         statusBar: statusBar ?? VideoOptionBuilder.mStatusBar,
-        isShowDragProgressTextOnSeekBar: isShowDragProgressTextOnSeekBar ??
-            VideoOptionBuilder.mShowDragProgressTextOnSeekBar,
+        isShowDragProgressTextOnSeekBar:
+            isShowDragProgressTextOnSeekBar ?? VideoOptionBuilder.mShowDragProgressTextOnSeekBar,
         playTag: playTag ?? VideoOptionBuilder.mPlayTag,
         videoTitle: videoTitle ?? VideoOptionBuilder.mVideoTitle,
-        overrideExtension:
-            overrideExtension ?? VideoOptionBuilder.mOverrideExtension,
-        isOnlyRotateLand:
-            isOnlyRotateLand ?? VideoOptionBuilder.mIsOnlyRotateLand,
-        isUseCustomCachePath:
-            isUseCustomCachePath ?? VideoOptionBuilder.mIsUseCustomCachePath,
+        overrideExtension: overrideExtension ?? VideoOptionBuilder.mOverrideExtension,
+        isOnlyRotateLand: isOnlyRotateLand ?? VideoOptionBuilder.mIsOnlyRotateLand,
+        isUseCustomCachePath: isUseCustomCachePath ?? VideoOptionBuilder.mIsUseCustomCachePath,
         cachePath: cachePath ?? VideoOptionBuilder.mCachePath,
         mapHeadData: mapHeadData ?? VideoOptionBuilder.mMapHeadData,
-        needOrientationUtils:
-            needOrientationUtils ?? VideoOptionBuilder.mNeedOrientationUtils,
+        needOrientationUtils: needOrientationUtils ?? VideoOptionBuilder.mNeedOrientationUtils,
         playVideoDataSourceType: PlayVideoDataSourceType.file,
       ),
     );
@@ -760,9 +715,7 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
       }
     }
 
-    _eventSubscription = _videoPlayerPlatform
-        .videoEventsFor()
-        .listen(eventListener, onError: errorListener);
+    _eventSubscription = _videoPlayerPlatform.videoEventsFor().listen(eventListener, onError: errorListener);
     await _initializeVideo();
   }
 
@@ -889,8 +842,7 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     return await _videoPlayerPlatform.getBuffterPoint();
   }
 
-  Future<GsyVideoPlayerType> setCurrentPlayer(
-      GsyVideoPlayerType playerType) async {
+  Future<GsyVideoPlayerType> setCurrentPlayer(GsyVideoPlayerType playerType) async {
     await _creatingCompleter.future;
     return await _videoPlayerPlatform.setCurrentPlayer(playerType);
   }
@@ -977,8 +929,7 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
 
   Future<void> setTimeOut(int timeOut, {bool needTimeOutOther = false}) async {
     await _creatingCompleter.future;
-    await _videoPlayerPlatform.setTimeOut(timeOut,
-        needTimeOutOther: needTimeOutOther);
+    await _videoPlayerPlatform.setTimeOut(timeOut, needTimeOutOther: needTimeOutOther);
   }
 
   Future<void> setLogLevel(LogLevel level) async {
@@ -1011,11 +962,9 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     return await _videoPlayerPlatform.getShowType();
   }
 
-  Future<void> setShowType(PlayerVideoShowType showType,
-      {double screenScaleRatio = 0.0}) async {
+  Future<void> setShowType(PlayerVideoShowType showType, {double screenScaleRatio = 0.0}) async {
     await _creatingCompleter.future;
-    await _videoPlayerPlatform.setShowType(showType,
-        screenScaleRatio: screenScaleRatio);
+    await _videoPlayerPlatform.setShowType(showType, screenScaleRatio: screenScaleRatio);
   }
 
   Future<GsyVideoPlayerRenderType> getRenderType() async {
@@ -1038,18 +987,14 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     await _videoPlayerPlatform.setMediaCodecTexture(mediaCodecTexture);
   }
 
-  Future<void> startWindowFullscreen(
-      bool showActionBar, bool showStatusBar) async {
+  Future<void> startWindowFullscreen(bool showActionBar, bool showStatusBar) async {
     await _creatingCompleter.future;
-    await _videoPlayerPlatform.startWindowFullscreen(
-        showActionBar, showStatusBar);
+    await _videoPlayerPlatform.startWindowFullscreen(showActionBar, showStatusBar);
   }
 
-  Future<void> showSmallVideo(
-      Size size, bool showActionBar, bool showStatusBar) async {
+  Future<void> showSmallVideo(Size size, bool showActionBar, bool showStatusBar) async {
     await _creatingCompleter.future;
-    await _videoPlayerPlatform.showSmallVideo(
-        size, showActionBar, showStatusBar);
+    await _videoPlayerPlatform.showSmallVideo(size, showActionBar, showStatusBar);
   }
 
   Future<void> hideSmallVideo() async {
@@ -1336,6 +1281,96 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
       return null;
     }
     return await _videoPlayerPlatform.getPlayPosition();
+  }
+
+  Future<void> initDanmaku({required DanmakuSettings settings}) async {
+    await _creatingCompleter.future;
+    await _videoPlayerPlatform.initDanmaku(settings: settings);
+  }
+
+  Future<void> showDanmaku(bool show) async {
+    await _creatingCompleter.future;
+    await _videoPlayerPlatform.showDanmaku(show);
+  }
+
+  Future<bool> getDanmakuShow() async {
+    await _creatingCompleter.future;
+    return await _videoPlayerPlatform.getDanmakuShow();
+  }
+
+  Future<void> hideDanmaku(bool show) async {
+    await _creatingCompleter.future;
+    await _videoPlayerPlatform.hideDanmaku(show);
+  }
+
+  Future<void> setDanmakuStyle(DanmakuStyle danmakuStyle,
+      {double danmuStyleShadow = 0.0,
+      double danmuStyleStroked = 0.0,
+      double danmuStyleProjectionOffsetX = 0.0,
+      double danmuStyleProjectionOffsetY = 0.0,
+      double danmuStyleProjectionAlpha = 255.0}) async {
+    await _creatingCompleter.future;
+    await _videoPlayerPlatform.setDanmakuStyle(danmakuStyle,
+        danmuStyleShadow: danmuStyleShadow,
+        danmuStyleStroked: danmuStyleStroked,
+        danmuStyleProjectionOffsetX: danmuStyleProjectionOffsetX,
+        danmuStyleProjectionOffsetY: danmuStyleProjectionOffsetY,
+        danmuStyleProjectionAlpha: danmuStyleProjectionAlpha.clamp(0.0, 255.0));
+  }
+
+  Future<void> setDanmakuBold(bool bold) async {
+    await _creatingCompleter.future;
+    await _videoPlayerPlatform.setDanmakuBold(bold);
+  }
+
+  Future<void> setScrollSpeedFactor(double speedFactor) async {
+    await _creatingCompleter.future;
+    await _videoPlayerPlatform.setScrollSpeedFactor(speedFactor);
+  }
+
+  Future<void> setDuplicateMergingEnabled(bool enabled) async {
+    await _creatingCompleter.future;
+    await _videoPlayerPlatform.setDuplicateMergingEnabled(enabled);
+  }
+
+  Future<void> setMaximumLines(Map<DanmakuTypeScroll, int> maxLinesPair) async {
+    await _creatingCompleter.future;
+    await _videoPlayerPlatform.setMaximumLines(maxLinesPair);
+  }
+
+  Future<void> preventOverlapping(Map<DanmakuTypeScroll, bool> preventPair) async {
+    await _creatingCompleter.future;
+    await _videoPlayerPlatform.preventOverlapping(preventPair);
+  }
+
+  Future<void> setMarginTop(double marginTop) async {
+    await _creatingCompleter.future;
+    await _videoPlayerPlatform.setMarginTop(marginTop);
+  }
+
+  Future<void> setDanmakuTransparency(double transparency) async {
+    await _creatingCompleter.future;
+    await _videoPlayerPlatform.setDanmakuTransparency(transparency);
+  }
+
+  Future<void> setDanmakuMargin(double margin) async {
+    await _creatingCompleter.future;
+    await _videoPlayerPlatform.setDanmakuMargin(margin);
+  }
+
+  Future<void> setScaleTextSize(double scale) async {
+    await _creatingCompleter.future;
+    await _videoPlayerPlatform.setScaleTextSize(scale);
+  }
+
+  Future<void> setMaximumVisibleSizeInScreen(MaximumVisibleSizeInScreen maximumVisibleSizeInScreen) async {
+    await _creatingCompleter.future;
+    await _videoPlayerPlatform.setMaximumVisibleSizeInScreen(maximumVisibleSizeInScreen);
+  }
+
+  Future<void> addDanmaku(BaseDanmaku danmaku) async {
+    await _creatingCompleter.future;
+    await _videoPlayerPlatform.addDanmaku(danmaku);
   }
 
   /// Sets the audio volume of [this].

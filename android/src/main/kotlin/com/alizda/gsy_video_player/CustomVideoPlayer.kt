@@ -8,20 +8,25 @@ import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
 import com.alizda.gsy_video_player.GsyVideoPlayerView.Companion.eventSink
-import com.shuyu.gsyvideoplayer.utils.Debuger
 import com.shuyu.gsyvideoplayer.utils.OrientationUtils
 import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer
 import com.shuyu.gsyvideoplayer.video.base.GSYBaseVideoPlayer
 import com.shuyu.gsyvideoplayer.video.base.GSYVideoPlayer
+import io.flutter.plugin.common.MethodCall
+import io.flutter.plugin.common.MethodChannel
 import master.flame.danmaku.controller.DrawHandler
 import master.flame.danmaku.controller.IDanmakuView
 import master.flame.danmaku.danmaku.loader.IllegalDataException
 import master.flame.danmaku.danmaku.loader.android.DanmakuLoaderFactory
 import master.flame.danmaku.danmaku.model.BaseDanmaku
 import master.flame.danmaku.danmaku.model.DanmakuTimer
-import master.flame.danmaku.danmaku.model.IDisplayer
+import master.flame.danmaku.danmaku.model.IDisplayer.DANMAKU_STYLE_DEFAULT
+import master.flame.danmaku.danmaku.model.IDisplayer.DANMAKU_STYLE_NONE
+import master.flame.danmaku.danmaku.model.IDisplayer.DANMAKU_STYLE_PROJECTION
+import master.flame.danmaku.danmaku.model.IDisplayer.DANMAKU_STYLE_SHADOW
+import master.flame.danmaku.danmaku.model.IDisplayer.DANMAKU_STYLE_STROKEN
 import master.flame.danmaku.danmaku.model.android.DanmakuContext
-import master.flame.danmaku.danmaku.model.android.SpannedCacheStuffer
+import master.flame.danmaku.danmaku.model.android.Danmakus
 import master.flame.danmaku.danmaku.parser.BaseDanmakuParser
 import master.flame.danmaku.ui.widget.DanmakuView
 import java.io.File
@@ -32,8 +37,7 @@ class CustomVideoPlayer : StandardGSYVideoPlayer {
     private var danmakuView: IDanmakuView? = null //弹幕view
     private var danmakuContext: DanmakuContext? = null
     private var danmakuStartSeekPosition: Long = -1
-    private var danmaKuShow = true
-    private var mDumakuFile: File? = null
+
     constructor(context: Context?, fullFlag: Boolean?) : super(context, fullFlag)
     constructor(context: Context?) : super(context)
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
@@ -44,16 +48,17 @@ class CustomVideoPlayer : StandardGSYVideoPlayer {
 
     override fun init(context: Context) {
         super.init(context)
-        danmakuView = findViewById<View>(R.id.danmaku_view) as DanmakuView
-        //初始化弹幕显示
-//        initDanmaku()
+        if (!GsyVideoPlayerView.isInitialized) {
+            GsyVideoPlayerView.isInitialized = true
+            customGSYMediaPlayerListener.sendInitialized(eventSink)
+        }
     }
 
     override fun clickStartIcon() {
         super.clickStartIcon()
-        if (mCurrentState == CURRENT_STATE_PLAYING) {
+        if (mCurrentState == CURRENT_STATE_PLAYING && DanmukuSettings.pauseWhenVideoPaused && DanmukuSettings.showDanmaku) {
             danmakuOnResume()
-        } else if (mCurrentState == CURRENT_STATE_PAUSE) {
+        } else if (mCurrentState == CURRENT_STATE_PAUSE && DanmukuSettings.pauseWhenVideoPaused && DanmukuSettings.showDanmaku) {
             danmakuOnPause()
         }
     }
@@ -72,7 +77,6 @@ class CustomVideoPlayer : StandardGSYVideoPlayer {
             val gsyVideoPlayer = gsyBaseVideoPlayer as CustomVideoPlayer
             //对弹幕设置偏移记录
             gsyVideoPlayer.danmakuStartSeekPosition = currentPositionWhenPlaying
-            gsyVideoPlayer.danmaKuShow = danmaKuShow
             onPrepareDanmaku(gsyVideoPlayer)
         }
         return gsyBaseVideoPlayer
@@ -84,44 +88,59 @@ class CustomVideoPlayer : StandardGSYVideoPlayer {
      */
     override fun resolveNormalVideoShow(oldF: View, vp: ViewGroup, gsyVideoPlayer: GSYVideoPlayer) {
         super.resolveNormalVideoShow(oldF, vp, gsyVideoPlayer)
-        val gsyDanmaVideoPlayer = gsyVideoPlayer as CustomVideoPlayer
-        danmaKuShow = gsyDanmaVideoPlayer.danmaKuShow
-        if (gsyDanmaVideoPlayer.danmakuView != null &&
-                gsyDanmaVideoPlayer.danmakuView!!.isPrepared) {
-            resolveDanmakuSeek(this, gsyDanmaVideoPlayer.currentPositionWhenPlaying)
+        if (danmakuView != null && danmakuView!!.isPrepared) {
+            resolveDanmakuSeek(this, currentPositionWhenPlaying)
             resolveDanmakuShow()
-            releaseDanmaku(gsyDanmaVideoPlayer)
+            releaseDanmaku(this)
         }
     }
 
     protected fun danmakuOnPause() {
-        if (danmakuView != null && danmakuView!!.isPrepared) {
+        if (danmakuView != null && danmakuView!!.isPrepared && DanmukuSettings.pauseWhenVideoPaused) {
             danmakuView!!.pause()
         }
     }
 
     protected fun danmakuOnResume() {
-        if (danmakuView != null && danmakuView!!.isPrepared && danmakuView!!.isPaused) {
+        if (danmakuView != null && danmakuView!!.isPrepared && danmakuView!!.isPaused && DanmukuSettings.pauseWhenVideoPaused) {
             danmakuView!!.resume()
         }
     }
 
-    private fun initDanmaku(uri: String) {
-        // 设置最大显示行数
-        val maxLinesPair = HashMap<Int, Int>()
-        maxLinesPair[BaseDanmaku.TYPE_SCROLL_RL] = 5 // 滚动弹幕最大显示5行
-        // 设置是否禁止重叠
-        val overlappingEnablePair = HashMap<Int, Boolean>()
-        overlappingEnablePair[BaseDanmaku.TYPE_SCROLL_RL] = true
-        overlappingEnablePair[BaseDanmaku.TYPE_FIX_TOP] = true
-        val danmakuAdapter = DanamakuAdapter(danmakuView)
+    private fun disposeDanmaku() {
+        if(mParser != null){
+            mParser!!.release()
+            mParser = null
+            releaseDanmaku(this)
+            danmakuContext = null
+            danmakuView = null
+        }
+    }
+
+    fun initDanmaku(call: MethodCall, result: MethodChannel.Result) {
+        disposeDanmaku()
+        danmakuView = findViewById<View>(R.id.danmaku_view) as DanmakuView
         danmakuContext = DanmakuContext.create()
-        danmakuContext!!.setDanmakuStyle(IDisplayer.DANMAKU_STYLE_STROKEN, 3f).setDuplicateMergingEnabled(false).setScrollSpeedFactor(1.2f).setScaleTextSize(1.2f)
-                .setCacheStuffer(SpannedCacheStuffer(), danmakuAdapter) // 图文混排使用SpannedCacheStuffer
-                .setMaximumLines(maxLinesPair)
-                .preventOverlapping(overlappingEnablePair)
+        when (DanmukuSettings.danmakuStyle) {
+            DANMAKU_STYLE_DEFAULT -> danmakuContext!!.setDanmakuStyle(DanmukuSettings.danmakuStyle)
+            DANMAKU_STYLE_NONE -> danmakuContext!!.setDanmakuStyle(DanmukuSettings.danmakuStyle)
+            DANMAKU_STYLE_SHADOW -> danmakuContext!!.setDanmakuStyle(DanmukuSettings.danmakuStyle, DanmukuSettings.shadowRadius)
+            DANMAKU_STYLE_STROKEN -> danmakuContext!!.setDanmakuStyle(DanmukuSettings.danmakuStyle, DanmukuSettings.strokenWidth)
+            DANMAKU_STYLE_PROJECTION -> danmakuContext!!.setDanmakuStyle(DanmukuSettings.danmakuStyle, DanmukuSettings.projectionOffsetX, DanmukuSettings.projectionOffsetY, DanmukuSettings.projectionAlpha)
+        }
+        danmakuContext!!.setDanmakuBold(DanmukuSettings.isBold)
+        danmakuContext!!.setScrollSpeedFactor(DanmukuSettings.scrollSpeedFactor)
+        danmakuContext!!.setScaleTextSize(DanmukuSettings.scaleTextSize)
+        danmakuContext!!.setDuplicateMergingEnabled(DanmukuSettings.duplicateMergingEnabled)
+        danmakuContext!!.preventOverlapping(DanmukuSettings.overlappingEnablePair)
+        danmakuContext!!.setMaximumLines(DanmukuSettings.maxLinesPair)
+        danmakuContext!!.setDanmakuTransparency(DanmukuSettings.opacity)
+        danmakuContext!!.setDanmakuMargin(DanmukuSettings.margin)
+        danmakuContext!!.setMarginTop(DanmukuSettings.marginTop)
+        danmakuContext!!.setMaximumVisibleSizeInScreen(DanmukuSettings.maximumVisibleSizeInScreen)
+
         if (danmakuView != null) {
-            mParser = createParser(uri)
+            mParser = createParser()
             danmakuView!!.setCallback(object : DrawHandler.Callback {
                 override fun danmakuShown(danmaku: BaseDanmaku?) {
 
@@ -136,14 +155,14 @@ class CustomVideoPlayer : StandardGSYVideoPlayer {
                 }
 
                 override fun prepared() {
-                    danmakuView!!.start(currentPositionWhenPlaying.toLong())
-                    if (currentState != GSYVideoPlayer.CURRENT_STATE_PLAYING) {
+                    danmakuView!!.start(currentPositionWhenPlaying)
+                    if (currentState != GSYVideoPlayer.CURRENT_STATE_PLAYING && DanmukuSettings.pauseWhenVideoPaused) {
                         danmakuView!!.pause()
                     }
                 }
             })
             danmakuView!!.prepare(mParser, danmakuContext)
-            danmakuView!!.enableDanmakuDrawingCache(true)
+            danmakuView!!.enableDanmakuDrawingCache(DanmukuSettings.enableDanmakuDrawingCache)
         }
     }
 
@@ -152,7 +171,7 @@ class CustomVideoPlayer : StandardGSYVideoPlayer {
      */
     private fun resolveDanmakuShow() {
         post {
-            if (danmaKuShow) {
+            if (DanmukuSettings.showDanmaku) {
                 if (!danmakuView?.isShown!!) danmakuView!!.show()
             } else {
                 if (danmakuView?.isShown == true) {
@@ -167,8 +186,7 @@ class CustomVideoPlayer : StandardGSYVideoPlayer {
      */
     private fun onPrepareDanmaku(gsyVideoPlayer: CustomVideoPlayer) {
         if (gsyVideoPlayer.danmakuView != null && !gsyVideoPlayer.danmakuView!!.isPrepared && mParser != null) {
-            gsyVideoPlayer.danmakuView!!.prepare(gsyVideoPlayer.mParser,
-                    gsyVideoPlayer.danmakuContext)
+            gsyVideoPlayer.danmakuView!!.prepare(gsyVideoPlayer.mParser, gsyVideoPlayer.danmakuContext)
         }
     }
 
@@ -186,11 +204,17 @@ class CustomVideoPlayer : StandardGSYVideoPlayer {
      *
      * @return
      */
-    private fun createParser(uri: String): BaseDanmakuParser {
+    private fun createParser(): BaseDanmakuParser {
+        if (DanmukuSettings.isLinkFile) {
+            return object : BaseDanmakuParser() {
+                override fun parse(): Danmakus {
+                    return Danmakus()
+                }
+            }
+        }
         val loader = DanmakuLoaderFactory.create(DanmakuLoaderFactory.TAG_BILI)
-
         try {
-            loader.load(uri)
+            loader.load(DanmukuSettings.url)
         } catch (e: IllegalDataException) {
             e.printStackTrace()
         }
@@ -205,7 +229,6 @@ class CustomVideoPlayer : StandardGSYVideoPlayer {
      */
     private fun releaseDanmaku(danmakuVideoPlayer: CustomVideoPlayer?) {
         if (danmakuVideoPlayer?.danmakuView != null) {
-            Debuger.printfError("release Danmaku!")
             danmakuVideoPlayer.danmakuView!!.release()
         }
     }
@@ -213,22 +236,15 @@ class CustomVideoPlayer : StandardGSYVideoPlayer {
     /**
      * 模拟添加弹幕数据
      */
-    private fun addDanmaku(islive: Boolean) {
-        val danmaku = danmakuContext!!.mDanmakuFactory.createDanmaku(BaseDanmaku.TYPE_SCROLL_RL)
+    fun addDanmaku(call: MethodCall, result: MethodChannel.Result) {
+        val danmaku = danmakuContext!!.mDanmakuFactory.createDanmaku(baseDanmaku.type)
         if (danmaku == null || danmakuView == null) {
             return
         }
-        danmaku.text = "这是一条弹幕 $currentPositionWhenPlaying"
-        danmaku.padding = 5
-        danmaku.priority = 8 // 可能会被各种过滤器过滤并隐藏显示，所以提高等级
-        danmaku.isLive = islive
-        danmaku.setTime(danmakuView!!.currentTime + 1200)
-        danmaku.textSize = 25f * (mParser!!.displayer.density - 0.6f)
-        danmaku.textColor = Color.RED
-        danmaku.textShadowColor = Color.WHITE
-        danmaku.borderColor = Color.GREEN
+        danmaku.forceBuildCacheInSameThread
         danmakuView!!.addDanmaku(danmaku)
     }
+
     /**
      * 旋转处理
      *
@@ -236,23 +252,14 @@ class CustomVideoPlayer : StandardGSYVideoPlayer {
      * @param newConfig        配置
      * @param orientationUtils 旋转工具类
      */
-    override fun onConfigurationChanged(
-        activity: Activity?,
-        newConfig: Configuration?,
-        orientationUtils: OrientationUtils?
-    ) {
+    override fun onConfigurationChanged(activity: Activity?, newConfig: Configuration?, orientationUtils: OrientationUtils?) {
         super.onConfigurationChanged(activity, newConfig, orientationUtils)
         customGSYMediaPlayerListener.onConfigurationChanged(eventSink)
     }
 
 
-
     override fun onPrepared() {
         super.onPrepared()
-        if (!GsyVideoPlayerView.isInitialized) {
-            GsyVideoPlayerView.isInitialized = true
-            customGSYMediaPlayerListener.sendInitialized(eventSink)
-        }
         customGSYMediaPlayerListener.onPrepared(eventSink)
         onPrepareDanmaku(this)
     }
@@ -270,7 +277,7 @@ class CustomVideoPlayer : StandardGSYVideoPlayer {
 
     override fun onBufferingUpdate(percent: Int) {
         super.onBufferingUpdate(percent)
-        customGSYMediaPlayerListener.onBufferingUpdate(eventSink,percent)
+        customGSYMediaPlayerListener.onBufferingUpdate(eventSink, percent)
     }
 
     override fun onSeekComplete() {
@@ -288,12 +295,12 @@ class CustomVideoPlayer : StandardGSYVideoPlayer {
 
     override fun onError(what: Int, extra: Int) {
         super.onError(what, extra)
-        customGSYMediaPlayerListener.onError(eventSink,what,extra)
+        customGSYMediaPlayerListener.onError(eventSink, what, extra)
     }
 
     override fun onInfo(what: Int, extra: Int) {
         super.onInfo(what, extra)
-        customGSYMediaPlayerListener.onInfo(eventSink,what,extra)
+        customGSYMediaPlayerListener.onInfo(eventSink, what, extra)
     }
 
     override fun onVideoSizeChanged() {
@@ -319,7 +326,60 @@ class CustomVideoPlayer : StandardGSYVideoPlayer {
 
     override fun onVideoResume(seek: Boolean) {
         super.onVideoResume(seek)
-        customGSYMediaPlayerListener.onVideoResume(eventSink,seek)
+        customGSYMediaPlayerListener.onVideoResume(eventSink, seek)
         danmakuOnPause()
     }
+
+    fun showDanmaku(call: MethodCall, result: MethodChannel.Result) {
+
+    }
+
+    fun getDanmakuShow(call: MethodCall, result: MethodChannel.Result) {
+
+    }
+
+    fun hideDanmaku(call: MethodCall, result: MethodChannel.Result) {
+
+    }
+
+    fun setDanmakuStyle(call: MethodCall, result: MethodChannel.Result) {
+
+    }
+
+    fun setDanmakuTransparency(call: MethodCall, result: MethodChannel.Result) {
+
+
+    }
+
+    fun setDanmakuMargin(call: MethodCall, result: MethodChannel.Result) { }
+
+    fun setScaleTextSize(call: MethodCall, result: MethodChannel.Result) { }
+    fun setMaximumVisibleSizeInScreen(call: MethodCall, result: MethodChannel.Result) {
+
+    }
+
+    fun setDanmakuBold(call: MethodCall, result: MethodChannel.Result) {
+
+    }
+
+    fun setScrollSpeedFactor(call: MethodCall, result: MethodChannel.Result) {
+
+    }
+
+    fun setDuplicateMergingEnabled(call: MethodCall, result: MethodChannel.Result) {
+
+    }
+
+    fun setMaximumLines(call: MethodCall, result: MethodChannel.Result) {
+
+    }
+
+    fun preventOverlapping(call: MethodCall, result: MethodChannel.Result) {
+
+    }
+
+    fun setMarginTop(call: MethodCall, result: MethodChannel.Result) {
+
+    }
+
 }

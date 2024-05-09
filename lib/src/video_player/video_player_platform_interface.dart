@@ -1,14 +1,6 @@
 import 'dart:async';
 import 'package:flutter/widgets.dart';
-import 'method_channel_video_player.dart';
-import 'package:gsy_video_player/src/constants/log_level.dart';
-import 'package:gsy_video_player/src/constants/ijk_option.dart';
-import 'package:gsy_video_player/src/video_player/video_event.dart';
-import 'package:gsy_video_player/src/constants/video_play_state.dart';
-import 'package:gsy_video_player/src/builder/video_option_builder.dart';
-import 'package:gsy_video_player/src/configuration/player_video_type.dart';
-import 'package:gsy_video_player/src/configuration/player_video_show_type.dart';
-import 'package:gsy_video_player/src/configuration/player_video_render_type.dart';
+import 'package:gsy_video_player/gsy_video_player.dart';
 
 // Copyright 2017 The Chromium Authors. All rights reserved.
 /// The interface that implementations of video_player must implement.
@@ -48,8 +40,7 @@ abstract class VideoPlayerPlatform {
 
   /// Sets the [VideoOptionBuilder] for the video.
   Future<void> setVideoOptionBuilder(VideoOptionBuilder builder) {
-    throw UnimplementedError(
-        'setVideoOptionBuilder() has not been implemented.');
+    throw UnimplementedError('setVideoOptionBuilder() has not been implemented.');
   }
 
   /// Returns the layout ID of the video.
@@ -62,8 +53,7 @@ abstract class VideoPlayerPlatform {
   }
 
   /// Initializes the video player.
-  Future<void> setUp(
-      String url, bool cacheWithPlay, String cachePath, String title) {
+  Future<void> setUp(String url, bool cacheWithPlay, String cachePath, String title) {
     throw UnimplementedError('setUp() has not been implemented.');
   }
 
@@ -84,8 +74,7 @@ abstract class VideoPlayerPlatform {
 
   /// Returns the current position of the video when it is playing.
   Future<int> getCurrentPositionWhenPlaying() {
-    throw UnimplementedError(
-        'getCurrentPositionWhenPlaying() has not been implemented.');
+    throw UnimplementedError('getCurrentPositionWhenPlaying() has not been implemented.');
   }
 
   /// Releases all videos.
@@ -150,14 +139,12 @@ abstract class VideoPlayerPlatform {
 
   /// Sets the proxy cache manager.
   Future<void> setProxyCacheManager() {
-    throw UnimplementedError(
-        'setProxyCacheManager() has not been implemented.');
+    throw UnimplementedError('setProxyCacheManager() has not been implemented.');
   }
 
   /// Clears all default cache.
   Future<void> clearAllDefaultCache() {
-    throw UnimplementedError(
-        'clearAllDefaultCache() has not been implemented.');
+    throw UnimplementedError('clearAllDefaultCache() has not been implemented.');
   }
 
   /// Clears the default cache.
@@ -254,8 +241,7 @@ abstract class VideoPlayerPlatform {
   }
 
   /// Sets the show type of the video.
-  Future<void> setShowType(PlayerVideoShowType showType,
-      {double screenScaleRatio = 0.0}) {
+  Future<void> setShowType(PlayerVideoShowType showType, {double screenScaleRatio = 0.0}) {
     throw UnimplementedError('setShowType() has not been implemented.');
   }
 
@@ -276,19 +262,16 @@ abstract class VideoPlayerPlatform {
 
   /// Sets the media codec texture of the video.
   Future<void> setMediaCodecTexture(bool mediaCodecTexture) {
-    throw UnimplementedError(
-        'setMediaCodecTexture() has not been implemented.');
+    throw UnimplementedError('setMediaCodecTexture() has not been implemented.');
   }
 
   /// Start window full screen.
   Future<void> startWindowFullscreen(bool showActionBar, bool showStatusBar) {
-    throw UnimplementedError(
-        'startWindowFullscreen() has not been implemented.');
+    throw UnimplementedError('startWindowFullscreen() has not been implemented.');
   }
 
   /// Show small video.
-  Future<void> showSmallVideo(
-      Size size, bool showActionBar, bool showStatusBar) {
+  Future<void> showSmallVideo(Size size, bool showActionBar, bool showStatusBar) {
     throw UnimplementedError('showSmallVideo() has not been implemented.');
   }
 
@@ -304,8 +287,7 @@ abstract class VideoPlayerPlatform {
 
   /// Set show full animation.
   Future<void> setShowFullAnimation(bool showFullAnimation) {
-    throw UnimplementedError(
-        'setShowFullAnimation() has not been implemented.');
+    throw UnimplementedError('setShowFullAnimation() has not been implemented.');
   }
 
   /// Whether rotate view auto.
@@ -422,13 +404,11 @@ abstract class VideoPlayerPlatform {
   /// Sets the dismiss control time of the video. The dismiss control time is the time in milliseconds
   /// after which the video controls will be hidden.
   Future<void> setDismissControlTime(int time) {
-    throw UnimplementedError(
-        'setDismissControlTime() has not been implemented.');
+    throw UnimplementedError('setDismissControlTime() has not been implemented.');
   }
 
   Future<int> getDismissControlTime() {
-    throw UnimplementedError(
-        'getDismissControlTime() has not been implemented.');
+    throw UnimplementedError('getDismissControlTime() has not been implemented.');
   }
 
   /// Returns the dismiss control time of the video. The dismiss control time is the time in milliseconds
@@ -438,14 +418,12 @@ abstract class VideoPlayerPlatform {
   }
 
   Future<bool> isIfCurrentIsFullscreen() {
-    throw UnimplementedError(
-        'isIfCurrentIsFullscreen() has not been implemented.');
+    throw UnimplementedError('isIfCurrentIsFullscreen() has not been implemented.');
   }
 
   /// Returns the seek on start of the video.
   Future<void> setIfCurrentIsFullscreen(bool ifCurrentIsFullscreen) {
-    throw UnimplementedError(
-        'setIfCurrentIsFullscreen() has not been implemented.');
+    throw UnimplementedError('setIfCurrentIsFullscreen() has not been implemented.');
   }
 
   /// Sets the looping of the video.
@@ -495,13 +473,11 @@ abstract class VideoPlayerPlatform {
   }
 
   Future<void> releaseWhenLossAudio() {
-    throw UnimplementedError(
-        'releaseWhenLossAudio() has not been implemented.');
+    throw UnimplementedError('releaseWhenLossAudio() has not been implemented.');
   }
 
   Future<void> setReleaseWhenLossAudio(bool releaseWhenLossAudio) {
-    throw UnimplementedError(
-        'setReleaseWhenLossAudio() has not been implemented.');
+    throw UnimplementedError('setReleaseWhenLossAudio() has not been implemented.');
   }
 
   Future<void> setAutoFullWithSize(bool releaseWhenLossAudio) {
@@ -514,6 +490,77 @@ abstract class VideoPlayerPlatform {
 
   Future<void> setVolume(double volume) {
     throw UnimplementedError('setVolume() has not been implemented.');
+  }
+
+  Future<void> initDanmaku({required DanmakuSettings settings}) async {
+    throw UnimplementedError('initDanmaku() has not been implemented.');
+  }
+
+  Future<void> showDanmaku(bool show) async {
+    throw UnimplementedError('showDanmaku() has not been implemented.');
+  }
+
+  Future<bool> getDanmakuShow() async {
+    throw UnimplementedError('getDanmakuShow() has not been implemented.');
+  }
+
+  Future<void> hideDanmaku(bool show) async {
+    throw UnimplementedError('hideDanmaku() has not been implemented.');
+  }
+
+  Future<void> setDanmakuStyle(
+    DanmakuStyle danmakuStyle, {
+    double danmuStyleShadow = 0.0,
+    double danmuStyleStroked = 0.0,
+    double danmuStyleProjectionOffsetX = 0.0,
+    double danmuStyleProjectionOffsetY = 0.0,
+    double danmuStyleProjectionAlpha = 255.0,
+  }) async {
+    throw UnimplementedError('setDanmakuStyle() has not been implemented.');
+  }
+
+  Future<void> setDanmakuBold(bool bold) async {
+    throw UnimplementedError('setDanmakuBold() has not been implemented.');
+  }
+
+  Future<void> setScrollSpeedFactor(double speedFactor) async {
+    throw UnimplementedError('setScrollSpeedFactor() has not been implemented.');
+  }
+
+  Future<void> setDuplicateMergingEnabled(bool enabled) async {
+    throw UnimplementedError('setDuplicateMergingEnabled() has not been implemented.');
+  }
+
+  Future<void> setMaximumLines(Map<DanmakuTypeScroll, int> maxLinesPair) async {
+    throw UnimplementedError('setMaximumLines() has not been implemented.');
+  }
+
+  Future<void> preventOverlapping(Map<DanmakuTypeScroll, bool> preventPair) async {
+    throw UnimplementedError('preventOverlapping() has not been implemented.');
+  }
+
+  Future<void> setMarginTop(double marginTop) async {
+    throw UnimplementedError('setMarginTop() has not been implemented.');
+  }
+
+  Future<void> setDanmakuTransparency(double transparency) async {
+    throw UnimplementedError('setDanmakuTransparency() has not been implemented.');
+  }
+
+  Future<void> setDanmakuMargin(double margin) async {
+    throw UnimplementedError('setDanmakuMargin() has not been implemented.');
+  }
+
+  Future<void> setScaleTextSize(double scale) async {
+    throw UnimplementedError('setScaleTextSize() has not been implemented.');
+  }
+
+  Future<void> setMaximumVisibleSizeInScreen(MaximumVisibleSizeInScreen maximumVisibleSizeInScreen) async {
+    throw UnimplementedError('setMaximumVisibleSizeInScreen() has not been implemented.');
+  }
+
+  Future<void> addDanmaku(BaseDanmaku danmaku) async {
+    throw UnimplementedError('addDanmaku() has not been implemented.');
   }
 
   Stream<VideoEvent> videoEventsFor() {

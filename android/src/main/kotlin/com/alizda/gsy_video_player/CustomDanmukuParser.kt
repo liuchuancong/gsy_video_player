@@ -23,8 +23,8 @@ class CustomDanmukuParser: BaseDanmakuParser() {
         }
     }
 
-    var dispScaleX = 0f
-    var dispScaleY = 0f
+    private var dispScaleX = 0f
+    private var dispScaleY = 0f
 
     override fun parse(): IDanmakus? {
         mDataSource?.let {
