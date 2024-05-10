@@ -21,7 +21,6 @@ class GsyVideoPlayerView(private val context: Context, messenger: BinaryMessenge
     private var gsyVideoOptionBuilder: CustomGSYVideoOptionBuilder = CustomGSYVideoOptionBuilder(videoPlayer)
     private var customVideoAllCallBack: CustomVideoAllCallBack = CustomVideoAllCallBack(videoPlayer)
     private var customBasicApi: CustomBasicApi = CustomBasicApi(videoPlayer,context)
-    private var orientationUtils: CustomOrientationUtils = CustomOrientationUtils(videoPlayer, context)
     private  var customGSYVideoManagerApi :CustomGSYVideoManagerApi = CustomGSYVideoManagerApi(context)
     private var gSYVideoPlayer: GSYVideoPlayer = GSYVideoPlayer(videoPlayer, context, id)
     private var customGSYVideoType: CustomGSYVideoType = CustomGSYVideoType()

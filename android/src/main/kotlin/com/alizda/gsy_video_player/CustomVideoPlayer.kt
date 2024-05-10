@@ -1,13 +1,16 @@
 package com.alizda.gsy_video_player
 
+
 import android.app.Activity
 import android.content.Context
 import android.content.res.Configuration
 import android.graphics.Color
 import android.os.Build
 import android.util.AttributeSet
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.annotation.RequiresApi
 import com.alizda.gsy_video_player.GsyVideoPlayerView.Companion.eventSink
 import com.shuyu.gsyvideoplayer.utils.OrientationUtils
@@ -33,18 +36,23 @@ import master.flame.danmaku.danmaku.model.android.Danmakus
 import master.flame.danmaku.danmaku.parser.BaseDanmakuParser
 import master.flame.danmaku.ui.widget.DanmakuView
 
-open class CustomVideoPlayer : StandardGSYVideoPlayer {
+
+class CustomVideoPlayer : StandardGSYVideoPlayer {
     private var customGSYMediaPlayerListener: CustomGSYMediaPlayerListener = CustomGSYMediaPlayerListener(this)
     private var mParser: BaseDanmakuParser? = null //解析器对象
     private var danmakuView: IDanmakuView? = null //弹幕view
     private var danmakuContext: DanmakuContext? = null
     private var danmakuStartSeekPosition: Long = -1
-
+    private var isLinkScroll = false
+    private var orientationUtils: CustomOrientationUtils = CustomOrientationUtils(this, context)
     constructor(context: Context?, fullFlag: Boolean?) : super(context, fullFlag)
     constructor(context: Context?) : super(context)
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
 
     override fun getLayoutId(): Int {
+        if (mIfCurrentIsFullscreen) {
+            return R.layout.danmaku_layout_land
+        }
         return R.layout.danmaku_layout
     }
 
@@ -52,9 +60,74 @@ open class CustomVideoPlayer : StandardGSYVideoPlayer {
         super.init(context)
         initDanmaView()
     }
+    private fun  addFullScreenListen(){
+        if(fullscreenButton.isShown){
+            fullscreenButton.setOnClickListener {
+                orientationUtils.resolveByClick();
+            };
+        }
+    }
 
+    override fun updateStartImage() {
+        if (mIfCurrentIsFullscreen) {
+            if (mStartButton is ImageView) {
+                val imageView = mStartButton as ImageView
+                when (mCurrentState) {
+                    CURRENT_STATE_PLAYING -> {
+                        imageView.setImageResource(com.shuyu.gsyvideoplayer.R.drawable.video_click_pause_selector)
+                    }
+                    CURRENT_STATE_ERROR -> {
+                        imageView.setImageResource(com.shuyu.gsyvideoplayer.R.drawable.video_click_play_selector)
+                    }
+                    else -> {
+                        imageView.setImageResource(com.shuyu.gsyvideoplayer.R.drawable.video_click_play_selector)
+                    }
+                }
+            }
+        } else {
+            super.updateStartImage()
+        }
+    }
     override fun clickStartIcon() {
         super.clickStartIcon()
+    }
+
+    fun handleEnterFullScreen() {
+        if (mIfCurrentIsFullscreen) {
+            if (mStartButton is ImageView) {
+                val imageView = mStartButton as ImageView
+                when (mCurrentState) {
+                    CURRENT_STATE_PLAYING -> {
+                        imageView.setImageResource(com.shuyu.gsyvideoplayer.R.drawable.video_click_pause_selector)
+                    }
+
+                    CURRENT_STATE_ERROR -> {
+                        imageView.setImageResource(com.shuyu.gsyvideoplayer.R.drawable.video_click_play_selector)
+                    }
+
+                    else -> {
+                        imageView.setImageResource(com.shuyu.gsyvideoplayer.R.drawable.video_click_play_selector)
+                    }
+                }
+            }
+            orientationUtils.resolveByClick()
+        }else{
+            orientationUtils.backToProtVideo()
+        }
+    }
+    override fun getEnlargeImageRes(): Int {
+        return R.drawable.custom_enlarge
+    }
+
+    override fun getShrinkImageRes(): Int {
+        return R.drawable.custom_shrink
+    }
+
+    override fun onInterceptTouchEvent(ev: MotionEvent?): Boolean {
+        if (isLinkScroll && !isIfCurrentIsFullscreen) {
+            parent.requestDisallowInterceptTouchEvent(true)
+        }
+        return super.onInterceptTouchEvent(ev)
     }
 
     private fun initDanmaView() {
@@ -90,14 +163,36 @@ open class CustomVideoPlayer : StandardGSYVideoPlayer {
      * 需要格外注意的是，因为全屏和小屏，是切换了播放器，所以需要同步之间的弹幕状态
      */
     override fun resolveNormalVideoShow(oldF: View, vp: ViewGroup, gsyVideoPlayer: GSYVideoPlayer) {
-        super.resolveNormalVideoShow(oldF, vp, gsyVideoPlayer)
+        val landLayoutVideo: CustomVideoPlayer = gsyVideoPlayer as CustomVideoPlayer
+        landLayoutVideo.dismissProgressDialog()
+        landLayoutVideo.dismissVolumeDialog()
+        landLayoutVideo.dismissBrightnessDialog()
         if (danmakuView != null && danmakuView!!.isPrepared) {
             resolveDanmakuSeek(this, currentPositionWhenPlaying)
             resolveDanmakuShow()
             releaseDanmaku(this)
         }
+        super.resolveNormalVideoShow(oldF, vp, gsyVideoPlayer)
     }
 
+    fun setLinkScroll(linkScroll: Boolean) {
+        isLinkScroll = linkScroll
+    }
+
+    /**
+     * 定义结束后的显示
+     */
+    override fun changeUiToCompleteClear() {
+        super.changeUiToCompleteClear()
+        setTextAndProgress(0, true)
+        //changeUiToNormal();
+    }
+
+    override fun changeUiToCompleteShow() {
+        super.changeUiToCompleteShow()
+        setTextAndProgress(0, true)
+        //changeUiToNormal();
+    }
     protected fun danmakuOnPause() {
         if (danmakuView != null && danmakuView!!.isPrepared && DanmukuSettings.pauseWhenVideoPaused) {
             danmakuView!!.pause()
@@ -401,7 +496,9 @@ open class CustomVideoPlayer : StandardGSYVideoPlayer {
         }
         super.onPrepared()
         customGSYMediaPlayerListener.onPrepared(eventSink)
+        addFullScreenListen()
     }
+
 
     override fun onAutoCompletion() {
         super.onAutoCompletion()

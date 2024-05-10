@@ -8,14 +8,12 @@ import io.flutter.plugin.common.MethodChannel
 class CustomOrientationUtils(private var videoPlayer: CustomVideoPlayer,private val context: Context,) {
     private var orientationUtils: OrientationUtils = OrientationUtils(GsyVideoShared.activity, videoPlayer)
 
-    fun resolveByClick(call: MethodCall, result: MethodChannel.Result){
+    fun resolveByClick(){
         orientationUtils.resolveByClick()
     }
 
-    fun backToProtVideo(call: MethodCall, result: MethodChannel.Result){
-        val reply: MutableMap<String, Any> = HashMap()
-        reply["backToProtVideo"] = orientationUtils.backToProtVideo()
-        result.success(reply)
+    fun backToProtVideo(){
+        orientationUtils.backToProtVideo()
     }
 
     fun isEnable(call: MethodCall, result: MethodChannel.Result){

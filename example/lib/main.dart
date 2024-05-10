@@ -38,8 +38,13 @@ class _MyAppState extends State<MyApp> {
   Future<void> initPlayer() async {
     gsyVideoPlayerController.setLogLevel(LogLevel.logError);
     gsyVideoPlayerController.setNetWorkBuilder(
-        'https://cloud.video.taobao.com//play/u/27349687/p/1/e/6/t/1/239880949246.mp4',
-        autoPlay: false);
+      'https://cloud.video.taobao.com//play/u/27349687/p/1/e/6/t/1/239880949246.mp4',
+      autoPlay: false,
+      showFullAnimation: true,
+      showPauseCover: true,
+      rotateWithSystem: true,
+      isTouchWigetFull: true,
+    );
     gsyVideoPlayerController.addEventsListener((VideoEventType event) {
       if (gsyVideoPlayerController.value.initialized) {}
     });
@@ -176,6 +181,16 @@ class _MyAppState extends State<MyApp> {
                       });
                     },
                     child: const Text('setMaximumLines')),
+                ElevatedButton(
+                    onPressed: () {
+                      gsyVideoPlayerController.startWindowFullscreen(true, true);
+                    },
+                    child: const Text('FullScreen')),
+                ElevatedButton(
+                    onPressed: () {
+                      gsyVideoPlayerController.showSmallVideo(const Size(500, 500), true, true);
+                    },
+                    child: const Text('showSmallVideo')),
               ],
             )
           ],
