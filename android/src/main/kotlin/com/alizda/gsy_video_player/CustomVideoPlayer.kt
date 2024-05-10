@@ -6,7 +6,6 @@ import android.content.res.Configuration
 import android.graphics.Color
 import android.os.Build
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
@@ -56,11 +55,6 @@ open class CustomVideoPlayer : StandardGSYVideoPlayer {
 
     override fun clickStartIcon() {
         super.clickStartIcon()
-        if (mCurrentState == CURRENT_STATE_PLAYING && DanmukuSettings.pauseWhenVideoPaused && DanmukuSettings.showDanmaku && GsyVideoPlayerView.isInitialized) {
-            danmakuOnResume()
-        } else if (mCurrentState == CURRENT_STATE_PAUSE && DanmukuSettings.pauseWhenVideoPaused && DanmukuSettings.showDanmaku && GsyVideoPlayerView.isInitialized) {
-            danmakuOnPause()
-        }
     }
 
     private fun initDanmaView() {
@@ -160,7 +154,6 @@ open class CustomVideoPlayer : StandardGSYVideoPlayer {
         DanmukuSettings.isLinkFile = isLinkFile
         DanmukuSettings.url = url
         DanmukuSettings.showDanmaku = showDanmaku
-
         when (DanmukuSettings.danmakuStyle) {
             DANMAKU_STYLE_NONE -> danmakuContext!!.setDanmakuStyle(DanmukuSettings.danmakuStyle)
             DANMAKU_STYLE_SHADOW -> danmakuContext!!.setDanmakuStyle(DanmukuSettings.danmakuStyle, DanmukuSettings.shadowRadius)
@@ -208,10 +201,10 @@ open class CustomVideoPlayer : StandardGSYVideoPlayer {
             danmakuView!!.enableDanmakuDrawingCache(DanmukuSettings.enableDanmakuDrawingCache)
             danmakuView!!.start()
             resolveDanmakuShow()
+            onPrepareDanmaku(this)
             val event: MutableMap<String, Any?> = HashMap()
             event["event"] = "onListenerInitDanmakuSuccess"
             eventSink.success(event)
-            onPrepareDanmaku(this)
         }
     }
 
@@ -287,6 +280,7 @@ open class CustomVideoPlayer : StandardGSYVideoPlayer {
      */
     @RequiresApi(Build.VERSION_CODES.O)
     fun addDanmaku(call: MethodCall, result: MethodChannel.Result) {
+        initDanmaView()
         val danmakuOptions = call.argument<Map<String, Any?>>("danmaku")!!
         val type = GsyVideoPlayerView.getParameter(danmakuOptions, "type", BaseDanmaku.TYPE_SCROLL_RL)
         val danmaku = danmakuContext!!.mDanmakuFactory.createDanmaku(type)
@@ -298,10 +292,10 @@ open class CustomVideoPlayer : StandardGSYVideoPlayer {
         val text = GsyVideoPlayerView.getParameter(danmakuOptions, "text", "")
         val emptyLinesArray = arrayOf<String>()
         val lines = GsyVideoPlayerView.getParameter(danmakuOptions, "lines", emptyLinesArray)
-        val textColor = (GsyVideoPlayerView.getParameter(danmakuOptions, "textColor", 0) as Number).toInt()
-        val textShadowColor = (GsyVideoPlayerView.getParameter(danmakuOptions, "textShadowColor", 0) as Number).toInt()
-        val underlineColor = (GsyVideoPlayerView.getParameter(danmakuOptions, "underlineColor", 0) as Number).toInt()
-        val borderColor = (GsyVideoPlayerView.getParameter(danmakuOptions, "borderColor", 0) as Number).toInt()
+        val textColor = GsyVideoPlayerView.getParameter(danmakuOptions, "textColor", "")
+        val textShadowColor = GsyVideoPlayerView.getParameter(danmakuOptions, "textShadowColor", "")
+        val underlineColor = GsyVideoPlayerView.getParameter(danmakuOptions, "underlineColor", "")
+        val borderColor = GsyVideoPlayerView.getParameter(danmakuOptions, "borderColor", "")
         val textSize = GsyVideoPlayerView.getParameter(danmakuOptions, "textSize", -1)
         val rotationZ = (GsyVideoPlayerView.getParameter(danmakuOptions, "rotationZ", 0.0F) as Number).toFloat()
         val rotationY = (GsyVideoPlayerView.getParameter(danmakuOptions, "rotationY", 0.0F) as Number).toFloat()
@@ -329,22 +323,22 @@ open class CustomVideoPlayer : StandardGSYVideoPlayer {
         if (lines.isNotEmpty()) {
             danmaku.lines = lines
         }
-        if (textColor != 0) {
-            danmaku.textColor = transferColor(textColor)
-        }
         if (rotationZ != 0.0f) {
             danmaku.rotationZ = rotationZ
         }
         if (rotationY != 0.0f) {
             danmaku.rotationY = rotationY
         }
-        if (textShadowColor != 0) {
+        if (textColor.isNotEmpty()) {
+            danmaku.textColor = transferColor(textColor)
+        }
+        if (textShadowColor.isNotEmpty()) {
             danmaku.textShadowColor = transferColor(textShadowColor)
         }
-        if (underlineColor != 0) {
+        if (underlineColor.isNotEmpty()) {
             danmaku.underlineColor = transferColor(underlineColor)
         }
-        if (borderColor != 0) {
+        if (borderColor.isNotEmpty()) {
             danmaku.borderColor = transferColor(borderColor)
         }
         if (textSize != -1) {
@@ -375,12 +369,8 @@ open class CustomVideoPlayer : StandardGSYVideoPlayer {
         danmakuView!!.addDanmaku(danmaku)
     }
 
-    private fun transferColor(transColor: Int): Int {
-        val red: Int = 0x00FF0000 and transColor shr 16
-        val green: Int = 0x0000FF00 and transColor shr 8
-        val blue: Int = 0x000000FF and transColor shr 0
-        val hexColor = Integer.toHexString(Color.rgb(red, green, blue)).substring(2);
-        return Color.parseColor("#$hexColor")
+    private fun transferColor(transColor: String): Int {
+        return  Color.parseColor(transColor)
     }
 
     private fun isBoolean(boo: Boolean): Int {
@@ -485,6 +475,50 @@ open class CustomVideoPlayer : StandardGSYVideoPlayer {
             danmakuView!!.show()
         }
     }
+
+    fun startDanmaku(call: MethodCall, result: MethodChannel.Result) {
+        initDanmaView()
+        if (danmakuView!!.isShown) {
+            danmakuView!!.start()
+        }
+    }
+
+    fun getDannakuStatus(call: MethodCall, result: MethodChannel.Result) {
+        initDanmaView()
+        val reply: MutableMap<String, Any> = HashMap()
+        reply["isPrepared"] = danmakuView!!.isPrepared
+        reply["isPaused"] = danmakuView!!.isPaused
+        reply["isShown"] = danmakuView!!.isShown
+        result.success(reply)
+    }
+
+    fun resumeDanmaku(call: MethodCall, result: MethodChannel.Result) {
+        initDanmaView()
+        if (danmakuView!!.isPaused) {
+            danmakuView!!.resume()
+        }
+    }
+    fun pauseDanmaku(call: MethodCall, result: MethodChannel.Result) {
+        initDanmaView()
+        if (!danmakuView!!.isPaused) {
+            danmakuView!!.pause()
+        }
+    }
+    fun stopDanmaku(call: MethodCall, result: MethodChannel.Result) {
+        initDanmaView()
+        if (danmakuView!!.isShown) {
+            danmakuView!!.stop()
+        }
+    }
+
+    fun seekToDanmaku(call: MethodCall, result: MethodChannel.Result) {
+        initDanmaView()
+        val ms = (call.argument<Any>("ms")!! as Number).toInt().toLong()
+        if (danmakuView!!.isShown) {
+            danmakuView!!.seekTo(ms)
+        }
+    }
+
 
     fun getDanmakuShow(call: MethodCall, result: MethodChannel.Result) {
         initDanmaView()

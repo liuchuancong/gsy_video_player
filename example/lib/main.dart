@@ -19,8 +19,9 @@ class _MyAppState extends State<MyApp> {
       danmakuStyle: DanmakuStyle.danmuStyleStroked,
       strokenWidth: 5.0,
       showDanmaku: true,
+      enableDanmakuDrawingCache: false,
       maxLinesPair: {
-        DanmakuTypeScroll.scrollRL: 5,
+        DanmakuTypeScroll.scrollRL: 10,
       },
     ),
   );
@@ -38,9 +39,7 @@ class _MyAppState extends State<MyApp> {
         'https://cloud.video.taobao.com//play/u/27349687/p/1/e/6/t/1/239880949246.mp4',
         autoPlay: false);
     gsyVideoPlayerController.addEventsListener((VideoEventType event) {
-      if (gsyVideoPlayerController.value.initialized) {
-        // listen to do
-      }
+      if (gsyVideoPlayerController.value.initialized) {}
     });
   }
 
@@ -105,9 +104,9 @@ class _MyAppState extends State<MyApp> {
                     onPressed: () {
                       Timer.periodic(const Duration(seconds: 1), (timer) {
                         gsyVideoPlayerController.danmakuController.addDanmaku(BaseDanmaku(
-                          text: '弹幕222测试',
+                          text: '12222222222222222',
                           textColor: Colors.red,
-                          textSize: 24,
+                          textSize: 35,
                           time: 500,
                           priority: 8,
                           type: DanmakuTypeScroll.scrollRL,
@@ -116,6 +115,7 @@ class _MyAppState extends State<MyApp> {
                     },
                     child: const Text('sendDanmaku')),
                 ElevatedButton(
+                    style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color(0xFFF44336))),
                     onPressed: () {
                       gsyVideoPlayerController.danmakuController.setDanmakuBold(true);
                     },

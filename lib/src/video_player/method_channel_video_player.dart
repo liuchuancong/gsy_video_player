@@ -956,6 +956,46 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
   }
 
   @override
+  Future<void> startDanmaku() async {
+    await initialized.future;
+    await _channel.invokeMethod<void>("startDanmaku");
+  }
+
+  @override
+  Future<void> pauseDanmaku() async {
+    await initialized.future;
+    await _channel.invokeMethod<void>("pauseDanmaku");
+  }
+
+  @override
+  Future<void> resumeDanmaku() async {
+    await initialized.future;
+    await _channel.invokeMethod<void>("resumeDanmaku");
+  }
+
+  @override
+  Future<void> stopDanmaku() async {
+    await initialized.future;
+    await _channel.invokeMethod<void>("stopDanmaku");
+  }
+
+  @override
+  Future<void> seekToDanmaku(Duration msec) async {
+    await initialized.future;
+    await _channel.invokeMethod<void>("seekToDanmaku", <String, dynamic>{
+      "ms": msec.inMilliseconds,
+    });
+  }
+
+  @override
+  Future<Map<String, dynamic>> getDanmakuStatus() async {
+    await initialized.future;
+    late final Map<String, dynamic>? response;
+    response = await _channel.invokeMethod<Map<String, dynamic>?>("getDanmakuStatus");
+    return response!;
+  }
+
+  @override
   Stream<VideoEvent> videoEventsFor() {
     return eventChannelFor().receiveBroadcastStream().map((dynamic event) {
       late Map<dynamic, dynamic> map;

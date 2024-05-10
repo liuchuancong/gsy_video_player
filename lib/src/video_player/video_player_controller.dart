@@ -1389,6 +1389,36 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     await _videoPlayerPlatform.addDanmaku(danmaku);
   }
 
+  Future<void> startDanmaku() async {
+    await _creatingCompleter.future;
+    await _videoPlayerPlatform.startDanmaku();
+  }
+
+  Future<void> pauseDanmaku() async {
+    await _creatingCompleter.future;
+    await _videoPlayerPlatform.pauseDanmaku();
+  }
+
+  Future<void> resumeDanmaku() async {
+    await _creatingCompleter.future;
+    await _videoPlayerPlatform.resumeDanmaku();
+  }
+
+  Future<void> stopDanmaku() async {
+    await _creatingCompleter.future;
+    await _videoPlayerPlatform.stopDanmaku();
+  }
+
+  Future<void> seekToDanmaku(Duration msec) async {
+    await _creatingCompleter.future;
+    await _videoPlayerPlatform.seekToDanmaku(msec);
+  }
+
+  Future<Map<String, dynamic>> getDanmakuStatus() async {
+    await _creatingCompleter.future;
+    return await _videoPlayerPlatform.getDanmakuStatus();
+  }
+
   /// Sets the audio volume of [this].
   ///
   /// [volume] indicates a value between 0.0 (silent) and 1.0 (full volume) on a

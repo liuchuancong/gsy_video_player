@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gsy_video_player/src/constants/maximum_visible_size_in_screen.dart';
+import 'package:gsy_video_player/gsy_video_player.dart';
 
 enum DanmakuStyle {
   //无
@@ -122,8 +122,8 @@ class DanmakuSettings {
 
   //设置最大显示行数
   final Map<DanmakuTypeScroll, int>? maxLinesPair;
-  //弹幕透明度[0-255]
-  final int? opacity;
+  //弹幕透明度[0.0-1.0]
+  final double? opacity;
   //弹幕缩放系数
   final double? scaleTextSize;
   //弹幕间距
@@ -147,14 +147,14 @@ class DanmakuSettings {
     this.strokenWidth = 0.0,
     this.projectionOffsetX = 0.0,
     this.projectionOffsetY = 0.0,
-    this.projectionAlpha = 255.0,
+    this.projectionAlpha = 0.0,
     this.isBold = false,
     this.danmakuTypeScroll = DanmakuTypeScroll.scrollRL,
     this.scrollSpeedFactor = 1.0,
     this.duplicateMergingEnabled = true,
     this.overlappingEnablePair = defaultOverlappingEnablePair,
     this.maxLinesPair,
-    this.opacity = 255,
+    this.opacity = 1.0,
     this.scaleTextSize = 1.0,
     this.margin = 0,
     this.marginTop = 0,
@@ -173,14 +173,14 @@ class DanmakuSettings {
       "strokenWidth": strokenWidth,
       "projectionOffsetX": projectionOffsetX,
       "projectionOffsetY": projectionOffsetY,
-      "projectionAlpha": projectionAlpha!.clamp(0, 255),
+      "projectionAlpha": (projectionAlpha! * 255).clamp(0, 255).round(),
       "isBold": isBold,
       "danmakuTypeScroll": danmakuTypeScrollToInt(danmakuTypeScroll!),
       "scrollSpeedFactor": scrollSpeedFactor,
       "duplicateMergingEnabled": duplicateMergingEnabled,
       "overlappingEnablePair": overlappingEnablePair!.map((key, value) => MapEntry(danmakuTypeScrollToInt(key), value)),
       "maxLinesPair": maxLinesPair?.map((key, value) => MapEntry(danmakuTypeScrollToInt(key), value)),
-      "opacity": opacity!.clamp(0, 255),
+      "opacity": (opacity! * 255).clamp(0, 255).round(),
       "scaleTextSize": scaleTextSize,
       "margin": margin,
       "marginTop": marginTop,
@@ -241,8 +241,8 @@ class BaseDanmaku {
   //是否游客
   bool? isGuest;
   //计时
-  //透明度[0-255]
-  int? alpha;
+  //透明度[0.0-1.0]
+  double? alpha;
 
   BaseDanmaku({
     this.type = DanmakuTypeScroll.scrollRL,
@@ -250,7 +250,7 @@ class BaseDanmaku {
     this.timeOffset,
     this.text,
     this.lines,
-    this.textColor = Colors.black,
+    this.textColor = Colors.white,
     this.rotationZ,
     this.rotationY,
     this.textShadowColor,
@@ -269,7 +269,7 @@ class BaseDanmaku {
     this.userId,
     this.userHash,
     this.isGuest = true,
-    this.alpha = 255,
+    this.alpha = 1.0,
   });
 
   Map<String, dynamic> toJson() {
@@ -279,13 +279,13 @@ class BaseDanmaku {
       "timeOffset": timeOffset,
       "text": text,
       "lines": lines,
-      "textColor": textColor?.value,
+      "textColor": textColor?.rgbValue,
       "rotationZ": rotationZ,
       "rotationY": rotationY,
-      "textShadowColor": textShadowColor?.value,
-      "underlineColor": underlineColor?.value,
+      "textShadowColor": textShadowColor?.rgbValue,
+      "underlineColor": underlineColor?.rgbValue,
       "textSize": textSize,
-      "borderColor": borderColor?.value,
+      "borderColor": borderColor?.rgbValue,
       "padding": padding,
       "priority": priority,
       "paintWidth": paintWidth,
@@ -298,7 +298,7 @@ class BaseDanmaku {
       "userId": userId,
       "userHash": userHash,
       "isGuest": isGuest,
-      "alpha": alpha!.clamp(0.0, 255.0),
+      "alpha": (alpha! * 255).clamp(0, 255).round(),
     };
   }
 }

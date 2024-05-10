@@ -463,6 +463,29 @@ class CustomMethodCall(
             "addDanmaku" -> {
                 videoPlayer.addDanmaku(call, result)
             }
+            "startDanmaku" -> {
+                videoPlayer.startDanmaku(call, result)
+            }
+
+            "getDannakuStatus" -> {
+                videoPlayer.getDannakuStatus(call, result)
+            }
+
+            "resumeDanmaku" -> {
+                videoPlayer.resumeDanmaku(call, result)
+            }
+
+            "pauseDanmaku" -> {
+                videoPlayer.pauseDanmaku(call, result)
+            }
+
+            "stopDanmaku" -> {
+                videoPlayer.stopDanmaku(call, result)
+            }
+
+            "seekToDanmaku" -> {
+                videoPlayer.seekToDanmaku(call, result)
+            }
             else -> result.notImplemented()
         }
     }

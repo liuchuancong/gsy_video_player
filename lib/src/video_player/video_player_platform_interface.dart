@@ -563,6 +563,30 @@ abstract class VideoPlayerPlatform {
     throw UnimplementedError('addDanmaku() has not been implemented.');
   }
 
+  Future<void> startDanmaku() async {
+    throw UnimplementedError('startDanmaku() has not been implemented.');
+  }
+
+  Future<void> pauseDanmaku() async {
+    throw UnimplementedError('pauseDanmaku() has not been implemented.');
+  }
+
+  Future<void> resumeDanmaku() async {
+    throw UnimplementedError('resumeDanmaku() has not been implemented.');
+  }
+
+  Future<void> stopDanmaku() async {
+    throw UnimplementedError('stopDanmaku() has not been implemented.');
+  }
+
+  Future<void> seekToDanmaku(Duration msec) async {
+    throw UnimplementedError('seekToDanmaku() has not been implemented.');
+  }
+
+  Future<Map<String, dynamic>> getDanmakuStatus() async {
+    throw UnimplementedError('getDanmakuStatus() has not been implemented.');
+  }
+
   Stream<VideoEvent> videoEventsFor() {
     throw UnimplementedError('videoEventsFor() has not been implemented.');
   }

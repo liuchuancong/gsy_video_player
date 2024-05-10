@@ -91,4 +91,28 @@ class DanmakuController {
   Future<void> addDanmaku(BaseDanmaku danmaku) async {
     _controller.addDanmaku(danmaku);
   }
+
+  Future<void> startDanmaku() async {
+    _controller.startDanmaku();
+  }
+
+  Future<void> pauseDanmaku() async {
+    _controller.pauseDanmaku();
+  }
+
+  Future<void> resumeDanmaku() async {
+    _controller.resumeDanmaku();
+  }
+
+  Future<void> stopDanmaku() async {
+    _controller.stopDanmaku();
+  }
+
+  Future<void> seekToDanmaku(Duration msec) async {
+    _controller.seekToDanmaku(msec);
+  }
+
+  Future<Map<String, dynamic>> getDanmakuStatus() async {
+    return _controller.getDanmakuStatus();
+  }
 }
