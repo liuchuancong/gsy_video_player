@@ -34,7 +34,7 @@ class DanmukuSettings {
 
         var maxLinesPair: HashMap<Int, Int>? = null
 
-        var opacity :Float = 255F
+        var opacity :Float = 1.0f
 
         var scaleTextSize :Float = 1.0f
 

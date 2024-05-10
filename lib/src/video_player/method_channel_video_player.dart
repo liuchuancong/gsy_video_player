@@ -949,6 +949,7 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<void> addDanmaku(BaseDanmaku danmaku) async {
+    print("addDanmaku: ${danmaku.toJson()}");
     await initialized.future;
     await _channel.invokeMethod<void>("addDanmaku", <String, dynamic>{
       "danmaku": danmaku.toJson(),

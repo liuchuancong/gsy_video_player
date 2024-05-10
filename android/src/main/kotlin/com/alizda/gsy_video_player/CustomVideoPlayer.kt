@@ -578,7 +578,7 @@ open class CustomVideoPlayer : StandardGSYVideoPlayer {
         initDanmaView()
         val scale = (call.argument<Any>("scale") as Number).toFloat()
         DanmukuSettings.scaleTextSize = scale
-        danmakuContext!!.setDanmakuTransparency(DanmukuSettings.scaleTextSize)
+        danmakuContext!!.setScaleTextSize(DanmukuSettings.scaleTextSize)
     }
 
     fun setMaximumVisibleSizeInScreen(call: MethodCall, result: MethodChannel.Result) {
@@ -599,7 +599,7 @@ open class CustomVideoPlayer : StandardGSYVideoPlayer {
         initDanmaView()
         val scale = (call.argument<Any>("speedFactor") as Number).toFloat()
         DanmukuSettings.scrollSpeedFactor = scale
-        danmakuContext!!.setDanmakuTransparency(DanmukuSettings.scrollSpeedFactor)
+        danmakuContext!!.setScrollSpeedFactor(DanmukuSettings.scrollSpeedFactor)
     }
 
     fun setDuplicateMergingEnabled(call: MethodCall, result: MethodChannel.Result) {

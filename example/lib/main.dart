@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:gsy_video_player/gsy_video_player.dart';
@@ -17,6 +18,7 @@ class _MyAppState extends State<MyApp> {
   GsyVideoPlayerController gsyVideoPlayerController = GsyVideoPlayerController(
     danmakuSettings: const DanmakuSettings(
       danmakuStyle: DanmakuStyle.danmuStyleStroked,
+      opacity: 1,
       strokenWidth: 5.0,
       showDanmaku: true,
       enableDanmakuDrawingCache: false,
@@ -102,16 +104,41 @@ class _MyAppState extends State<MyApp> {
                     child: const Text('hideDanmaku')),
                 ElevatedButton(
                     onPressed: () {
-                      Timer.periodic(const Duration(seconds: 1), (timer) {
-                        gsyVideoPlayerController.danmakuController.addDanmaku(BaseDanmaku(
-                          text: '12222222222222222',
-                          textColor: Colors.red,
-                          textSize: 35,
-                          time: 500,
-                          priority: 8,
-                          type: DanmakuTypeScroll.scrollRL,
-                        ));
-                      });
+                      gsyVideoPlayerController.danmakuController.addDanmaku(BaseDanmaku(
+                        text: [
+                          'I love Flutter',
+                          'I like Flutter',
+                          'I use Flutter',
+                          'Flutter is awesome',
+                          'Flutter is amazing',
+                          'Flutter is so cool',
+                          'Flutter is so beautiful',
+                          'Flutter is so powerful',
+                          'Flutter is so amazing',
+                          'Flutter is so perfect',
+                          'Flutter is so beautiful',
+                          'Flutter is so powerful',
+                          'Flutter is so amazing',
+                          'Flutter is so great',
+                        ][Random().nextInt(10)],
+                        textColor: [
+                          Colors.green,
+                          Colors.red,
+                          Colors.black,
+                          Colors.white,
+                          Colors.blue,
+                          Colors.yellow,
+                          Colors.purple,
+                          Colors.orange,
+                          Colors.brown,
+                          Colors.pink,
+                          Colors.indigo,
+                        ][Random().nextInt(10)],
+                        textSize: 35,
+                        time: 500,
+                        priority: 8,
+                        type: DanmakuTypeScroll.scrollRL,
+                      ));
                     },
                     child: const Text('sendDanmaku')),
                 ElevatedButton(

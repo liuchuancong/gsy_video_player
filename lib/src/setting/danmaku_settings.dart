@@ -180,7 +180,7 @@ class DanmakuSettings {
       "duplicateMergingEnabled": duplicateMergingEnabled,
       "overlappingEnablePair": overlappingEnablePair!.map((key, value) => MapEntry(danmakuTypeScrollToInt(key), value)),
       "maxLinesPair": maxLinesPair?.map((key, value) => MapEntry(danmakuTypeScrollToInt(key), value)),
-      "opacity": (opacity! * 255).clamp(0, 255).round(),
+      "opacity": opacity,
       "scaleTextSize": scaleTextSize,
       "margin": margin,
       "marginTop": marginTop,
