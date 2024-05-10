@@ -6,7 +6,7 @@ export 'src/configuration/player_video_cache.dart';
 export 'src/configuration/player_video_render_type.dart';
 export 'src/configuration/player_video_show_type.dart';
 export 'src/configuration/player_video_type.dart';
-
+export 'src/extension/map_index.dart';
 export 'src/constants/ijk_category.dart';
 export 'src/constants/ijk_option.dart';
 export 'src/constants/log_level.dart';

@@ -34,13 +34,12 @@ class _MyAppState extends State<MyApp> {
   // Platform messages are asynchronous, so we initialize in an async method.
   Future<void> initPlayer() async {
     gsyVideoPlayerController.setLogLevel(LogLevel.logError);
-    gsyVideoPlayerController
-        .setNetWorkBuilder('https://cloud.video.taobao.com//play/u/27349687/p/1/e/6/t/1/239880949246.mp4');
+    gsyVideoPlayerController.setNetWorkBuilder(
+        'https://cloud.video.taobao.com//play/u/27349687/p/1/e/6/t/1/239880949246.mp4',
+        autoPlay: false);
     gsyVideoPlayerController.addEventsListener((VideoEventType event) {
       if (gsyVideoPlayerController.value.initialized) {
-        if (event == VideoEventType.onListenerInitDanmakuSuccess) {
-          print('初始化弹幕成功');
-        }
+        // listen to do
       }
     });
   }
@@ -89,6 +88,11 @@ class _MyAppState extends State<MyApp> {
                     child: const Text('LogLevel')),
                 ElevatedButton(
                     onPressed: () {
+                      gsyVideoPlayerController.seekTo(const Duration(seconds: 11));
+                    },
+                    child: const Text('seekTo 10s')),
+                ElevatedButton(
+                    onPressed: () {
                       gsyVideoPlayerController.danmakuController.showDanmaku();
                     },
                     child: const Text('showDanmaku')),
@@ -99,21 +103,52 @@ class _MyAppState extends State<MyApp> {
                     child: const Text('hideDanmaku')),
                 ElevatedButton(
                     onPressed: () {
-                      gsyVideoPlayerController.danmakuController.addDanmaku(BaseDanmaku(
-                        text: '弹幕222测试',
-                        textColor: Colors.red,
-                        textSize: 24,
-                        duration: const Duration(seconds: 5),
-                        time: 500,
-                        priority: 8,
-                      ));
+                      Timer.periodic(const Duration(seconds: 1), (timer) {
+                        gsyVideoPlayerController.danmakuController.addDanmaku(BaseDanmaku(
+                          text: '弹幕222测试',
+                          textColor: Colors.red,
+                          textSize: 24,
+                          time: 500,
+                          priority: 8,
+                          type: DanmakuTypeScroll.scrollRL,
+                        ));
+                      });
                     },
                     child: const Text('sendDanmaku')),
                 ElevatedButton(
                     onPressed: () {
-                      gsyVideoPlayerController.seekTo(const Duration(seconds: 11));
+                      gsyVideoPlayerController.danmakuController.setDanmakuBold(true);
                     },
-                    child: const Text('seekTo 10s')),
+                    child: const Text('setDanmakuBold')),
+                ElevatedButton(
+                    onPressed: () {
+                      gsyVideoPlayerController.danmakuController.setDanmakuMargin(20);
+                    },
+                    child: const Text('setDanmakuMargin')),
+                ElevatedButton(
+                    onPressed: () {
+                      gsyVideoPlayerController.danmakuController.setMarginTop(20);
+                    },
+                    child: const Text('setMarginTop')),
+                ElevatedButton(
+                    onPressed: () {
+                      gsyVideoPlayerController.danmakuController
+                          .setDanmakuStyle(DanmakuStyle.danmuStyleShadow, danmuStyleShadow: 5.0);
+                    },
+                    child: const Text('setDanmakuStyle')),
+                ElevatedButton(
+                    onPressed: () {
+                      gsyVideoPlayerController.danmakuController.setDanmakuTransparency(0.9);
+                    },
+                    child: const Text('setDanmakuTransparency')),
+                ElevatedButton(
+                    onPressed: () {
+                      gsyVideoPlayerController.danmakuController.setMaximumLines({
+                        DanmakuTypeScroll.scrollRL: 10,
+                        DanmakuTypeScroll.fixTop: 10,
+                      });
+                    },
+                    child: const Text('setMaximumLines')),
               ],
             )
           ],
