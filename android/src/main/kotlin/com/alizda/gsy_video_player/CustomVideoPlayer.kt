@@ -373,7 +373,6 @@ class CustomVideoPlayer : StandardGSYVideoPlayer {
     /**
      * 模拟添加弹幕数据
      */
-    @RequiresApi(Build.VERSION_CODES.O)
     fun addDanmaku(call: MethodCall, result: MethodChannel.Result) {
         initDanmaView()
         val danmakuOptions = call.argument<Map<String, Any?>>("danmaku")!!

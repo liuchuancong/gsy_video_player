@@ -16,7 +16,7 @@ export 'src/constants/video_play_state.dart';
 export 'src/constants/media_info_category.dart';
 export 'src/constants/media_error_category.dart';
 export 'src/constants/maximum_visible_size_in_screen.dart';
-
+export 'src/constants/orientation_screen_type.dart';
 export 'src/setting/player_cache_configuration.dart';
 export 'src/setting/danmaku_controller.dart';
 export 'src/setting/danmaku_settings.dart';

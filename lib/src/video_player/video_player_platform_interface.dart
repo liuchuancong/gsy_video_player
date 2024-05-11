@@ -587,6 +587,90 @@ abstract class VideoPlayerPlatform {
     throw UnimplementedError('getDanmakuStatus() has not been implemented.');
   }
 
+  Future<void> resolveByClick() async {
+    throw UnimplementedError('resolveByClick() has not been implemented.');
+  }
+
+  Future<void> backToProtVideo() async {
+    throw UnimplementedError('backToProtVideo() has not been implemented.');
+  }
+
+  Future<bool> isOrientationRotateEnable() async {
+    throw UnimplementedError('isOrientationRotateEnable() has not been implemented.');
+  }
+
+  Future<void> setOrientationRotateEnable(bool enable) async {
+    throw UnimplementedError('setOrientationRotateEnable() has not been implemented.');
+  }
+
+  Future<bool> getOrientationRotateIsLand() async {
+    throw UnimplementedError('getOrientationRotateIsLand() has not been implemented.');
+  }
+
+  Future<void> setOrientationRotateLand(bool isLand) async {
+    throw UnimplementedError('setOrientationRotateLand() has not been implemented.');
+  }
+
+  Future<OrientationScreenType> getOrientationRotateScreenType() async {
+    throw UnimplementedError('getOrientationRotateScreenType() has not been implemented.');
+  }
+
+  Future<void> setOrientationRotateScreenType(OrientationScreenType screenType) async {
+    throw UnimplementedError('setOrientationRotateScreenType() has not been implemented.');
+  }
+
+  Future<bool> isOrientationRotateClick() async {
+    throw UnimplementedError('isOrientationRotateClick() has not been implemented.');
+  }
+
+  Future<void> setOrientationRotateIsClick(bool isClick) async {
+    throw UnimplementedError('setOrientationRotateIsClick() has not been implemented.');
+  }
+
+  Future<bool> isOrientationRotateClickLand() async {
+    throw UnimplementedError('isOrientationRotateClickLand() has not been implemented.');
+  }
+
+  Future<void> setOrientationRotateIsClickLand(bool isClickLand) async {
+    throw UnimplementedError('setOrientationRotateIsClickLand() has not been implemented.');
+  }
+
+  Future<bool> isOrientationRotateClickPort() async {
+    throw UnimplementedError('isOrientationRotateClickPort() has not been implemented.');
+  }
+
+  Future<void> setOrientationRotateIslickPort(bool islickPort) async {
+    throw UnimplementedError('setOrientationRotateIslickPort() has not been implemented.');
+  }
+
+  Future<bool> isOrientationRotatePause() async {
+    throw UnimplementedError('isOrientationRotatePause() has not been implemented.');
+  }
+
+  Future<void> setOrientationRotateIsPause(bool isPause) async {
+    throw UnimplementedError('setOrientationRotateIsPause() has not been implemented.');
+  }
+
+  Future<bool> isOrientationRotateOnlyRotateLand() async {
+    throw UnimplementedError('isOrientationRotateOnlyRotateLand() has not been implemented.');
+  }
+
+  Future<void> setOrientationRotateIsOnlyRotateLand(bool isOnlyRotateLand) async {
+    throw UnimplementedError('setOrientationRotateIsOnlyRotateLand() has not been implemented.');
+  }
+
+  Future<bool> isOrientationRotateWithSystem() async {
+    throw UnimplementedError('isOrientationRotateWithSystem() has not been implemented.');
+  }
+
+  Future<void> setOrientationRotateWithSystem(bool isRotateWithSystem) async {
+    throw UnimplementedError('setOrientationRotateWithSystem() has not been implemented.');
+  }
+
+  Future<void> releaseOrientationListener() async {
+    throw UnimplementedError('releaseOrientationListener() has not been implemented.');
+  }
+
   Stream<VideoEvent> videoEventsFor() {
     throw UnimplementedError('videoEventsFor() has not been implemented.');
   }

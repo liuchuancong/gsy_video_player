@@ -12,7 +12,8 @@ class CustomMethodCall(
         private var customGSYVideoManagerApi: CustomGSYVideoManagerApi,
         private var customBasicApi: CustomBasicApi,
         private var gSYVideoPlayer: GSYVideoPlayer,
-        private var customGSYVideoType: CustomGSYVideoType
+        private var customGSYVideoType: CustomGSYVideoType,
+        private var customOrientationUtils: CustomOrientationUtils
 ) {
 
     fun handleMethod(call: MethodCall, result: MethodChannel.Result) {
@@ -399,10 +400,10 @@ class CustomMethodCall(
             "getAutoFullWithSize" -> {
                 customBasicApi.getAutoFullWithSize(call, result)
             }
+
             "initDanmaku" -> {
                 videoPlayer.initDanmaku(call, result)
             }
-
 
             "showDanmaku" -> {
                 videoPlayer.showDanmaku(call, result)
@@ -486,7 +487,69 @@ class CustomMethodCall(
             "seekToDanmaku" -> {
                 videoPlayer.seekToDanmaku(call, result)
             }
-            else -> result.notImplemented()
+            "resolveByClick" ->{
+                customOrientationUtils.resolveByClick()
+            }
+            "backToProtVideo" ->{
+                customOrientationUtils.backToProtVideo()
+            }
+            "isOrientationRotateEnable" ->{
+                customOrientationUtils.isEnable(call, result)
+            }
+            "setOrientationRotateEnable" ->{
+                customOrientationUtils.setEnable(call, result)
+            }
+            "getOrientationRotateIsLand" ->{
+                customOrientationUtils.getIsLand(call, result)
+            }
+            "setOrientationRotateLand" ->{
+                customOrientationUtils.setLand(call, result)
+            }
+            "getOrientationRotateScreenType" ->{
+                customOrientationUtils.getScreenType(call, result)
+            }
+            "setOrientationRotateScreenType" ->{
+                customOrientationUtils.setScreenType(call, result)
+            }
+            "isOrientationRotateClick" ->{
+                customOrientationUtils.isClick(call, result)
+            }
+            "setOrientationRotateIsClick" ->{
+                customOrientationUtils.setIsClick(call, result)
+            }
+            "isOrientationRotateClickLand" ->{
+                customOrientationUtils.isClickLand(call, result)
+            }
+            "setOrientationRotateIsClickLand" ->{
+                customOrientationUtils.setIsClickLand(call, result)
+            }
+            "isOrientationRotateClickPort" ->{
+                customOrientationUtils.isClickPort(call, result)
+            }
+            "setOrientationRotateIslickPort" ->{
+                customOrientationUtils.setIslickPort(call, result)
+            }
+            "isOrientationRotatePause" ->{
+                customOrientationUtils.isPause(call, result)
+            }
+            "setOrientationRotateIsPause" ->{
+                customOrientationUtils.setIsPause(call, result)
+            }
+            "isOrientationRotateOnlyRotateLand" ->{
+                customOrientationUtils.isOnlyRotateLand(call, result)
+            }
+            "setOrientationRotateIsOnlyRotateLand" ->{
+                customOrientationUtils.setIsOnlyRotateLand(call, result)
+            }
+            "isOrientationRotateWithSystem" ->{
+                customOrientationUtils.isRotateWithSystem(call, result)
+            }
+            "setOrientationRotateWithSystem" ->{
+                customOrientationUtils.setRotateWithSystem(call, result)
+            }
+            "releaseOrientationListener" ->{
+                customOrientationUtils.releaseListener()
+            }
         }
     }
 }

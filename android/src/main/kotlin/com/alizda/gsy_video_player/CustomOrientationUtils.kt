@@ -4,7 +4,6 @@ import android.content.Context
 import com.shuyu.gsyvideoplayer.utils.OrientationUtils
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
-
 class CustomOrientationUtils(private var videoPlayer: CustomVideoPlayer,private val context: Context,) {
     private var orientationUtils: OrientationUtils = OrientationUtils(GsyVideoShared.activity, videoPlayer)
 
@@ -25,10 +24,6 @@ class CustomOrientationUtils(private var videoPlayer: CustomVideoPlayer,private 
     fun setEnable(call: MethodCall, result: MethodChannel.Result){
         val enable: Boolean = call.argument("enable")!!
         orientationUtils.isEnable = enable
-    }
-
-    fun orientationEventListener(call: MethodCall, result: MethodChannel.Result){
-        orientationUtils.releaseListener()
     }
     fun getIsLand(call: MethodCall, result: MethodChannel.Result){
         val reply: MutableMap<String, Any> = HashMap()

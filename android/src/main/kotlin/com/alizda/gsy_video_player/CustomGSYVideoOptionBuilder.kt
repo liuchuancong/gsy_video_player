@@ -1,7 +1,6 @@
 package com.alizda.gsy_video_player
 
 import android.content.res.AssetManager
-import android.util.Log
 import android.view.View
 import com.shuyu.gsyvideoplayer.builder.GSYVideoOptionBuilder
 import io.flutter.plugin.common.MethodCall

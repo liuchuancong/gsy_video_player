@@ -453,6 +453,167 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
   }
 
   @override
+  Future<void> resolveByClick() async {
+    await initialized.future;
+    await _channel.invokeMethod<void>("resolveByClick");
+  }
+
+  @override
+  Future<void> backToProtVideo() async {
+    await initialized.future;
+    await _channel.invokeMethod<void>("backToProtVideo");
+  }
+
+  @override
+  Future<bool> isOrientationRotateEnable() async {
+    await initialized.future;
+    late final Map<String, dynamic>? response;
+    response = await _channel.invokeMethod<Map<String, dynamic>?>("isOrientationRotateEnable");
+    return response!["isEnable"];
+  }
+
+  @override
+  Future<void> setOrientationRotateEnable(bool enable) async {
+    await initialized.future;
+    await _channel.invokeMethod<void>("setOrientationRotateEnable", <String, dynamic>{
+      "enable": enable,
+    });
+  }
+
+  @override
+  Future<bool> getOrientationRotateIsLand() async {
+    await initialized.future;
+    late final Map<String, dynamic>? response;
+    response = await _channel.invokeMethod<Map<String, dynamic>?>("getOrientationRotateIsLand");
+    return response!["isLand"];
+  }
+
+  @override
+  Future<void> setOrientationRotateLand(bool isLand) async {
+    await initialized.future;
+    await _channel.invokeMethod<void>("setOrientationRotateLand", <String, dynamic>{
+      "land": isLand,
+    });
+  }
+
+  @override
+  Future<OrientationScreenType> getOrientationRotateScreenType() async {
+    await initialized.future;
+    late final Map<String, dynamic>? response;
+    response = await _channel.invokeMethod<Map<String, dynamic>?>("getOrientationRotateScreenType");
+    return getOrientationScreenType(response!["screenType"]);
+  }
+
+  @override
+  Future<void> setOrientationRotateScreenType(OrientationScreenType screenType) async {
+    await initialized.future;
+    await _channel.invokeMethod<void>("setOrientationRotateScreenType",
+        <String, dynamic>{"screenType": getOrientationScreenTypeIntValue(screenType)});
+  }
+
+  @override
+  Future<bool> isOrientationRotateClick() async {
+    await initialized.future;
+    late final Map<String, dynamic>? response;
+    response = await _channel.invokeMethod<Map<String, dynamic>?>("isOrientationRotateClick");
+    return response!["isClick"];
+  }
+
+  @override
+  Future<void> setOrientationRotateIsClick(bool isClick) async {
+    await initialized.future;
+    await _channel.invokeMethod<void>("setOrientationRotateIsClick", <String, dynamic>{
+      "isClick": isClick,
+    });
+  }
+
+  @override
+  Future<bool> isOrientationRotateClickLand() async {
+    await initialized.future;
+    late final Map<String, dynamic>? response;
+    response = await _channel.invokeMethod<Map<String, dynamic>?>("isOrientationRotateClickLand");
+    return response!["isClickLand"];
+  }
+
+  @override
+  Future<void> setOrientationRotateIsClickLand(bool isClickLand) async {
+    await initialized.future;
+    await _channel.invokeMethod<void>("setOrientationRotateIsClickLand", <String, dynamic>{
+      "isClickLand": isClickLand,
+    });
+  }
+
+  @override
+  Future<bool> isOrientationRotateClickPort() async {
+    await initialized.future;
+    late final Map<String, dynamic>? response;
+    response = await _channel.invokeMethod<Map<String, dynamic>?>("isOrientationRotateClickPort");
+    return response!["isClickPort"];
+  }
+
+  @override
+  Future<void> setOrientationRotateIslickPort(bool islickPort) async {
+    await initialized.future;
+    await _channel.invokeMethod<void>("setOrientationRotateIslickPort", <String, dynamic>{
+      "islickPort": islickPort,
+    });
+  }
+
+  @override
+  Future<bool> isOrientationRotatePause() async {
+    await initialized.future;
+    late final Map<String, dynamic>? response;
+    response = await _channel.invokeMethod<Map<String, dynamic>?>("isOrientationRotatePause");
+    return response!["isPause"];
+  }
+
+  @override
+  Future<void> setOrientationRotateIsPause(bool isPause) async {
+    await initialized.future;
+    await _channel.invokeMethod<void>("setOrientationRotateIsPause", <String, dynamic>{
+      "isPause": isPause,
+    });
+  }
+
+  @override
+  Future<bool> isOrientationRotateOnlyRotateLand() async {
+    await initialized.future;
+    late final Map<String, dynamic>? response;
+    response = await _channel.invokeMethod<Map<String, dynamic>?>("isOrientationRotateOnlyRotateLand");
+    return response!["isOnlyRotateLand"];
+  }
+
+  @override
+  Future<void> setOrientationRotateIsOnlyRotateLand(bool isOnlyRotateLand) async {
+    await initialized.future;
+    await _channel.invokeMethod<void>("setOrientationRotateIsOnlyRotateLand", <String, dynamic>{
+      "isOnlyRotateLand": isOnlyRotateLand,
+    });
+  }
+
+  @override
+  Future<bool> isOrientationRotateWithSystem() async {
+    await initialized.future;
+    late final Map<String, dynamic>? response;
+    response = await _channel.invokeMethod<Map<String, dynamic>?>("isOrientationRotateWithSystem");
+    return response!["rotateWithSystem"];
+  }
+
+  @override
+  Future<void> setOrientationRotateWithSystem(bool isRotateWithSystem) async {
+    await initialized.future;
+    await _channel.invokeMethod<void>("setOrientationRotateWithSystem", <String, dynamic>{
+      "rotateWithSystem": isRotateWithSystem,
+    });
+  }
+
+  @override
+  Future<void> releaseOrientationListener() async {
+    await initialized.future;
+    await _channel.invokeMethod<void>("releaseOrientationListener");
+  }
+
+  @override
   Future<void> showSmallVideo(Size size, bool showActionBar, bool showStatusBar) async {
     await initialized.future;
     _channel.invokeMethod<void>("showSmallVideo", <String, dynamic>{

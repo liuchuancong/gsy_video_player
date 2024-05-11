@@ -1429,6 +1429,109 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     await _applyVolume();
   }
 
+  Future<void> resolveByClick() {
+    return _videoPlayerPlatform.resolveByClick();
+  }
+
+  Future<void> backToProtVideo() {
+    return _videoPlayerPlatform.backToProtVideo();
+  }
+
+  Future<bool> isOrientationRotateEnable() async {
+    await _creatingCompleter.future;
+    return await _videoPlayerPlatform.isOrientationRotateEnable();
+  }
+
+  Future<void> setOrientationRotateEnable(bool enable) async {
+    await _creatingCompleter.future;
+    await _videoPlayerPlatform.setOrientationRotateEnable(enable);
+  }
+
+  Future<bool> getOrientationRotateIsLand() async {
+    await _creatingCompleter.future;
+    return await _videoPlayerPlatform.getOrientationRotateIsLand();
+  }
+
+  Future<void> setOrientationRotateLand(bool isLand) async {
+    await _creatingCompleter.future;
+    await _videoPlayerPlatform.setOrientationRotateLand(isLand);
+  }
+
+  Future<OrientationScreenType> getOrientationRotateScreenType() async {
+    await _creatingCompleter.future;
+    return await _videoPlayerPlatform.getOrientationRotateScreenType();
+  }
+
+  Future<void> setOrientationRotateScreenType(OrientationScreenType screenType) async {
+    await _creatingCompleter.future;
+    await _videoPlayerPlatform.setOrientationRotateScreenType(screenType);
+  }
+
+  Future<bool> isOrientationRotateClick() async {
+    await _creatingCompleter.future;
+    return await _videoPlayerPlatform.isOrientationRotateClick();
+  }
+
+  Future<void> setOrientationRotateIsClick(bool isClick) async {
+    await _creatingCompleter.future;
+    await _videoPlayerPlatform.setOrientationRotateIsClick(isClick);
+  }
+
+  Future<bool> isOrientationRotateClickLand() async {
+    await _creatingCompleter.future;
+    return await _videoPlayerPlatform.isOrientationRotateClickLand();
+  }
+
+  Future<void> setOrientationRotateIsClickLand(bool isClickLand) async {
+    await _creatingCompleter.future;
+    await _videoPlayerPlatform.setOrientationRotateIsClickLand(isClickLand);
+  }
+
+  Future<bool> isOrientationRotateClickPort() async {
+    await _creatingCompleter.future;
+    return await _videoPlayerPlatform.isOrientationRotateClickPort();
+  }
+
+  Future<void> setOrientationRotateIslickPort(bool islickPort) async {
+    await _creatingCompleter.future;
+    await _videoPlayerPlatform.setOrientationRotateIslickPort(islickPort);
+  }
+
+  Future<bool> isOrientationRotatePause() async {
+    await _creatingCompleter.future;
+    return await _videoPlayerPlatform.isOrientationRotatePause();
+  }
+
+  Future<void> setOrientationRotateIsPause(bool isPause) async {
+    await _creatingCompleter.future;
+    await _videoPlayerPlatform.setOrientationRotateIsPause(isPause);
+  }
+
+  Future<bool> isOrientationRotateOnlyRotateLand() async {
+    await _creatingCompleter.future;
+    return await _videoPlayerPlatform.isOrientationRotateOnlyRotateLand();
+  }
+
+  Future<void> setOrientationRotateIsOnlyRotateLand(bool isOnlyRotateLand) async {
+    await _creatingCompleter.future;
+    await _videoPlayerPlatform.setOrientationRotateIsOnlyRotateLand(isOnlyRotateLand);
+  }
+
+  Future<bool> isOrientationRotateWithSystem() async {
+    await _creatingCompleter.future;
+    return await _videoPlayerPlatform.isOrientationRotateWithSystem();
+  }
+
+  Future<void> setOrientationRotateWithSystem(bool isRotateWithSystem) async {
+    await _creatingCompleter.future;
+    await _videoPlayerPlatform.setOrientationRotateWithSystem(isRotateWithSystem);
+  }
+
+  Future<void> releaseOrientationListener() async {
+    await _creatingCompleter.future;
+    await _videoPlayerPlatform.releaseOrientationListener();
+  }
+
   void refresh() {
     value = value.copyWith();
   }
