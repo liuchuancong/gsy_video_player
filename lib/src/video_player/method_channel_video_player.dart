@@ -1167,6 +1167,10 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
       final Map<dynamic, dynamic>? reply = map["reply"];
       switch (eventType) {
         case 'initialized':
+          return VideoEvent(
+            eventType: VideoEventType.initialized,
+          );
+        case 'videoPlayerInitialized':
           final int position = reply!["position"];
           final int duration = reply["duration"];
           final int currentState = reply["currentState"];
@@ -1176,7 +1180,7 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
           final int videoSarDen = reply["videoSarDen"];
           final int videoSarNum = reply["videoSarNum"];
           return VideoEvent(
-            eventType: VideoEventType.initialized,
+            eventType: VideoEventType.videoPlayerInitialized,
             isPlaying: isPlaying,
             position: Duration(milliseconds: position),
             duration: Duration(milliseconds: duration),
@@ -1410,6 +1414,18 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
           return VideoEvent(
             eventType: VideoEventType.onListenerVideoResumeWithSeek,
             seek: seek,
+            position: Duration(milliseconds: position),
+            duration: Duration(milliseconds: duration),
+            isPlaying: isPlaying,
+            playState: getVideoPlayStateName(currentState),
+          );
+        case 'onFullButtonClick':
+          final int position = reply!["position"];
+          final int duration = reply["duration"];
+          final bool isPlaying = reply["isPlaying"];
+          final int currentState = reply["currentState"];
+          return VideoEvent(
+            eventType: VideoEventType.onFullButtonClick,
             position: Duration(milliseconds: position),
             duration: Duration(milliseconds: duration),
             isPlaying: isPlaying,

@@ -88,6 +88,11 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
       case VideoEventType.initialized:
         _postEvent(VideoEventType.initialized);
         break;
+      case VideoEventType.onFullButtonClick:
+        _postEvent(VideoEventType.onFullButtonClick);
+      case VideoEventType.videoPlayerInitialized:
+        _postEvent(VideoEventType.videoPlayerInitialized);
+        break;
       case VideoEventType.onEventStartPrepared:
         _postEvent(VideoEventType.onEventStartPrepared);
         break;
@@ -530,14 +535,25 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
       videoEventStreamController.add(event);
       switch (event.eventType) {
         case VideoEventType.initialized:
-          unawaited(_applyVolume());
-          value = value.copyWith(
-            duration: event.duration,
-            size: event.size,
-          );
+          value = value.copyWith(isInitialized: true);
           _initializingCompleter.complete(null);
           _danmakuController = DanmakuController(this);
           _danmakuController.initDanmaku();
+          break;
+        case VideoEventType.onFullButtonClick:
+          value = value.copyWith(
+            isPlaying: event.isPlaying,
+            isFullScreen: true,
+            position: Duration(milliseconds: event.position!.inMilliseconds),
+            duration: Duration(milliseconds: event.duration!.inMilliseconds),
+            playState: event.playState,
+          );
+          break;
+        case VideoEventType.videoPlayerInitialized:
+          value = value.copyWith(
+            videoPlayerInitialized: true,
+          );
+          unawaited(_applyVolume());
           break;
         case VideoEventType.onEventStartPrepared:
           value = value.copyWith(isPlaying: false);
@@ -1260,6 +1276,15 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
       return;
     }
     await _videoPlayerPlatform.setLooping(value.isLooping);
+  }
+
+  playOrPause() {
+    if (value.isPlaying) {
+      value = value.copyWith(isPlaying: false);
+    } else {
+      value = value.copyWith(isPlaying: true);
+    }
+    _applyPlayPause();
   }
 
   Future<void> _applyPlayPause() async {

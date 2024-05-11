@@ -30,8 +30,16 @@ class CustomGSYMediaPlayerListener(private var videoPlayer: CustomVideoPlayer) {
     fun sendInitialized(sink: QueuingEventSink) {
         if (GsyVideoPlayerView.isInitialized) {
             val event: MutableMap<String, Any?> = HashMap()
-            val reply: MutableMap<String, Any> = HashMap()
             event["event"] = "initialized"
+            sink.success(event)
+        }
+    }
+
+    fun sendVideoPlayerInitialized(sink: QueuingEventSink) {
+        if (GsyVideoPlayerView.isInitialized) {
+            val event: MutableMap<String, Any?> = HashMap()
+            val reply: MutableMap<String, Any> = HashMap()
+            event["event"] = "videoPlayerInitialized"
             reply["duration"] = videoDuration
             reply["position"] = videoPosition
             reply["isPlaying"] = isPlaying()
@@ -132,6 +140,18 @@ class CustomGSYMediaPlayerListener(private var videoPlayer: CustomVideoPlayer) {
         event["reply"] = reply
         reply["what"] = what
         reply["extra"] = extra
+        reply["currentState"] = getCurrentState()
+        reply["duration"] = videoDuration
+        reply["position"] = videoPosition
+        sink.success(event)
+    }
+
+    fun onFullButtonClick(sink: QueuingEventSink) {
+        val event: MutableMap<String, Any> = HashMap()
+        val reply: MutableMap<String, Any> = HashMap()
+        event["event"] = "onFullButtonClick"
+        reply["isPlaying"] = isPlaying()
+        event["reply"] = reply
         reply["currentState"] = getCurrentState()
         reply["duration"] = videoDuration
         reply["position"] = videoPosition

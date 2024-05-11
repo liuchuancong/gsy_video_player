@@ -25,6 +25,7 @@ class GsyVideoPlayerView(private val context: Context, messenger: BinaryMessenge
     private var gSYVideoPlayer: GSYVideoPlayer = GSYVideoPlayer(videoPlayer, context, id)
     private var customGSYVideoType: CustomGSYVideoType = CustomGSYVideoType()
     private var customOrientationUtils: CustomOrientationUtils = CustomOrientationUtils(videoPlayer,context)
+    private var customGSYMediaPlayerListener: CustomGSYMediaPlayerListener = CustomGSYMediaPlayerListener(videoPlayer)
     private var  customMethodCall:CustomMethodCall = CustomMethodCall(videoPlayer,context,id,gsyVideoOptionBuilder,customGSYVideoManagerApi,customBasicApi,gSYVideoPlayer,customGSYVideoType,customOrientationUtils)
     init {
         channel.setMethodCallHandler(this)
@@ -47,6 +48,10 @@ class GsyVideoPlayerView(private val context: Context, messenger: BinaryMessenge
 
     override fun onListen(arguments: Any?, sink: EventChannel.EventSink?) {
         eventSink.setDelegate(sink)
+        if (!isInitialized) {
+            isInitialized = true
+            customGSYMediaPlayerListener.sendInitialized(eventSink)
+        }
     }
 
     override fun onCancel(arguments: Any?) {

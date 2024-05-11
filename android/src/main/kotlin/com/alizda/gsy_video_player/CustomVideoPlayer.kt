@@ -45,6 +45,8 @@ class CustomVideoPlayer : StandardGSYVideoPlayer {
     private var danmakuStartSeekPosition: Long = -1
     private var isLinkScroll = false
     private var orientationUtils: CustomOrientationUtils = CustomOrientationUtils(this, context)
+
+    private var videoIsInitialized:Boolean = false
     constructor(context: Context?, fullFlag: Boolean?) : super(context, fullFlag)
     constructor(context: Context?) : super(context)
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
@@ -63,7 +65,7 @@ class CustomVideoPlayer : StandardGSYVideoPlayer {
     private fun  addFullScreenListen(){
         if(fullscreenButton.isShown){
             fullscreenButton.setOnClickListener {
-                orientationUtils.resolveByClick();
+                customGSYMediaPlayerListener.onFullButtonClick(eventSink)
             };
         }
     }
@@ -489,9 +491,9 @@ class CustomVideoPlayer : StandardGSYVideoPlayer {
 
 
     override fun onPrepared() {
-        if (!GsyVideoPlayerView.isInitialized) {
-            GsyVideoPlayerView.isInitialized = true
-            customGSYMediaPlayerListener.sendInitialized(eventSink)
+        if (!videoIsInitialized) {
+            videoIsInitialized = true
+            customGSYMediaPlayerListener.sendVideoPlayerInitialized(eventSink)
         }
         super.onPrepared()
         customGSYMediaPlayerListener.onPrepared(eventSink)

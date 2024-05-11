@@ -87,5 +87,9 @@ enum VideoEventType {
 
   onListenerInitDanmakuSuccess,
 
-  unknown
+  onFullButtonClick,
+
+  videoPlayerInitialized,
+
+  unknown,
 }

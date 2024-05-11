@@ -27,11 +27,12 @@ class VideoPlayerValue {
     this.errorDescription,
     this.playState,
     this.isPip = false,
+    this.isFullScreen = false,
+    this.videoPlayerInitialized = false,
   });
 
   /// Returns an instance for a video that hasn't been loaded.
-  VideoPlayerValue.uninitialized()
-      : this(duration: Duration.zero, isInitialized: false);
+  VideoPlayerValue.uninitialized() : this(duration: Duration.zero, isInitialized: false, videoPlayerInitialized: false);
 
   /// Returns an instance with a `null` [Duration] and the given
   /// [errorDescription].
@@ -51,6 +52,8 @@ class VideoPlayerValue {
   ///
   /// Is null when [initialized] is false.
   final Duration? duration;
+
+  final bool isFullScreen;
 
   /// The current playback position.
   final Duration position;
@@ -75,6 +78,8 @@ class VideoPlayerValue {
 
   /// Indicates whether or not the video has been loaded and is ready to play.
   final bool isInitialized;
+
+  final bool videoPlayerInitialized;
 
   /// The [size] of the currently loaded video.
   ///
@@ -133,6 +138,8 @@ class VideoPlayerValue {
     int? percent,
     bool? seek,
     VideoPlayState? playState,
+    bool? isFullScreen,
+    bool? videoPlayerInitialized,
   }) {
     return VideoPlayerValue(
       duration: duration ?? this.duration,
@@ -152,7 +159,9 @@ class VideoPlayerValue {
       errorDescription: errorDescription ?? this.errorDescription,
       isPip: isPip ?? this.isPip,
       speed: speed ?? this.speed,
+      isFullScreen: isFullScreen ?? this.isFullScreen,
       playState: playState ?? this.playState,
+      videoPlayerInitialized: videoPlayerInitialized ?? this.videoPlayerInitialized,
     );
   }
 
@@ -168,6 +177,7 @@ class VideoPlayerValue {
         'isLooping: $isLooping, '
         'isBuffering: $isBuffering, '
         'volume: $volume, '
+        'isFullScreen: $isFullScreen, '
         'errorDescription: $errorDescription, '
         'playbackSpeed: $playbackSpeed, '
         'isPip: $isPip, '
