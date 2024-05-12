@@ -26,3 +26,5 @@ export 'src/video_player/video_event.dart';
 export 'src/video_player/video_player.dart';
 export 'src/video_player/video_player_controller.dart';
 export 'src/video_player/video_player_platform_interface.dart';
+
+export 'src/video_player/player_full.dart';
