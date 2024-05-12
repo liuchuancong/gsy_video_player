@@ -521,6 +521,7 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
 
   /// Attempts to open the given [dataSource] and load metadata about the video.
   Future<void> _create() async {
+    await _videoPlayerPlatform.initialized.future;
     await _videoPlayerPlatform.create();
     _creatingCompleter.complete(null);
     _initializingCompleter = Completer<void>();
@@ -1557,21 +1558,36 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     await _videoPlayerPlatform.releaseOrientationListener();
   }
 
+  void onEnterFullScreen() {
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
+    ]);
+  }
+
   void refresh() {
     value = value.copyWith();
   }
 }
 
 /// Widget that displays the video controlled by [controller].
-class GsyVideoPlayer extends StatelessWidget {
+class GsyVideoPlayer extends StatefulWidget {
   /// Uses the given [controller] for all video rendered in this widget.
-
+  ///
   final GsyVideoPlayerController? controller;
 
-  const GsyVideoPlayer({super.key, this.controller});
+  const GsyVideoPlayer({super.key, this.controller, this.onViewReady});
+
+  final void Function(int)? onViewReady;
 
   @override
+  State<GsyVideoPlayer> createState() => _GsyVideoPlayerState();
+}
+
+class _GsyVideoPlayerState extends State<GsyVideoPlayer> {
+  @override
   Widget build(BuildContext context) {
-    return _videoPlayerPlatform.buildView();
+    return RepaintBoundary(child: _videoPlayerPlatform.buildView(widget.onViewReady));
   }
 }

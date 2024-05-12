@@ -676,7 +676,7 @@ abstract class VideoPlayerPlatform {
   }
 
   /// Returns the current player.
-  Widget buildView() {
+  Widget buildView(void Function(int)? onViewReady) {
     throw UnimplementedError('buildView() has not been implemented.');
   }
 

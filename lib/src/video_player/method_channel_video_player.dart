@@ -1,9 +1,6 @@
 import 'dart:async';
 import 'package:flutter/widgets.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/foundation.dart';
 import 'package:gsy_video_player/gsy_video_player.dart';
 
 // Copyright 2017 The Chromium Authors. All rights reserved.
@@ -16,20 +13,8 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
   String viewType = 'gsy_video_player_channel/platform_view';
   // Pass parameters to the platform side.
   Map<String, dynamic> creationParams = <String, dynamic>{};
-  Timer? _timer;
+
   int? textureId;
-  MethodChannelVideoPlayer() {
-    _timer = Timer.periodic(const Duration(milliseconds: 100), (Timer timer) async {
-      try {
-        late final Map<String, dynamic>? response;
-        response = await _channel.invokeMapMethod<String, dynamic>('create');
-        textureId = response?['textureId'];
-        initialized.complete(textureId);
-        _timer?.cancel();
-        // ignore: empty_catches
-      } catch (e) {}
-    });
-  }
   @override
   Future<int?> create() async {
     await initialized.future;
@@ -1440,33 +1425,19 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
       }
     });
   }
-  // flutter有bug 在第一次打开的时候会出现PlatformView被创建已经创建成功但是methodChannel 出现MissingPluginException(No implementation found for method
-  // 此处添加轮询进行获取是否初始化完成
 
   @override
-  Widget buildView() {
-    return PlatformViewLink(
+  Widget buildView(void Function(int)? onViewReady) {
+    return AndroidView(
       viewType: viewType,
-      surfaceFactory: (context, controller) {
-        return AndroidViewSurface(
-          controller: controller as AndroidViewController,
-          gestureRecognizers: const <Factory<OneSequenceGestureRecognizer>>{},
-          hitTestBehavior: PlatformViewHitTestBehavior.opaque,
-        );
-      },
-      onCreatePlatformView: (params) {
-        return PlatformViewsService.initSurfaceAndroidView(
-          id: params.id,
-          viewType: viewType,
-          layoutDirection: TextDirection.ltr,
-          creationParams: creationParams,
-          creationParamsCodec: const StandardMessageCodec(),
-          onFocus: () {
-            params.onFocusChanged(true);
-          },
-        )
-          ..addOnPlatformViewCreatedListener(params.onPlatformViewCreated)
-          ..create();
+      creationParams: creationParams,
+      creationParamsCodec: const StandardMessageCodec(),
+      onPlatformViewCreated: (int id) {
+        textureId = id;
+        if (!initialized.isCompleted) {
+          initialized.complete(id);
+        }
+        onViewReady?.call(id);
       },
     );
   }

@@ -39,7 +39,7 @@ class _MyAppState extends State<MyApp> {
     gsyVideoPlayerController.setLogLevel(LogLevel.logError);
     gsyVideoPlayerController.setNetWorkBuilder(
       'https://cloud.video.taobao.com//play/u/27349687/p/1/e/6/t/1/239880949246.mp4',
-      autoPlay: false,
+      autoPlay: true,
       showFullAnimation: true,
       showPauseCover: true,
       rotateWithSystem: true,
@@ -57,7 +57,7 @@ class _MyAppState extends State<MyApp> {
         appBar: AppBar(
           title: const Text('Plugin example app'),
         ),
-        body: Column(
+        body: ListView(
           children: [
             Container(
               color: Colors.black,
@@ -66,6 +66,9 @@ class _MyAppState extends State<MyApp> {
               child: Container(
                 color: Colors.blue,
                 child: GsyVideoPlayer(
+                  onViewReady: (int id) {
+                    print('onViewReady $id');
+                  },
                   controller: gsyVideoPlayerController,
                 ),
               ),
@@ -182,10 +185,17 @@ class _MyAppState extends State<MyApp> {
                     },
                     child: const Text('setMaximumLines')),
                 ElevatedButton(
-                    onPressed: () {
-                      gsyVideoPlayerController.startWindowFullscreen(true, true);
+                    onPressed: () async {
+                      // gsyVideoPlayerController.onEnterFullScreen();
+                      await gsyVideoPlayerController.setIfCurrentIsFullscreen(true);
                     },
                     child: const Text('FullScreen')),
+                ElevatedButton(
+                    onPressed: () async {
+                      // gsyVideoPlayerController.onEnterFullScreen();
+                      await gsyVideoPlayerController.setIfCurrentIsFullscreen(false);
+                    },
+                    child: const Text('normalScreen')),
                 ElevatedButton(
                     onPressed: () {
                       gsyVideoPlayerController.showSmallVideo(const Size(500, 500), true, true);
