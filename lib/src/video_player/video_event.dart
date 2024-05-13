@@ -23,6 +23,7 @@ class VideoEvent {
     this.seek,
     this.videoSarDen,
     this.videoSarNum,
+    this.rotationCorrection,
     this.playState = VideoPlayState.unknown,
   });
 
@@ -44,6 +45,11 @@ class VideoEvent {
   final VideoPlayState playState;
 
   final bool? isPlaying;
+
+  /// Degrees to rotate the video (clockwise) so it is displayed correctly.
+  ///
+  /// Only used if [eventType] is [VideoEventType.initialized].
+  final int? rotationCorrection;
 
   /// Data source of the video.
 
@@ -70,18 +76,31 @@ class VideoEvent {
     return identical(this, other) ||
         other is VideoEvent &&
             runtimeType == other.runtimeType &&
+            rotationCorrection == other.rotationCorrection &&
             eventType == other.eventType &&
             duration == other.duration &&
             size == other.size &&
+            isPlaying == other.isPlaying &&
+            what == other.what &&
+            extra == other.extra &&
+            percent == other.percent &&
+            seek == other.seek &&
+            videoSarDen == other.videoSarDen &&
+            videoSarNum == other.videoSarNum &&
+            playState == other.playState &&
+            position == other.position &&
             listEquals(buffered, other.buffered);
   }
 
   @override
-  int get hashCode =>
-      eventType.hashCode ^
-      duration.hashCode ^
-      size.hashCode ^
-      buffered.hashCode;
+  int get hashCode => Object.hash(
+        eventType,
+        duration,
+        size,
+        rotationCorrection,
+        buffered,
+        isPlaying,
+      );
 }
 
 /// Describes a discrete segment of time within a video using a [start] and
@@ -135,10 +154,7 @@ class DurationRange {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is DurationRange &&
-          runtimeType == other.runtimeType &&
-          start == other.start &&
-          end == other.end;
+      other is DurationRange && runtimeType == other.runtimeType && start == other.start && end == other.end;
 
   @override
   int get hashCode => start.hashCode ^ end.hashCode;

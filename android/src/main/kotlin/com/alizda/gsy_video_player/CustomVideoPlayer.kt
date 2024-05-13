@@ -728,4 +728,8 @@ class CustomVideoPlayer : StandardGSYVideoPlayer {
         danmakuContext!!.setMarginTop(DanmukuSettings.marginTop)
     }
 
+
+    companion object{
+        var autoPlay: Boolean = false
+    }
 }

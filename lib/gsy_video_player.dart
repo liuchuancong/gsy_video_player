@@ -28,3 +28,7 @@ export 'src/video_player/video_player_controller.dart';
 export 'src/video_player/video_player_platform_interface.dart';
 
 export 'src/video_player/player_full.dart';
+
+export 'src/widget/video_progress_colors.dart';
+export 'src/widget/video_scrubber.dart';
+export 'src/widget/video_progress_indicator.dart';

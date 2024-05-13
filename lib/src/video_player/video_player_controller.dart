@@ -1,9 +1,21 @@
 import 'dart:async';
+import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gsy_video_player/gsy_video_player.dart';
 
-final VideoPlayerPlatform _videoPlayerPlatform = VideoPlayerPlatform.instance;
+VideoPlayerPlatform? _lastVideoPlayerPlatform;
+
+VideoPlayerPlatform get _videoPlayerPlatform {
+  final VideoPlayerPlatform currentInstance = VideoPlayerPlatform.instance;
+  if (_lastVideoPlayerPlatform != currentInstance) {
+    // This will clear all open videos on the platform when a full restart is
+    // performed.
+    currentInstance.init();
+    _lastVideoPlayerPlatform = currentInstance;
+  }
+  return currentInstance;
+}
 
 /// Controls a platform video player, and provides updates when the state is
 /// changing.
@@ -17,10 +29,12 @@ final VideoPlayerPlatform _videoPlayerPlatform = VideoPlayerPlatform.instance;
 /// After [dispose] all further calls are ignored.
 class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
   /// Constructs a [GsyVideoPlayerController] and creates video controller on platform side.
-  GsyVideoPlayerController({this.danmakuSettings = const DanmakuSettings()}) : super(VideoPlayerValue(duration: null)) {
-    _create();
-  }
+  GsyVideoPlayerController({this.danmakuSettings = const DanmakuSettings()})
+      : super(VideoPlayerValue(duration: null)) {}
 
+  static const int kUninitializedTextureId = -1;
+  int _textureId = kUninitializedTextureId;
+  int get textureId => _textureId;
   final DanmakuSettings danmakuSettings;
 
   /// Initializes the video controller on platform side.
@@ -42,7 +56,11 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
 
   StreamSubscription<dynamic>? _eventSubscription;
 
+  _VideoAppLifeCycleObserver? _lifeCycleObserver;
+
   bool get _created => _creatingCompleter.isCompleted;
+
+  final Completer<void> initializingCompleter = Completer<void>();
 
   ///List of event listeners, which listen to events.
   final List<Function(VideoEventType)?> _eventListeners = [];
@@ -54,6 +72,17 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     _videoEventStreamSubscription?.cancel();
     _videoEventStreamSubscription = null;
     _videoEventStreamSubscription = videoEventStreamController.stream.listen(_handleVideoEvent);
+  }
+
+  Future<void> initialize() async {
+    final bool allowBackgroundPlayback = value.allowBackgroundPlayback;
+    if (!allowBackgroundPlayback) {
+      _lifeCycleObserver = _VideoAppLifeCycleObserver(this);
+    }
+    _lifeCycleObserver?.initialize();
+    _textureId = (await _videoPlayerPlatform.create()) ?? kUninitializedTextureId;
+
+    setEventListener();
   }
 
   ///Send player event. Shouldn't be used manually.
@@ -519,15 +548,6 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     );
   }
 
-  /// Attempts to open the given [dataSource] and load metadata about the video.
-  Future<void> _create() async {
-    await _videoPlayerPlatform.initialized.future;
-    await _videoPlayerPlatform.create();
-    _creatingCompleter.complete(null);
-    _initializingCompleter = Completer<void>();
-    setEventListener();
-  }
-
   void setEventListener() async {
     void eventListener(VideoEvent event) async {
       if (_isDisposed) {
@@ -536,10 +556,13 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
       videoEventStreamController.add(event);
       switch (event.eventType) {
         case VideoEventType.initialized:
-          value = value.copyWith(isInitialized: true);
+          value = value.copyWith(
+            duration: event.duration,
+            rotationCorrection: event.rotationCorrection,
+            isInitialized: event.duration != null,
+            isCompleted: false,
+          );
           _initializingCompleter.complete(null);
-          _danmakuController = DanmakuController(this);
-          _danmakuController.initDanmaku();
           break;
         case VideoEventType.onFullButtonClick:
           value = value.copyWith(
@@ -748,7 +771,7 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
       }
     }
 
-    _eventSubscription = _videoPlayerPlatform.videoEventsFor().listen(eventListener, onError: errorListener);
+    _eventSubscription = _videoPlayerPlatform.videoEventsFor(_textureId).listen(eventListener, onError: errorListener);
     await _initializeVideo();
   }
 
@@ -772,7 +795,7 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
       _isDisposed = true;
       value = VideoPlayerValue.uninitialized();
       await _eventSubscription?.cancel();
-      await _videoPlayerPlatform.dispose();
+      await _videoPlayerPlatform.dispose(_textureId);
       videoEventStreamController.close();
       _videoEventStreamSubscription?.cancel();
       _eventListeners.clear();
@@ -1575,9 +1598,9 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
 class GsyVideoPlayer extends StatefulWidget {
   /// Uses the given [controller] for all video rendered in this widget.
   ///
-  final GsyVideoPlayerController? controller;
+  final GsyVideoPlayerController controller;
 
-  const GsyVideoPlayer({super.key, this.controller, this.onViewReady});
+  const GsyVideoPlayer({super.key, required this.controller, this.onViewReady});
 
   final void Function(int)? onViewReady;
 
@@ -1586,8 +1609,92 @@ class GsyVideoPlayer extends StatefulWidget {
 }
 
 class _GsyVideoPlayerState extends State<GsyVideoPlayer> {
+  _GsyVideoPlayerState() {
+    _listener = () {
+      final int newTextureId = widget.controller.textureId;
+      if (newTextureId != _textureId) {
+        setState(() {
+          _textureId = newTextureId;
+        });
+      }
+    };
+  }
+
+  late VoidCallback _listener;
+
+  late int _textureId;
+
+  @override
+  void initState() {
+    super.initState();
+    _textureId = widget.controller.textureId;
+    // Need to listen for initialization events since the actual texture ID
+    // becomes available after asynchronous initialization finishes.
+    widget.controller.addListener(_listener);
+  }
+
+  @override
+  void didUpdateWidget(GsyVideoPlayer oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    oldWidget.controller.removeListener(_listener);
+    _textureId = widget.controller.textureId;
+    widget.controller.addListener(_listener);
+  }
+
+  @override
+  void deactivate() {
+    super.deactivate();
+    widget.controller.removeListener(_listener);
+  }
+
   @override
   Widget build(BuildContext context) {
-    return RepaintBoundary(child: _videoPlayerPlatform.buildView(widget.onViewReady));
+    return _textureId == GsyVideoPlayerController.kUninitializedTextureId
+        ? Container()
+        : _VideoPlayerWithRotation(
+            rotation: widget.controller.value.rotationCorrection,
+            child: _videoPlayerPlatform.buildView(_textureId),
+          );
+  }
+}
+
+class _VideoPlayerWithRotation extends StatelessWidget {
+  const _VideoPlayerWithRotation({required this.rotation, required this.child});
+  final int rotation;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) => rotation == 0
+      ? child
+      : Transform.rotate(
+          angle: rotation * math.pi / 180,
+          child: child,
+        );
+}
+
+class _VideoAppLifeCycleObserver extends Object with WidgetsBindingObserver {
+  _VideoAppLifeCycleObserver(this._controller);
+
+  bool _wasPlayingBeforePause = false;
+  final GsyVideoPlayerController _controller;
+
+  void initialize() {
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.paused) {
+      _wasPlayingBeforePause = _controller.value.isPlaying;
+      _controller.pause();
+    } else if (state == AppLifecycleState.resumed) {
+      if (_wasPlayingBeforePause) {
+        _controller.resume();
+      }
+    }
+  }
+
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
   }
 }

@@ -28,7 +28,10 @@ class VideoPlayerValue {
     this.playState,
     this.isPip = false,
     this.isFullScreen = false,
+    this.rotationCorrection = 0,
     this.videoPlayerInitialized = false,
+    this.allowBackgroundPlayback = true,
+    this.isCompleted = false,
   });
 
   /// Returns an instance for a video that hasn't been loaded.
@@ -43,6 +46,8 @@ class VideoPlayerValue {
   final int? extra;
 
   final int? percent;
+
+  final bool allowBackgroundPlayback;
 
   final bool? seek;
 
@@ -92,6 +97,9 @@ class VideoPlayerValue {
   ///Is in Picture in Picture Mode
   final bool isPip;
 
+  /// Degrees to rotate the video (clockwise) so it is displayed correctly.
+  final int rotationCorrection;
+
   /// Indicates whether or not the video has been loaded and is ready to play.
   bool get initialized => duration != null;
 
@@ -117,6 +125,8 @@ class VideoPlayerValue {
     return aspectRatio;
   }
 
+  final bool isCompleted;
+
   /// Returns a new instance that has the same values as this current instance,
   /// except for any overrides passed in as arguments to [copyWidth].
   VideoPlayerValue copyWith({
@@ -140,6 +150,9 @@ class VideoPlayerValue {
     VideoPlayState? playState,
     bool? isFullScreen,
     bool? videoPlayerInitialized,
+    int? rotationCorrection,
+    bool? allowBackgroundPlayback,
+    bool? isCompleted,
   }) {
     return VideoPlayerValue(
       duration: duration ?? this.duration,
@@ -154,6 +167,7 @@ class VideoPlayerValue {
       playbackSpeed: playbackSpeed ?? this.playbackSpeed,
       what: what ?? this.what,
       extra: extra ?? this.extra,
+      rotationCorrection: rotationCorrection ?? this.rotationCorrection,
       percent: percent ?? this.percent,
       seek: seek ?? this.seek,
       errorDescription: errorDescription ?? this.errorDescription,
@@ -162,6 +176,8 @@ class VideoPlayerValue {
       isFullScreen: isFullScreen ?? this.isFullScreen,
       playState: playState ?? this.playState,
       videoPlayerInitialized: videoPlayerInitialized ?? this.videoPlayerInitialized,
+      allowBackgroundPlayback: allowBackgroundPlayback ?? this.allowBackgroundPlayback,
+      isCompleted: isCompleted ?? this.isCompleted,
     );
   }
 
@@ -181,10 +197,61 @@ class VideoPlayerValue {
         'errorDescription: $errorDescription, '
         'playbackSpeed: $playbackSpeed, '
         'isPip: $isPip, '
+        'rotationCorrection: $rotationCorrection, '
         'playState: $playState, '
         'what: $what, '
         'extra: $extra, '
         'percent: $percent, '
         'seek: $seek, )';
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is VideoPlayerValue &&
+          runtimeType == other.runtimeType &&
+          duration == other.duration &&
+          size == other.size &&
+          position == other.position &&
+          buffered == other.buffered &&
+          isInitialized == other.isInitialized &&
+          isPlaying == other.isPlaying &&
+          isLooping == other.isLooping &&
+          isBuffering == other.isBuffering &&
+          volume == other.volume &&
+          playbackSpeed == other.playbackSpeed &&
+          what == other.what &&
+          extra == other.extra &&
+          rotationCorrection == other.rotationCorrection &&
+          percent == other.percent &&
+          seek == other.seek &&
+          errorDescription == other.errorDescription &&
+          isPip == other.isPip &&
+          speed == other.speed &&
+          isFullScreen == other.isFullScreen &&
+          playState == other.playState;
+
+  @override
+  int get hashCode => Object.hash(
+        duration,
+        size,
+        position,
+        buffered,
+        isInitialized,
+        isPlaying,
+        isLooping,
+        isBuffering,
+        volume,
+        playbackSpeed,
+        what,
+        extra,
+        rotationCorrection,
+        percent,
+        seek,
+        errorDescription,
+        isPip,
+        speed,
+        isFullScreen,
+        playState,
+      );
 }

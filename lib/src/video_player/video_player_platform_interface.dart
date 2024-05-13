@@ -29,12 +29,20 @@ abstract class VideoPlayerPlatform {
     _instance = instance;
   }
 
+  /// Initializes the platform interface and disposes all existing players.
+  ///
+  /// This method is called when the plugin is first initialized
+  /// and on every full restart.
+  Future<void> init() {
+    throw UnimplementedError('init() has not been implemented.');
+  }
+
   /// Returns a widget displaying the video with a given textureID.
-  Future<void> create() {
+  Future<int?> create() {
     throw UnimplementedError('create() has not been implemented.');
   }
 
-  Future<void> dispose() {
+  Future<void> dispose(int? textureId) {
     throw UnimplementedError('dispose() has not been implemented.');
   }
 
@@ -671,12 +679,12 @@ abstract class VideoPlayerPlatform {
     throw UnimplementedError('releaseOrientationListener() has not been implemented.');
   }
 
-  Stream<VideoEvent> videoEventsFor() {
+  Stream<VideoEvent> videoEventsFor(int? textureId) {
     throw UnimplementedError('videoEventsFor() has not been implemented.');
   }
 
   /// Returns the current player.
-  Widget buildView(void Function(int)? onViewReady) {
+  Widget buildView(int textureId, {void Function(int)? onViewReady}) {
     throw UnimplementedError('buildView() has not been implemented.');
   }
 

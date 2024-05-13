@@ -18,7 +18,7 @@ class GsyVideoPlayerView(private val context: Context, messenger: BinaryMessenge
     private val channel: MethodChannel = MethodChannel(messenger, METHODS_CHANNEL)
     private var event: EventChannel = EventChannel(messenger, EVENTS_CHANNEL + id)
     private var videoPlayer: CustomVideoPlayer = CustomVideoPlayer(context)
-    private var gsyVideoOptionBuilder: CustomGSYVideoOptionBuilder = CustomGSYVideoOptionBuilder(videoPlayer)
+    var gsyVideoOptionBuilder: CustomGSYVideoOptionBuilder? = null
     private var customVideoAllCallBack: CustomVideoAllCallBack = CustomVideoAllCallBack(videoPlayer)
     private var customBasicApi: CustomBasicApi = CustomBasicApi(videoPlayer,context)
     private  var customGSYVideoManagerApi :CustomGSYVideoManagerApi = CustomGSYVideoManagerApi(context)
@@ -26,13 +26,15 @@ class GsyVideoPlayerView(private val context: Context, messenger: BinaryMessenge
     private var customGSYVideoType: CustomGSYVideoType = CustomGSYVideoType()
     private var customOrientationUtils: CustomOrientationUtils = CustomOrientationUtils(videoPlayer,context)
     private var customGSYMediaPlayerListener: CustomGSYMediaPlayerListener = CustomGSYMediaPlayerListener(videoPlayer)
-    private var  customMethodCall:CustomMethodCall = CustomMethodCall(videoPlayer,context,id,gsyVideoOptionBuilder,customGSYVideoManagerApi,customBasicApi,gSYVideoPlayer,customGSYVideoType,customOrientationUtils)
+    private var  customMethodCall:CustomMethodCall = CustomMethodCall(videoPlayer,context,id,customGSYVideoManagerApi,customBasicApi,gSYVideoPlayer,customGSYVideoType,customOrientationUtils)
     init {
         channel.setMethodCallHandler(this)
         event.setStreamHandler(this)
         videoPlayer.setGSYVideoProgressListener(this)
         videoPlayer.setVideoAllCallBack(this)
     }
+
+    fun getCurVideoPlayer(): CustomVideoPlayer = videoPlayer
     override fun getView(): View = videoPlayer
     override fun dispose() {
         if(isInitialized){
@@ -42,7 +44,7 @@ class GsyVideoPlayerView(private val context: Context, messenger: BinaryMessenge
     }
 
     override fun onMethodCall(call: MethodCall, result: MethodChannel.Result) {
-        customMethodCall.handleMethod(call,result)
+        customMethodCall.handleMethod(call,result,this)
     }
 
 
@@ -51,6 +53,10 @@ class GsyVideoPlayerView(private val context: Context, messenger: BinaryMessenge
         if (!isInitialized) {
             isInitialized = true
             customGSYMediaPlayerListener.sendInitialized(eventSink)
+            gsyVideoOptionBuilder!!.build(videoPlayer)
+            if (CustomVideoPlayer.autoPlay) {
+                videoPlayer.startPlayLogic()
+            }
         }
     }
 

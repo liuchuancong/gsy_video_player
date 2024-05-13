@@ -8,7 +8,7 @@ import io.flutter.plugin.common.MethodChannel
 import java.io.File
 
 class CustomGSYVideoOptionBuilder(private var videoPlayer: CustomVideoPlayer): GSYVideoOptionBuilder() {
-    fun setVideoConfig(call: MethodCall, result: MethodChannel.Result) {
+    fun setVideoConfig(call: MethodCall, result: MethodChannel.Result): CustomGSYVideoOptionBuilder {
         videoPlayer.release()
         val videoOptions = call.argument<Map<String, Any?>>("builderParams")!!
         val url = GsyVideoPlayerView.getParameter(videoOptions, "url", "")
@@ -110,14 +110,12 @@ class CustomGSYVideoOptionBuilder(private var videoPlayer: CustomVideoPlayer): G
             this.setOverrideExtension(overrideExtension)
         }
         videoPlayer.backButton.visibility = View.GONE
-        this.build(videoPlayer)
         val autoPlay = GsyVideoPlayerView.getParameter(videoOptions, "autoPlay", true)
-        if (autoPlay) {
-            videoPlayer.startPlayLogic()
-        }
+        CustomVideoPlayer.autoPlay = autoPlay
         val reply: MutableMap<String, Any> = HashMap()
         reply["setVideoConfig"] = true
         result.success(reply)
+        return this
     }
 
 }

@@ -15,6 +15,7 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
   Map<String, dynamic> creationParams = <String, dynamic>{};
 
   int? textureId;
+
   @override
   Future<int?> create() async {
     await initialized.future;
@@ -25,9 +26,17 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
   }
 
   @override
-  Future<void> dispose() async {
+  Future<void> init() {
+    return _channel.invokeMethod<void>('init');
+  }
+
+  @override
+  Future<void> dispose(int? textureId) async {
     await initialized.future;
-    await _channel.invokeMethod<void>('dispose');
+    await _channel.invokeMethod<void>(
+      'dispose',
+      <String, dynamic>{'textureId': textureId},
+    );
   }
 
   @override
@@ -1142,7 +1151,7 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
   }
 
   @override
-  Stream<VideoEvent> videoEventsFor() {
+  Stream<VideoEvent> videoEventsFor(int? textureId) {
     return eventChannelFor().receiveBroadcastStream().map((dynamic event) {
       late Map<dynamic, dynamic> map;
       if (event is Map) {
@@ -1427,7 +1436,7 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
   }
 
   @override
-  Widget buildView(void Function(int)? onViewReady) {
+  Widget buildView(textureId, {void Function(int)? onViewReady}) {
     return AndroidView(
       viewType: viewType,
       creationParams: creationParams,

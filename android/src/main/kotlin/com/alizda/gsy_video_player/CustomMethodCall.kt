@@ -8,7 +8,6 @@ class CustomMethodCall(
         private val videoPlayer: CustomVideoPlayer,
         val context: Context,
         private val id: Int,
-        private var gsyVideoOptionBuilder: CustomGSYVideoOptionBuilder,
         private var customGSYVideoManagerApi: CustomGSYVideoManagerApi,
         private var customBasicApi: CustomBasicApi,
         private var gSYVideoPlayer: GSYVideoPlayer,
@@ -16,7 +15,7 @@ class CustomMethodCall(
         private var customOrientationUtils: CustomOrientationUtils
 ) {
 
-    fun handleMethod(call: MethodCall, result: MethodChannel.Result) {
+    fun handleMethod(call: MethodCall, result: MethodChannel.Result,view: GsyVideoPlayerView) {
         when (call.method) {
             // --------------------- Global  start ----------------------------
             "create" -> {
@@ -27,7 +26,7 @@ class CustomMethodCall(
             }
             // --------------------- CustomGSYVideoOptionBuilder  start ----------------------------
             "setVideoOptionBuilder" -> {
-                gsyVideoOptionBuilder.setVideoConfig(call, result)
+                view.gsyVideoOptionBuilder =  CustomGSYVideoOptionBuilder(view.getCurVideoPlayer()).setVideoConfig(call, result)
             }
             // --------------------- GSYVideoPlayer  start --------
             "getLayoutId" -> {
