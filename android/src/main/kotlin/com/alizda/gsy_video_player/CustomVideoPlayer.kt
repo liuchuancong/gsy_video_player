@@ -5,13 +5,11 @@ import android.app.Activity
 import android.content.Context
 import android.content.res.Configuration
 import android.graphics.Color
-import android.os.Build
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import androidx.annotation.RequiresApi
 import com.alizda.gsy_video_player.GsyVideoPlayerView.Companion.eventSink
 import com.shuyu.gsyvideoplayer.utils.OrientationUtils
 import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer
@@ -50,6 +48,21 @@ class CustomVideoPlayer : StandardGSYVideoPlayer {
     constructor(context: Context?, fullFlag: Boolean?) : super(context, fullFlag)
     constructor(context: Context?) : super(context)
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
+
+    override fun addTextureView() {
+        mTextureView = CustomRenderView()
+        mTextureView.addView(
+            context,
+            mTextureViewContainer,
+            mRotate,
+            this,
+            this,
+            mEffectFilter,
+            mMatrixGL,
+            mRenderer,
+            mMode
+        )
+    }
 
     override fun getLayoutId(): Int {
         if (mIfCurrentIsFullscreen) {
