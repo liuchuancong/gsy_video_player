@@ -6,12 +6,15 @@ import android.content.Context
 import android.content.res.Configuration
 import android.graphics.Color
 import android.util.AttributeSet
+import android.util.Log
 import android.view.MotionEvent
+import android.view.Surface
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import com.shuyu.gsyvideoplayer.listener.GSYVideoProgressListener
 import com.shuyu.gsyvideoplayer.listener.VideoAllCallBack
+import com.shuyu.gsyvideoplayer.utils.GSYVideoType
 import com.shuyu.gsyvideoplayer.utils.OrientationUtils
 import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer
 import com.shuyu.gsyvideoplayer.video.base.GSYBaseVideoPlayer
@@ -57,11 +60,9 @@ class CustomVideoPlayer : StandardGSYVideoPlayer, GSYVideoProgressListener, Vide
     }
 
     override fun init(context: Context) {
-
         super.init(context)
         initDanmaView()
     }
-    
     fun seteventSink(sink: QueuingEventSink){
         eventSink = sink
     }
@@ -75,6 +76,10 @@ class CustomVideoPlayer : StandardGSYVideoPlayer, GSYVideoProgressListener, Vide
                 customGSYMediaPlayerListenerApi.onFullButtonClick(eventSink!!)
             };
         }
+    }
+
+    fun setVideoDisplay(surface: Surface){
+        gsyVideoManager.setDisplay(surface);
     }
 
     override fun updateStartImage() {

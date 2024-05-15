@@ -117,12 +117,9 @@ class CustomGSYVideoOptionBuilderApi {
         val autoPlay = GsyVideoPlayerPlugin.getParameter(videoOptions, "autoPlay", true)
         CustomVideoPlayer.autoPlay = autoPlay
         gsyBuilder.build(videoPlayer.getCurrentPlayer()!!)
-        if (CustomVideoPlayer.autoPlay) {
+        if (autoPlay) {
             videoPlayer.getCurrentPlayer()!!.startPlayLogic()
         }
-        val reply: MutableMap<String, Any> = HashMap()
-        reply["setVideoConfig"] = true
-        result.success(reply)
         return gsyBuilder
     }
 }
