@@ -12,4 +12,6 @@ object GsyVideoShared {
 
     var binding: ActivityPluginBinding? = null
 
+    var flutterState: GsyVideoPlayerPlugin.FlutterState? = null
+
 }

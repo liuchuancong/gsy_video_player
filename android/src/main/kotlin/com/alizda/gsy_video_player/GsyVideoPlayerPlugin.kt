@@ -43,6 +43,7 @@ class GsyVideoPlayerPlugin: FlutterPlugin, ActivityAware, MethodChannel.MethodCa
       },
       binding.textureRegistry
     )
+    GsyVideoShared.flutterState = flutterState
     flutterState?.startListening(this)
   }
 
@@ -120,15 +121,15 @@ class GsyVideoPlayerPlugin: FlutterPlugin, ActivityAware, MethodChannel.MethodCa
     }
   }
 
-  private interface KeyForAssetFn {
+  interface KeyForAssetFn {
     operator fun get(asset: String?): String
   }
 
-  private interface KeyForAssetAndPackageName {
+  interface KeyForAssetAndPackageName {
     operator fun get(asset: String?, packageName: String?): String
   }
 
-  private class FlutterState(
+  public class FlutterState(
     val applicationContext: Context,
     val binaryMessenger: BinaryMessenger,
     val keyForAsset: KeyForAssetFn,
