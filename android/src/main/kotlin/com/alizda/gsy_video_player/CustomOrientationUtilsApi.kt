@@ -4,7 +4,7 @@ import android.content.Context
 import com.shuyu.gsyvideoplayer.utils.OrientationUtils
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
-class CustomOrientationUtils(private var videoPlayer: CustomVideoPlayer,private val context: Context,) {
+class CustomOrientationUtilsApi(private var videoPlayer: CustomVideoPlayer, private val context: Context,) {
     private var orientationUtils: OrientationUtils = OrientationUtils(GsyVideoShared.activity, videoPlayer)
 
     fun resolveByClick(){

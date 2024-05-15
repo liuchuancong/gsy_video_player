@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:gsy_video_player/gsy_video_player.dart';
-import 'package:visibility_detector/visibility_detector.dart';
 
 class GsyPlayerVideoFullScreen extends StatefulWidget {
   const GsyPlayerVideoFullScreen(
@@ -79,17 +78,12 @@ class _GsyPlayerVideoFullScreenState extends State<GsyPlayerVideoFullScreen> wit
   }
 
   Widget _buildPlayer() {
-    return VisibilityDetector(
-      key: Key("${widget.controller.hashCode}_key"),
-      onVisibilityChanged: (VisibilityInfo visibilityInfo) {},
-      child: widget.playerView,
-    );
+    return widget.playerView;
   }
 
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
-    VisibilityDetectorController.instance.forget(Key("${widget.controller.hashCode}_key"));
     super.dispose();
   }
 }

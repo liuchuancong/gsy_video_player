@@ -4,15 +4,14 @@ import android.content.Context
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 
-class CustomMethodCall(
-        private val videoPlayer: CustomVideoPlayer,
+class CustomMethodCallApi(
+        private val videoPlayer: GsyVideoPlayer,
         val context: Context,
-        private val id: Int,
         private var customGSYVideoManagerApi: CustomGSYVideoManagerApi,
         private var customBasicApi: CustomBasicApi,
-        private var gSYVideoPlayer: GSYVideoPlayer,
-        private var customGSYVideoType: CustomGSYVideoType,
-        private var customOrientationUtils: CustomOrientationUtils
+        private var gSYVideoPlayer: CustomGSYVideoPlayerApi,
+        private var customGSYVideoTypeApi: CustomGSYVideoTypeApi,
+        private var customOrientationUtilsApi: CustomOrientationUtilsApi
 ) {
 
     fun handleMethod(call: MethodCall, result: MethodChannel.Result,view: GsyVideoPlayerView) {
@@ -26,7 +25,7 @@ class CustomMethodCall(
             }
             // --------------------- CustomGSYVideoOptionBuilder  start ----------------------------
             "setVideoOptionBuilder" -> {
-                view.gsyVideoOptionBuilder =  CustomGSYVideoOptionBuilder(view.getCurVideoPlayer()).setVideoConfig(call, result)
+                videoPlayer.gsyVideoOptionBuilder =  CustomGSYVideoOptionBuilderApi().setVideoConfig(videoPlayer,call, result)
             }
             // --------------------- GSYVideoPlayer  start --------
             "getLayoutId" -> {
@@ -173,43 +172,43 @@ class CustomMethodCall(
             }
             // --------------------- CustomGSYVideoType  start --------
             "isMediaCodec" -> {
-                customGSYVideoType.isMediaCodec(call, result)
+                customGSYVideoTypeApi.isMediaCodec(call, result)
             }
 
             "getScreenScaleRatio" -> {
-                customGSYVideoType.getScreenScaleRatio(call, result)
+                customGSYVideoTypeApi.getScreenScaleRatio(call, result)
             }
 
             "setScreenScaleRatio" -> {
-                customGSYVideoType.setScreenScaleRatio(call, result)
+                customGSYVideoTypeApi.setScreenScaleRatio(call, result)
             }
 
             "isMediaCodecTexture" -> {
-                customGSYVideoType.isMediaCodecTexture(call, result)
+                customGSYVideoTypeApi.isMediaCodecTexture(call, result)
             }
 
             "getShowType" -> {
-                customGSYVideoType.getShowType(call, result)
+                customGSYVideoTypeApi.getShowType(call, result)
             }
 
             "setShowType" -> {
-                customGSYVideoType.setShowType(call, result)
+                customGSYVideoTypeApi.setShowType(call, result)
             }
 
             "getRenderType" -> {
-                customGSYVideoType.getRenderType(call, result)
+                customGSYVideoTypeApi.getRenderType(call, result)
             }
 
             "setRenderType" -> {
-                customGSYVideoType.setRenderType(call, result)
+                customGSYVideoTypeApi.setRenderType(call, result)
             }
 
             "setMediaCodec" -> {
-                customGSYVideoType.setMediaCodec(call, result)
+                customGSYVideoTypeApi.setMediaCodec(call, result)
             }
 
             "setMediaCodecTexture" -> {
-                customGSYVideoType.setMediaCodecTexture(call, result)
+                customGSYVideoTypeApi.setMediaCodecTexture(call, result)
             }
             // --------------------- CustomBasicApi [start] ----------------------------
             "startWindowFullscreen" -> {
@@ -401,153 +400,153 @@ class CustomMethodCall(
             }
 
             "initDanmaku" -> {
-                videoPlayer.initDanmaku(call, result)
+                videoPlayer.getCurrentPlayer()!!.initDanmaku(call, result)
             }
 
             "showDanmaku" -> {
-                videoPlayer.showDanmaku(call, result)
+                videoPlayer.getCurrentPlayer()!!.showDanmaku(call, result)
             }
 
             "getDanmakuShow" -> {
-                videoPlayer.getDanmakuShow(call, result)
+                videoPlayer.getCurrentPlayer()!!.getDanmakuShow(call, result)
             }
 
             "hideDanmaku" -> {
-                videoPlayer.hideDanmaku(call, result)
+                videoPlayer.getCurrentPlayer()!!.hideDanmaku(call, result)
             }
 
             "setDanmakuStyle" -> {
-                videoPlayer.setDanmakuStyle(call, result)
+                videoPlayer.getCurrentPlayer()!!.setDanmakuStyle(call, result)
             }
 
             "setDanmakuBold" -> {
-                videoPlayer.setDanmakuBold(call, result)
+                videoPlayer.getCurrentPlayer()!!.setDanmakuBold(call, result)
             }
 
             "setScrollSpeedFactor" -> {
-                videoPlayer.setScrollSpeedFactor(call, result)
+                videoPlayer.getCurrentPlayer()!!.setScrollSpeedFactor(call, result)
             }
 
             "setDuplicateMergingEnabled" -> {
-                videoPlayer.setDuplicateMergingEnabled(call, result)
+                videoPlayer.getCurrentPlayer()!!.setDuplicateMergingEnabled(call, result)
             }
 
             "setMaximumLines" -> {
-                videoPlayer.setMaximumLines(call, result)
+                videoPlayer.getCurrentPlayer()!!.setMaximumLines(call, result)
             }
 
             "preventOverlapping" -> {
-                videoPlayer.preventOverlapping(call, result)
+                videoPlayer.getCurrentPlayer()!!.preventOverlapping(call, result)
             }
 
             "setMarginTop" -> {
-                videoPlayer.setMarginTop(call, result)
+                videoPlayer.getCurrentPlayer()!!.setMarginTop(call, result)
             }
 
             "setDanmakuTransparency" -> {
-                videoPlayer.setDanmakuTransparency(call, result)
+                videoPlayer.getCurrentPlayer()!!.setDanmakuTransparency(call, result)
             }
 
             "setDanmakuMargin" -> {
-                videoPlayer.setDanmakuMargin(call, result)
+                videoPlayer.getCurrentPlayer()!!.setDanmakuMargin(call, result)
             }
 
             "setScaleTextSize" -> {
-                videoPlayer.setScaleTextSize(call, result)
+                videoPlayer.getCurrentPlayer()!!.setScaleTextSize(call, result)
             }
 
             "setMaximumVisibleSizeInScreen" -> {
-                videoPlayer.setMaximumVisibleSizeInScreen(call, result)
+                videoPlayer.getCurrentPlayer()!!.setMaximumVisibleSizeInScreen(call, result)
             }
 
             "addDanmaku" -> {
-                videoPlayer.addDanmaku(call, result)
+                videoPlayer.getCurrentPlayer()!!.addDanmaku(call, result)
             }
             "startDanmaku" -> {
-                videoPlayer.startDanmaku(call, result)
+                videoPlayer.getCurrentPlayer()!!.startDanmaku(call, result)
             }
 
             "getDannakuStatus" -> {
-                videoPlayer.getDannakuStatus(call, result)
+                videoPlayer.getCurrentPlayer()!!.getDannakuStatus(call, result)
             }
 
             "resumeDanmaku" -> {
-                videoPlayer.resumeDanmaku(call, result)
+                videoPlayer.getCurrentPlayer()!!.resumeDanmaku(call, result)
             }
 
             "pauseDanmaku" -> {
-                videoPlayer.pauseDanmaku(call, result)
+                videoPlayer.getCurrentPlayer()!!.pauseDanmaku(call, result)
             }
 
             "stopDanmaku" -> {
-                videoPlayer.stopDanmaku(call, result)
+                videoPlayer.getCurrentPlayer()!!.stopDanmaku(call, result)
             }
 
             "seekToDanmaku" -> {
-                videoPlayer.seekToDanmaku(call, result)
+                videoPlayer.getCurrentPlayer()!!.seekToDanmaku(call, result)
             }
             "resolveByClick" ->{
-                customOrientationUtils.resolveByClick()
+                customOrientationUtilsApi.resolveByClick()
             }
             "backToProtVideo" ->{
-                customOrientationUtils.backToProtVideo()
+                customOrientationUtilsApi.backToProtVideo()
             }
             "isOrientationRotateEnable" ->{
-                customOrientationUtils.isEnable(call, result)
+                customOrientationUtilsApi.isEnable(call, result)
             }
             "setOrientationRotateEnable" ->{
-                customOrientationUtils.setEnable(call, result)
+                customOrientationUtilsApi.setEnable(call, result)
             }
             "getOrientationRotateIsLand" ->{
-                customOrientationUtils.getIsLand(call, result)
+                customOrientationUtilsApi.getIsLand(call, result)
             }
             "setOrientationRotateLand" ->{
-                customOrientationUtils.setLand(call, result)
+                customOrientationUtilsApi.setLand(call, result)
             }
             "getOrientationRotateScreenType" ->{
-                customOrientationUtils.getScreenType(call, result)
+                customOrientationUtilsApi.getScreenType(call, result)
             }
             "setOrientationRotateScreenType" ->{
-                customOrientationUtils.setScreenType(call, result)
+                customOrientationUtilsApi.setScreenType(call, result)
             }
             "isOrientationRotateClick" ->{
-                customOrientationUtils.isClick(call, result)
+                customOrientationUtilsApi.isClick(call, result)
             }
             "setOrientationRotateIsClick" ->{
-                customOrientationUtils.setIsClick(call, result)
+                customOrientationUtilsApi.setIsClick(call, result)
             }
             "isOrientationRotateClickLand" ->{
-                customOrientationUtils.isClickLand(call, result)
+                customOrientationUtilsApi.isClickLand(call, result)
             }
             "setOrientationRotateIsClickLand" ->{
-                customOrientationUtils.setIsClickLand(call, result)
+                customOrientationUtilsApi.setIsClickLand(call, result)
             }
             "isOrientationRotateClickPort" ->{
-                customOrientationUtils.isClickPort(call, result)
+                customOrientationUtilsApi.isClickPort(call, result)
             }
             "setOrientationRotateIslickPort" ->{
-                customOrientationUtils.setIslickPort(call, result)
+                customOrientationUtilsApi.setIslickPort(call, result)
             }
             "isOrientationRotatePause" ->{
-                customOrientationUtils.isPause(call, result)
+                customOrientationUtilsApi.isPause(call, result)
             }
             "setOrientationRotateIsPause" ->{
-                customOrientationUtils.setIsPause(call, result)
+                customOrientationUtilsApi.setIsPause(call, result)
             }
             "isOrientationRotateOnlyRotateLand" ->{
-                customOrientationUtils.isOnlyRotateLand(call, result)
+                customOrientationUtilsApi.isOnlyRotateLand(call, result)
             }
             "setOrientationRotateIsOnlyRotateLand" ->{
-                customOrientationUtils.setIsOnlyRotateLand(call, result)
+                customOrientationUtilsApi.setIsOnlyRotateLand(call, result)
             }
             "isOrientationRotateWithSystem" ->{
-                customOrientationUtils.isRotateWithSystem(call, result)
+                customOrientationUtilsApi.isRotateWithSystem(call, result)
             }
             "setOrientationRotateWithSystem" ->{
-                customOrientationUtils.setRotateWithSystem(call, result)
+                customOrientationUtilsApi.setRotateWithSystem(call, result)
             }
             "releaseOrientationListener" ->{
-                customOrientationUtils.releaseListener()
+                customOrientationUtilsApi.releaseListener()
             }
         }
     }

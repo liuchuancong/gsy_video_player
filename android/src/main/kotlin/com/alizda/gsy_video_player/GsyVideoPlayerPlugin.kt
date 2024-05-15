@@ -93,7 +93,7 @@ class GsyVideoPlayerPlugin: FlutterPlugin, ActivityAware, MethodChannel.MethodCa
           flutterState?.binaryMessenger, EVENTS_CHANNEL + textureEntry.id()
         )
         val player = GsyVideoPlayer(
-          flutterState?.applicationContext!!, eventChannel, textureEntry,result
+          flutterState?.applicationContext!!, eventChannel, textureEntry,call,result
         )
         videoPlayers.put(textureEntry.id(), player)
       }
@@ -108,6 +108,7 @@ class GsyVideoPlayerPlugin: FlutterPlugin, ActivityAware, MethodChannel.MethodCa
           )
           return
         }
+        player.onMethodCall(call, result, textureId)
       }
     }
   }

@@ -1,11 +1,11 @@
 package com.alizda.gsy_video_player
 
-import com.alizda.gsy_video_player.CustomVideoAllCallBack.Companion.videoDuration
-import com.alizda.gsy_video_player.CustomVideoAllCallBack.Companion.videoPosition
+import com.alizda.gsy_video_player.CustomVideoAllCallBackApi.Companion.videoDuration
+import com.alizda.gsy_video_player.CustomVideoAllCallBackApi.Companion.videoPosition
 import com.shuyu.gsyvideoplayer.GSYVideoManager
 
 
-class CustomGSYMediaPlayerListener(private var videoPlayer: CustomVideoPlayer) {
+class CustomGSYMediaPlayerListenerApi(private var videoPlayer: CustomVideoPlayer) {
     private var lastSendBufferedPosition: Int = 0
     private fun isPlaying(): Boolean = GSYVideoManager.instance().isPlaying
     private fun getCurrentState(): Int = videoPlayer.currentState

@@ -5,7 +5,7 @@ import com.shuyu.gsyvideoplayer.utils.GSYVideoType
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 
-class CustomGSYVideoType() {
+class CustomGSYVideoTypeApi {
 
     fun isMediaCodec(call: MethodCall, result: MethodChannel.Result) {
         val reply: MutableMap<String, Any> = HashMap()

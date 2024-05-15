@@ -11,6 +11,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import com.alizda.gsy_video_player.GsyVideoPlayerView.Companion.eventSink
+import com.shuyu.gsyvideoplayer.listener.GSYVideoProgressListener
+import com.shuyu.gsyvideoplayer.listener.VideoAllCallBack
 import com.shuyu.gsyvideoplayer.utils.OrientationUtils
 import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer
 import com.shuyu.gsyvideoplayer.video.base.GSYBaseVideoPlayer
@@ -35,34 +37,20 @@ import master.flame.danmaku.danmaku.parser.BaseDanmakuParser
 import master.flame.danmaku.ui.widget.DanmakuView
 
 
-class CustomVideoPlayer : StandardGSYVideoPlayer {
-    private var customGSYMediaPlayerListener: CustomGSYMediaPlayerListener = CustomGSYMediaPlayerListener(this)
+class CustomVideoPlayer : StandardGSYVideoPlayer, GSYVideoProgressListener, VideoAllCallBack {
+    private var customGSYMediaPlayerListenerApi: CustomGSYMediaPlayerListenerApi = CustomGSYMediaPlayerListenerApi(this)
+    private var customVideoAllCallBackApi: CustomVideoAllCallBackApi = CustomVideoAllCallBackApi(this)
     private var mParser: BaseDanmakuParser? = null //解析器对象
     private var danmakuView: IDanmakuView? = null //弹幕view
     private var danmakuContext: DanmakuContext? = null
     private var danmakuStartSeekPosition: Long = -1
     private var isLinkScroll = false
-    private var orientationUtils: CustomOrientationUtils = CustomOrientationUtils(this, context)
+    private var orientationUtils: CustomOrientationUtilsApi = CustomOrientationUtilsApi(this, context)
+    private var videoIsInitialized: Boolean = false
 
-    private var videoIsInitialized:Boolean = false
     constructor(context: Context?, fullFlag: Boolean?) : super(context, fullFlag)
     constructor(context: Context?) : super(context)
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
-
-    override fun addTextureView() {
-        mTextureView = CustomRenderView()
-        mTextureView.addView(
-            context,
-            mTextureViewContainer,
-            mRotate,
-            this,
-            this,
-            mEffectFilter,
-            mMatrixGL,
-            mRenderer,
-            mMode
-        )
-    }
 
     override fun getLayoutId(): Int {
         if (mIfCurrentIsFullscreen) {
@@ -75,10 +63,11 @@ class CustomVideoPlayer : StandardGSYVideoPlayer {
         super.init(context)
         initDanmaView()
     }
-    private fun  addFullScreenListen(){
-        if(fullscreenButton.isShown){
+
+    private fun addFullScreenListen() {
+        if (fullscreenButton.isShown) {
             fullscreenButton.setOnClickListener {
-                customGSYMediaPlayerListener.onFullButtonClick(eventSink)
+                customGSYMediaPlayerListenerApi.onFullButtonClick(eventSink)
             };
         }
     }
@@ -91,9 +80,11 @@ class CustomVideoPlayer : StandardGSYVideoPlayer {
                     CURRENT_STATE_PLAYING -> {
                         imageView.setImageResource(com.shuyu.gsyvideoplayer.R.drawable.video_click_pause_selector)
                     }
+
                     CURRENT_STATE_ERROR -> {
                         imageView.setImageResource(com.shuyu.gsyvideoplayer.R.drawable.video_click_play_selector)
                     }
+
                     else -> {
                         imageView.setImageResource(com.shuyu.gsyvideoplayer.R.drawable.video_click_play_selector)
                     }
@@ -103,6 +94,7 @@ class CustomVideoPlayer : StandardGSYVideoPlayer {
             super.updateStartImage()
         }
     }
+
     override fun clickStartIcon() {
         super.clickStartIcon()
     }
@@ -126,10 +118,11 @@ class CustomVideoPlayer : StandardGSYVideoPlayer {
                 }
             }
             orientationUtils.resolveByClick()
-        }else{
+        } else {
             orientationUtils.backToProtVideo()
         }
     }
+
     override fun getEnlargeImageRes(): Int {
         return R.drawable.custom_enlarge
     }
@@ -208,6 +201,7 @@ class CustomVideoPlayer : StandardGSYVideoPlayer {
         setTextAndProgress(0, true)
         //changeUiToNormal();
     }
+
     protected fun danmakuOnPause() {
         if (danmakuView != null && danmakuView!!.isPrepared && DanmukuSettings.pauseWhenVideoPaused) {
             danmakuView!!.pause()
@@ -479,7 +473,7 @@ class CustomVideoPlayer : StandardGSYVideoPlayer {
     }
 
     private fun transferColor(transColor: String): Int {
-        return  Color.parseColor(transColor)
+        return Color.parseColor(transColor)
     }
 
     private fun isBoolean(boo: Boolean): Int {
@@ -499,39 +493,39 @@ class CustomVideoPlayer : StandardGSYVideoPlayer {
      */
     override fun onConfigurationChanged(activity: Activity?, newConfig: Configuration?, orientationUtils: OrientationUtils?) {
         super.onConfigurationChanged(activity, newConfig, orientationUtils)
-        customGSYMediaPlayerListener.onConfigurationChanged(eventSink)
+        customGSYMediaPlayerListenerApi.onConfigurationChanged(eventSink)
     }
 
 
     override fun onPrepared() {
         if (!videoIsInitialized) {
             videoIsInitialized = true
-            customGSYMediaPlayerListener.sendVideoPlayerInitialized(eventSink)
+            customGSYMediaPlayerListenerApi.sendVideoPlayerInitialized(eventSink)
         }
         super.onPrepared()
-        customGSYMediaPlayerListener.onPrepared(eventSink)
+        customGSYMediaPlayerListenerApi.onPrepared(eventSink)
         addFullScreenListen()
     }
 
 
     override fun onAutoCompletion() {
         super.onAutoCompletion()
-        customGSYMediaPlayerListener.onAutoCompletion(eventSink)
+        customGSYMediaPlayerListenerApi.onAutoCompletion(eventSink)
     }
 
     override fun onCompletion() {
         super.onCompletion()
-        customGSYMediaPlayerListener.onCompletion(eventSink)
+        customGSYMediaPlayerListenerApi.onCompletion(eventSink)
     }
 
     override fun onBufferingUpdate(percent: Int) {
         super.onBufferingUpdate(percent)
-        customGSYMediaPlayerListener.onBufferingUpdate(eventSink, percent)
+        customGSYMediaPlayerListenerApi.onBufferingUpdate(eventSink, percent)
     }
 
     override fun onSeekComplete() {
         super.onSeekComplete()
-        customGSYMediaPlayerListener.onSeekComplete(eventSink)
+        customGSYMediaPlayerListenerApi.onSeekComplete(eventSink)
         val time = mProgressBar.progress * duration / 100
         //如果已经初始化过的，直接seek到对于位置
         if (mHadPlay && danmakuView != null && danmakuView!!.isPrepared && DanmukuSettings.pauseWhenVideoPaused) {
@@ -544,38 +538,38 @@ class CustomVideoPlayer : StandardGSYVideoPlayer {
 
     override fun onError(what: Int, extra: Int) {
         super.onError(what, extra)
-        customGSYMediaPlayerListener.onError(eventSink, what, extra)
+        customGSYMediaPlayerListenerApi.onError(eventSink, what, extra)
     }
 
     override fun onInfo(what: Int, extra: Int) {
         super.onInfo(what, extra)
-        customGSYMediaPlayerListener.onInfo(eventSink, what, extra)
+        customGSYMediaPlayerListenerApi.onInfo(eventSink, what, extra)
     }
 
     override fun onVideoSizeChanged() {
         super.onVideoSizeChanged()
-        customGSYMediaPlayerListener.onVideoSizeChanged(eventSink)
+        customGSYMediaPlayerListenerApi.onVideoSizeChanged(eventSink)
     }
 
     override fun onBackFullscreen() {
         super.onBackFullscreen()
-        customGSYMediaPlayerListener.onBackFullscreen(eventSink)
+        customGSYMediaPlayerListenerApi.onBackFullscreen(eventSink)
     }
 
     override fun onVideoPause() {
         super.onVideoPause()
-        customGSYMediaPlayerListener.onVideoPause(eventSink)
+        customGSYMediaPlayerListenerApi.onVideoPause(eventSink)
     }
 
     override fun onVideoResume() {
         super.onVideoResume()
-        customGSYMediaPlayerListener.onVideoResume(eventSink)
+        customGSYMediaPlayerListenerApi.onVideoResume(eventSink)
         danmakuOnResume()
     }
 
     override fun onVideoResume(seek: Boolean) {
         super.onVideoResume(seek)
-        customGSYMediaPlayerListener.onVideoResume(eventSink, seek)
+        customGSYMediaPlayerListenerApi.onVideoResume(eventSink, seek)
         danmakuOnPause()
     }
 
@@ -609,12 +603,14 @@ class CustomVideoPlayer : StandardGSYVideoPlayer {
             danmakuView!!.resume()
         }
     }
+
     fun pauseDanmaku(call: MethodCall, result: MethodChannel.Result) {
         initDanmaView()
         if (!danmakuView!!.isPaused) {
             danmakuView!!.pause()
         }
     }
+
     fun stopDanmaku(call: MethodCall, result: MethodChannel.Result) {
         initDanmaView()
         if (danmakuView!!.isShown) {
@@ -742,7 +738,111 @@ class CustomVideoPlayer : StandardGSYVideoPlayer {
     }
 
 
-    companion object{
+    companion object {
         var autoPlay: Boolean = false
+    }
+
+    override fun onStartPrepared(url: String, vararg objects: Any) {
+        customVideoAllCallBackApi.onStartPrepared(eventSink, url, objects)
+    }
+
+    //加载成功，objects[0]是title，object[1]是当前所处播放器（全屏或非全屏）
+    override fun onPrepared(url: String, vararg objects: Any) {
+        customVideoAllCallBackApi.onPrepared(eventSink, url, objects)
+    }
+
+    //点击了开始按键播放，objects[0]是title，object[1]是当前所处播放器（全屏或非全屏）
+    override fun onClickStartIcon(url: String, vararg objects: Any) {
+        customVideoAllCallBackApi.onClickStartIcon(eventSink, url, objects)
+    }
+
+    //点击了错误状态下的开始按键，objects[0]是title，object[1]是当前所处播放器（全屏或非全屏）
+    override fun onClickStartError(url: String, vararg objects: Any) {
+        customVideoAllCallBackApi.onClickStartError(eventSink, url, objects)
+    }
+
+    //点击了播放状态下的开始按键--->停止，objects[0]是title，object[1]是当前所处播放器（全屏或非全屏）
+    override fun onClickStop(url: String, vararg objects: Any) {
+        customVideoAllCallBackApi.onClickStop(eventSink, url, objects)
+    }
+
+    override fun onClickStopFullscreen(url: String, vararg objects: Any) {
+        customVideoAllCallBackApi.onClickStopFullscreen(eventSink, url, objects)
+    }
+    //点击了暂停状态下的开始按键--->播放，objects[0]是title，object[1]是当前所处播放器（全屏或非全屏）
+    override fun onClickResume(url: String, vararg objects: Any) {
+        customVideoAllCallBackApi.onClickResume(eventSink, url, objects)
+    }
+
+    //点击了全屏暂停状态下的开始按键--->播放，objects[0]是title，object[1]是当前所处播放器（全屏或非全屏）
+    override fun onClickResumeFullscreen(url: String, vararg objects: Any) {
+        customVideoAllCallBackApi.onClickResumeFullscreen(eventSink, url, objects)
+    }
+
+    //点击了空白弹出seekbar，objects[0]是title，object[1]是当前所处播放器（全屏或非全屏）
+    override fun onClickSeekbar(url: String, vararg objects: Any) {
+        customVideoAllCallBackApi.onClickSeekbar(eventSink, url, objects)
+    }
+
+    //点击了全屏的seekbar，objects[0]是title，object[1]是当前所处播放器（全屏或非全屏）
+    override fun onClickSeekbarFullscreen(url: String, vararg objects: Any) {
+        customVideoAllCallBackApi.onClickSeekbarFullscreen(eventSink, url, objects)
+    }
+
+    //播放完了，objects[0]是title，object[1]是当前所处播放器（全屏或非全屏）
+    override fun onAutoComplete(url: String, vararg objects: Any) {
+        customVideoAllCallBackApi.onAutoComplete(eventSink, url, objects)
+    }
+
+    override fun onEnterFullscreen(url: String, vararg objects: Any) {
+        customVideoAllCallBackApi.onEnterFullscreen(eventSink, url, objects)
+    }
+
+    override fun onQuitFullscreen(url: String, vararg objects: Any) {
+        customVideoAllCallBackApi.onQuitFullscreen(eventSink, url, objects)
+    }
+
+    override fun onQuitSmallWidget(url: String, vararg objects: Any) {
+        customVideoAllCallBackApi.onQuitSmallWidget(eventSink, url, objects)
+    }
+
+    override fun onEnterSmallWidget(url: String, vararg objects: Any) {
+        customVideoAllCallBackApi.onEnterSmallWidget(eventSink, url, objects)
+    }
+
+    override fun onTouchScreenSeekVolume(url: String, vararg objects: Any) {
+        customVideoAllCallBackApi.onTouchScreenSeekVolume(eventSink, url, objects)
+    }
+
+    override fun onTouchScreenSeekPosition(url: String, vararg objects: Any) {
+        customVideoAllCallBackApi.onTouchScreenSeekPosition(eventSink, url, objects)
+    }
+
+    override fun onTouchScreenSeekLight(url: String, vararg objects: Any) {
+        customVideoAllCallBackApi.onTouchScreenSeekLight(eventSink, url, objects)
+    }
+
+    override fun onPlayError(url: String, vararg objects: Any) {
+        customVideoAllCallBackApi.onPlayError(eventSink, url, objects)
+    }
+
+    override fun onClickStartThumb(url: String, vararg objects: Any) {
+        customVideoAllCallBackApi.onClickStartThumb(eventSink, url, objects)
+    }
+
+    override fun onClickBlank(url: String, vararg objects: Any) {
+        customVideoAllCallBackApi.onClickBlank(eventSink, url, objects)
+    }
+
+    override fun onClickBlankFullscreen(url: String, vararg objects: Any) {
+        customVideoAllCallBackApi.onClickBlankFullscreen(eventSink, url, objects)
+    }
+
+    override fun onComplete(url: String, vararg objects: Any) {
+        customVideoAllCallBackApi.onComplete(eventSink, url, objects)
+    }
+
+    override fun onProgress(progress: Long, secProgress: Long, currentPosition: Long, duration: Long) {
+        customVideoAllCallBackApi.onProgress(eventSink, progress, secProgress, currentPosition, duration)
     }
 }

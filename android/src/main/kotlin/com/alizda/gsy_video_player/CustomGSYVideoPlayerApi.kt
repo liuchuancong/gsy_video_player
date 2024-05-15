@@ -6,7 +6,7 @@ import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import java.io.File
 
-class GSYVideoPlayer(private var videoPlayer: CustomVideoPlayer, private val context: Context, private val id: Int) {
+class CustomGSYVideoPlayerApi(private var videoPlayer: GsyVideoPlayer, private val context: Context, private val id: Long) {
     //当前UI
     fun create(call: MethodCall, result: MethodChannel.Result) {
         val reply: MutableMap<String, Any> = HashMap()
@@ -23,13 +23,13 @@ class GSYVideoPlayer(private var videoPlayer: CustomVideoPlayer, private val con
 
     fun getLayoutId(call: MethodCall, result: MethodChannel.Result) {
         val reply: MutableMap<String, Any> = HashMap()
-        reply["layoutId"] = videoPlayer.layoutId
+        reply["layoutId"] =videoPlayer.getCurrentPlayer()!!.layoutId
         result.success(reply)
     }
 
     //开始播放
     fun startPlayLogic(call: MethodCall, result: MethodChannel.Result) {
-        videoPlayer.startPlayLogic()
+       videoPlayer.getCurrentPlayer()!!.startPlayLogic()
     }
 
     fun setUp(call: MethodCall, result: MethodChannel.Result) {
@@ -40,30 +40,30 @@ class GSYVideoPlayer(private var videoPlayer: CustomVideoPlayer, private val con
 
         val title = GsyVideoPlayerView.getParameter(setUpOptions, "title", "")
         if (cachePath.isNotEmpty()) {
-            videoPlayer.setUp(url, cacheWithPlay, File(cachePath), title)
+           videoPlayer.getCurrentPlayer()!!.setUp(url, cacheWithPlay, File(cachePath), title)
         } else {
-            videoPlayer.setUp(url, cacheWithPlay, title)
+           videoPlayer.getCurrentPlayer()!!.setUp(url, cacheWithPlay, title)
         }
     }
 
     //暂停
 
     fun onVideoPause() {
-        videoPlayer.onVideoPause()
+       videoPlayer.getCurrentPlayer()!!.onVideoPause()
     }
 
     //继续播放
     fun onVideoResume() {
-        videoPlayer.onVideoResume()
+       videoPlayer.getCurrentPlayer()!!.onVideoResume()
     }
 
     fun clearCurrentCache() {
-        videoPlayer.clearCurrentCache()
+       videoPlayer.getCurrentPlayer()!!.clearCurrentCache()
     }
 
     fun getCurrentPositionWhenPlaying(call: MethodCall, result: MethodChannel.Result) {
         val reply: MutableMap<String, Any> = HashMap()
-        reply["currentPosition"] = videoPlayer.currentPositionWhenPlaying
+        reply["currentPosition"] =videoPlayer.getCurrentPlayer()!!.currentPositionWhenPlaying
         result.success(reply)
     }
 
@@ -73,18 +73,18 @@ class GSYVideoPlayer(private var videoPlayer: CustomVideoPlayer, private val con
 
     fun getCurrentState(call: MethodCall, result: MethodChannel.Result) {
         val reply: MutableMap<String, Any> = HashMap()
-        reply["currentState"] = videoPlayer.currentState
+        reply["currentState"] =videoPlayer.getCurrentPlayer()!!.currentState
         result.success(reply)
     }
 
     fun setPlayTag(call: MethodCall, result: MethodChannel.Result) {
         val playTag = call.argument<String>("playTag")!!
-        videoPlayer.playTag = playTag
+       videoPlayer.getCurrentPlayer()!!.playTag = playTag
     }
 
     fun setPlayPosition(call: MethodCall, result: MethodChannel.Result) {
         val playPosition = (call.argument<Any>("playPosition") as Number?)!!.toInt()
-        videoPlayer.playPosition = playPosition
+       videoPlayer.getCurrentPlayer()!!.playPosition = playPosition
     }
 
     fun backFromWindowFull(call: MethodCall, result: MethodChannel.Result) {
@@ -95,24 +95,24 @@ class GSYVideoPlayer(private var videoPlayer: CustomVideoPlayer, private val con
 
     fun getNetSpeed(call: MethodCall, result: MethodChannel.Result) {
         val reply: MutableMap<String, Any> = HashMap()
-        reply["netSpeed"] = videoPlayer.netSpeed
+        reply["netSpeed"] =videoPlayer.getCurrentPlayer()!!.netSpeed
         result.success(reply)
     }
 
     fun getNetSpeedText(call: MethodCall, result: MethodChannel.Result) {
         val reply: MutableMap<String, Any> = HashMap()
-        reply["netSpeedText"] = videoPlayer.netSpeedText
+        reply["netSpeedText"] =videoPlayer.getCurrentPlayer()!!.netSpeedText
         result.success(reply)
     }
 
     fun setSeekOnStart(call: MethodCall, result: MethodChannel.Result) {
         val location = (call.argument<Any>("location") as Number?)!!.toInt()
-        videoPlayer.seekOnStart = location.toLong()
+       videoPlayer.getCurrentPlayer()!!.seekOnStart = location.toLong()
     }
 
     fun getBuffterPoint(call: MethodCall, result: MethodChannel.Result) {
         val reply: MutableMap<String, Any> = HashMap()
-        reply["buffterPoint"] = videoPlayer.buffterPoint
+        reply["buffterPoint"] =videoPlayer.getCurrentPlayer()!!.buffterPoint
         result.success(reply)
     }
 }

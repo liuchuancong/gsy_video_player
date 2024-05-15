@@ -2,7 +2,7 @@ package com.alizda.gsy_video_player
 
 import com.shuyu.gsyvideoplayer.GSYVideoManager
 
-class CustomVideoAllCallBack(private var videoPlayer: CustomVideoPlayer) {
+class CustomVideoAllCallBackApi(private var videoPlayer: CustomVideoPlayer) {
     private fun isPlaying(): Boolean = GSYVideoManager.instance().isPlaying
     private fun getCurrentState(): Int = videoPlayer.currentState
     fun onStartPrepared(sink: QueuingEventSink, url: String, vararg objects: Any) {

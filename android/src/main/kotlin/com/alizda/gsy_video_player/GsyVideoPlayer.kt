@@ -2,29 +2,42 @@ package com.alizda.gsy_video_player
 
 import android.content.Context
 import android.view.Surface
-import androidx.media3.exoplayer.ExoPlayer
+import com.shuyu.gsyvideoplayer.GSYVideoManager
+import com.shuyu.gsyvideoplayer.builder.GSYVideoOptionBuilder
 import io.flutter.plugin.common.EventChannel
+import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.view.TextureRegistry
 
-internal class GsyVideoPlayer(
-    context: Context,
-    private val eventChannel: EventChannel,
-    private val textureEntry: TextureRegistry.SurfaceTextureEntry,
-    result: MethodChannel.Result
+class GsyVideoPlayer(
+        private val context: Context,
+        private val eventChannel: EventChannel,
+        private val textureEntry: TextureRegistry.SurfaceTextureEntry,
+        private val call: MethodCall,
+        private val result: MethodChannel.Result
 ) {
     private var player: CustomVideoPlayer? = null
     private val eventSink = QueuingEventSink()
     private var isInitialized = false
     private var surface: Surface? = null
-
+    var gsyVideoOptionBuilder: GSYVideoOptionBuilder? = null
+    private var customVideoAllCallBackApi: CustomVideoAllCallBackApi? = null
+    private var customBasicApi: CustomBasicApi ? = null
+    private var customGSYVideoManagerApi :CustomGSYVideoManagerApi ? = null
+    private var customGSYVideoTypeApi: CustomGSYVideoTypeApi = CustomGSYVideoTypeApi()
+    private var customOrientationUtilsApi: CustomOrientationUtilsApi ? = null
+    private var customGSYMediaPlayerListenerApi: CustomGSYMediaPlayerListenerApi ? = null
+    private var customGSYVideoPlayerApi: CustomGSYVideoPlayerApi ? = null
+    private var  customMethodCallApi:CustomMethodCallApi ? = null
     init {
         surface = Surface(textureEntry.surfaceTexture())
-        player = CustomVideoPlayer(context,surface)
-        setupVideoPlayer(eventChannel, textureEntry, result)
+        player = CustomVideoPlayer(context)
+        setupVideoPlayer(eventChannel, result)
     }
+
+    fun getCurrentPlayer() = player
     private fun setupVideoPlayer(
-        eventChannel: EventChannel, textureEntry: TextureRegistry.SurfaceTextureEntry, result: MethodChannel.Result
+        eventChannel: EventChannel, result: MethodChannel.Result
     ) {
         eventChannel.setStreamHandler(
             object : EventChannel.StreamHandler {
@@ -36,12 +49,21 @@ internal class GsyVideoPlayer(
                     eventSink.setDelegate(null)
                 }
             })
-
-//        player
+        GSYVideoManager.instance().setDisplay(surface);
+        player?.let {
+            customBasicApi = CustomBasicApi(it,context)
+            customGSYVideoManagerApi = CustomGSYVideoManagerApi(context)
+            customOrientationUtilsApi = CustomOrientationUtilsApi(it,context)
+            customGSYMediaPlayerListenerApi = CustomGSYMediaPlayerListenerApi(it)
+            customGSYVideoPlayerApi = CustomGSYVideoPlayerApi(this,context,textureEntry.id())
+            customMethodCallApi = CustomMethodCallApi(this,context, customGSYVideoManagerApi!!, customBasicApi!!,customGSYVideoPlayerApi!!,customGSYVideoTypeApi,customOrientationUtilsApi!!)
+        }
     }
 
     fun dispose() {
         TODO("Not yet implemented")
     }
+    fun onMethodCall(call: MethodCall, result: MethodChannel.Result, textureId: Long){
 
+    }
 }
