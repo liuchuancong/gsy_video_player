@@ -1,6 +1,8 @@
 package com.alizda.gsy_video_player
 
 import android.content.Context
+import android.os.Build
+import androidx.annotation.RequiresApi
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 
@@ -14,15 +16,9 @@ class CustomMethodCallApi(
         private var customOrientationUtilsApi: CustomOrientationUtilsApi
 ) {
 
-    fun handleMethod(call: MethodCall, result: MethodChannel.Result,view: GsyVideoPlayerView) {
+    @RequiresApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+    fun handleMethod(call: MethodCall, result: MethodChannel.Result) {
         when (call.method) {
-            // --------------------- Global  start ----------------------------
-            "create" -> {
-                gSYVideoPlayer.create(call, result)
-            }
-            "dispose"->{
-                gSYVideoPlayer.dispose()
-            }
             // --------------------- CustomGSYVideoOptionBuilder  start ----------------------------
             "setVideoOptionBuilder" -> {
                 videoPlayer.gsyVideoOptionBuilder =  CustomGSYVideoOptionBuilderApi().setVideoConfig(videoPlayer,call, result)

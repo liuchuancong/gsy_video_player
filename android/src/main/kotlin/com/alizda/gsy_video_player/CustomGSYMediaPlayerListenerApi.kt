@@ -28,7 +28,7 @@ class CustomGSYMediaPlayerListenerApi(private var videoPlayer: CustomVideoPlayer
     }
 
     fun sendInitialized(sink: QueuingEventSink) {
-        if (GsyVideoPlayerView.isInitialized) {
+        if (GsyVideoPlayerPlugin.isInitialized) {
             val event: MutableMap<String, Any?> = HashMap()
             event["event"] = "initialized"
             sink.success(event)
@@ -36,7 +36,7 @@ class CustomGSYMediaPlayerListenerApi(private var videoPlayer: CustomVideoPlayer
     }
 
     fun sendVideoPlayerInitialized(sink: QueuingEventSink) {
-        if (GsyVideoPlayerView.isInitialized) {
+        if (GsyVideoPlayerPlugin.isInitialized) {
             val event: MutableMap<String, Any?> = HashMap()
             val reply: MutableMap<String, Any> = HashMap()
             event["event"] = "videoPlayerInitialized"

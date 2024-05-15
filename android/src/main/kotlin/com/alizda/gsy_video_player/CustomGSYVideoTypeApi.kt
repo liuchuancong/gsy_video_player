@@ -1,6 +1,6 @@
 package com.alizda.gsy_video_player
 
-import com.alizda.gsy_video_player.GsyVideoPlayerView.Companion.getParameter
+import com.alizda.gsy_video_player.GsyVideoPlayerPlugin.Companion.getParameter
 import com.shuyu.gsyvideoplayer.utils.GSYVideoType
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel

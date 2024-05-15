@@ -57,7 +57,7 @@ class _MyAppState extends State<MyApp> {
         appBar: AppBar(
           title: const Text('Plugin example app'),
         ),
-        body: ListView(
+        body: Column(
           children: [
             Container(
               color: Colors.black,

@@ -9,19 +9,19 @@ class CustomBasicApi(private var videoPlayer: CustomVideoPlayer, private val con
 
     fun startWindowFullscreen(call: MethodCall, result: MethodChannel.Result) {
         val startWindowFullscreenOptions = call.argument<Map<String, Any?>>("startWindowFullscreenOptions")!!
-        val actionBar = GsyVideoPlayerView.getParameter(startWindowFullscreenOptions, "actionBar", true);
-        val statusBar = GsyVideoPlayerView.getParameter(startWindowFullscreenOptions, "statusBar", true);
+        val actionBar = GsyVideoPlayerPlugin.getParameter(startWindowFullscreenOptions, "actionBar", true);
+        val statusBar = GsyVideoPlayerPlugin.getParameter(startWindowFullscreenOptions, "statusBar", true);
         videoPlayer.startWindowFullscreen(context, actionBar, statusBar)
     }
 
     fun showSmallVideo(call: MethodCall, result: MethodChannel.Result) {
         val showSmallVideoOptions = call.argument<Map<String, Any?>>("showSmallVideoOptions")!!
         val sizeObjects: MutableMap<String, Any> = HashMap()
-        val size = GsyVideoPlayerView.getParameter(showSmallVideoOptions, "size", sizeObjects);
+        val size = GsyVideoPlayerPlugin.getParameter(showSmallVideoOptions, "size", sizeObjects);
         val width = (size["width"] as Number).toInt();
         val height = (size["height"] as Number).toInt();
-        val actionBar = GsyVideoPlayerView.getParameter(showSmallVideoOptions, "actionBar", true);
-        val statusBar = GsyVideoPlayerView.getParameter(showSmallVideoOptions, "statusBar", true);
+        val actionBar = GsyVideoPlayerPlugin.getParameter(showSmallVideoOptions, "actionBar", true);
+        val statusBar = GsyVideoPlayerPlugin.getParameter(showSmallVideoOptions, "statusBar", true);
         videoPlayer.showSmallVideo(Point(width, height), actionBar, statusBar)
     }
 
@@ -296,15 +296,15 @@ class CustomBasicApi(private var videoPlayer: CustomVideoPlayer, private val con
 
     fun setSpeed(call: MethodCall, result: MethodChannel.Result) {
         val speedOptions = call.argument<Map<String, Any?>>("speedOptions")!!
-        val speed = GsyVideoPlayerView.getParameter(speedOptions, "speed", 1.0F);
-        val soundTouch = GsyVideoPlayerView.getParameter(speedOptions, "soundTouch", true);
+        val speed = GsyVideoPlayerPlugin.getParameter(speedOptions, "speed", 1.0F);
+        val soundTouch = GsyVideoPlayerPlugin.getParameter(speedOptions, "soundTouch", true);
         videoPlayer.setSpeed(speed, soundTouch)
     }
 
     fun setSpeedPlaying(call: MethodCall, result: MethodChannel.Result) {
         val speedOptions = call.argument<Map<String, Any?>>("speedPlayingOptions")!!
-        val speed = GsyVideoPlayerView.getParameter(speedOptions, "speed", 1.0F);
-        val soundTouch = GsyVideoPlayerView.getParameter(speedOptions, "soundTouch", true);
+        val speed = GsyVideoPlayerPlugin.getParameter(speedOptions, "speed", 1.0F);
+        val soundTouch = GsyVideoPlayerPlugin.getParameter(speedOptions, "soundTouch", true);
         videoPlayer.setSpeedPlaying(speed, soundTouch)
     }
 

@@ -29,8 +29,9 @@ VideoPlayerPlatform get _videoPlayerPlatform {
 /// After [dispose] all further calls are ignored.
 class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
   /// Constructs a [GsyVideoPlayerController] and creates video controller on platform side.
-  GsyVideoPlayerController({this.danmakuSettings = const DanmakuSettings()})
-      : super(VideoPlayerValue(duration: null)) {}
+  GsyVideoPlayerController({this.danmakuSettings = const DanmakuSettings()}) : super(VideoPlayerValue(duration: null)) {
+    _create();
+  }
 
   static const int kUninitializedTextureId = -1;
   int _textureId = kUninitializedTextureId;
@@ -60,8 +61,6 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
 
   bool get _created => _creatingCompleter.isCompleted;
 
-  final Completer<void> initializingCompleter = Completer<void>();
-
   ///List of event listeners, which listen to events.
   final List<Function(VideoEventType)?> _eventListeners = [];
 
@@ -74,14 +73,16 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     _videoEventStreamSubscription = videoEventStreamController.stream.listen(_handleVideoEvent);
   }
 
-  Future<void> initialize() async {
+  Future<void> _create() async {
     final bool allowBackgroundPlayback = value.allowBackgroundPlayback;
     if (!allowBackgroundPlayback) {
       _lifeCycleObserver = _VideoAppLifeCycleObserver(this);
     }
     _lifeCycleObserver?.initialize();
     _textureId = (await _videoPlayerPlatform.create()) ?? kUninitializedTextureId;
-
+    _creatingCompleter.complete(null);
+    _danmakuController = DanmakuController(this);
+    _danmakuController.initDanmaku();
     setEventListener();
   }
 
@@ -1628,6 +1629,7 @@ class _GsyVideoPlayerState extends State<GsyVideoPlayer> {
   void initState() {
     super.initState();
     _textureId = widget.controller.textureId;
+    widget.onViewReady?.call(_textureId);
     // Need to listen for initialization events since the actual texture ID
     // becomes available after asynchronous initialization finishes.
     widget.controller.addListener(_listener);

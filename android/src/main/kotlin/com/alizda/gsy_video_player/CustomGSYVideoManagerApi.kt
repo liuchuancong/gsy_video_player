@@ -1,7 +1,6 @@
 package com.alizda.gsy_video_player
 
 import android.content.Context
-import android.util.Log
 import androidx.annotation.OptIn
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.datasource.DataSink
@@ -22,7 +21,6 @@ import tv.danmaku.ijk.media.exo2.Exo2PlayerManager
 import tv.danmaku.ijk.media.exo2.ExoMediaSourceInterceptListener
 import tv.danmaku.ijk.media.exo2.ExoPlayerCacheManager
 import tv.danmaku.ijk.media.exo2.ExoSourceManager
-import tv.danmaku.ijk.media.player.IjkMediaPlayer
 import java.io.File
 
 
@@ -31,7 +29,7 @@ class CustomGSYVideoManagerApi(private val context: Context) {
 
     fun setCurrentPlayer(call: MethodCall, result: MethodChannel.Result) {
         val playerOptions = call.argument<Map<String, Any?>>("playerOptions")!!
-        val currentPlayer = GsyVideoPlayerView.getParameter(playerOptions, "currentPlayer", 0);
+        val currentPlayer = GsyVideoPlayerPlugin.getParameter(playerOptions, "currentPlayer", 0)
         when (currentPlayer) {
             0 -> PlayerFactory.setPlayManager(Exo2PlayerManager::class.java)
             1 -> PlayerFactory.setPlayManager(SystemPlayerManager::class.java)
@@ -66,8 +64,8 @@ class CustomGSYVideoManagerApi(private val context: Context) {
 
     fun clearDefaultCache(call: MethodCall, result: MethodChannel.Result) {
         val playOptions = call.argument<Map<String, Any?>>("playOptions")!!
-        val cacheDir = GsyVideoPlayerView.getParameter(playOptions, "cacheDir", "");
-        val url = GsyVideoPlayerView.getParameter(playOptions, "url", "");
+        val cacheDir = GsyVideoPlayerPlugin.getParameter(playOptions, "cacheDir", "")
+        val url = GsyVideoPlayerPlugin.getParameter(playOptions, "url", "")
         GSYVideoManager.instance().clearDefaultCache(context, File(cacheDir), url)
     }
 
@@ -159,8 +157,8 @@ class CustomGSYVideoManagerApi(private val context: Context) {
 
     fun setTimeOut(call: MethodCall, result: MethodChannel.Result) {
         val timeOutOptions = call.argument<Map<String, Any?>>("timeOutOptions")
-        val timeOut = GsyVideoPlayerView.getParameter(timeOutOptions, "timeOut", 8000);
-        val needTimeOutOther = GsyVideoPlayerView.getParameter(timeOutOptions, "needTimeOutOther", false);
+        val timeOut = GsyVideoPlayerPlugin.getParameter(timeOutOptions, "timeOut", 8000)
+        val needTimeOutOther = GsyVideoPlayerPlugin.getParameter(timeOutOptions, "needTimeOutOther", false)
         GSYVideoManager.instance().setTimeOut(timeOut, needTimeOutOther)
     }
 
@@ -173,7 +171,7 @@ class CustomGSYVideoManagerApi(private val context: Context) {
         ExoSourceManager.setExoMediaSourceInterceptListener(object : ExoMediaSourceInterceptListener {
             override fun getMediaSource(dataSource: String, preview: Boolean, cacheEnable: Boolean, isLooping: Boolean, cacheDir: File): MediaSource? {
                 //如果返回 null，就使用默认的
-                return null;
+                return null
             }
 
             @OptIn(UnstableApi::class) override fun getHttpDataSourceFactory(userAgent: String?, listener: TransferListener?, connectTimeoutMillis: Int, readTimeoutMillis: Int, mapHeadData: MutableMap<String, String>?, allowCrossProtocolRedirects: Boolean): DataSource.Factory? {
@@ -188,6 +186,6 @@ class CustomGSYVideoManagerApi(private val context: Context) {
 
     fun  setVolume(call: MethodCall, result: MethodChannel.Result){
         val volume = (call.argument<Any>("volume") as Number).toFloat()
-        GSYVideoManager.instance().player.setVolume(volume,volume);
+        GSYVideoManager.instance().player.setVolume(volume,volume)
     }
 }

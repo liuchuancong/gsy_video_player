@@ -1,7 +1,10 @@
 package com.alizda.gsy_video_player
 
 import android.content.Context
+import android.os.Build
 import android.view.Surface
+import androidx.annotation.RequiresApi
+import com.alizda.gsy_video_player.GsyVideoPlayerPlugin.Companion.lastTextureId
 import com.shuyu.gsyvideoplayer.GSYVideoManager
 import com.shuyu.gsyvideoplayer.builder.GSYVideoOptionBuilder
 import io.flutter.plugin.common.EventChannel
@@ -9,6 +12,7 @@ import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.view.TextureRegistry
 
+@RequiresApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 class GsyVideoPlayer(
         private val context: Context,
         private val eventChannel: EventChannel,
@@ -21,7 +25,6 @@ class GsyVideoPlayer(
     private var isInitialized = false
     private var surface: Surface? = null
     var gsyVideoOptionBuilder: GSYVideoOptionBuilder? = null
-    private var customVideoAllCallBackApi: CustomVideoAllCallBackApi? = null
     private var customBasicApi: CustomBasicApi ? = null
     private var customGSYVideoManagerApi :CustomGSYVideoManagerApi ? = null
     private var customGSYVideoTypeApi: CustomGSYVideoTypeApi = CustomGSYVideoTypeApi()
@@ -57,13 +60,19 @@ class GsyVideoPlayer(
             customGSYMediaPlayerListenerApi = CustomGSYMediaPlayerListenerApi(it)
             customGSYVideoPlayerApi = CustomGSYVideoPlayerApi(this,context,textureEntry.id())
             customMethodCallApi = CustomMethodCallApi(this,context, customGSYVideoManagerApi!!, customBasicApi!!,customGSYVideoPlayerApi!!,customGSYVideoTypeApi,customOrientationUtilsApi!!)
+            it.seteventSink(eventSink)
+            it.setCustomOrientationUtilsApi(customOrientationUtilsApi!!)
         }
+        val reply: MutableMap<String, Any> = HashMap()
+        reply["textureId"] = textureEntry.id()
+        lastTextureId = textureEntry.id()
+        result.success(reply)
     }
 
     fun dispose() {
-        TODO("Not yet implemented")
+        customGSYVideoPlayerApi!!.dispose()
     }
     fun onMethodCall(call: MethodCall, result: MethodChannel.Result, textureId: Long){
-
+        customMethodCallApi!!.handleMethod(call,result)
     }
 }

@@ -1,14 +1,17 @@
 package com.alizda.gsy_video_player
 
 import android.content.res.AssetManager
+import android.os.Build
 import android.view.View
+import androidx.annotation.RequiresApi
 import com.shuyu.gsyvideoplayer.builder.GSYVideoOptionBuilder
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import java.io.File
 
 class CustomGSYVideoOptionBuilderApi {
-    fun setVideoConfig(videoPlayer: GsyVideoPlayer,call: MethodCall, result: MethodChannel.Result): GSYVideoOptionBuilder {
+    @RequiresApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+    fun setVideoConfig(videoPlayer: GsyVideoPlayer, call: MethodCall, result: MethodChannel.Result): GSYVideoOptionBuilder {
         videoPlayer.getCurrentPlayer()!!.release()
         val gsyBuilder = GSYVideoOptionBuilder()
         val videoOptions = call.argument<Map<String, Any?>>("builderParams")!!

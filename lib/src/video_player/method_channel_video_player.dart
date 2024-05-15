@@ -10,7 +10,6 @@ const _channel = MethodChannel('gsy_video_player_channel/platform_view_methods')
 
 /// An implementation of [VideoPlayerPlatform] that uses method channels.
 class MethodChannelVideoPlayer extends VideoPlayerPlatform {
-  String viewType = 'gsy_video_player_channel/platform_view';
   // Pass parameters to the platform side.
   Map<String, dynamic> creationParams = <String, dynamic>{};
 
@@ -18,7 +17,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<int?> create() async {
-    await initialized.future;
     late final Map<String, dynamic>? response;
     response = await _channel.invokeMapMethod<String, dynamic>('create');
     textureId = response?['textureId'];
@@ -32,7 +30,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<void> dispose(int? textureId) async {
-    await initialized.future;
     await _channel.invokeMethod<void>(
       'dispose',
       <String, dynamic>{'textureId': textureId},
@@ -41,7 +38,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<void> setVideoOptionBuilder(VideoOptionBuilder builder) async {
-    await initialized.future;
     Map<String, dynamic>? builderParams = builder.toJson();
     await _channel.invokeMethod<void>(
       'setVideoOptionBuilder',
@@ -53,7 +49,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<int> getLayoutId() async {
-    await initialized.future;
     late final Map<String, dynamic>? response;
     response = await _channel.invokeMethod<Map<String, dynamic>?>('getLayoutId');
     return response!["layoutId"];
@@ -61,13 +56,11 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<void> startPlayLogic() async {
-    await initialized.future;
     await _channel.invokeMethod<void>('startPlayLogic');
   }
 
   @override
   Future<void> setUp(String url, bool cacheWithPlay, String cachePath, String title) async {
-    await initialized.future;
     await _channel.invokeMethod<void>(
       'setUp',
       <String, dynamic>{
@@ -83,25 +76,21 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<void> onVideoPause() async {
-    await initialized.future;
     await _channel.invokeMethod<void>("onVideoPause");
   }
 
   @override
   Future<void> onVideoResume() async {
-    await initialized.future;
     await _channel.invokeMethod<void>("onVideoResume");
   }
 
   @override
   Future<void> clearCurrentCache() async {
-    await initialized.future;
     await _channel.invokeMethod<void>("clearCurrentCache");
   }
 
   @override
   Future<int> getCurrentPositionWhenPlaying() async {
-    await initialized.future;
     late final Map<String, dynamic>? response;
     response = await _channel.invokeMethod<Map<String, dynamic>?>('getCurrentPositionWhenPlaying');
     return response!["currentPosition"];
@@ -109,13 +98,11 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<void> releaseAllVideos() async {
-    await initialized.future;
     await _channel.invokeMethod<void>("releaseAllVideos");
   }
 
   @override
   Future<VideoPlayState> getCurrentState() async {
-    await initialized.future;
     late final Map<String, dynamic>? response;
     response = await _channel.invokeMethod<Map<String, dynamic>?>("getCurrentState");
     return getVideoPlayStateName(response!["currentState"]);
@@ -123,7 +110,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<void> setPlayTag(String tag) async {
-    await initialized.future;
     await _channel.invokeMethod<void>("setPlayTag", <String, dynamic>{
       "playTag": tag,
     });
@@ -131,7 +117,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<void> setPlayPosition(int position) async {
-    await initialized.future;
     await _channel.invokeMethod<void>("setPlayPosition", <String, dynamic>{
       "playPosition": position,
     });
@@ -139,13 +124,11 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<void> backFromWindowFull() async {
-    await initialized.future;
     await _channel.invokeMethod<void>("backFromWindowFull");
   }
 
   @override
   Future<int> getNetSpeed() async {
-    await initialized.future;
     late final Map<String, dynamic>? response;
     response = await _channel.invokeMethod<Map<String, dynamic>?>("getNetSpeed");
     return response!["netSpeed"];
@@ -153,7 +136,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<String> getNetSpeedText() async {
-    await initialized.future;
     late final Map<String, dynamic>? response;
     response = await _channel.invokeMethod<Map<String, dynamic>?>("getNetSpeedText");
     return response!["getNetSpeedText"];
@@ -161,7 +143,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<void> setSeekOnStart(int msec) async {
-    await initialized.future;
     await _channel.invokeMethod<void>("setSeekOnStart", <String, dynamic>{
       "location": msec,
     });
@@ -169,7 +150,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<int> getBuffterPoint() async {
-    await initialized.future;
     late final Map<String, dynamic>? response;
     response = await _channel.invokeMethod<Map<String, dynamic>?>("getBuffterPoint");
     return response!["buffterPoint"];
@@ -177,7 +157,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<GsyVideoPlayerType> setCurrentPlayer(GsyVideoPlayerType playerType) async {
-    await initialized.future;
     await _channel.invokeMethod<void>(
       'setCurrentPlayer',
       <String, dynamic>{
@@ -191,7 +170,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<GsyVideoPlayerType> getPlayManager() async {
-    await initialized.future;
     late final Map<String, dynamic>? response;
     response = await _channel.invokeMethod<Map<String, dynamic>?>("getPlayManager");
     return getVideoPlayerType(response!["currentPlayer"]);
@@ -199,25 +177,21 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<void> setExoCacheManager() async {
-    await initialized.future;
     await _channel.invokeMethod<void>("setExoCacheManager");
   }
 
   @override
   Future<void> setProxyCacheManager() async {
-    await initialized.future;
     await _channel.invokeMethod<void>("setProxyCacheManager");
   }
 
   @override
   Future<void> clearAllDefaultCache() async {
-    await initialized.future;
     await _channel.invokeMethod<void>("clearAllDefaultCache");
   }
 
   @override
   Future<void> clearDefaultCache(String cacheDir, String url) async {
-    await initialized.future;
     await _channel.invokeMethod<void>(
       "clearDefaultCache",
       <String, dynamic>{
@@ -231,25 +205,21 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<void> releaseMediaPlayer() async {
-    await initialized.future;
     await _channel.invokeMethod<void>("releaseMediaPlayer");
   }
 
   @override
   Future<void> onPause() async {
-    await initialized.future;
     await _channel.invokeMethod<void>("onPause");
   }
 
   @override
   Future<void> onResume() async {
-    await initialized.future;
     await _channel.invokeMethod<void>("onResume");
   }
 
   @override
   Future<String> getPlayTag() async {
-    await initialized.future;
     late final Map<String, dynamic>? response;
     response = await _channel.invokeMethod<Map<String, dynamic>?>("getPlayTag");
     return response!["playTag"];
@@ -257,7 +227,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<int> getPlayPosition() async {
-    await initialized.future;
     late final Map<String, dynamic>? response;
     response = await _channel.invokeMethod<Map<String, dynamic>?>("getPlayPosition");
     return response!["playPosition"];
@@ -266,7 +235,7 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
   @override
   Future<List<IjkOption>> getOptionModelList() async {
     List<IjkOption> optionModelList = [];
-    await initialized.future;
+
     late final Map<String, dynamic>? response;
     response = await _channel.invokeMethod<Map<String, dynamic>?>("getOptionModelList");
 
@@ -303,7 +272,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<bool> isNeedMute() async {
-    await initialized.future;
     late final Map<String, dynamic>? response;
     response = await _channel.invokeMethod<Map<String, dynamic>?>("isNeedMute");
     return response!["isNeedMute"];
@@ -311,7 +279,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<void> setNeedMute(bool needMute) async {
-    await initialized.future;
     await _channel.invokeMethod<void>("setNeedMute", <String, dynamic>{
       "isNeedMute": needMute,
     });
@@ -319,7 +286,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<int> getTimeOut() async {
-    await initialized.future;
     late final Map<String, dynamic>? response;
     response = await _channel.invokeMethod<Map<String, dynamic>?>("getTimeOut");
     return response!["timeOut"];
@@ -327,7 +293,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<bool> isNeedTimeOutOther() async {
-    await initialized.future;
     late final Map<String, dynamic>? response;
     response = await _channel.invokeMethod<Map<String, dynamic>?>("isNeedTimeOutOther");
     return response!["isNeedTimeOutOther"];
@@ -335,7 +300,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<void> setTimeOut(int timeOut, {bool needTimeOutOther = false}) async {
-    await initialized.future;
     await _channel.invokeMethod<void>("setNeedMute", <String, dynamic>{
       "timeOutOptions": {
         "timeOut": timeOut,
@@ -346,7 +310,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<void> setLogLevel(LogLevel level) async {
-    await initialized.future;
     await _channel.invokeMethod<void>("setLogLevel", <String, dynamic>{
       "logLevel": level.index,
     });
@@ -354,7 +317,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<bool> isMediaCodec() async {
-    await initialized.future;
     late final Map<String, dynamic>? response;
     response = await _channel.invokeMethod<Map<String, dynamic>?>("isMediaCodec");
     return response!["isMediaCodec"];
@@ -362,7 +324,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<double> getScreenScaleRatio() async {
-    await initialized.future;
     late final Map<String, dynamic>? response;
     response = await _channel.invokeMethod<Map<String, dynamic>?>("getScreenScaleRatio");
     return response!["screenScaleRatio"] as double;
@@ -370,7 +331,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<void> setScreenScaleRatio(double ratio) async {
-    await initialized.future;
     await _channel.invokeMethod<void>("setScreenScaleRatio", <String, dynamic>{
       "screenScaleRatio": ratio,
     });
@@ -378,7 +338,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<bool> isMediaCodecTexture() async {
-    await initialized.future;
     late final Map<String, dynamic>? response;
     response = await _channel.invokeMethod<Map<String, dynamic>?>("isMediaCodecTexture");
     return response!["isMediaCodecTexture"];
@@ -386,7 +345,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<PlayerVideoShowType> getShowType() async {
-    await initialized.future;
     late final Map<String, dynamic>? response;
     response = await _channel.invokeMethod<Map<String, dynamic>?>("getShowType");
     return getPlayerVideoShowType(response!["type"]);
@@ -394,7 +352,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<void> setShowType(PlayerVideoShowType showType, {double screenScaleRatio = 0.0}) async {
-    await initialized.future;
     await _channel.invokeMethod<void>("setShowType", <String, dynamic>{
       "showTypeOptions": {
         "showType": showType,
@@ -405,7 +362,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<GsyVideoPlayerRenderType> getRenderType() async {
-    await initialized.future;
     late final Map<String, dynamic>? response;
     response = await _channel.invokeMethod<Map<String, dynamic>?>("getRenderType");
     return getGsyVideoPlayerRenderType(response!["renderType"]);
@@ -413,7 +369,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<void> setRenderType(GsyVideoPlayerRenderType renderType) async {
-    await initialized.future;
     await _channel.invokeMethod<void>("setRenderType", <String, dynamic>{
       "renderType": renderType.index,
     });
@@ -421,7 +376,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<void> setMediaCodec(bool mediaCodec) async {
-    await initialized.future;
     await _channel.invokeMethod<void>("setMediaCodec", <String, dynamic>{
       "enableCodec": mediaCodec,
     });
@@ -429,7 +383,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<void> setMediaCodecTexture(bool mediaCodecTexture) async {
-    await initialized.future;
     await _channel.invokeMethod<void>("setMediaCodecTexture", <String, dynamic>{
       "enableCodecTexture": mediaCodecTexture,
     });
@@ -437,7 +390,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<void> startWindowFullscreen(bool showActionBar, bool showStatusBar) async {
-    await initialized.future;
     _channel.invokeMethod<void>("startWindowFullscreen", <String, dynamic>{
       "startWindowFullscreenOptions": {
         "actionBar": showActionBar,
@@ -448,19 +400,16 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<void> resolveByClick() async {
-    await initialized.future;
     await _channel.invokeMethod<void>("resolveByClick");
   }
 
   @override
   Future<void> backToProtVideo() async {
-    await initialized.future;
     await _channel.invokeMethod<void>("backToProtVideo");
   }
 
   @override
   Future<bool> isOrientationRotateEnable() async {
-    await initialized.future;
     late final Map<String, dynamic>? response;
     response = await _channel.invokeMethod<Map<String, dynamic>?>("isOrientationRotateEnable");
     return response!["isEnable"];
@@ -468,7 +417,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<void> setOrientationRotateEnable(bool enable) async {
-    await initialized.future;
     await _channel.invokeMethod<void>("setOrientationRotateEnable", <String, dynamic>{
       "enable": enable,
     });
@@ -476,7 +424,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<bool> getOrientationRotateIsLand() async {
-    await initialized.future;
     late final Map<String, dynamic>? response;
     response = await _channel.invokeMethod<Map<String, dynamic>?>("getOrientationRotateIsLand");
     return response!["isLand"];
@@ -484,7 +431,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<void> setOrientationRotateLand(bool isLand) async {
-    await initialized.future;
     await _channel.invokeMethod<void>("setOrientationRotateLand", <String, dynamic>{
       "land": isLand,
     });
@@ -492,7 +438,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<OrientationScreenType> getOrientationRotateScreenType() async {
-    await initialized.future;
     late final Map<String, dynamic>? response;
     response = await _channel.invokeMethod<Map<String, dynamic>?>("getOrientationRotateScreenType");
     return getOrientationScreenType(response!["screenType"]);
@@ -500,14 +445,12 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<void> setOrientationRotateScreenType(OrientationScreenType screenType) async {
-    await initialized.future;
     await _channel.invokeMethod<void>("setOrientationRotateScreenType",
         <String, dynamic>{"screenType": getOrientationScreenTypeIntValue(screenType)});
   }
 
   @override
   Future<bool> isOrientationRotateClick() async {
-    await initialized.future;
     late final Map<String, dynamic>? response;
     response = await _channel.invokeMethod<Map<String, dynamic>?>("isOrientationRotateClick");
     return response!["isClick"];
@@ -515,7 +458,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<void> setOrientationRotateIsClick(bool isClick) async {
-    await initialized.future;
     await _channel.invokeMethod<void>("setOrientationRotateIsClick", <String, dynamic>{
       "isClick": isClick,
     });
@@ -523,7 +465,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<bool> isOrientationRotateClickLand() async {
-    await initialized.future;
     late final Map<String, dynamic>? response;
     response = await _channel.invokeMethod<Map<String, dynamic>?>("isOrientationRotateClickLand");
     return response!["isClickLand"];
@@ -531,7 +472,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<void> setOrientationRotateIsClickLand(bool isClickLand) async {
-    await initialized.future;
     await _channel.invokeMethod<void>("setOrientationRotateIsClickLand", <String, dynamic>{
       "isClickLand": isClickLand,
     });
@@ -539,7 +479,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<bool> isOrientationRotateClickPort() async {
-    await initialized.future;
     late final Map<String, dynamic>? response;
     response = await _channel.invokeMethod<Map<String, dynamic>?>("isOrientationRotateClickPort");
     return response!["isClickPort"];
@@ -547,7 +486,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<void> setOrientationRotateIslickPort(bool islickPort) async {
-    await initialized.future;
     await _channel.invokeMethod<void>("setOrientationRotateIslickPort", <String, dynamic>{
       "islickPort": islickPort,
     });
@@ -555,7 +493,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<bool> isOrientationRotatePause() async {
-    await initialized.future;
     late final Map<String, dynamic>? response;
     response = await _channel.invokeMethod<Map<String, dynamic>?>("isOrientationRotatePause");
     return response!["isPause"];
@@ -563,7 +500,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<void> setOrientationRotateIsPause(bool isPause) async {
-    await initialized.future;
     await _channel.invokeMethod<void>("setOrientationRotateIsPause", <String, dynamic>{
       "isPause": isPause,
     });
@@ -571,7 +507,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<bool> isOrientationRotateOnlyRotateLand() async {
-    await initialized.future;
     late final Map<String, dynamic>? response;
     response = await _channel.invokeMethod<Map<String, dynamic>?>("isOrientationRotateOnlyRotateLand");
     return response!["isOnlyRotateLand"];
@@ -579,7 +514,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<void> setOrientationRotateIsOnlyRotateLand(bool isOnlyRotateLand) async {
-    await initialized.future;
     await _channel.invokeMethod<void>("setOrientationRotateIsOnlyRotateLand", <String, dynamic>{
       "isOnlyRotateLand": isOnlyRotateLand,
     });
@@ -587,7 +521,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<bool> isOrientationRotateWithSystem() async {
-    await initialized.future;
     late final Map<String, dynamic>? response;
     response = await _channel.invokeMethod<Map<String, dynamic>?>("isOrientationRotateWithSystem");
     return response!["rotateWithSystem"];
@@ -595,7 +528,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<void> setOrientationRotateWithSystem(bool isRotateWithSystem) async {
-    await initialized.future;
     await _channel.invokeMethod<void>("setOrientationRotateWithSystem", <String, dynamic>{
       "rotateWithSystem": isRotateWithSystem,
     });
@@ -603,13 +535,11 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<void> releaseOrientationListener() async {
-    await initialized.future;
     await _channel.invokeMethod<void>("releaseOrientationListener");
   }
 
   @override
   Future<void> showSmallVideo(Size size, bool showActionBar, bool showStatusBar) async {
-    await initialized.future;
     _channel.invokeMethod<void>("showSmallVideo", <String, dynamic>{
       "showSmallVideoOptions": {
         "actionBar": showActionBar,
@@ -624,13 +554,11 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<void> hideSmallVideo() async {
-    await initialized.future;
     _channel.invokeMethod<void>("hideSmallVideo");
   }
 
   @override
   Future<bool> isShowFullAnimation() async {
-    await initialized.future;
     late final Map<String, dynamic>? response;
     response = await _channel.invokeMethod<Map<String, dynamic>?>("isShowFullAnimation");
     return response!["isShowFullAnimation"];
@@ -638,7 +566,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<void> setShowFullAnimation(bool showFullAnimation) async {
-    await initialized.future;
     await _channel.invokeMethod<void>("setShowFullAnimation", <String, dynamic>{
       "isShowFullAnimation": showFullAnimation,
     });
@@ -646,7 +573,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<bool> isRotateViewAuto() async {
-    await initialized.future;
     late final Map<String, dynamic>? response;
     response = await _channel.invokeMethod<Map<String, dynamic>?>("isRotateViewAuto");
     return response!["isRotateViewAuto"];
@@ -654,7 +580,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<void> setRotateViewAuto(bool rotateViewAuto) async {
-    await initialized.future;
     await _channel.invokeMethod<void>("setRotateViewAuto", <String, dynamic>{
       "isRotateViewAuto": rotateViewAuto,
     });
@@ -662,7 +587,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<bool> isLockLand() async {
-    await initialized.future;
     late final Map<String, dynamic>? response;
     response = await _channel.invokeMethod<Map<String, dynamic>?>("isLockLand");
     return response!["isLockLand"];
@@ -670,7 +594,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<void> setLockLand(bool lockLand) async {
-    await initialized.future;
     await _channel.invokeMethod<void>("setLockLand", <String, dynamic>{
       "isLockLand": lockLand,
     });
@@ -678,7 +601,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<bool> isRotateWithSystem() async {
-    await initialized.future;
     late final Map<String, dynamic>? response;
     response = await _channel.invokeMethod<Map<String, dynamic>?>("isRotateWithSystem");
     return response!["isRotateWithSystem"];
@@ -686,7 +608,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<void> setRotateWithSystem(bool rotateWithSystem) async {
-    await initialized.future;
     await _channel.invokeMethod<void>("setRotateWithSystem", <String, dynamic>{
       "isRotateWithSystem": rotateWithSystem,
     });
@@ -694,13 +615,11 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<void> initUIState() async {
-    await initialized.future;
     await _channel.invokeMethod<void>("initUIState");
   }
 
   @override
   Future<int> getEnlargeImageRes() async {
-    await initialized.future;
     late final Map<String, dynamic>? response;
     response = await _channel.invokeMethod<Map<String, dynamic>?>("getEnlargeImageRes");
     return response!["enlargeImageRes"];
@@ -708,7 +627,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<void> setEnlargeImageRes(int res) async {
-    await initialized.future;
     await _channel.invokeMethod<void>("setEnlargeImageRes", <String, dynamic>{
       "enlargeImageRes": res,
     });
@@ -716,7 +634,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<int> getShrinkImageRes() async {
-    await initialized.future;
     late final Map<String, dynamic>? response;
     response = await _channel.invokeMethod<Map<String, dynamic>?>("getShrinkImageRes");
     return response!["shrinkImageRes"];
@@ -724,7 +641,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<void> setShrinkImageRes(int res) async {
-    await initialized.future;
     await _channel.invokeMethod<void>("setShrinkImageRes", <String, dynamic>{
       "shrinkImageRes": res,
     });
@@ -732,7 +648,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<bool> getIsTouchWigetFull() async {
-    await initialized.future;
     late final Map<String, dynamic>? response;
     response = await _channel.invokeMethod<Map<String, dynamic>?>("getIsTouchWigetFull");
     return response!["isTouchWigetFull"];
@@ -740,7 +655,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<void> setIsTouchWigetFull(bool isTouchWigetFull) async {
-    await initialized.future;
     await _channel.invokeMethod<void>("setIsTouchWigetFull", <String, dynamic>{
       "isTouchWigetFull": isTouchWigetFull,
     });
@@ -748,7 +662,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<void> setThumbPlay(bool thumbPlay) async {
-    await initialized.future;
     await _channel.invokeMethod<void>("setThumbPlay", <String, dynamic>{
       "thumbPlay": thumbPlay,
     });
@@ -756,7 +669,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<bool> isHideKeyBoard() async {
-    await initialized.future;
     late final Map<String, dynamic>? response;
     response = await _channel.invokeMethod<Map<String, dynamic>?>("isHideKeyBoard");
     return response!["isHideKeyBoard"];
@@ -764,7 +676,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<void> setHideKeyBoard(bool hideKeyBoard) async {
-    await initialized.future;
     await _channel.invokeMethod<void>("setHideKeyBoard", <String, dynamic>{
       "isHideKeyBoard": hideKeyBoard,
     });
@@ -772,7 +683,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<bool> isNeedShowWifiTip() async {
-    await initialized.future;
     late final Map<String, dynamic>? response;
     response = await _channel.invokeMethod<Map<String, dynamic>?>("isNeedShowWifiTip");
     return response!["isNeedShowWifiTip"];
@@ -780,7 +690,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<void> setNeedShowWifiTip(bool needShowWifiTip) async {
-    await initialized.future;
     await _channel.invokeMethod<void>("setNeedShowWifiTip", <String, dynamic>{
       "isNeedShowWifiTip": needShowWifiTip,
     });
@@ -788,7 +697,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<bool> isTouchWiget() async {
-    await initialized.future;
     late final Map<String, dynamic>? response;
     response = await _channel.invokeMethod<Map<String, dynamic>?>("isTouchWiget");
     return response!["isTouchWiget"];
@@ -796,7 +704,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<void> setTouchWiget(bool touchWiget) async {
-    await initialized.future;
     await _channel.invokeMethod<void>("setTouchWiget", <String, dynamic>{
       "isTouchWiget": touchWiget,
     });
@@ -804,7 +711,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<double> getSeekRatio() async {
-    await initialized.future;
     late final Map<String, dynamic>? response;
     response = await _channel.invokeMethod<Map<String, dynamic>?>("getSeekRatio");
     return response!["seekRatio"] as double;
@@ -812,7 +718,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<void> setSeekRatio(double seekRatio) async {
-    await initialized.future;
     await _channel.invokeMethod<void>("setSeekRatio", <String, dynamic>{
       "seekRatio": seekRatio,
     });
@@ -820,7 +725,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<bool> isNeedLockFull() async {
-    await initialized.future;
     late final Map<String, dynamic>? response;
     response = await _channel.invokeMethod<Map<String, dynamic>?>("isNeedLockFull");
     return response!["isNeedLockFull"];
@@ -828,7 +732,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<void> setNeedLockFull(bool needLockFull) async {
-    await initialized.future;
     await _channel.invokeMethod<void>("setNeedLockFull", <String, dynamic>{
       "isNeedLockFull": needLockFull,
     });
@@ -836,7 +739,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<int> getDismissControlTime() async {
-    await initialized.future;
     late final Map<String, dynamic>? response;
     response = await _channel.invokeMethod<Map<String, dynamic>?>("getDismissControlTime");
     return response!["isNeedLockFull"];
@@ -844,7 +746,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<void> setDismissControlTime(int time) async {
-    await initialized.future;
     await _channel.invokeMethod<void>("setDismissControlTime", <String, dynamic>{
       "dismissControlTime": time,
     });
@@ -852,7 +753,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<int> getSeekOnStart() async {
-    await initialized.future;
     late final Map<String, dynamic>? response;
     response = await _channel.invokeMethod<Map<String, dynamic>?>("getSeekOnStart");
     return response!["seekOnStart"];
@@ -860,7 +760,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<bool> isIfCurrentIsFullscreen() async {
-    await initialized.future;
     late final Map<String, dynamic>? response;
     response = await _channel.invokeMethod<Map<String, dynamic>?>("isIfCurrentIsFullscreen");
     return response!["isIfCurrentIsFullscreen"];
@@ -868,7 +767,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<void> setIfCurrentIsFullscreen(bool ifCurrentIsFullscreen) async {
-    await initialized.future;
     await _channel.invokeMethod<void>("setIfCurrentIsFullscreen", <String, dynamic>{
       "isIfCurrentIsFullscreen": ifCurrentIsFullscreen,
     });
@@ -876,7 +774,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<bool> isLooping() async {
-    await initialized.future;
     late final Map<String, dynamic>? response;
     response = await _channel.invokeMethod<Map<String, dynamic>?>("isLooping");
     return response!["isLooping"];
@@ -884,7 +781,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<void> setLooping(bool looping) async {
-    await initialized.future;
     await _channel.invokeMethod<void>("setLooping", <String, dynamic>{
       "isLooping": looping,
     });
@@ -892,7 +788,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<double> getSpeed() async {
-    await initialized.future;
     late final Map<String, dynamic>? response;
     response = await _channel.invokeMethod<Map<String, dynamic>?>("getSpeed");
     return response!["speed"] as double;
@@ -900,7 +795,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<void> setSpeed(double speed, {bool soundTouch = true}) async {
-    await initialized.future;
     await _channel.invokeMethod<void>("setSpeed", <String, dynamic>{
       "speedOptions": {"speed": 1.0, "soundTouch": soundTouch},
     });
@@ -908,7 +802,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<void> setSpeedPlaying(double speed, {bool soundTouch = true}) async {
-    await initialized.future;
     await _channel.invokeMethod<void>("setSpeedPlaying", <String, dynamic>{
       "speedPlayingOptions": {"speed": 1.0, "soundTouch": soundTouch},
     });
@@ -916,7 +809,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<bool> isShowPauseCover() async {
-    await initialized.future;
     late final Map<String, dynamic>? response;
     response = await _channel.invokeMethod<Map<String, dynamic>?>("isShowPauseCover");
     return response!["isShowPauseCover"];
@@ -924,7 +816,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<void> setShowPauseCover(bool showPauseCover) async {
-    await initialized.future;
     await _channel.invokeMethod<void>("setShowPauseCover", <String, dynamic>{
       "isShowPauseCover": showPauseCover,
     });
@@ -932,7 +823,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<void> seekTo(int msec) async {
-    await initialized.future;
     await _channel.invokeMethod<void>("seekTo", <String, dynamic>{
       "position": msec,
     });
@@ -940,7 +830,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<void> setMatrixGL(List<double> matrix) async {
-    await initialized.future;
     await _channel.invokeMethod<void>("seekTo", <String, dynamic>{
       "matrix": matrix,
     });
@@ -948,13 +837,11 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<void> releaseWhenLossAudio() async {
-    await initialized.future;
     await _channel.invokeMethod<void>("releaseWhenLossAudio");
   }
 
   @override
   Future<void> setAutoFullWithSize(bool releaseWhenLossAudio) async {
-    await initialized.future;
     await _channel.invokeMethod<void>("setAutoFullWithSize", <String, dynamic>{
       "autoFullWithSize": releaseWhenLossAudio,
     });
@@ -962,7 +849,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<bool> getAutoFullWithSize() async {
-    await initialized.future;
     late final Map<String, dynamic>? response;
     response = await _channel.invokeMethod<Map<String, dynamic>?>("autoFullWithSize");
     return response!["autoFullWithSize"];
@@ -970,7 +856,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<void> setVolume(double volume) async {
-    await initialized.future;
     await _channel.invokeMethod<void>("setVolume", <String, dynamic>{
       "volume": volume,
     });
@@ -978,7 +863,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<void> initDanmaku({required DanmakuSettings settings}) async {
-    await initialized.future;
     await _channel.invokeMethod<void>("initDanmaku", <String, dynamic>{
       "danmakuSettings": settings.toJson(),
     });
@@ -986,13 +870,11 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<void> showDanmaku() async {
-    await initialized.future;
     await _channel.invokeMethod<void>("showDanmaku");
   }
 
   @override
   Future<bool> getDanmakuShow() async {
-    await initialized.future;
     late final Map<String, dynamic>? response;
     response = await _channel.invokeMethod<Map<String, dynamic>?>("getDanmakuShow");
     return response!["showDanmaku"];
@@ -1000,7 +882,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<void> hideDanmaku() async {
-    await initialized.future;
     await _channel.invokeMethod<void>("hideDanmaku");
   }
 
@@ -1011,7 +892,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
       double danmuStyleProjectionOffsetX = 0.0,
       double danmuStyleProjectionOffsetY = 0.0,
       double danmuStyleProjectionAlpha = 255.0}) async {
-    await initialized.future;
     await _channel.invokeMethod<void>("setDanmakuStyle", <String, dynamic>{
       "danmakuStyle": danmakuStyleToInt(danmakuStyle),
       "danmuStyleShadow": danmuStyleShadow,
@@ -1024,7 +904,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<void> setDanmakuBold(bool bold) async {
-    await initialized.future;
     await _channel.invokeMethod<void>("setDanmakuBold", <String, dynamic>{
       "isBold": bold,
     });
@@ -1032,7 +911,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<void> setScrollSpeedFactor(double speedFactor) async {
-    await initialized.future;
     await _channel.invokeMethod<void>("setScrollSpeedFactor", <String, dynamic>{
       "speedFactor": speedFactor,
     });
@@ -1040,7 +918,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<void> setDuplicateMergingEnabled(bool enabled) async {
-    await initialized.future;
     await _channel.invokeMethod<void>("setDuplicateMergingEnabled", <String, dynamic>{
       "enabled": enabled,
     });
@@ -1048,7 +925,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<void> setMaximumLines(Map<DanmakuTypeScroll, int> maxLinesPair) async {
-    await initialized.future;
     await _channel.invokeMethod<void>("setMaximumLines", <String, dynamic>{
       "maxLinesPair": maxLinesPair.map((key, value) => MapEntry(danmakuTypeScrollToInt(key), value)),
     });
@@ -1056,7 +932,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<void> preventOverlapping(Map<DanmakuTypeScroll, bool> preventPair) async {
-    await initialized.future;
     await _channel.invokeMethod<void>("preventOverlapping", <String, dynamic>{
       "preventPair": preventPair.map((key, value) => MapEntry(danmakuTypeScrollToInt(key), value)),
     });
@@ -1064,7 +939,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<void> setMarginTop(double marginTop) async {
-    await initialized.future;
     await _channel.invokeMethod<void>("setMarginTop", <String, dynamic>{
       "marginTop": marginTop,
     });
@@ -1072,7 +946,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<void> setDanmakuTransparency(double transparency) async {
-    await initialized.future;
     await _channel.invokeMethod<void>("setDanmakuTransparency", <String, dynamic>{
       "transparency": transparency,
     });
@@ -1080,7 +953,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<void> setDanmakuMargin(double margin) async {
-    await initialized.future;
     await _channel.invokeMethod<void>("setDanmakuMargin", <String, dynamic>{
       "margin": margin,
     });
@@ -1088,7 +960,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<void> setScaleTextSize(double scale) async {
-    await initialized.future;
     await _channel.invokeMethod<void>("setScaleTextSize", <String, dynamic>{
       "scale": scale,
     });
@@ -1096,7 +967,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<void> setMaximumVisibleSizeInScreen(MaximumVisibleSizeInScreen maximumVisibleSizeInScreen) async {
-    await initialized.future;
     await _channel.invokeMethod<void>("setMaximumVisibleSizeInScreen", <String, dynamic>{
       "maximumVisibleSizeInScreen": getIntFromMaximumVisibleSizeInScreen(maximumVisibleSizeInScreen),
     });
@@ -1104,7 +974,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<void> addDanmaku(BaseDanmaku danmaku) async {
-    await initialized.future;
     await _channel.invokeMethod<void>("addDanmaku", <String, dynamic>{
       "danmaku": danmaku.toJson(),
     });
@@ -1112,31 +981,26 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<void> startDanmaku() async {
-    await initialized.future;
     await _channel.invokeMethod<void>("startDanmaku");
   }
 
   @override
   Future<void> pauseDanmaku() async {
-    await initialized.future;
     await _channel.invokeMethod<void>("pauseDanmaku");
   }
 
   @override
   Future<void> resumeDanmaku() async {
-    await initialized.future;
     await _channel.invokeMethod<void>("resumeDanmaku");
   }
 
   @override
   Future<void> stopDanmaku() async {
-    await initialized.future;
     await _channel.invokeMethod<void>("stopDanmaku");
   }
 
   @override
   Future<void> seekToDanmaku(Duration msec) async {
-    await initialized.future;
     await _channel.invokeMethod<void>("seekToDanmaku", <String, dynamic>{
       "ms": msec.inMilliseconds,
     });
@@ -1144,7 +1008,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<Map<String, dynamic>> getDanmakuStatus() async {
-    await initialized.future;
     late final Map<String, dynamic>? response;
     response = await _channel.invokeMethod<Map<String, dynamic>?>("getDanmakuStatus");
     return response!;
@@ -1437,18 +1300,7 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Widget buildView(textureId, {void Function(int)? onViewReady}) {
-    return AndroidView(
-      viewType: viewType,
-      creationParams: creationParams,
-      creationParamsCodec: const StandardMessageCodec(),
-      onPlatformViewCreated: (int id) {
-        textureId = id;
-        if (!initialized.isCompleted) {
-          initialized.complete(id);
-        }
-        onViewReady?.call(id);
-      },
-    );
+    return Texture(textureId: textureId);
   }
 
   EventChannel eventChannelFor() {

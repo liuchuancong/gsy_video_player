@@ -3,7 +3,9 @@ package com.alizda.gsy_video_player
 import android.annotation.SuppressLint
 import android.content.Context
 import android.net.Uri
+import android.os.Build
 import android.text.TextUtils
+import androidx.annotation.RequiresApi
 import androidx.media3.common.C
 import androidx.media3.common.MediaItem
 import androidx.media3.common.util.UnstableApi
@@ -54,6 +56,7 @@ class ExoSourceManager(context: Context, private val mMapHeadData: Map<String, S
      * @param isLooping   是否循环
      * @param cacheDir    自定义缓存目录
      */
+    @RequiresApi(Build.VERSION_CODES.GINGERBREAD)
     fun getMediaSource(dataSource: String, preview: Boolean, cacheEnable: Boolean, isLooping: Boolean, cacheDir: File, overrideExtension: String?): MediaSource {
         var mediaSource: MediaSource? = null
         if (exoMediaSourceInterceptListener != null) {
@@ -138,6 +141,7 @@ class ExoSourceManager(context: Context, private val mMapHeadData: Map<String, S
     /**
      * 获取SourceFactory，是否带Cache
      */
+    @RequiresApi(Build.VERSION_CODES.GINGERBREAD)
     private fun getDataSourceFactoryCache(context: Context, cacheEnable: Boolean, preview: Boolean, cacheDir: File, uerAgent: String?): DataSource.Factory {
         if (cacheEnable) {
             val cache = getCacheSingleInstance(context, cacheDir)
@@ -286,6 +290,7 @@ class ExoSourceManager(context: Context, private val mMapHeadData: Map<String, S
         /**
          * Cache需要release之后才能clear
          */
+        @RequiresApi(Build.VERSION_CODES.GINGERBREAD)
         fun clearCache(context: Context, cacheDir: File?, url: String?) {
             try {
                 val cache = getCacheSingleInstance(context, cacheDir)
@@ -305,6 +310,7 @@ class ExoSourceManager(context: Context, private val mMapHeadData: Map<String, S
             }
         }
 
+        @RequiresApi(Build.VERSION_CODES.GINGERBREAD)
         fun removeCache(cache: Cache, url: String?) {
             val cachedSpans = cache.getCachedSpans(buildCacheKey(url))
             for (cachedSpan in cachedSpans) {
@@ -321,6 +327,7 @@ class ExoSourceManager(context: Context, private val mMapHeadData: Map<String, S
             return CacheKeyFactory.DEFAULT.buildCacheKey(dataSpec)
         }
 
+        @RequiresApi(Build.VERSION_CODES.GINGERBREAD)
         fun cachePreView(context: Context, cacheDir: File?, url: String?): Boolean {
             return resolveCacheState(getCacheSingleInstance(context, cacheDir), url)
         }
@@ -328,6 +335,7 @@ class ExoSourceManager(context: Context, private val mMapHeadData: Map<String, S
         /**
          * 根据缓存块判断是否缓存成功
          */
+        @RequiresApi(Build.VERSION_CODES.GINGERBREAD)
         private fun resolveCacheState(cache: Cache?, url: String?): Boolean {
             var isCache = true
             if (!TextUtils.isEmpty(url)) {
