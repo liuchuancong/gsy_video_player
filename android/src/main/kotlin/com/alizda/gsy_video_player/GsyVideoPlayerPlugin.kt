@@ -105,16 +105,17 @@ class GsyVideoPlayerPlugin: FlutterPlugin, ActivityAware, MethodChannel.MethodCa
 
       }
       else -> {
-        if(lastTextureId != null){
-          val player = videoPlayers[lastTextureId!!]
-          player.onMethodCall(call, result, lastTextureId!!)
-        }else {
+        val textureId = (call.argument<Any>("textureId") as Number?)!!.toLong()
+        val player = videoPlayers[textureId]
+        if (player == null) {
           result.error(
             "Unknown textureId",
-            "No video player associated with texture id $lastTextureId",
+            "No video player associated with texture id $textureId",
             null
           )
+          return
         }
+        player.onMethodCall(call, result, textureId)
       }
     }
   }
@@ -152,7 +153,6 @@ class GsyVideoPlayerPlugin: FlutterPlugin, ActivityAware, MethodChannel.MethodCa
     private const val METHODS_CHANNEL = "gsy_video_player_channel/platform_view_methods"
     private const val EVENTS_CHANNEL = "gsy_video_player_channel/platform_view_events"
     var isInitialized = false
-    var lastTextureId: Long? = null
     @Suppress("UNCHECKED_CAST")
     fun <T> getParameter(parameters: Map<String, Any?>?, key: String, defaultValue: T): T {
       if (parameters?.containsKey(key) == true) {

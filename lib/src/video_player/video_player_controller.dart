@@ -786,7 +786,7 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
       isLooping: value.isLooping,
       volume: value.volume,
     );
-    await VideoPlayerPlatform.instance.setVideoOptionBuilder(builder);
+    await VideoPlayerPlatform.instance.setVideoOptionBuilder(textureId, builder);
   }
 
   @override
@@ -807,18 +807,18 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
 
   Future<void> setVideoOptionBuilder(VideoOptionBuilder builder) async {
     await _creatingCompleter.future;
-    await _videoPlayerPlatform.setVideoOptionBuilder(builder);
+    await _videoPlayerPlatform.setVideoOptionBuilder(textureId, builder);
   }
 
   Future<int> getLayoutId() async {
     await _creatingCompleter.future;
-    return await _videoPlayerPlatform.getLayoutId();
+    return await _videoPlayerPlatform.getLayoutId(textureId);
   }
 
   Future<void> startPlayLogic() async {
     await _creatingCompleter.future;
     value = value.copyWith(isPlaying: true);
-    await _videoPlayerPlatform.startPlayLogic();
+    await _videoPlayerPlatform.startPlayLogic(_textureId);
   }
 
   Future<void> setUp(
@@ -829,394 +829,394 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
   ) async {
     await _creatingCompleter.future;
     value = value.copyWith(isPlaying: false);
-    await _videoPlayerPlatform.setUp(url, cacheWithPlay, cachePath, title);
+    await _videoPlayerPlatform.setUp(_textureId, url, cacheWithPlay, cachePath, title);
   }
 
   Future<void> onVideoPause() async {
     await _creatingCompleter.future;
     value = value.copyWith(isPlaying: false);
-    await _videoPlayerPlatform.onVideoPause();
+    await _videoPlayerPlatform.onVideoPause(_textureId);
   }
 
   Future<void> onVideoResume() async {
     await _creatingCompleter.future;
     value = value.copyWith(isPlaying: true);
-    await _videoPlayerPlatform.onVideoResume();
+    await _videoPlayerPlatform.onVideoResume(_textureId);
   }
 
   Future<void> clearCurrentCache() async {
     await _creatingCompleter.future;
-    await _videoPlayerPlatform.clearCurrentCache();
+    await _videoPlayerPlatform.clearCurrentCache(_textureId);
   }
 
   Future<int> getCurrentPositionWhenPlaying(bool looping) async {
     await _creatingCompleter.future;
-    return await _videoPlayerPlatform.getCurrentPositionWhenPlaying();
+    return await _videoPlayerPlatform.getCurrentPositionWhenPlaying(_textureId);
   }
 
   Future<void> releaseAllVideos() async {
     await _creatingCompleter.future;
-    await _videoPlayerPlatform.releaseAllVideos();
+    await _videoPlayerPlatform.releaseAllVideos(_textureId);
   }
 
   Future<VideoPlayState> getCurrentState() async {
     await _creatingCompleter.future;
-    return await _videoPlayerPlatform.getCurrentState();
+    return await _videoPlayerPlatform.getCurrentState(_textureId);
   }
 
   Future<void> setPlayTag(String tag) async {
     await _creatingCompleter.future;
-    await _videoPlayerPlatform.setPlayTag(tag);
+    await _videoPlayerPlatform.setPlayTag(_textureId, tag);
   }
 
   Future<void> setPlayPosition(int position) async {
     await _creatingCompleter.future;
-    await _videoPlayerPlatform.setPlayPosition(position);
+    await _videoPlayerPlatform.setPlayPosition(_textureId, position);
   }
 
   Future<void> backFromWindowFull() async {
     await _creatingCompleter.future;
-    await _videoPlayerPlatform.backFromWindowFull();
+    await _videoPlayerPlatform.backFromWindowFull(_textureId);
   }
 
   Future<int> getNetSpeed() async {
     await _creatingCompleter.future;
-    return await _videoPlayerPlatform.getNetSpeed();
+    return await _videoPlayerPlatform.getNetSpeed(_textureId);
   }
 
   Future<String> getNetSpeedText() async {
     await _creatingCompleter.future;
-    return await _videoPlayerPlatform.getNetSpeedText();
+    return await _videoPlayerPlatform.getNetSpeedText(_textureId);
   }
 
   Future<void> setSeekOnStart(int msec) async {
     await _creatingCompleter.future;
-    await _videoPlayerPlatform.setSeekOnStart(msec);
+    await _videoPlayerPlatform.setSeekOnStart(_textureId, msec);
   }
 
   Future<int> getBuffterPoint() async {
     await _creatingCompleter.future;
-    return await _videoPlayerPlatform.getBuffterPoint();
+    return await _videoPlayerPlatform.getBuffterPoint(_textureId);
   }
 
   Future<GsyVideoPlayerType> setCurrentPlayer(GsyVideoPlayerType playerType) async {
     await _creatingCompleter.future;
-    return await _videoPlayerPlatform.setCurrentPlayer(playerType);
+    return await _videoPlayerPlatform.setCurrentPlayer(_textureId, playerType);
   }
 
   Future<void> getPlayManager() async {
     await _creatingCompleter.future;
-    await _videoPlayerPlatform.getPlayManager();
+    await _videoPlayerPlatform.getPlayManager(_textureId);
   }
 
   Future<void> setExoCacheManager() async {
     await _creatingCompleter.future;
-    await _videoPlayerPlatform.setExoCacheManager();
+    await _videoPlayerPlatform.setExoCacheManager(_textureId);
   }
 
   Future<void> setProxyCacheManager() async {
     await _creatingCompleter.future;
-    await _videoPlayerPlatform.setProxyCacheManager();
+    await _videoPlayerPlatform.setProxyCacheManager(_textureId);
   }
 
   Future<void> clearAllDefaultCache() async {
     await _creatingCompleter.future;
-    await _videoPlayerPlatform.clearAllDefaultCache();
+    await _videoPlayerPlatform.clearAllDefaultCache(_textureId);
   }
 
   Future<void> clearDefaultCache(String cacheDir, String url) async {
     await _creatingCompleter.future;
-    await _videoPlayerPlatform.clearDefaultCache(cacheDir, url);
+    await _videoPlayerPlatform.clearDefaultCache(_textureId, cacheDir, url);
   }
 
   Future<void> releaseMediaPlayer() async {
     await _creatingCompleter.future;
-    await _videoPlayerPlatform.releaseMediaPlayer();
+    await _videoPlayerPlatform.releaseMediaPlayer(_textureId);
   }
 
   Future<void> onPause() async {
     await _creatingCompleter.future;
-    await _videoPlayerPlatform.onPause();
+    await _videoPlayerPlatform.onPause(_textureId);
   }
 
   Future<void> onResume() async {
     await _creatingCompleter.future;
-    await _videoPlayerPlatform.onResume();
+    await _videoPlayerPlatform.onResume(_textureId);
   }
 
   Future<String> getPlayTag() async {
     await _creatingCompleter.future;
-    return await _videoPlayerPlatform.getPlayTag();
+    return await _videoPlayerPlatform.getPlayTag(_textureId);
   }
 
   Future<int> getPlayPosition() async {
     await _creatingCompleter.future;
-    return await _videoPlayerPlatform.getPlayPosition();
+    return await _videoPlayerPlatform.getPlayPosition(_textureId);
   }
 
   Future<List<IjkOption>> getOptionModelList() async {
     await _creatingCompleter.future;
-    return await _videoPlayerPlatform.getOptionModelList();
+    return await _videoPlayerPlatform.getOptionModelList(_textureId);
   }
 
   Future<void> setOptionModelList(List<IjkOption> optionModelList) async {
     await _creatingCompleter.future;
-    await _videoPlayerPlatform.setOptionModelList(optionModelList);
+    await _videoPlayerPlatform.setOptionModelList(_textureId, optionModelList);
   }
 
   Future<bool> isNeedMute() async {
     await _creatingCompleter.future;
-    return await _videoPlayerPlatform.isNeedMute();
+    return await _videoPlayerPlatform.isNeedMute(_textureId);
   }
 
   Future<void> setNeedMute(bool needMute) async {
     await _creatingCompleter.future;
-    await _videoPlayerPlatform.setNeedMute(needMute);
+    await _videoPlayerPlatform.setNeedMute(_textureId, needMute);
   }
 
   Future<int> getTimeOut() async {
     await _creatingCompleter.future;
-    return await _videoPlayerPlatform.getTimeOut();
+    return await _videoPlayerPlatform.getTimeOut(_textureId);
   }
 
   Future<bool> isNeedTimeOutOther() async {
     await _creatingCompleter.future;
-    return await _videoPlayerPlatform.isNeedTimeOutOther();
+    return await _videoPlayerPlatform.isNeedTimeOutOther(_textureId);
   }
 
   Future<void> setTimeOut(int timeOut, {bool needTimeOutOther = false}) async {
     await _creatingCompleter.future;
-    await _videoPlayerPlatform.setTimeOut(timeOut, needTimeOutOther: needTimeOutOther);
+    await _videoPlayerPlatform.setTimeOut(_textureId, timeOut, needTimeOutOther: needTimeOutOther);
   }
 
   Future<void> setLogLevel(LogLevel level) async {
     await _creatingCompleter.future;
-    await _videoPlayerPlatform.setLogLevel(level);
+    await _videoPlayerPlatform.setLogLevel(_textureId, level);
   }
 
   Future<bool> isMediaCodec() async {
     await _creatingCompleter.future;
-    return await _videoPlayerPlatform.isMediaCodec();
+    return await _videoPlayerPlatform.isMediaCodec(_textureId);
   }
 
   Future<double> getScreenScaleRatio() async {
     await _creatingCompleter.future;
-    return await _videoPlayerPlatform.getScreenScaleRatio();
+    return await _videoPlayerPlatform.getScreenScaleRatio(_textureId);
   }
 
   Future<void> setScreenScaleRatio(double ratio) async {
     await _creatingCompleter.future;
-    await _videoPlayerPlatform.setScreenScaleRatio(ratio);
+    await _videoPlayerPlatform.setScreenScaleRatio(_textureId, ratio);
   }
 
   Future<bool> isMediaCodecTexture() async {
     await _creatingCompleter.future;
-    return await _videoPlayerPlatform.isMediaCodecTexture();
+    return await _videoPlayerPlatform.isMediaCodecTexture(_textureId);
   }
 
   Future<PlayerVideoShowType> getShowType() async {
     await _creatingCompleter.future;
-    return await _videoPlayerPlatform.getShowType();
+    return await _videoPlayerPlatform.getShowType(_textureId);
   }
 
   Future<void> setShowType(PlayerVideoShowType showType, {double screenScaleRatio = 0.0}) async {
     await _creatingCompleter.future;
-    await _videoPlayerPlatform.setShowType(showType, screenScaleRatio: screenScaleRatio);
+    await _videoPlayerPlatform.setShowType(_textureId, showType, screenScaleRatio: screenScaleRatio);
   }
 
   Future<GsyVideoPlayerRenderType> getRenderType() async {
     await _creatingCompleter.future;
-    return await _videoPlayerPlatform.getRenderType();
+    return await _videoPlayerPlatform.getRenderType(_textureId);
   }
 
   Future<void> setRenderType(GsyVideoPlayerRenderType renderType) async {
     await _creatingCompleter.future;
-    await _videoPlayerPlatform.setRenderType(renderType);
+    await _videoPlayerPlatform.setRenderType(_textureId, renderType);
   }
 
   Future<void> setMediaCodec(bool mediaCodec) async {
     await _creatingCompleter.future;
-    await _videoPlayerPlatform.setMediaCodec(mediaCodec);
+    await _videoPlayerPlatform.setMediaCodec(_textureId, mediaCodec);
   }
 
   Future<void> setMediaCodecTexture(bool mediaCodecTexture) async {
     await _creatingCompleter.future;
-    await _videoPlayerPlatform.setMediaCodecTexture(mediaCodecTexture);
+    await _videoPlayerPlatform.setMediaCodecTexture(_textureId, mediaCodecTexture);
   }
 
   Future<void> startWindowFullscreen(bool showActionBar, bool showStatusBar) async {
     await _creatingCompleter.future;
-    await _videoPlayerPlatform.startWindowFullscreen(showActionBar, showStatusBar);
+    await _videoPlayerPlatform.startWindowFullscreen(_textureId, showActionBar, showStatusBar);
   }
 
   Future<void> showSmallVideo(Size size, bool showActionBar, bool showStatusBar) async {
     await _creatingCompleter.future;
-    await _videoPlayerPlatform.showSmallVideo(size, showActionBar, showStatusBar);
+    await _videoPlayerPlatform.showSmallVideo(_textureId, size, showActionBar, showStatusBar);
   }
 
   Future<void> hideSmallVideo() async {
     await _creatingCompleter.future;
-    await _videoPlayerPlatform.hideSmallVideo();
+    await _videoPlayerPlatform.hideSmallVideo(_textureId);
   }
 
   Future<bool> isShowFullAnimation() async {
     await _creatingCompleter.future;
-    return await _videoPlayerPlatform.isShowFullAnimation();
+    return await _videoPlayerPlatform.isShowFullAnimation(_textureId);
   }
 
   Future<void> setShowFullAnimation(bool showFullAnimation) async {
     await _creatingCompleter.future;
-    await _videoPlayerPlatform.setShowFullAnimation(showFullAnimation);
+    await _videoPlayerPlatform.setShowFullAnimation(_textureId, showFullAnimation);
   }
 
   Future<bool> isRotateViewAuto() async {
     await _creatingCompleter.future;
-    return await _videoPlayerPlatform.isRotateViewAuto();
+    return await _videoPlayerPlatform.isRotateViewAuto(_textureId);
   }
 
   Future<void> setRotateViewAuto(bool rotateViewAuto) async {
     await _creatingCompleter.future;
-    await _videoPlayerPlatform.setRotateViewAuto(rotateViewAuto);
+    await _videoPlayerPlatform.setRotateViewAuto(_textureId, rotateViewAuto);
   }
 
   Future<bool> isLockLand() async {
     await _creatingCompleter.future;
-    return await _videoPlayerPlatform.isLockLand();
+    return await _videoPlayerPlatform.isLockLand(_textureId);
   }
 
   Future<void> setLockLand(bool lockLand) async {
     await _creatingCompleter.future;
-    await _videoPlayerPlatform.setLockLand(lockLand);
+    await _videoPlayerPlatform.setLockLand(_textureId, lockLand);
   }
 
   Future<bool> isRotateWithSystem() async {
     await _creatingCompleter.future;
-    return await _videoPlayerPlatform.isRotateWithSystem();
+    return await _videoPlayerPlatform.isRotateWithSystem(_textureId);
   }
 
   Future<void> setRotateWithSystem(bool rotateWithSystem) async {
     await _creatingCompleter.future;
-    await _videoPlayerPlatform.setRotateWithSystem(rotateWithSystem);
+    await _videoPlayerPlatform.setRotateWithSystem(_textureId, rotateWithSystem);
   }
 
   Future<void> initUIState() async {
     await _creatingCompleter.future;
-    await _videoPlayerPlatform.initUIState();
+    await _videoPlayerPlatform.initUIState(_textureId);
   }
 
   Future<int> getEnlargeImageRes() async {
     await _creatingCompleter.future;
-    return await _videoPlayerPlatform.getEnlargeImageRes();
+    return await _videoPlayerPlatform.getEnlargeImageRes(_textureId);
   }
 
   Future<void> setEnlargeImageRes(int res) async {
     await _creatingCompleter.future;
-    await _videoPlayerPlatform.setEnlargeImageRes(res);
+    await _videoPlayerPlatform.setEnlargeImageRes(_textureId, res);
   }
 
   Future<int> getShrinkImageRes() async {
     await _creatingCompleter.future;
-    return await _videoPlayerPlatform.getShrinkImageRes();
+    return await _videoPlayerPlatform.getShrinkImageRes(_textureId);
   }
 
   Future<void> setShrinkImageRes(int res) async {
     await _creatingCompleter.future;
-    await _videoPlayerPlatform.setShrinkImageRes(res);
+    await _videoPlayerPlatform.setShrinkImageRes(_textureId, res);
   }
 
   Future<void> setIsTouchWigetFull(bool isTouchWigetFull) async {
     await _creatingCompleter.future;
-    await _videoPlayerPlatform.setIsTouchWigetFull(isTouchWigetFull);
+    await _videoPlayerPlatform.setIsTouchWigetFull(_textureId, isTouchWigetFull);
   }
 
   Future<bool> getIsTouchWigetFull() async {
     await _creatingCompleter.future;
-    return await _videoPlayerPlatform.getIsTouchWigetFull();
+    return await _videoPlayerPlatform.getIsTouchWigetFull(_textureId);
   }
 
   Future<void> setThumbPlay(bool thumbPlay) async {
     await _creatingCompleter.future;
-    await _videoPlayerPlatform.setThumbPlay(thumbPlay);
+    await _videoPlayerPlatform.setThumbPlay(_textureId, thumbPlay);
   }
 
   Future<bool> isHideKeyBoard() async {
     await _creatingCompleter.future;
-    return await _videoPlayerPlatform.isHideKeyBoard();
+    return await _videoPlayerPlatform.isHideKeyBoard(_textureId);
   }
 
   Future<void> setHideKeyBoard(bool hideKeyBoard) async {
     await _creatingCompleter.future;
-    await _videoPlayerPlatform.setHideKeyBoard(hideKeyBoard);
+    await _videoPlayerPlatform.setHideKeyBoard(_textureId, hideKeyBoard);
   }
 
   Future<bool> isNeedShowWifiTip() async {
     await _creatingCompleter.future;
-    return await _videoPlayerPlatform.isNeedShowWifiTip();
+    return await _videoPlayerPlatform.isNeedShowWifiTip(_textureId);
   }
 
   Future<void> setNeedShowWifiTip(bool needShowWifiTip) async {
     await _creatingCompleter.future;
-    await _videoPlayerPlatform.setNeedShowWifiTip(needShowWifiTip);
+    await _videoPlayerPlatform.setNeedShowWifiTip(_textureId, needShowWifiTip);
   }
 
   Future<bool> isTouchWiget() async {
     await _creatingCompleter.future;
-    return await _videoPlayerPlatform.isTouchWiget();
+    return await _videoPlayerPlatform.isTouchWiget(_textureId);
   }
 
   Future<void> setTouchWiget(bool touchWiget) async {
     await _creatingCompleter.future;
-    await _videoPlayerPlatform.setTouchWiget(touchWiget);
+    await _videoPlayerPlatform.setTouchWiget(_textureId, touchWiget);
   }
 
   Future<void> setSeekRatio(double ratio) async {
     await _creatingCompleter.future;
-    await _videoPlayerPlatform.setSeekRatio(ratio);
+    await _videoPlayerPlatform.setSeekRatio(_textureId, ratio);
   }
 
   Future<double> getSeekRatio() async {
     await _creatingCompleter.future;
-    return await _videoPlayerPlatform.getSeekRatio();
+    return await _videoPlayerPlatform.getSeekRatio(_textureId);
   }
 
   Future<bool> isNeedLockFull() async {
     await _creatingCompleter.future;
-    return await _videoPlayerPlatform.isNeedLockFull();
+    return await _videoPlayerPlatform.isNeedLockFull(_textureId);
   }
 
   Future<void> setNeedLockFull(bool needLockFull) async {
     await _creatingCompleter.future;
-    await _videoPlayerPlatform.setNeedLockFull(needLockFull);
+    await _videoPlayerPlatform.setNeedLockFull(_textureId, needLockFull);
   }
 
   Future<void> setDismissControlTime(int msec) async {
     await _creatingCompleter.future;
-    await _videoPlayerPlatform.setDismissControlTime(msec);
+    await _videoPlayerPlatform.setDismissControlTime(_textureId, msec);
   }
 
   Future<int> getDismissControlTime() async {
     await _creatingCompleter.future;
-    return await _videoPlayerPlatform.getDismissControlTime();
+    return await _videoPlayerPlatform.getDismissControlTime(_textureId);
   }
 
   Future<int> getSeekOnStart() async {
     await _creatingCompleter.future;
-    return await _videoPlayerPlatform.getSeekOnStart();
+    return await _videoPlayerPlatform.getSeekOnStart(_textureId);
   }
 
   Future<bool> isIfCurrentIsFullscreen() async {
     await _creatingCompleter.future;
-    return await _videoPlayerPlatform.isIfCurrentIsFullscreen();
+    return await _videoPlayerPlatform.isIfCurrentIsFullscreen(_textureId);
   }
 
   Future<void> setIfCurrentIsFullscreen(bool ifCurrentIsFullscreen) async {
     await _creatingCompleter.future;
-    await _videoPlayerPlatform.setIfCurrentIsFullscreen(ifCurrentIsFullscreen);
+    await _videoPlayerPlatform.setIfCurrentIsFullscreen(_textureId, ifCurrentIsFullscreen);
   }
 
   Future<bool> isLooping() async {
     await _creatingCompleter.future;
-    return await _videoPlayerPlatform.isLooping();
+    return await _videoPlayerPlatform.isLooping(_textureId);
   }
 
   Future<void> setLooping(bool looping) async {
@@ -1227,7 +1227,7 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
 
   Future<double> getSpeed() async {
     await _creatingCompleter.future;
-    return await _videoPlayerPlatform.getSpeed();
+    return await _videoPlayerPlatform.getSpeed(_textureId);
   }
 
   Future<void> setSpeed(double speed) async {
@@ -1238,54 +1238,54 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
 
   Future<void> setSpeedPlaying(double speed, {bool soundTouch = true}) async {
     await _creatingCompleter.future;
-    await _videoPlayerPlatform.setSpeedPlaying(speed, soundTouch: soundTouch);
+    await _videoPlayerPlatform.setSpeedPlaying(_textureId, speed, soundTouch: soundTouch);
   }
 
   Future<bool> isShowPauseCover() async {
     await _creatingCompleter.future;
-    return await _videoPlayerPlatform.isShowPauseCover();
+    return await _videoPlayerPlatform.isShowPauseCover(textureId);
   }
 
   Future<void> setShowPauseCover(bool showPauseCover) async {
     await _creatingCompleter.future;
-    await _videoPlayerPlatform.setShowPauseCover(showPauseCover);
+    await _videoPlayerPlatform.setShowPauseCover(_textureId, showPauseCover);
   }
 
   Future<void> seekTo(Duration msec) async {
     await _creatingCompleter.future;
-    await _videoPlayerPlatform.seekTo(msec.inMilliseconds);
+    await _videoPlayerPlatform.seekTo(_textureId, msec.inMilliseconds);
   }
 
   Future<void> setMatrixGL(List<double> matrix) async {
     await _creatingCompleter.future;
-    await _videoPlayerPlatform.setMatrixGL(matrix);
+    await _videoPlayerPlatform.setMatrixGL(_textureId, matrix);
   }
 
   Future<void> releaseWhenLossAudio() async {
     await _creatingCompleter.future;
-    await _videoPlayerPlatform.releaseWhenLossAudio();
+    await _videoPlayerPlatform.releaseWhenLossAudio(_textureId);
   }
 
   Future<void> setReleaseWhenLossAudio(bool releaseWhenLossAudio) async {
     await _creatingCompleter.future;
-    await _videoPlayerPlatform.setReleaseWhenLossAudio(releaseWhenLossAudio);
+    await _videoPlayerPlatform.setReleaseWhenLossAudio(_textureId, releaseWhenLossAudio);
   }
 
   Future<void> setAutoFullWithSize(bool releaseWhenLossAudio) async {
     await _creatingCompleter.future;
-    await _videoPlayerPlatform.setAutoFullWithSize(releaseWhenLossAudio);
+    await _videoPlayerPlatform.setAutoFullWithSize(_textureId, releaseWhenLossAudio);
   }
 
   Future<bool> getAutoFullWithSize() async {
     await _creatingCompleter.future;
-    return await _videoPlayerPlatform.getAutoFullWithSize();
+    return await _videoPlayerPlatform.getAutoFullWithSize(_textureId);
   }
 
   /// Pauses the video.
   Future<void> pause() async {
     await _creatingCompleter.future;
     value = value.copyWith(isPlaying: false);
-    await _videoPlayerPlatform.onVideoPause();
+    await _videoPlayerPlatform.onVideoPause(_textureId);
   }
 
   /// resume the video.
@@ -1300,7 +1300,7 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     if (!_created || _isDisposed) {
       return;
     }
-    await _videoPlayerPlatform.setLooping(value.isLooping);
+    await _videoPlayerPlatform.setLooping(_textureId, value.isLooping);
   }
 
   playOrPause() {
@@ -1318,9 +1318,9 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
       return;
     }
     if (value.isPlaying) {
-      await _videoPlayerPlatform.onResume();
+      await _videoPlayerPlatform.onResume(_textureId);
     } else {
-      await _videoPlayerPlatform.onPause();
+      await _videoPlayerPlatform.onPause(_textureId);
     }
   }
 
@@ -1329,7 +1329,7 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     if (!_created || _isDisposed) {
       return;
     }
-    await _videoPlayerPlatform.setVolume(value.volume);
+    await _videoPlayerPlatform.setVolume(_textureId, value.volume);
   }
 
   Future<void> _applySpeed() async {
@@ -1337,7 +1337,7 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     if (!_created || _isDisposed) {
       return;
     }
-    await _videoPlayerPlatform.setSpeed(value.speed);
+    await _videoPlayerPlatform.setSpeed(_textureId, value.speed);
   }
 
   /// The position in the current video.
@@ -1346,27 +1346,27 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     if (!value.initialized && _isDisposed) {
       return null;
     }
-    return await _videoPlayerPlatform.getPlayPosition();
+    return await _videoPlayerPlatform.getPlayPosition(_textureId);
   }
 
   Future<void> initDanmaku({required DanmakuSettings settings}) async {
     await _creatingCompleter.future;
-    await _videoPlayerPlatform.initDanmaku(settings: settings);
+    await _videoPlayerPlatform.initDanmaku(_textureId, settings: settings);
   }
 
   Future<void> showDanmaku() async {
     await _creatingCompleter.future;
-    await _videoPlayerPlatform.showDanmaku();
+    await _videoPlayerPlatform.showDanmaku(_textureId);
   }
 
   Future<bool> getDanmakuShow() async {
     await _creatingCompleter.future;
-    return await _videoPlayerPlatform.getDanmakuShow();
+    return await _videoPlayerPlatform.getDanmakuShow(_textureId);
   }
 
   Future<void> hideDanmaku() async {
     await _creatingCompleter.future;
-    await _videoPlayerPlatform.hideDanmaku();
+    await _videoPlayerPlatform.hideDanmaku(_textureId);
   }
 
   Future<void> setDanmakuStyle(DanmakuStyle danmakuStyle,
@@ -1376,7 +1376,7 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
       double danmuStyleProjectionOffsetY = 0.0,
       double danmuStyleProjectionAlpha = 255.0}) async {
     await _creatingCompleter.future;
-    await _videoPlayerPlatform.setDanmakuStyle(danmakuStyle,
+    await _videoPlayerPlatform.setDanmakuStyle(_textureId, danmakuStyle,
         danmuStyleShadow: danmuStyleShadow,
         danmuStyleStroked: danmuStyleStroked,
         danmuStyleProjectionOffsetX: danmuStyleProjectionOffsetX,
@@ -1386,87 +1386,87 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
 
   Future<void> setDanmakuBold(bool bold) async {
     await _creatingCompleter.future;
-    await _videoPlayerPlatform.setDanmakuBold(bold);
+    await _videoPlayerPlatform.setDanmakuBold(_textureId, bold);
   }
 
   Future<void> setScrollSpeedFactor(double speedFactor) async {
     await _creatingCompleter.future;
-    await _videoPlayerPlatform.setScrollSpeedFactor(speedFactor);
+    await _videoPlayerPlatform.setScrollSpeedFactor(_textureId, speedFactor);
   }
 
   Future<void> setDuplicateMergingEnabled(bool enabled) async {
     await _creatingCompleter.future;
-    await _videoPlayerPlatform.setDuplicateMergingEnabled(enabled);
+    await _videoPlayerPlatform.setDuplicateMergingEnabled(_textureId, enabled);
   }
 
   Future<void> setMaximumLines(Map<DanmakuTypeScroll, int> maxLinesPair) async {
     await _creatingCompleter.future;
-    await _videoPlayerPlatform.setMaximumLines(maxLinesPair);
+    await _videoPlayerPlatform.setMaximumLines(_textureId, maxLinesPair);
   }
 
   Future<void> preventOverlapping(Map<DanmakuTypeScroll, bool> preventPair) async {
     await _creatingCompleter.future;
-    await _videoPlayerPlatform.preventOverlapping(preventPair);
+    await _videoPlayerPlatform.preventOverlapping(_textureId, preventPair);
   }
 
   Future<void> setMarginTop(double marginTop) async {
     await _creatingCompleter.future;
-    await _videoPlayerPlatform.setMarginTop(marginTop);
+    await _videoPlayerPlatform.setMarginTop(_textureId, marginTop);
   }
 
   Future<void> setDanmakuTransparency(double transparency) async {
     await _creatingCompleter.future;
-    await _videoPlayerPlatform.setDanmakuTransparency(transparency);
+    await _videoPlayerPlatform.setDanmakuTransparency(_textureId, transparency);
   }
 
   Future<void> setDanmakuMargin(double margin) async {
     await _creatingCompleter.future;
-    await _videoPlayerPlatform.setDanmakuMargin(margin);
+    await _videoPlayerPlatform.setDanmakuMargin(_textureId, margin);
   }
 
   Future<void> setScaleTextSize(double scale) async {
     await _creatingCompleter.future;
-    await _videoPlayerPlatform.setScaleTextSize(scale);
+    await _videoPlayerPlatform.setScaleTextSize(_textureId, scale);
   }
 
   Future<void> setMaximumVisibleSizeInScreen(MaximumVisibleSizeInScreen maximumVisibleSizeInScreen) async {
     await _creatingCompleter.future;
-    await _videoPlayerPlatform.setMaximumVisibleSizeInScreen(maximumVisibleSizeInScreen);
+    await _videoPlayerPlatform.setMaximumVisibleSizeInScreen(_textureId, maximumVisibleSizeInScreen);
   }
 
   Future<void> addDanmaku(BaseDanmaku danmaku) async {
     await _creatingCompleter.future;
-    await _videoPlayerPlatform.addDanmaku(danmaku);
+    await _videoPlayerPlatform.addDanmaku(_textureId, danmaku);
   }
 
   Future<void> startDanmaku() async {
     await _creatingCompleter.future;
-    await _videoPlayerPlatform.startDanmaku();
+    await _videoPlayerPlatform.startDanmaku(_textureId);
   }
 
   Future<void> pauseDanmaku() async {
     await _creatingCompleter.future;
-    await _videoPlayerPlatform.pauseDanmaku();
+    await _videoPlayerPlatform.pauseDanmaku(_textureId);
   }
 
   Future<void> resumeDanmaku() async {
     await _creatingCompleter.future;
-    await _videoPlayerPlatform.resumeDanmaku();
+    await _videoPlayerPlatform.resumeDanmaku(_textureId);
   }
 
   Future<void> stopDanmaku() async {
     await _creatingCompleter.future;
-    await _videoPlayerPlatform.stopDanmaku();
+    await _videoPlayerPlatform.stopDanmaku(_textureId);
   }
 
   Future<void> seekToDanmaku(Duration msec) async {
     await _creatingCompleter.future;
-    await _videoPlayerPlatform.seekToDanmaku(msec);
+    await _videoPlayerPlatform.seekToDanmaku(_textureId, msec);
   }
 
   Future<Map<String, dynamic>> getDanmakuStatus() async {
     await _creatingCompleter.future;
-    return await _videoPlayerPlatform.getDanmakuStatus();
+    return await _videoPlayerPlatform.getDanmakuStatus(_textureId);
   }
 
   /// Sets the audio volume of [this].
@@ -1480,106 +1480,106 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
   }
 
   Future<void> resolveByClick() {
-    return _videoPlayerPlatform.resolveByClick();
+    return _videoPlayerPlatform.resolveByClick(_textureId);
   }
 
   Future<void> backToProtVideo() {
-    return _videoPlayerPlatform.backToProtVideo();
+    return _videoPlayerPlatform.backToProtVideo(_textureId);
   }
 
   Future<bool> isOrientationRotateEnable() async {
     await _creatingCompleter.future;
-    return await _videoPlayerPlatform.isOrientationRotateEnable();
+    return await _videoPlayerPlatform.isOrientationRotateEnable(_textureId);
   }
 
   Future<void> setOrientationRotateEnable(bool enable) async {
     await _creatingCompleter.future;
-    await _videoPlayerPlatform.setOrientationRotateEnable(enable);
+    await _videoPlayerPlatform.setOrientationRotateEnable(_textureId, enable);
   }
 
   Future<bool> getOrientationRotateIsLand() async {
     await _creatingCompleter.future;
-    return await _videoPlayerPlatform.getOrientationRotateIsLand();
+    return await _videoPlayerPlatform.getOrientationRotateIsLand(_textureId);
   }
 
   Future<void> setOrientationRotateLand(bool isLand) async {
     await _creatingCompleter.future;
-    await _videoPlayerPlatform.setOrientationRotateLand(isLand);
+    await _videoPlayerPlatform.setOrientationRotateLand(_textureId, isLand);
   }
 
   Future<OrientationScreenType> getOrientationRotateScreenType() async {
     await _creatingCompleter.future;
-    return await _videoPlayerPlatform.getOrientationRotateScreenType();
+    return await _videoPlayerPlatform.getOrientationRotateScreenType(_textureId);
   }
 
   Future<void> setOrientationRotateScreenType(OrientationScreenType screenType) async {
     await _creatingCompleter.future;
-    await _videoPlayerPlatform.setOrientationRotateScreenType(screenType);
+    await _videoPlayerPlatform.setOrientationRotateScreenType(_textureId, screenType);
   }
 
   Future<bool> isOrientationRotateClick() async {
     await _creatingCompleter.future;
-    return await _videoPlayerPlatform.isOrientationRotateClick();
+    return await _videoPlayerPlatform.isOrientationRotateClick(_textureId);
   }
 
   Future<void> setOrientationRotateIsClick(bool isClick) async {
     await _creatingCompleter.future;
-    await _videoPlayerPlatform.setOrientationRotateIsClick(isClick);
+    await _videoPlayerPlatform.setOrientationRotateIsClick(_textureId, isClick);
   }
 
   Future<bool> isOrientationRotateClickLand() async {
     await _creatingCompleter.future;
-    return await _videoPlayerPlatform.isOrientationRotateClickLand();
+    return await _videoPlayerPlatform.isOrientationRotateClickLand(_textureId);
   }
 
   Future<void> setOrientationRotateIsClickLand(bool isClickLand) async {
     await _creatingCompleter.future;
-    await _videoPlayerPlatform.setOrientationRotateIsClickLand(isClickLand);
+    await _videoPlayerPlatform.setOrientationRotateIsClickLand(_textureId, isClickLand);
   }
 
   Future<bool> isOrientationRotateClickPort() async {
     await _creatingCompleter.future;
-    return await _videoPlayerPlatform.isOrientationRotateClickPort();
+    return await _videoPlayerPlatform.isOrientationRotateClickPort(_textureId);
   }
 
   Future<void> setOrientationRotateIslickPort(bool islickPort) async {
     await _creatingCompleter.future;
-    await _videoPlayerPlatform.setOrientationRotateIslickPort(islickPort);
+    await _videoPlayerPlatform.setOrientationRotateIslickPort(_textureId, islickPort);
   }
 
   Future<bool> isOrientationRotatePause() async {
     await _creatingCompleter.future;
-    return await _videoPlayerPlatform.isOrientationRotatePause();
+    return await _videoPlayerPlatform.isOrientationRotatePause(_textureId);
   }
 
   Future<void> setOrientationRotateIsPause(bool isPause) async {
     await _creatingCompleter.future;
-    await _videoPlayerPlatform.setOrientationRotateIsPause(isPause);
+    await _videoPlayerPlatform.setOrientationRotateIsPause(_textureId, isPause);
   }
 
   Future<bool> isOrientationRotateOnlyRotateLand() async {
     await _creatingCompleter.future;
-    return await _videoPlayerPlatform.isOrientationRotateOnlyRotateLand();
+    return await _videoPlayerPlatform.isOrientationRotateOnlyRotateLand(_textureId);
   }
 
   Future<void> setOrientationRotateIsOnlyRotateLand(bool isOnlyRotateLand) async {
     await _creatingCompleter.future;
-    await _videoPlayerPlatform.setOrientationRotateIsOnlyRotateLand(isOnlyRotateLand);
+    await _videoPlayerPlatform.setOrientationRotateIsOnlyRotateLand(_textureId, isOnlyRotateLand);
   }
 
   Future<bool> isOrientationRotateWithSystem() async {
     await _creatingCompleter.future;
-    return await _videoPlayerPlatform.isOrientationRotateWithSystem();
+    return await _videoPlayerPlatform.isOrientationRotateWithSystem(_textureId);
   }
 
   Future<void> setOrientationRotateWithSystem(bool isRotateWithSystem) async {
     await _creatingCompleter.future;
-    await _videoPlayerPlatform.setOrientationRotateWithSystem(isRotateWithSystem);
+    await _videoPlayerPlatform.setOrientationRotateWithSystem(_textureId, isRotateWithSystem);
   }
 
   Future<void> releaseOrientationListener() async {
     await _creatingCompleter.future;
-    await _videoPlayerPlatform.releaseOrientationListener();
+    await _videoPlayerPlatform.releaseOrientationListener(_textureId);
   }
 
   void onEnterFullScreen() {

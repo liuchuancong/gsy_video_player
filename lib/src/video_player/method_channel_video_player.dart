@@ -11,7 +11,6 @@ const _channel = MethodChannel('gsy_video_player_channel/platform_view_methods')
 /// An implementation of [VideoPlayerPlatform] that uses method channels.
 class MethodChannelVideoPlayer extends VideoPlayerPlatform {
   // Pass parameters to the platform side.
-  Map<String, dynamic> creationParams = <String, dynamic>{};
 
   int? textureId;
 
@@ -32,38 +31,43 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
   Future<void> dispose(int? textureId) async {
     await _channel.invokeMethod<void>(
       'dispose',
-      <String, dynamic>{'textureId': textureId},
-    );
-  }
-
-  @override
-  Future<void> setVideoOptionBuilder(VideoOptionBuilder builder) async {
-    Map<String, dynamic>? builderParams = builder.toJson();
-    await _channel.invokeMethod<void>(
-      'setVideoOptionBuilder',
       <String, dynamic>{
-        'builderParams': builderParams,
+        'textureId': textureId,
       },
     );
   }
 
   @override
-  Future<int> getLayoutId() async {
+  Future<void> setVideoOptionBuilder(int? textureId, VideoOptionBuilder builder) async {
+    Map<String, dynamic>? builderParams = builder.toJson();
+    await _channel.invokeMethod<void>(
+      'setVideoOptionBuilder',
+      <String, dynamic>{'textureId': textureId, 'builderParams': builderParams},
+    );
+  }
+
+  @override
+  Future<int> getLayoutId(int? textureId) async {
     late final Map<String, dynamic>? response;
-    response = await _channel.invokeMethod<Map<String, dynamic>?>('getLayoutId');
+    response = await _channel.invokeMethod<Map<String, dynamic>?>('getLayoutId', <String, dynamic>{
+      'textureId': textureId,
+    });
     return response!["layoutId"];
   }
 
   @override
-  Future<void> startPlayLogic() async {
-    await _channel.invokeMethod<void>('startPlayLogic');
+  Future<void> startPlayLogic(int? textureId) async {
+    await _channel.invokeMethod<void>('startPlayLogic', <String, dynamic>{
+      'textureId': textureId,
+    });
   }
 
   @override
-  Future<void> setUp(String url, bool cacheWithPlay, String cachePath, String title) async {
+  Future<void> setUp(int? textureId, String url, bool cacheWithPlay, String cachePath, String title) async {
     await _channel.invokeMethod<void>(
       'setUp',
       <String, dynamic>{
+        'textureId': textureId,
         'setUpOptions': {
           'url': url,
           'cacheWithPlay': cacheWithPlay,
@@ -75,126 +79,161 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
   }
 
   @override
-  Future<void> onVideoPause() async {
-    await _channel.invokeMethod<void>("onVideoPause");
+  Future<void> onVideoPause(int? textureId) async {
+    await _channel.invokeMethod<void>("onVideoPause", <String, dynamic>{
+      'textureId': textureId,
+    });
   }
 
   @override
-  Future<void> onVideoResume() async {
-    await _channel.invokeMethod<void>("onVideoResume");
+  Future<void> onVideoResume(int? textureId) async {
+    await _channel.invokeMethod<void>("onVideoResume", <String, dynamic>{
+      'textureId': textureId,
+    });
   }
 
   @override
-  Future<void> clearCurrentCache() async {
-    await _channel.invokeMethod<void>("clearCurrentCache");
+  Future<void> clearCurrentCache(int? textureId) async {
+    await _channel.invokeMethod<void>("clearCurrentCache", <String, dynamic>{
+      'textureId': textureId,
+    });
   }
 
   @override
-  Future<int> getCurrentPositionWhenPlaying() async {
+  Future<int> getCurrentPositionWhenPlaying(int? textureId) async {
     late final Map<String, dynamic>? response;
-    response = await _channel.invokeMethod<Map<String, dynamic>?>('getCurrentPositionWhenPlaying');
+    response = await _channel.invokeMethod<Map<String, dynamic>?>('getCurrentPositionWhenPlaying', <String, dynamic>{
+      'textureId': textureId,
+    });
     return response!["currentPosition"];
   }
 
   @override
-  Future<void> releaseAllVideos() async {
-    await _channel.invokeMethod<void>("releaseAllVideos");
+  Future<void> releaseAllVideos(int? textureId) async {
+    await _channel.invokeMethod<void>("releaseAllVideos", <String, dynamic>{
+      'textureId': textureId,
+    });
   }
 
   @override
-  Future<VideoPlayState> getCurrentState() async {
+  Future<VideoPlayState> getCurrentState(int? textureId) async {
     late final Map<String, dynamic>? response;
-    response = await _channel.invokeMethod<Map<String, dynamic>?>("getCurrentState");
+    response = await _channel.invokeMethod<Map<String, dynamic>?>("getCurrentState", <String, dynamic>{
+      'textureId': textureId,
+    });
     return getVideoPlayStateName(response!["currentState"]);
   }
 
   @override
-  Future<void> setPlayTag(String tag) async {
+  Future<void> setPlayTag(int? textureId, String tag) async {
     await _channel.invokeMethod<void>("setPlayTag", <String, dynamic>{
+      'textureId': textureId,
       "playTag": tag,
     });
   }
 
   @override
-  Future<void> setPlayPosition(int position) async {
+  Future<void> setPlayPosition(int? textureId, int position) async {
     await _channel.invokeMethod<void>("setPlayPosition", <String, dynamic>{
+      'textureId': textureId,
       "playPosition": position,
     });
   }
 
   @override
-  Future<void> backFromWindowFull() async {
-    await _channel.invokeMethod<void>("backFromWindowFull");
+  Future<void> backFromWindowFull(int? textureId) async {
+    await _channel.invokeMethod<void>("backFromWindowFull", <String, dynamic>{
+      'textureId': textureId,
+    });
   }
 
   @override
-  Future<int> getNetSpeed() async {
+  Future<int> getNetSpeed(int? textureId) async {
     late final Map<String, dynamic>? response;
-    response = await _channel.invokeMethod<Map<String, dynamic>?>("getNetSpeed");
+    response = await _channel.invokeMethod<Map<String, dynamic>?>("getNetSpeed", <String, dynamic>{
+      'textureId': textureId,
+    });
     return response!["netSpeed"];
   }
 
   @override
-  Future<String> getNetSpeedText() async {
+  Future<String> getNetSpeedText(int? textureId) async {
     late final Map<String, dynamic>? response;
-    response = await _channel.invokeMethod<Map<String, dynamic>?>("getNetSpeedText");
+    response = await _channel.invokeMethod<Map<String, dynamic>?>("getNetSpeedText", <String, dynamic>{
+      'textureId': textureId,
+    });
     return response!["getNetSpeedText"];
   }
 
   @override
-  Future<void> setSeekOnStart(int msec) async {
+  Future<void> setSeekOnStart(int? textureId, int msec) async {
     await _channel.invokeMethod<void>("setSeekOnStart", <String, dynamic>{
+      'textureId': textureId,
       "location": msec,
     });
   }
 
   @override
-  Future<int> getBuffterPoint() async {
+  Future<int> getBuffterPoint(int? textureId) async {
     late final Map<String, dynamic>? response;
-    response = await _channel.invokeMethod<Map<String, dynamic>?>("getBuffterPoint");
+    response = await _channel.invokeMethod<Map<String, dynamic>?>("getBuffterPoint", <String, dynamic>{
+      'textureId': textureId,
+    });
     return response!["buffterPoint"];
   }
 
   @override
-  Future<GsyVideoPlayerType> setCurrentPlayer(GsyVideoPlayerType playerType) async {
+  Future<GsyVideoPlayerType> setCurrentPlayer(int? textureId, GsyVideoPlayerType playerType) async {
     await _channel.invokeMethod<void>(
       'setCurrentPlayer',
       <String, dynamic>{
+        'textureId': textureId,
         'playerOptions': {'currentPlayer': playerType},
       },
     );
     late final Map<String, dynamic>? response;
-    response = await _channel.invokeMethod<Map<String, dynamic>?>("getPlayManager");
+    response = await _channel.invokeMethod<Map<String, dynamic>?>("getPlayManager", <String, dynamic>{
+      'textureId': textureId,
+    });
     return getVideoPlayerType(response!["currentPlayer"]);
   }
 
   @override
-  Future<GsyVideoPlayerType> getPlayManager() async {
+  Future<GsyVideoPlayerType> getPlayManager(int? textureId) async {
     late final Map<String, dynamic>? response;
-    response = await _channel.invokeMethod<Map<String, dynamic>?>("getPlayManager");
+    response = await _channel.invokeMethod<Map<String, dynamic>?>("getPlayManager", <String, dynamic>{
+      'textureId': textureId,
+    });
     return getVideoPlayerType(response!["currentPlayer"]);
   }
 
   @override
-  Future<void> setExoCacheManager() async {
-    await _channel.invokeMethod<void>("setExoCacheManager");
+  Future<void> setExoCacheManager(int? textureId) async {
+    await _channel.invokeMethod<void>("setExoCacheManager", <String, dynamic>{
+      'textureId': textureId,
+    });
   }
 
   @override
-  Future<void> setProxyCacheManager() async {
-    await _channel.invokeMethod<void>("setProxyCacheManager");
+  Future<void> setProxyCacheManager(int? textureId) async {
+    await _channel.invokeMethod<void>("setProxyCacheManager", <String, dynamic>{
+      'textureId': textureId,
+    });
   }
 
   @override
-  Future<void> clearAllDefaultCache() async {
-    await _channel.invokeMethod<void>("clearAllDefaultCache");
+  Future<void> clearAllDefaultCache(int? textureId) async {
+    await _channel.invokeMethod<void>("clearAllDefaultCache", <String, dynamic>{
+      'textureId': textureId,
+    });
   }
 
   @override
-  Future<void> clearDefaultCache(String cacheDir, String url) async {
+  Future<void> clearDefaultCache(int? textureId, String cacheDir, String url) async {
     await _channel.invokeMethod<void>(
       "clearDefaultCache",
       <String, dynamic>{
+        'textureId': textureId,
         'playOptions': {
           'cacheDir': cacheDir,
           'url': url,
@@ -204,40 +243,52 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
   }
 
   @override
-  Future<void> releaseMediaPlayer() async {
-    await _channel.invokeMethod<void>("releaseMediaPlayer");
+  Future<void> releaseMediaPlayer(int? textureId) async {
+    await _channel.invokeMethod<void>("releaseMediaPlayer", <String, dynamic>{
+      'textureId': textureId,
+    });
   }
 
   @override
-  Future<void> onPause() async {
-    await _channel.invokeMethod<void>("onPause");
+  Future<void> onPause(int? textureId) async {
+    await _channel.invokeMethod<void>("onPause", <String, dynamic>{
+      'textureId': textureId,
+    });
   }
 
   @override
-  Future<void> onResume() async {
-    await _channel.invokeMethod<void>("onResume");
+  Future<void> onResume(int? textureId) async {
+    await _channel.invokeMethod<void>("onResume", <String, dynamic>{
+      'textureId': textureId,
+    });
   }
 
   @override
-  Future<String> getPlayTag() async {
+  Future<String> getPlayTag(int? textureId) async {
     late final Map<String, dynamic>? response;
-    response = await _channel.invokeMethod<Map<String, dynamic>?>("getPlayTag");
+    response = await _channel.invokeMethod<Map<String, dynamic>?>("getPlayTag", <String, dynamic>{
+      'textureId': textureId,
+    });
     return response!["playTag"];
   }
 
   @override
-  Future<int> getPlayPosition() async {
+  Future<int> getPlayPosition(int? textureId) async {
     late final Map<String, dynamic>? response;
-    response = await _channel.invokeMethod<Map<String, dynamic>?>("getPlayPosition");
+    response = await _channel.invokeMethod<Map<String, dynamic>?>("getPlayPosition", <String, dynamic>{
+      'textureId': textureId,
+    });
     return response!["playPosition"];
   }
 
   @override
-  Future<List<IjkOption>> getOptionModelList() async {
+  Future<List<IjkOption>> getOptionModelList(int? textureId) async {
     List<IjkOption> optionModelList = [];
 
     late final Map<String, dynamic>? response;
-    response = await _channel.invokeMethod<Map<String, dynamic>?>("getOptionModelList");
+    response = await _channel.invokeMethod<Map<String, dynamic>?>("getOptionModelList", <String, dynamic>{
+      'textureId': textureId,
+    });
 
     if (response != null) {
       List<dynamic> optionList = response['ijkOptions'];
@@ -253,7 +304,7 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
   }
 
   @override
-  Future<void> setOptionModelList(List<IjkOption> optionModelList) async {
+  Future<void> setOptionModelList(int? textureId, List<IjkOption> optionModelList) async {
     List<dynamic> optionList = [];
     for (IjkOption option in optionModelList) {
       optionList.add({
@@ -265,42 +316,51 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
     await _channel.invokeMethod<void>(
       'setOptionModelList',
       <String, dynamic>{
+        'textureId': textureId,
         'ijkOptions': optionList,
       },
     );
   }
 
   @override
-  Future<bool> isNeedMute() async {
+  Future<bool> isNeedMute(int? textureId) async {
     late final Map<String, dynamic>? response;
-    response = await _channel.invokeMethod<Map<String, dynamic>?>("isNeedMute");
+    response = await _channel.invokeMethod<Map<String, dynamic>?>("isNeedMute", <String, dynamic>{
+      'textureId': textureId,
+    });
     return response!["isNeedMute"];
   }
 
   @override
-  Future<void> setNeedMute(bool needMute) async {
+  Future<void> setNeedMute(int? textureId, bool needMute) async {
     await _channel.invokeMethod<void>("setNeedMute", <String, dynamic>{
+      'textureId': textureId,
       "isNeedMute": needMute,
     });
   }
 
   @override
-  Future<int> getTimeOut() async {
+  Future<int> getTimeOut(int? textureId) async {
     late final Map<String, dynamic>? response;
-    response = await _channel.invokeMethod<Map<String, dynamic>?>("getTimeOut");
+    response = await _channel.invokeMethod<Map<String, dynamic>?>("getTimeOut", <String, dynamic>{
+      'textureId': textureId,
+    });
     return response!["timeOut"];
   }
 
   @override
-  Future<bool> isNeedTimeOutOther() async {
+  Future<bool> isNeedTimeOutOther(int? textureId) async {
     late final Map<String, dynamic>? response;
-    response = await _channel.invokeMethod<Map<String, dynamic>?>("isNeedTimeOutOther");
+    response = await _channel.invokeMethod<Map<String, dynamic>?>("isNeedTimeOutOther", <String, dynamic>{
+      'textureId': textureId,
+    });
     return response!["isNeedTimeOutOther"];
   }
 
   @override
-  Future<void> setTimeOut(int timeOut, {bool needTimeOutOther = false}) async {
+  Future<void> setTimeOut(int? textureId, int timeOut, {bool needTimeOutOther = false}) async {
     await _channel.invokeMethod<void>("setNeedMute", <String, dynamic>{
+      'textureId': textureId,
       "timeOutOptions": {
         "timeOut": timeOut,
         "needTimeOutOther": needTimeOutOther,
@@ -309,50 +369,61 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
   }
 
   @override
-  Future<void> setLogLevel(LogLevel level) async {
+  Future<void> setLogLevel(int? textureId, LogLevel level) async {
     await _channel.invokeMethod<void>("setLogLevel", <String, dynamic>{
+      'textureId': textureId,
       "logLevel": level.index,
     });
   }
 
   @override
-  Future<bool> isMediaCodec() async {
+  Future<bool> isMediaCodec(int? textureId) async {
     late final Map<String, dynamic>? response;
-    response = await _channel.invokeMethod<Map<String, dynamic>?>("isMediaCodec");
+    response = await _channel.invokeMethod<Map<String, dynamic>?>("isMediaCodec", <String, dynamic>{
+      'textureId': textureId,
+    });
     return response!["isMediaCodec"];
   }
 
   @override
-  Future<double> getScreenScaleRatio() async {
+  Future<double> getScreenScaleRatio(int? textureId) async {
     late final Map<String, dynamic>? response;
-    response = await _channel.invokeMethod<Map<String, dynamic>?>("getScreenScaleRatio");
+    response = await _channel.invokeMethod<Map<String, dynamic>?>("getScreenScaleRatio", <String, dynamic>{
+      'textureId': textureId,
+    });
     return response!["screenScaleRatio"] as double;
   }
 
   @override
-  Future<void> setScreenScaleRatio(double ratio) async {
+  Future<void> setScreenScaleRatio(int? textureId, double ratio) async {
     await _channel.invokeMethod<void>("setScreenScaleRatio", <String, dynamic>{
+      'textureId': textureId,
       "screenScaleRatio": ratio,
     });
   }
 
   @override
-  Future<bool> isMediaCodecTexture() async {
+  Future<bool> isMediaCodecTexture(int? textureId) async {
     late final Map<String, dynamic>? response;
-    response = await _channel.invokeMethod<Map<String, dynamic>?>("isMediaCodecTexture");
+    response = await _channel.invokeMethod<Map<String, dynamic>?>("isMediaCodecTexture", <String, dynamic>{
+      'textureId': textureId,
+    });
     return response!["isMediaCodecTexture"];
   }
 
   @override
-  Future<PlayerVideoShowType> getShowType() async {
+  Future<PlayerVideoShowType> getShowType(int? textureId) async {
     late final Map<String, dynamic>? response;
-    response = await _channel.invokeMethod<Map<String, dynamic>?>("getShowType");
+    response = await _channel.invokeMethod<Map<String, dynamic>?>("getShowType", <String, dynamic>{
+      'textureId': textureId,
+    });
     return getPlayerVideoShowType(response!["type"]);
   }
 
   @override
-  Future<void> setShowType(PlayerVideoShowType showType, {double screenScaleRatio = 0.0}) async {
+  Future<void> setShowType(int? textureId, PlayerVideoShowType showType, {double screenScaleRatio = 0.0}) async {
     await _channel.invokeMethod<void>("setShowType", <String, dynamic>{
+      'textureId': textureId,
       "showTypeOptions": {
         "showType": showType,
         "screenScaleRatio": screenScaleRatio,
@@ -361,36 +432,42 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
   }
 
   @override
-  Future<GsyVideoPlayerRenderType> getRenderType() async {
+  Future<GsyVideoPlayerRenderType> getRenderType(int? textureId) async {
     late final Map<String, dynamic>? response;
-    response = await _channel.invokeMethod<Map<String, dynamic>?>("getRenderType");
+    response = await _channel.invokeMethod<Map<String, dynamic>?>("getRenderType", <String, dynamic>{
+      'textureId': textureId,
+    });
     return getGsyVideoPlayerRenderType(response!["renderType"]);
   }
 
   @override
-  Future<void> setRenderType(GsyVideoPlayerRenderType renderType) async {
+  Future<void> setRenderType(int? textureId, GsyVideoPlayerRenderType renderType) async {
     await _channel.invokeMethod<void>("setRenderType", <String, dynamic>{
+      'textureId': textureId,
       "renderType": renderType.index,
     });
   }
 
   @override
-  Future<void> setMediaCodec(bool mediaCodec) async {
+  Future<void> setMediaCodec(int? textureId, bool mediaCodec) async {
     await _channel.invokeMethod<void>("setMediaCodec", <String, dynamic>{
+      'textureId': textureId,
       "enableCodec": mediaCodec,
     });
   }
 
   @override
-  Future<void> setMediaCodecTexture(bool mediaCodecTexture) async {
+  Future<void> setMediaCodecTexture(int? textureId, bool mediaCodecTexture) async {
     await _channel.invokeMethod<void>("setMediaCodecTexture", <String, dynamic>{
+      'textureId': textureId,
       "enableCodecTexture": mediaCodecTexture,
     });
   }
 
   @override
-  Future<void> startWindowFullscreen(bool showActionBar, bool showStatusBar) async {
+  Future<void> startWindowFullscreen(int? textureId, bool showActionBar, bool showStatusBar) async {
     _channel.invokeMethod<void>("startWindowFullscreen", <String, dynamic>{
+      'textureId': textureId,
       "startWindowFullscreenOptions": {
         "actionBar": showActionBar,
         "statusBar": showStatusBar,
@@ -399,148 +476,182 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
   }
 
   @override
-  Future<void> resolveByClick() async {
-    await _channel.invokeMethod<void>("resolveByClick");
+  Future<void> resolveByClick(int? textureId) async {
+    await _channel.invokeMethod<void>("resolveByClick", <String, dynamic>{
+      'textureId': textureId,
+    });
   }
 
   @override
-  Future<void> backToProtVideo() async {
-    await _channel.invokeMethod<void>("backToProtVideo");
+  Future<void> backToProtVideo(int? textureId) async {
+    await _channel.invokeMethod<void>("backToProtVideo", <String, dynamic>{
+      'textureId': textureId,
+    });
   }
 
   @override
-  Future<bool> isOrientationRotateEnable() async {
+  Future<bool> isOrientationRotateEnable(int? textureId) async {
     late final Map<String, dynamic>? response;
-    response = await _channel.invokeMethod<Map<String, dynamic>?>("isOrientationRotateEnable");
+    response = await _channel.invokeMethod<Map<String, dynamic>?>("isOrientationRotateEnable", <String, dynamic>{
+      'textureId': textureId,
+    });
     return response!["isEnable"];
   }
 
   @override
-  Future<void> setOrientationRotateEnable(bool enable) async {
+  Future<void> setOrientationRotateEnable(int? textureId, bool enable) async {
     await _channel.invokeMethod<void>("setOrientationRotateEnable", <String, dynamic>{
+      'textureId': textureId,
       "enable": enable,
     });
   }
 
   @override
-  Future<bool> getOrientationRotateIsLand() async {
+  Future<bool> getOrientationRotateIsLand(int? textureId) async {
     late final Map<String, dynamic>? response;
-    response = await _channel.invokeMethod<Map<String, dynamic>?>("getOrientationRotateIsLand");
+    response = await _channel.invokeMethod<Map<String, dynamic>?>("getOrientationRotateIsLand", <String, dynamic>{
+      'textureId': textureId,
+    });
     return response!["isLand"];
   }
 
   @override
-  Future<void> setOrientationRotateLand(bool isLand) async {
+  Future<void> setOrientationRotateLand(int? textureId, bool isLand) async {
     await _channel.invokeMethod<void>("setOrientationRotateLand", <String, dynamic>{
+      'textureId': textureId,
       "land": isLand,
     });
   }
 
   @override
-  Future<OrientationScreenType> getOrientationRotateScreenType() async {
+  Future<OrientationScreenType> getOrientationRotateScreenType(int? textureId) async {
     late final Map<String, dynamic>? response;
-    response = await _channel.invokeMethod<Map<String, dynamic>?>("getOrientationRotateScreenType");
+    response = await _channel.invokeMethod<Map<String, dynamic>?>("getOrientationRotateScreenType", <String, dynamic>{
+      'textureId': textureId,
+    });
     return getOrientationScreenType(response!["screenType"]);
   }
 
   @override
-  Future<void> setOrientationRotateScreenType(OrientationScreenType screenType) async {
+  Future<void> setOrientationRotateScreenType(int? textureId, OrientationScreenType screenType) async {
     await _channel.invokeMethod<void>("setOrientationRotateScreenType",
-        <String, dynamic>{"screenType": getOrientationScreenTypeIntValue(screenType)});
+        <String, dynamic>{'textureId': textureId, "screenType": getOrientationScreenTypeIntValue(screenType)});
   }
 
   @override
-  Future<bool> isOrientationRotateClick() async {
+  Future<bool> isOrientationRotateClick(int? textureId) async {
     late final Map<String, dynamic>? response;
-    response = await _channel.invokeMethod<Map<String, dynamic>?>("isOrientationRotateClick");
+    response = await _channel.invokeMethod<Map<String, dynamic>?>("isOrientationRotateClick", <String, dynamic>{
+      'textureId': textureId,
+    });
     return response!["isClick"];
   }
 
   @override
-  Future<void> setOrientationRotateIsClick(bool isClick) async {
+  Future<void> setOrientationRotateIsClick(int? textureId, bool isClick) async {
     await _channel.invokeMethod<void>("setOrientationRotateIsClick", <String, dynamic>{
+      'textureId': textureId,
       "isClick": isClick,
     });
   }
 
   @override
-  Future<bool> isOrientationRotateClickLand() async {
+  Future<bool> isOrientationRotateClickLand(int? textureId) async {
     late final Map<String, dynamic>? response;
-    response = await _channel.invokeMethod<Map<String, dynamic>?>("isOrientationRotateClickLand");
+    response = await _channel.invokeMethod<Map<String, dynamic>?>("isOrientationRotateClickLand", <String, dynamic>{
+      'textureId': textureId,
+    });
     return response!["isClickLand"];
   }
 
   @override
-  Future<void> setOrientationRotateIsClickLand(bool isClickLand) async {
+  Future<void> setOrientationRotateIsClickLand(int? textureId, bool isClickLand) async {
     await _channel.invokeMethod<void>("setOrientationRotateIsClickLand", <String, dynamic>{
+      'textureId': textureId,
       "isClickLand": isClickLand,
     });
   }
 
   @override
-  Future<bool> isOrientationRotateClickPort() async {
+  Future<bool> isOrientationRotateClickPort(int? textureId) async {
     late final Map<String, dynamic>? response;
-    response = await _channel.invokeMethod<Map<String, dynamic>?>("isOrientationRotateClickPort");
+    response = await _channel.invokeMethod<Map<String, dynamic>?>("isOrientationRotateClickPort", <String, dynamic>{
+      'textureId': textureId,
+    });
     return response!["isClickPort"];
   }
 
   @override
-  Future<void> setOrientationRotateIslickPort(bool islickPort) async {
+  Future<void> setOrientationRotateIslickPort(int? textureId, bool islickPort) async {
     await _channel.invokeMethod<void>("setOrientationRotateIslickPort", <String, dynamic>{
+      'textureId': textureId,
       "islickPort": islickPort,
     });
   }
 
   @override
-  Future<bool> isOrientationRotatePause() async {
+  Future<bool> isOrientationRotatePause(int? textureId) async {
     late final Map<String, dynamic>? response;
-    response = await _channel.invokeMethod<Map<String, dynamic>?>("isOrientationRotatePause");
+    response = await _channel.invokeMethod<Map<String, dynamic>?>("isOrientationRotatePause", <String, dynamic>{
+      'textureId': textureId,
+    });
     return response!["isPause"];
   }
 
   @override
-  Future<void> setOrientationRotateIsPause(bool isPause) async {
+  Future<void> setOrientationRotateIsPause(int? textureId, bool isPause) async {
     await _channel.invokeMethod<void>("setOrientationRotateIsPause", <String, dynamic>{
+      'textureId': textureId,
       "isPause": isPause,
     });
   }
 
   @override
-  Future<bool> isOrientationRotateOnlyRotateLand() async {
+  Future<bool> isOrientationRotateOnlyRotateLand(int? textureId) async {
     late final Map<String, dynamic>? response;
-    response = await _channel.invokeMethod<Map<String, dynamic>?>("isOrientationRotateOnlyRotateLand");
+    response =
+        await _channel.invokeMethod<Map<String, dynamic>?>("isOrientationRotateOnlyRotateLand", <String, dynamic>{
+      'textureId': textureId,
+    });
     return response!["isOnlyRotateLand"];
   }
 
   @override
-  Future<void> setOrientationRotateIsOnlyRotateLand(bool isOnlyRotateLand) async {
+  Future<void> setOrientationRotateIsOnlyRotateLand(int? textureId, bool isOnlyRotateLand) async {
     await _channel.invokeMethod<void>("setOrientationRotateIsOnlyRotateLand", <String, dynamic>{
+      'textureId': textureId,
       "isOnlyRotateLand": isOnlyRotateLand,
     });
   }
 
   @override
-  Future<bool> isOrientationRotateWithSystem() async {
+  Future<bool> isOrientationRotateWithSystem(int? textureId) async {
     late final Map<String, dynamic>? response;
-    response = await _channel.invokeMethod<Map<String, dynamic>?>("isOrientationRotateWithSystem");
+    response = await _channel.invokeMethod<Map<String, dynamic>?>("isOrientationRotateWithSystem", <String, dynamic>{
+      'textureId': textureId,
+    });
     return response!["rotateWithSystem"];
   }
 
   @override
-  Future<void> setOrientationRotateWithSystem(bool isRotateWithSystem) async {
+  Future<void> setOrientationRotateWithSystem(int? textureId, bool isRotateWithSystem) async {
     await _channel.invokeMethod<void>("setOrientationRotateWithSystem", <String, dynamic>{
+      'textureId': textureId,
       "rotateWithSystem": isRotateWithSystem,
     });
   }
 
   @override
-  Future<void> releaseOrientationListener() async {
-    await _channel.invokeMethod<void>("releaseOrientationListener");
+  Future<void> releaseOrientationListener(int? textureId) async {
+    await _channel.invokeMethod<void>("releaseOrientationListener", <String, dynamic>{
+      'textureId': textureId,
+    });
   }
 
   @override
-  Future<void> showSmallVideo(Size size, bool showActionBar, bool showStatusBar) async {
+  Future<void> showSmallVideo(int? textureId, Size size, bool showActionBar, bool showStatusBar) async {
     _channel.invokeMethod<void>("showSmallVideo", <String, dynamic>{
+      'textureId': textureId,
       "showSmallVideoOptions": {
         "actionBar": showActionBar,
         "statusBar": showStatusBar,
@@ -553,346 +664,421 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
   }
 
   @override
-  Future<void> hideSmallVideo() async {
-    _channel.invokeMethod<void>("hideSmallVideo");
+  Future<void> hideSmallVideo(int? textureId) async {
+    _channel.invokeMethod<void>("hideSmallVideo", <String, dynamic>{
+      'textureId': textureId,
+    });
   }
 
   @override
-  Future<bool> isShowFullAnimation() async {
+  Future<bool> isShowFullAnimation(int? textureId) async {
     late final Map<String, dynamic>? response;
-    response = await _channel.invokeMethod<Map<String, dynamic>?>("isShowFullAnimation");
+    response = await _channel.invokeMethod<Map<String, dynamic>?>("isShowFullAnimation", <String, dynamic>{
+      'textureId': textureId,
+    });
     return response!["isShowFullAnimation"];
   }
 
   @override
-  Future<void> setShowFullAnimation(bool showFullAnimation) async {
+  Future<void> setShowFullAnimation(int? textureId, bool showFullAnimation) async {
     await _channel.invokeMethod<void>("setShowFullAnimation", <String, dynamic>{
+      'textureId': textureId,
       "isShowFullAnimation": showFullAnimation,
     });
   }
 
   @override
-  Future<bool> isRotateViewAuto() async {
+  Future<bool> isRotateViewAuto(int? textureId) async {
     late final Map<String, dynamic>? response;
-    response = await _channel.invokeMethod<Map<String, dynamic>?>("isRotateViewAuto");
+    response = await _channel.invokeMethod<Map<String, dynamic>?>("isRotateViewAuto", <String, dynamic>{
+      'textureId': textureId,
+    });
     return response!["isRotateViewAuto"];
   }
 
   @override
-  Future<void> setRotateViewAuto(bool rotateViewAuto) async {
+  Future<void> setRotateViewAuto(int? textureId, bool rotateViewAuto) async {
     await _channel.invokeMethod<void>("setRotateViewAuto", <String, dynamic>{
+      'textureId': textureId,
       "isRotateViewAuto": rotateViewAuto,
     });
   }
 
   @override
-  Future<bool> isLockLand() async {
+  Future<bool> isLockLand(int? textureId) async {
     late final Map<String, dynamic>? response;
-    response = await _channel.invokeMethod<Map<String, dynamic>?>("isLockLand");
+    response = await _channel.invokeMethod<Map<String, dynamic>?>("isLockLand", <String, dynamic>{
+      'textureId': textureId,
+    });
     return response!["isLockLand"];
   }
 
   @override
-  Future<void> setLockLand(bool lockLand) async {
+  Future<void> setLockLand(int? textureId, bool lockLand) async {
     await _channel.invokeMethod<void>("setLockLand", <String, dynamic>{
+      'textureId': textureId,
       "isLockLand": lockLand,
     });
   }
 
   @override
-  Future<bool> isRotateWithSystem() async {
+  Future<bool> isRotateWithSystem(int? textureId) async {
     late final Map<String, dynamic>? response;
-    response = await _channel.invokeMethod<Map<String, dynamic>?>("isRotateWithSystem");
+    response = await _channel.invokeMethod<Map<String, dynamic>?>("isRotateWithSystem", <String, dynamic>{
+      'textureId': textureId,
+    });
     return response!["isRotateWithSystem"];
   }
 
   @override
-  Future<void> setRotateWithSystem(bool rotateWithSystem) async {
+  Future<void> setRotateWithSystem(int? textureId, bool rotateWithSystem) async {
     await _channel.invokeMethod<void>("setRotateWithSystem", <String, dynamic>{
+      'textureId': textureId,
       "isRotateWithSystem": rotateWithSystem,
     });
   }
 
   @override
-  Future<void> initUIState() async {
-    await _channel.invokeMethod<void>("initUIState");
+  Future<void> initUIState(int? textureId) async {
+    await _channel.invokeMethod<void>("initUIState", <String, dynamic>{
+      'textureId': textureId,
+    });
   }
 
   @override
-  Future<int> getEnlargeImageRes() async {
+  Future<int> getEnlargeImageRes(int? textureId) async {
     late final Map<String, dynamic>? response;
-    response = await _channel.invokeMethod<Map<String, dynamic>?>("getEnlargeImageRes");
+    response = await _channel.invokeMethod<Map<String, dynamic>?>("getEnlargeImageRes", <String, dynamic>{
+      'textureId': textureId,
+    });
     return response!["enlargeImageRes"];
   }
 
   @override
-  Future<void> setEnlargeImageRes(int res) async {
+  Future<void> setEnlargeImageRes(int? textureId, int res) async {
     await _channel.invokeMethod<void>("setEnlargeImageRes", <String, dynamic>{
+      'textureId': textureId,
       "enlargeImageRes": res,
     });
   }
 
   @override
-  Future<int> getShrinkImageRes() async {
+  Future<int> getShrinkImageRes(int? textureId) async {
     late final Map<String, dynamic>? response;
-    response = await _channel.invokeMethod<Map<String, dynamic>?>("getShrinkImageRes");
+    response = await _channel.invokeMethod<Map<String, dynamic>?>("getShrinkImageRes", <String, dynamic>{
+      'textureId': textureId,
+    });
     return response!["shrinkImageRes"];
   }
 
   @override
-  Future<void> setShrinkImageRes(int res) async {
+  Future<void> setShrinkImageRes(int? textureId, int res) async {
     await _channel.invokeMethod<void>("setShrinkImageRes", <String, dynamic>{
+      'textureId': textureId,
       "shrinkImageRes": res,
     });
   }
 
   @override
-  Future<bool> getIsTouchWigetFull() async {
+  Future<bool> getIsTouchWigetFull(int? textureId) async {
     late final Map<String, dynamic>? response;
-    response = await _channel.invokeMethod<Map<String, dynamic>?>("getIsTouchWigetFull");
+    response = await _channel.invokeMethod<Map<String, dynamic>?>("getIsTouchWigetFull", <String, dynamic>{
+      'textureId': textureId,
+    });
     return response!["isTouchWigetFull"];
   }
 
   @override
-  Future<void> setIsTouchWigetFull(bool isTouchWigetFull) async {
+  Future<void> setIsTouchWigetFull(int? textureId, bool isTouchWigetFull) async {
     await _channel.invokeMethod<void>("setIsTouchWigetFull", <String, dynamic>{
+      'textureId': textureId,
       "isTouchWigetFull": isTouchWigetFull,
     });
   }
 
   @override
-  Future<void> setThumbPlay(bool thumbPlay) async {
+  Future<void> setThumbPlay(int? textureId, bool thumbPlay) async {
     await _channel.invokeMethod<void>("setThumbPlay", <String, dynamic>{
+      'textureId': textureId,
       "thumbPlay": thumbPlay,
     });
   }
 
   @override
-  Future<bool> isHideKeyBoard() async {
+  Future<bool> isHideKeyBoard(int? textureId) async {
     late final Map<String, dynamic>? response;
-    response = await _channel.invokeMethod<Map<String, dynamic>?>("isHideKeyBoard");
+    response = await _channel.invokeMethod<Map<String, dynamic>?>("isHideKeyBoard", <String, dynamic>{
+      'textureId': textureId,
+    });
     return response!["isHideKeyBoard"];
   }
 
   @override
-  Future<void> setHideKeyBoard(bool hideKeyBoard) async {
+  Future<void> setHideKeyBoard(int? textureId, bool hideKeyBoard) async {
     await _channel.invokeMethod<void>("setHideKeyBoard", <String, dynamic>{
+      'textureId': textureId,
       "isHideKeyBoard": hideKeyBoard,
     });
   }
 
   @override
-  Future<bool> isNeedShowWifiTip() async {
+  Future<bool> isNeedShowWifiTip(int? textureId) async {
     late final Map<String, dynamic>? response;
-    response = await _channel.invokeMethod<Map<String, dynamic>?>("isNeedShowWifiTip");
+    response = await _channel.invokeMethod<Map<String, dynamic>?>("isNeedShowWifiTip", <String, dynamic>{
+      'textureId': textureId,
+    });
     return response!["isNeedShowWifiTip"];
   }
 
   @override
-  Future<void> setNeedShowWifiTip(bool needShowWifiTip) async {
+  Future<void> setNeedShowWifiTip(int? textureId, bool needShowWifiTip) async {
     await _channel.invokeMethod<void>("setNeedShowWifiTip", <String, dynamic>{
+      'textureId': textureId,
       "isNeedShowWifiTip": needShowWifiTip,
     });
   }
 
   @override
-  Future<bool> isTouchWiget() async {
+  Future<bool> isTouchWiget(int? textureId) async {
     late final Map<String, dynamic>? response;
-    response = await _channel.invokeMethod<Map<String, dynamic>?>("isTouchWiget");
+    response = await _channel.invokeMethod<Map<String, dynamic>?>("isTouchWiget", <String, dynamic>{
+      'textureId': textureId,
+    });
     return response!["isTouchWiget"];
   }
 
   @override
-  Future<void> setTouchWiget(bool touchWiget) async {
+  Future<void> setTouchWiget(int? textureId, bool touchWiget) async {
     await _channel.invokeMethod<void>("setTouchWiget", <String, dynamic>{
+      'textureId': textureId,
       "isTouchWiget": touchWiget,
     });
   }
 
   @override
-  Future<double> getSeekRatio() async {
+  Future<double> getSeekRatio(int? textureId) async {
     late final Map<String, dynamic>? response;
-    response = await _channel.invokeMethod<Map<String, dynamic>?>("getSeekRatio");
+    response = await _channel.invokeMethod<Map<String, dynamic>?>("getSeekRatio", <String, dynamic>{
+      'textureId': textureId,
+    });
     return response!["seekRatio"] as double;
   }
 
   @override
-  Future<void> setSeekRatio(double seekRatio) async {
+  Future<void> setSeekRatio(int? textureId, double seekRatio) async {
     await _channel.invokeMethod<void>("setSeekRatio", <String, dynamic>{
+      'textureId': textureId,
       "seekRatio": seekRatio,
     });
   }
 
   @override
-  Future<bool> isNeedLockFull() async {
+  Future<bool> isNeedLockFull(int? textureId) async {
     late final Map<String, dynamic>? response;
-    response = await _channel.invokeMethod<Map<String, dynamic>?>("isNeedLockFull");
+    response = await _channel.invokeMethod<Map<String, dynamic>?>("isNeedLockFull", <String, dynamic>{
+      'textureId': textureId,
+    });
     return response!["isNeedLockFull"];
   }
 
   @override
-  Future<void> setNeedLockFull(bool needLockFull) async {
+  Future<void> setNeedLockFull(int? textureId, bool needLockFull) async {
     await _channel.invokeMethod<void>("setNeedLockFull", <String, dynamic>{
+      'textureId': textureId,
       "isNeedLockFull": needLockFull,
     });
   }
 
   @override
-  Future<int> getDismissControlTime() async {
+  Future<int> getDismissControlTime(int? textureId) async {
     late final Map<String, dynamic>? response;
-    response = await _channel.invokeMethod<Map<String, dynamic>?>("getDismissControlTime");
+    response = await _channel.invokeMethod<Map<String, dynamic>?>("getDismissControlTime", <String, dynamic>{
+      'textureId': textureId,
+    });
     return response!["isNeedLockFull"];
   }
 
   @override
-  Future<void> setDismissControlTime(int time) async {
+  Future<void> setDismissControlTime(int? textureId, int time) async {
     await _channel.invokeMethod<void>("setDismissControlTime", <String, dynamic>{
+      'textureId': textureId,
       "dismissControlTime": time,
     });
   }
 
   @override
-  Future<int> getSeekOnStart() async {
+  Future<int> getSeekOnStart(int? textureId) async {
     late final Map<String, dynamic>? response;
-    response = await _channel.invokeMethod<Map<String, dynamic>?>("getSeekOnStart");
+    response = await _channel.invokeMethod<Map<String, dynamic>?>("getSeekOnStart", <String, dynamic>{
+      'textureId': textureId,
+    });
     return response!["seekOnStart"];
   }
 
   @override
-  Future<bool> isIfCurrentIsFullscreen() async {
+  Future<bool> isIfCurrentIsFullscreen(int? textureId) async {
     late final Map<String, dynamic>? response;
-    response = await _channel.invokeMethod<Map<String, dynamic>?>("isIfCurrentIsFullscreen");
+    response = await _channel.invokeMethod<Map<String, dynamic>?>("isIfCurrentIsFullscreen", <String, dynamic>{
+      'textureId': textureId,
+    });
     return response!["isIfCurrentIsFullscreen"];
   }
 
   @override
-  Future<void> setIfCurrentIsFullscreen(bool ifCurrentIsFullscreen) async {
+  Future<void> setIfCurrentIsFullscreen(int? textureId, bool ifCurrentIsFullscreen) async {
     await _channel.invokeMethod<void>("setIfCurrentIsFullscreen", <String, dynamic>{
+      'textureId': textureId,
       "isIfCurrentIsFullscreen": ifCurrentIsFullscreen,
     });
   }
 
   @override
-  Future<bool> isLooping() async {
+  Future<bool> isLooping(int? textureId) async {
     late final Map<String, dynamic>? response;
-    response = await _channel.invokeMethod<Map<String, dynamic>?>("isLooping");
+    response = await _channel.invokeMethod<Map<String, dynamic>?>("isLooping", <String, dynamic>{
+      'textureId': textureId,
+    });
     return response!["isLooping"];
   }
 
   @override
-  Future<void> setLooping(bool looping) async {
+  Future<void> setLooping(int? textureId, bool looping) async {
     await _channel.invokeMethod<void>("setLooping", <String, dynamic>{
+      'textureId': textureId,
       "isLooping": looping,
     });
   }
 
   @override
-  Future<double> getSpeed() async {
+  Future<double> getSpeed(int? textureId) async {
     late final Map<String, dynamic>? response;
-    response = await _channel.invokeMethod<Map<String, dynamic>?>("getSpeed");
+    response = await _channel.invokeMethod<Map<String, dynamic>?>("getSpeed", <String, dynamic>{
+      'textureId': textureId,
+    });
     return response!["speed"] as double;
   }
 
   @override
-  Future<void> setSpeed(double speed, {bool soundTouch = true}) async {
+  Future<void> setSpeed(int? textureId, double speed, {bool soundTouch = true}) async {
     await _channel.invokeMethod<void>("setSpeed", <String, dynamic>{
+      'textureId': textureId,
       "speedOptions": {"speed": 1.0, "soundTouch": soundTouch},
     });
   }
 
   @override
-  Future<void> setSpeedPlaying(double speed, {bool soundTouch = true}) async {
+  Future<void> setSpeedPlaying(int? textureId, double speed, {bool soundTouch = true}) async {
     await _channel.invokeMethod<void>("setSpeedPlaying", <String, dynamic>{
+      'textureId': textureId,
       "speedPlayingOptions": {"speed": 1.0, "soundTouch": soundTouch},
     });
   }
 
   @override
-  Future<bool> isShowPauseCover() async {
+  Future<bool> isShowPauseCover(int? textureId) async {
     late final Map<String, dynamic>? response;
-    response = await _channel.invokeMethod<Map<String, dynamic>?>("isShowPauseCover");
+    response = await _channel.invokeMethod<Map<String, dynamic>?>("isShowPauseCover", <String, dynamic>{
+      'textureId': textureId,
+    });
     return response!["isShowPauseCover"];
   }
 
   @override
-  Future<void> setShowPauseCover(bool showPauseCover) async {
+  Future<void> setShowPauseCover(int? textureId, bool showPauseCover) async {
     await _channel.invokeMethod<void>("setShowPauseCover", <String, dynamic>{
+      'textureId': textureId,
       "isShowPauseCover": showPauseCover,
     });
   }
 
   @override
-  Future<void> seekTo(int msec) async {
+  Future<void> seekTo(int? textureId, int msec) async {
     await _channel.invokeMethod<void>("seekTo", <String, dynamic>{
+      'textureId': textureId,
       "position": msec,
     });
   }
 
   @override
-  Future<void> setMatrixGL(List<double> matrix) async {
+  Future<void> setMatrixGL(int? textureId, List<double> matrix) async {
     await _channel.invokeMethod<void>("seekTo", <String, dynamic>{
+      'textureId': textureId,
       "matrix": matrix,
     });
   }
 
   @override
-  Future<void> releaseWhenLossAudio() async {
-    await _channel.invokeMethod<void>("releaseWhenLossAudio");
+  Future<void> releaseWhenLossAudio(int? textureId) async {
+    await _channel.invokeMethod<void>("releaseWhenLossAudio", <String, dynamic>{
+      'textureId': textureId,
+    });
   }
 
   @override
-  Future<void> setAutoFullWithSize(bool releaseWhenLossAudio) async {
+  Future<void> setAutoFullWithSize(int? textureId, bool releaseWhenLossAudio) async {
     await _channel.invokeMethod<void>("setAutoFullWithSize", <String, dynamic>{
+      'textureId': textureId,
       "autoFullWithSize": releaseWhenLossAudio,
     });
   }
 
   @override
-  Future<bool> getAutoFullWithSize() async {
+  Future<bool> getAutoFullWithSize(int? textureId) async {
     late final Map<String, dynamic>? response;
-    response = await _channel.invokeMethod<Map<String, dynamic>?>("autoFullWithSize");
+    response = await _channel.invokeMethod<Map<String, dynamic>?>("autoFullWithSize", <String, dynamic>{
+      'textureId': textureId,
+    });
     return response!["autoFullWithSize"];
   }
 
   @override
-  Future<void> setVolume(double volume) async {
+  Future<void> setVolume(int? textureId, double volume) async {
     await _channel.invokeMethod<void>("setVolume", <String, dynamic>{
+      'textureId': textureId,
       "volume": volume,
     });
   }
 
   @override
-  Future<void> initDanmaku({required DanmakuSettings settings}) async {
+  Future<void> initDanmaku(int? textureId, {required DanmakuSettings settings}) async {
     await _channel.invokeMethod<void>("initDanmaku", <String, dynamic>{
+      'textureId': textureId,
       "danmakuSettings": settings.toJson(),
     });
   }
 
   @override
-  Future<void> showDanmaku() async {
-    await _channel.invokeMethod<void>("showDanmaku");
+  Future<void> showDanmaku(int? textureId) async {
+    await _channel.invokeMethod<void>("showDanmaku", <String, dynamic>{
+      'textureId': textureId,
+    });
   }
 
   @override
-  Future<bool> getDanmakuShow() async {
+  Future<bool> getDanmakuShow(int? textureId) async {
     late final Map<String, dynamic>? response;
-    response = await _channel.invokeMethod<Map<String, dynamic>?>("getDanmakuShow");
+    response = await _channel.invokeMethod<Map<String, dynamic>?>("getDanmakuShow", <String, dynamic>{
+      'textureId': textureId,
+    });
     return response!["showDanmaku"];
   }
 
   @override
-  Future<void> hideDanmaku() async {
-    await _channel.invokeMethod<void>("hideDanmaku");
+  Future<void> hideDanmaku(int? textureId) async {
+    await _channel.invokeMethod<void>("hideDanmaku", <String, dynamic>{
+      'textureId': textureId,
+    });
   }
 
   @override
-  Future<void> setDanmakuStyle(DanmakuStyle danmakuStyle,
+  Future<void> setDanmakuStyle(int? textureId, DanmakuStyle danmakuStyle,
       {double danmuStyleShadow = 0.0,
       double danmuStyleStroked = 0.0,
       double danmuStyleProjectionOffsetX = 0.0,
       double danmuStyleProjectionOffsetY = 0.0,
       double danmuStyleProjectionAlpha = 255.0}) async {
     await _channel.invokeMethod<void>("setDanmakuStyle", <String, dynamic>{
+      'textureId': textureId,
       "danmakuStyle": danmakuStyleToInt(danmakuStyle),
       "danmuStyleShadow": danmuStyleShadow,
       "danmuStyleStroked": danmuStyleStroked,
@@ -903,113 +1089,136 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
   }
 
   @override
-  Future<void> setDanmakuBold(bool bold) async {
+  Future<void> setDanmakuBold(int? textureId, bool bold) async {
     await _channel.invokeMethod<void>("setDanmakuBold", <String, dynamic>{
+      'textureId': textureId,
       "isBold": bold,
     });
   }
 
   @override
-  Future<void> setScrollSpeedFactor(double speedFactor) async {
+  Future<void> setScrollSpeedFactor(int? textureId, double speedFactor) async {
     await _channel.invokeMethod<void>("setScrollSpeedFactor", <String, dynamic>{
+      'textureId': textureId,
       "speedFactor": speedFactor,
     });
   }
 
   @override
-  Future<void> setDuplicateMergingEnabled(bool enabled) async {
+  Future<void> setDuplicateMergingEnabled(int? textureId, bool enabled) async {
     await _channel.invokeMethod<void>("setDuplicateMergingEnabled", <String, dynamic>{
+      'textureId': textureId,
       "enabled": enabled,
     });
   }
 
   @override
-  Future<void> setMaximumLines(Map<DanmakuTypeScroll, int> maxLinesPair) async {
+  Future<void> setMaximumLines(int? textureId, Map<DanmakuTypeScroll, int> maxLinesPair) async {
     await _channel.invokeMethod<void>("setMaximumLines", <String, dynamic>{
+      'textureId': textureId,
       "maxLinesPair": maxLinesPair.map((key, value) => MapEntry(danmakuTypeScrollToInt(key), value)),
     });
   }
 
   @override
-  Future<void> preventOverlapping(Map<DanmakuTypeScroll, bool> preventPair) async {
+  Future<void> preventOverlapping(int? textureId, Map<DanmakuTypeScroll, bool> preventPair) async {
     await _channel.invokeMethod<void>("preventOverlapping", <String, dynamic>{
+      'textureId': textureId,
       "preventPair": preventPair.map((key, value) => MapEntry(danmakuTypeScrollToInt(key), value)),
     });
   }
 
   @override
-  Future<void> setMarginTop(double marginTop) async {
+  Future<void> setMarginTop(int? textureId, double marginTop) async {
     await _channel.invokeMethod<void>("setMarginTop", <String, dynamic>{
+      'textureId': textureId,
       "marginTop": marginTop,
     });
   }
 
   @override
-  Future<void> setDanmakuTransparency(double transparency) async {
+  Future<void> setDanmakuTransparency(int? textureId, double transparency) async {
     await _channel.invokeMethod<void>("setDanmakuTransparency", <String, dynamic>{
+      'textureId': textureId,
       "transparency": transparency,
     });
   }
 
   @override
-  Future<void> setDanmakuMargin(double margin) async {
+  Future<void> setDanmakuMargin(int? textureId, double margin) async {
     await _channel.invokeMethod<void>("setDanmakuMargin", <String, dynamic>{
+      'textureId': textureId,
       "margin": margin,
     });
   }
 
   @override
-  Future<void> setScaleTextSize(double scale) async {
+  Future<void> setScaleTextSize(int? textureId, double scale) async {
     await _channel.invokeMethod<void>("setScaleTextSize", <String, dynamic>{
+      'textureId': textureId,
       "scale": scale,
     });
   }
 
   @override
-  Future<void> setMaximumVisibleSizeInScreen(MaximumVisibleSizeInScreen maximumVisibleSizeInScreen) async {
+  Future<void> setMaximumVisibleSizeInScreen(
+      int? textureId, MaximumVisibleSizeInScreen maximumVisibleSizeInScreen) async {
     await _channel.invokeMethod<void>("setMaximumVisibleSizeInScreen", <String, dynamic>{
+      'textureId': textureId,
       "maximumVisibleSizeInScreen": getIntFromMaximumVisibleSizeInScreen(maximumVisibleSizeInScreen),
     });
   }
 
   @override
-  Future<void> addDanmaku(BaseDanmaku danmaku) async {
+  Future<void> addDanmaku(int? textureId, BaseDanmaku danmaku) async {
     await _channel.invokeMethod<void>("addDanmaku", <String, dynamic>{
+      'textureId': textureId,
       "danmaku": danmaku.toJson(),
     });
   }
 
   @override
-  Future<void> startDanmaku() async {
-    await _channel.invokeMethod<void>("startDanmaku");
+  Future<void> startDanmaku(int? textureId) async {
+    await _channel.invokeMethod<void>("startDanmaku", <String, dynamic>{
+      'textureId': textureId,
+    });
   }
 
   @override
-  Future<void> pauseDanmaku() async {
-    await _channel.invokeMethod<void>("pauseDanmaku");
+  Future<void> pauseDanmaku(int? textureId) async {
+    await _channel.invokeMethod<void>("pauseDanmaku", <String, dynamic>{
+      'textureId': textureId,
+    });
   }
 
   @override
-  Future<void> resumeDanmaku() async {
-    await _channel.invokeMethod<void>("resumeDanmaku");
+  Future<void> resumeDanmaku(int? textureId) async {
+    await _channel.invokeMethod<void>("resumeDanmaku", <String, dynamic>{
+      'textureId': textureId,
+    });
   }
 
   @override
-  Future<void> stopDanmaku() async {
-    await _channel.invokeMethod<void>("stopDanmaku");
+  Future<void> stopDanmaku(int? textureId) async {
+    await _channel.invokeMethod<void>("stopDanmaku", <String, dynamic>{
+      'textureId': textureId,
+    });
   }
 
   @override
-  Future<void> seekToDanmaku(Duration msec) async {
+  Future<void> seekToDanmaku(int? textureId, Duration msec) async {
     await _channel.invokeMethod<void>("seekToDanmaku", <String, dynamic>{
+      'textureId': textureId,
       "ms": msec.inMilliseconds,
     });
   }
 
   @override
-  Future<Map<String, dynamic>> getDanmakuStatus() async {
+  Future<Map<String, dynamic>> getDanmakuStatus(int? textureId) async {
     late final Map<String, dynamic>? response;
-    response = await _channel.invokeMethod<Map<String, dynamic>?>("getDanmakuStatus");
+    response = await _channel.invokeMethod<Map<String, dynamic>?>("getDanmakuStatus", <String, dynamic>{
+      'textureId': textureId,
+    });
     return response!;
   }
 

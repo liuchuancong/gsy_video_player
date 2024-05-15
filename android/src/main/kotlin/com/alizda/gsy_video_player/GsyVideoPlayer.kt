@@ -4,7 +4,6 @@ import android.content.Context
 import android.os.Build
 import android.view.Surface
 import androidx.annotation.RequiresApi
-import com.alizda.gsy_video_player.GsyVideoPlayerPlugin.Companion.lastTextureId
 import com.shuyu.gsyvideoplayer.GSYVideoManager
 import com.shuyu.gsyvideoplayer.builder.GSYVideoOptionBuilder
 import io.flutter.plugin.common.EventChannel
@@ -65,7 +64,6 @@ class GsyVideoPlayer(
         }
         val reply: MutableMap<String, Any> = HashMap()
         reply["textureId"] = textureEntry.id()
-        lastTextureId = textureEntry.id()
         result.success(reply)
     }
 
