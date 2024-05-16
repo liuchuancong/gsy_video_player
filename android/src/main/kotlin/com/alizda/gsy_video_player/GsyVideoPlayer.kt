@@ -78,4 +78,10 @@ class GsyVideoPlayer(
     fun onMethodCall(call: MethodCall, result: MethodChannel.Result, textureId: Long) {
         customMethodCallApi!!.handleMethod(call, result)
     }
+
+    fun onPictureInPictureStatusChanged(inPip: Boolean) {
+        val event: MutableMap<String, Any> = HashMap()
+        event["event"] = if (inPip) "pipStart" else "pipStop"
+        eventSink.success(event)
+    }
 }

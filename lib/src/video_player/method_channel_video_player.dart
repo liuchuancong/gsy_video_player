@@ -1223,6 +1223,40 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
   }
 
   @override
+  Future<void> enablePictureInPicture(int? textureId, double? top, double? left, double? width, double? height) async {
+    return _channel.invokeMethod<void>(
+      'enablePictureInPicture',
+      <String, dynamic>{
+        'textureId': textureId,
+        'top': top,
+        'left': left,
+        'width': width,
+        'height': height,
+      },
+    );
+  }
+
+  @override
+  Future<bool?> isPictureInPictureEnabled(int? textureId) {
+    return _channel.invokeMethod<bool>(
+      'isPictureInPictureSupported',
+      <String, dynamic>{
+        'textureId': textureId,
+      },
+    );
+  }
+
+  @override
+  Future<void> disablePictureInPicture(int? textureId) {
+    return _channel.invokeMethod<bool>(
+      'disablePictureInPicture',
+      <String, dynamic>{
+        'textureId': textureId,
+      },
+    );
+  }
+
+  @override
   Stream<VideoEvent> videoEventsFor(int? textureId) {
     return eventChannelFor().receiveBroadcastStream().map((dynamic event) {
       late Map<dynamic, dynamic> map;
@@ -1499,6 +1533,15 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
           );
         case 'onListenerInitDanmakuSuccess':
           return VideoEvent(eventType: VideoEventType.onListenerInitDanmakuSuccess);
+        case 'pipStart':
+          return VideoEvent(
+            eventType: VideoEventType.pipStart,
+          );
+
+        case 'pipStop':
+          return VideoEvent(
+            eventType: VideoEventType.pipStop,
+          );
         default:
           return VideoEvent(
             eventType: VideoEventType.unknown,

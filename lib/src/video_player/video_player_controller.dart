@@ -264,6 +264,12 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
       case VideoEventType.onListenerInitDanmakuSuccess:
         _postEvent(VideoEventType.onListenerInitDanmakuSuccess);
         break;
+      case VideoEventType.pipStart:
+        _postEvent(VideoEventType.pipStart);
+        break;
+      case VideoEventType.pipStop:
+        _postEvent(VideoEventType.pipStop);
+        break;
       case VideoEventType.unknown:
         _postEvent(VideoEventType.unknown);
         break;
@@ -570,6 +576,12 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
             duration: Duration(milliseconds: event.duration!.inMilliseconds),
             playState: event.playState,
           );
+          break;
+        case VideoEventType.pipStart:
+          value = value.copyWith(isPip: true);
+          break;
+        case VideoEventType.pipStop:
+          value = value.copyWith(isPip: false);
           break;
         case VideoEventType.videoPlayerInitialized:
           value = value.copyWith(
@@ -1589,6 +1601,18 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
   void onExitFullScreen() {
     setIfCurrentIsFullscreen(false);
     value = value.copyWith(isFullScreen: false);
+  }
+
+  Future<void> enablePictureInPicture({double? top, double? left, double? width, double? height}) async {
+    await _videoPlayerPlatform.enablePictureInPicture(textureId, top, left, width, height);
+  }
+
+  Future<void> disablePictureInPicture() async {
+    await _videoPlayerPlatform.disablePictureInPicture(textureId);
+  }
+
+  Future<bool?> isPictureInPictureSupported() async {
+    return _videoPlayerPlatform.isPictureInPictureEnabled(_textureId);
   }
 
   void refresh() {

@@ -91,5 +91,9 @@ enum VideoEventType {
 
   videoPlayerInitialized,
 
+  pipStart,
+
+  pipStop,
+
   unknown,
 }

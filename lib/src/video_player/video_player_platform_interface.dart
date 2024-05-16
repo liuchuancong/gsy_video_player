@@ -684,6 +684,20 @@ abstract class VideoPlayerPlatform {
     throw UnimplementedError('releaseOrientationListener() has not been implemented.');
   }
 
+  ///Enables PiP mode.
+  Future<void> enablePictureInPicture(int? textureId, double? top, double? left, double? width, double? height) {
+    throw UnimplementedError('enablePictureInPicture() has not been implemented.');
+  }
+
+  ///Disables PiP mode.
+  Future<void> disablePictureInPicture(int? textureId) {
+    throw UnimplementedError('disablePictureInPicture() has not been implemented.');
+  }
+
+  Future<bool?> isPictureInPictureEnabled(int? textureId) {
+    throw UnimplementedError('isPictureInPictureEnabled() has not been implemented.');
+  }
+
   Stream<VideoEvent> videoEventsFor(int? textureId) {
     throw UnimplementedError('videoEventsFor() has not been implemented.');
   }
