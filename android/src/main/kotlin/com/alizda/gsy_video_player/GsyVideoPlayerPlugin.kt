@@ -179,7 +179,10 @@ class GsyVideoPlayerPlugin : FlutterPlugin, ActivityAware, MethodChannel.MethodC
                 } else if (call.method.equals("isPictureInPictureSupported")) {
                     result.success(isPictureInPictureSupported())
                 } else {
-
+                    if(call.method.equals("dispose")){
+                        videoPlayers.remove(textureId)
+                        stopPipHandler()
+                    }
                     player.onMethodCall(call, result, textureId)
                 }
             }
