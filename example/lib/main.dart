@@ -64,18 +64,8 @@ class _MyAppState extends State<MyApp> {
               color: Colors.black,
               width: double.infinity,
               height: 300,
-              child: GsyPlayerVideoFullScreen(
+              child: GsyVideoPlayer(
                 controller: gsyVideoPlayerController,
-                playerView: GsyVideoPlayer(
-                  controller: gsyVideoPlayerController,
-                ),
-                routePageBuilder: (BuildContext context, Animation<double> animation,
-                    Animation<double> secondaryAnimation, GsyPlayerVideoFullScreenProvider controllerProvider) {
-                  return GsyEnterFullScreen(
-                    controller: gsyVideoPlayerController,
-                    controllerProvider: controllerProvider,
-                  );
-                },
               ),
             ),
             Wrap(

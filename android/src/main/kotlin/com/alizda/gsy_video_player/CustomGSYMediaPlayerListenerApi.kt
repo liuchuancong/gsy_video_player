@@ -28,30 +28,26 @@ class CustomGSYMediaPlayerListenerApi(private var videoPlayer: CustomVideoPlayer
     }
 
     fun sendInitialized(sink: QueuingEventSink) {
-        if (GsyVideoPlayerPlugin.isInitialized) {
-            val event: MutableMap<String, Any?> = HashMap()
-            event["event"] = "initialized"
-            sink.success(event)
-        }
+        val event: MutableMap<String, Any?> = HashMap()
+        event["event"] = "initialized"
+        sink.success(event)
     }
 
     fun sendVideoPlayerInitialized(sink: QueuingEventSink) {
-        if (GsyVideoPlayerPlugin.isInitialized) {
-            val event: MutableMap<String, Any?> = HashMap()
-            val reply: MutableMap<String, Any> = HashMap()
-            event["event"] = "videoPlayerInitialized"
-            reply["duration"] = videoDuration
-            reply["position"] = videoPosition
-            reply["isPlaying"] = isPlaying()
-            reply["currentState"] = getCurrentState()
-            reply["width"] = GSYVideoManager.instance().player.videoWidth
-            reply["height"] = GSYVideoManager.instance().player.videoHeight
-            reply["videoSarDen"] = GSYVideoManager.instance().player.videoWidth
-            reply["videoSarNum"] = GSYVideoManager.instance().player.videoSarNum
-            reply["width"] = getCurrentState()
-            event["reply"] = reply
-            sink.success(event)
-        }
+        val event: MutableMap<String, Any?> = HashMap()
+        val reply: MutableMap<String, Any> = HashMap()
+        event["event"] = "videoPlayerInitialized"
+        reply["duration"] = videoDuration
+        reply["position"] = videoPosition
+        reply["isPlaying"] = isPlaying()
+        reply["currentState"] = getCurrentState()
+        reply["width"] = GSYVideoManager.instance().player.videoWidth
+        reply["height"] = GSYVideoManager.instance().player.videoHeight
+        reply["videoSarDen"] = GSYVideoManager.instance().player.videoWidth
+        reply["videoSarNum"] = GSYVideoManager.instance().player.videoSarNum
+        reply["width"] = getCurrentState()
+        event["reply"] = reply
+        sink.success(event)
     }
 
     fun onConfigurationChanged(sink: QueuingEventSink) {

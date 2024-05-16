@@ -35,3 +35,24 @@ PlayerVideoShowType getPlayerVideoShowType(int showType) {
       return PlayerVideoShowType.screenTypeDefault;
   }
 }
+
+int getPlayerVideoShowTypeIntValue(PlayerVideoShowType showType) {
+  switch (showType) {
+    case PlayerVideoShowType.screenTypeDefault:
+      return 0;
+    case PlayerVideoShowType.screenType16_9:
+      return 1;
+    case PlayerVideoShowType.screenType4_3:
+      return 2;
+    case PlayerVideoShowType.screenTypeFull:
+      return 3;
+    case PlayerVideoShowType.screenTypeMatchFull:
+      return 4;
+    case PlayerVideoShowType.screenType18_9:
+      return 5;
+    case PlayerVideoShowType.screenTypeCustom:
+      return 6;
+    default:
+      return 0;
+  }
+}

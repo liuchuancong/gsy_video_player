@@ -188,7 +188,7 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
       'setCurrentPlayer',
       <String, dynamic>{
         'textureId': textureId,
-        'playerOptions': {'currentPlayer': playerType},
+        'playerOptions': {'currentPlayer': getGsyVideoPlayerType(playerType)},
       },
     );
     late final Map<String, dynamic>? response;
@@ -425,7 +425,7 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
     await _channel.invokeMethod<void>("setShowType", <String, dynamic>{
       'textureId': textureId,
       "showTypeOptions": {
-        "showType": showType,
+        "showType": getPlayerVideoShowTypeIntValue(showType),
         "screenScaleRatio": screenScaleRatio,
       },
     });
@@ -1388,12 +1388,10 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
           final int position = reply!["position"];
           final int duration = reply["duration"];
           final int currentState = reply["currentState"];
-
-          final bool isPlaying = reply["isPlaying"];
           return VideoEvent(
             eventType: VideoEventType.onListenerCompletion,
             position: Duration(milliseconds: position),
-            isPlaying: isPlaying,
+            isPlaying: false,
             duration: Duration(milliseconds: duration),
             playState: getVideoPlayStateName(currentState),
           );
@@ -1415,27 +1413,25 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
           );
         case 'onListenerSeekComplete':
           final int position = reply!["position"];
-          final bool isPlaying = reply["isPlaying"];
           final int duration = reply["duration"];
           final int currentState = reply["currentState"];
           return VideoEvent(
             eventType: VideoEventType.onListenerSeekComplete,
             position: Duration(milliseconds: position),
             duration: Duration(milliseconds: duration),
-            isPlaying: isPlaying,
+            isPlaying: false,
             playState: getVideoPlayStateName(currentState),
           );
         case 'onListenerError':
           final int position = reply!["position"];
           final int duration = reply["duration"];
-          final bool isPlaying = reply["isPlaying"];
           final int currentState = reply["currentState"];
           final int what = reply["what"];
           final int extra = reply["extra"];
           return VideoEvent(
             eventType: VideoEventType.onListenerError,
             position: Duration(milliseconds: position),
-            isPlaying: isPlaying,
+            isPlaying: false,
             duration: Duration(milliseconds: duration),
             playState: getVideoPlayStateName(currentState),
             what: what,
@@ -1485,24 +1481,22 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
           final int position = reply!["position"];
           final int duration = reply["duration"];
           final int currentState = reply["currentState"];
-          final bool isPlaying = reply["isPlaying"];
           return VideoEvent(
             eventType: VideoEventType.onListenerVideoPause,
             position: Duration(milliseconds: position),
             duration: Duration(milliseconds: duration),
-            isPlaying: isPlaying,
+            isPlaying: false,
             playState: getVideoPlayStateName(currentState),
           );
         case 'onListenerVideoResume':
           final int position = reply!["position"];
           final int duration = reply["duration"];
-          final bool isPlaying = reply["isPlaying"];
           final int currentState = reply["currentState"];
           return VideoEvent(
             eventType: VideoEventType.onListenerVideoResume,
             position: Duration(milliseconds: position),
             duration: Duration(milliseconds: duration),
-            isPlaying: isPlaying,
+            isPlaying: true,
             playState: getVideoPlayStateName(currentState),
           );
         case 'onListenerVideoResumeWithSeek':

@@ -17,10 +17,10 @@ class CustomGSYVideoPlayerApi(private var videoPlayer: GsyVideoPlayer, private v
     }
 
     fun dispose() {
-        if (GsyVideoPlayerPlugin.isInitialized) {
-            GsyVideoPlayerPlugin.isInitialized = false
-            GSYVideoManager.instance().releaseMediaPlayer();
-        }
+        GSYVideoManager.instance().player.stop()
+        GSYVideoManager.instance().player.release()
+        GSYVideoManager.instance().player.releaseSurface()
+        GSYVideoManager.instance().releaseMediaPlayer();
     }
 
     @RequiresApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)

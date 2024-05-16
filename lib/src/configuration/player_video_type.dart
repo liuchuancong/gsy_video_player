@@ -19,3 +19,18 @@ GsyVideoPlayerType getVideoPlayerType(int index) {
       return GsyVideoPlayerType.exo;
   }
 }
+
+int getGsyVideoPlayerType(GsyVideoPlayerType type) {
+  switch (type) {
+    case GsyVideoPlayerType.exo:
+      return 0;
+    case GsyVideoPlayerType.sysytem:
+      return 1;
+    case GsyVideoPlayerType.ijk:
+      return 2;
+    case GsyVideoPlayerType.ali:
+      return 3;
+    default:
+      return 0;
+  }
+}

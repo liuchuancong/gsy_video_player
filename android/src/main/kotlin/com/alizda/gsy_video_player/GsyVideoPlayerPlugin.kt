@@ -144,7 +144,6 @@ class GsyVideoPlayerPlugin : FlutterPlugin, ActivityAware, MethodChannel.MethodC
         when (call.method) {
             "init" -> {
                 disposeAllPlayers()
-                isInitialized = true
             }
 
             "create" -> {
@@ -182,6 +181,7 @@ class GsyVideoPlayerPlugin : FlutterPlugin, ActivityAware, MethodChannel.MethodC
                     if(call.method.equals("dispose")){
                         videoPlayers.remove(textureId)
                         stopPipHandler()
+                        player.dispose()
                     }
                     player.onMethodCall(call, result, textureId)
                 }
@@ -224,7 +224,6 @@ class GsyVideoPlayerPlugin : FlutterPlugin, ActivityAware, MethodChannel.MethodC
         const val TAG = "GSY_VIDEO_PLAYER"
         private const val METHODS_CHANNEL = "gsy_video_player_channel/platform_view_methods"
         private const val EVENTS_CHANNEL = "gsy_video_player_channel/platform_view_events"
-        var isInitialized = false
 
         @Suppress("UNCHECKED_CAST")
         fun <T> getParameter(parameters: Map<String, Any?>?, key: String, defaultValue: T): T {
