@@ -95,5 +95,9 @@ enum VideoEventType {
 
   pipStop,
 
+  startWindowFullscreen,
+
+  exitWindowFullscreen,
+
   unknown,
 }

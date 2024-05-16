@@ -19,7 +19,6 @@ class _GsyPlayerVideoFullScreenState extends State<GsyPlayerVideoFullScreen> wit
   ///Flag which determines if widget has initialized
   bool _initialized = false;
 
-  bool _isFullScreen = false;
   @override
   void initState() {
     super.initState();
@@ -41,9 +40,12 @@ class _GsyPlayerVideoFullScreenState extends State<GsyPlayerVideoFullScreen> wit
   }
 
   void onControllerEvent(VideoEventType videoEventType) {
-    if (widget.controller.value.isFullScreen != _isFullScreen) {
-      _isFullScreen = widget.controller.value.isFullScreen;
-      onFullScreenChanged();
+    if (videoEventType == VideoEventType.startWindowFullscreen) {
+      _pushFullScreenWidget(context);
+    } else if (videoEventType == VideoEventType.exitWindowFullscreen) {
+      final controller = widget.controller;
+      controller.backToProtVideo();
+      Navigator.of(context, rootNavigator: true).pop();
     }
   }
 
@@ -52,20 +54,8 @@ class _GsyPlayerVideoFullScreenState extends State<GsyPlayerVideoFullScreen> wit
       settings: const RouteSettings(),
       pageBuilder: _fullScreenRoutePageBuilder,
     );
-    Navigator.of(context, rootNavigator: true)
-        .push(route)
-        .then((value) => {widget.controller.setIfCurrentIsFullscreen(true)});
-  }
-
-  // ignore: avoid_void_async
-  Future<void> onFullScreenChanged() async {
-    final controller = widget.controller;
-    if (controller.value.isFullScreen) {
-      await _pushFullScreenWidget(context);
-    } else {
-      widget.controller.setIfCurrentIsFullscreen(false);
-      Navigator.of(context, rootNavigator: true).pop();
-    }
+    widget.controller.resolveByClick();
+    Navigator.of(context, rootNavigator: true).push(route);
   }
 
   Widget _fullScreenRoutePageBuilder(
@@ -87,6 +77,7 @@ class _GsyPlayerVideoFullScreenState extends State<GsyPlayerVideoFullScreen> wit
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
+    widget.controller.removeEventsListener(onControllerEvent);
     super.dispose();
   }
 }

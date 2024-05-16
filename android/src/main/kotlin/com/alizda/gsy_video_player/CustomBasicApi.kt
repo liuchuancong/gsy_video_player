@@ -7,11 +7,16 @@ import io.flutter.plugin.common.MethodChannel
 
 class CustomBasicApi(private var videoPlayer: CustomVideoPlayer, private val context: Context) {
 
-    fun startWindowFullscreen(call: MethodCall, result: MethodChannel.Result) {
-        val startWindowFullscreenOptions = call.argument<Map<String, Any?>>("startWindowFullscreenOptions")!!
-        val actionBar = GsyVideoPlayerPlugin.getParameter(startWindowFullscreenOptions, "actionBar", true);
-        val statusBar = GsyVideoPlayerPlugin.getParameter(startWindowFullscreenOptions, "statusBar", true);
-        videoPlayer.startWindowFullscreen(context, actionBar, statusBar)
+    fun startWindowFullscreen(call: MethodCall, result: MethodChannel.Result,eventSink: QueuingEventSink) {
+        val event: MutableMap<String, Any?> = HashMap()
+        event["event"] = "startWindowFullscreen"
+        eventSink.success(event)
+    }
+
+    fun exitWindowFullscreen(call: MethodCall, result: MethodChannel.Result,eventSink: QueuingEventSink) {
+        val event: MutableMap<String, Any?> = HashMap()
+        event["event"] = "exitWindowFullscreen"
+        eventSink.success(event)
     }
 
     fun showSmallVideo(call: MethodCall, result: MethodChannel.Result) {

@@ -277,8 +277,13 @@ abstract class VideoPlayerPlatform {
   }
 
   /// Start window full screen.
-  Future<void> startWindowFullscreen(int? textureId, bool showActionBar, bool showStatusBar) {
+  Future<void> startWindowFullscreen(int? textureId) {
     throw UnimplementedError('startWindowFullscreen() has not been implemented.');
+  }
+
+  /// Start window full screen.
+  Future<void> exitWindowFullscreen(int? textureId) {
+    throw UnimplementedError('exitWindowFullscreen() has not been implemented.');
   }
 
   /// Show small video.

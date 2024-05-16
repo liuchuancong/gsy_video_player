@@ -61,7 +61,7 @@ class GsyVideoPlayer(
             customOrientationUtilsApi = CustomOrientationUtilsApi(player!!, context)
             customGSYMediaPlayerListenerApi = CustomGSYMediaPlayerListenerApi(player!!)
             customGSYVideoPlayerApi = CustomGSYVideoPlayerApi(this, context, textureEntry.id())
-            customMethodCallApi = CustomMethodCallApi(this, context, customGSYVideoManagerApi!!, customBasicApi!!, customGSYVideoPlayerApi!!, customGSYVideoTypeApi, customOrientationUtilsApi!!)
+            customMethodCallApi = CustomMethodCallApi(this, context, customGSYVideoManagerApi!!, customBasicApi!!, customGSYVideoPlayerApi!!, customGSYVideoTypeApi, customOrientationUtilsApi!!,eventSink)
             player!!.setEventSink(eventSink)
             player!!.setCustomOrientationUtilsApi(customOrientationUtilsApi!!)
             player!!.setVideoDisplay(surface!!)

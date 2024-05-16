@@ -270,6 +270,13 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
       case VideoEventType.pipStop:
         _postEvent(VideoEventType.pipStop);
         break;
+      case VideoEventType.startWindowFullscreen:
+        _postEvent(VideoEventType.startWindowFullscreen);
+        break;
+
+      case VideoEventType.exitWindowFullscreen:
+        _postEvent(VideoEventType.exitWindowFullscreen);
+        break;
       case VideoEventType.unknown:
         _postEvent(VideoEventType.unknown);
         break;
@@ -766,6 +773,12 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
           break;
         case VideoEventType.onListenerInitDanmakuSuccess:
           break;
+        case VideoEventType.startWindowFullscreen:
+          value = value.copyWith(isFullScreen: true);
+          break;
+        case VideoEventType.exitWindowFullscreen:
+          value = value.copyWith(isFullScreen: false);
+          break;
         case VideoEventType.unknown:
           break;
       }
@@ -1055,9 +1068,14 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     await _videoPlayerPlatform.setMediaCodecTexture(_textureId, mediaCodecTexture);
   }
 
-  Future<void> startWindowFullscreen(bool showActionBar, bool showStatusBar) async {
+  Future<void> startWindowFullscreen() async {
     await _creatingCompleter.future;
-    await _videoPlayerPlatform.startWindowFullscreen(_textureId, showActionBar, showStatusBar);
+    await _videoPlayerPlatform.startWindowFullscreen(_textureId);
+  }
+
+  Future<void> exitWindowFullscreen() async {
+    await _creatingCompleter.future;
+    await _videoPlayerPlatform.exitWindowFullscreen(_textureId);
   }
 
   Future<void> showSmallVideo(Size size, bool showActionBar, bool showStatusBar) async {
@@ -1593,14 +1611,14 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     await _videoPlayerPlatform.releaseOrientationListener(_textureId);
   }
 
-  void onEnterFullScreen() {
-    setIfCurrentIsFullscreen(true);
+  Future<void> onEnterFullScreen() async {
     value = value.copyWith(isFullScreen: true);
+    startWindowFullscreen();
   }
 
-  void onExitFullScreen() {
-    setIfCurrentIsFullscreen(false);
+  Future<void> onExitFullScreen() async {
     value = value.copyWith(isFullScreen: false);
+    exitWindowFullscreen();
   }
 
   Future<void> enablePictureInPicture({double? top, double? left, double? width, double? height}) async {

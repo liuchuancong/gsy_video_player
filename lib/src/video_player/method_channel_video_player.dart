@@ -465,14 +465,13 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
   }
 
   @override
-  Future<void> startWindowFullscreen(int? textureId, bool showActionBar, bool showStatusBar) async {
-    _channel.invokeMethod<void>("startWindowFullscreen", <String, dynamic>{
-      'textureId': textureId,
-      "startWindowFullscreenOptions": {
-        "actionBar": showActionBar,
-        "statusBar": showStatusBar,
-      }
-    });
+  Future<void> startWindowFullscreen(int? textureId) async {
+    _channel.invokeMethod<void>("startWindowFullscreen", <String, dynamic>{'textureId': textureId});
+  }
+
+  @override
+  Future<void> exitWindowFullscreen(int? textureId) async {
+    _channel.invokeMethod<void>("exitWindowFullscreen", <String, dynamic>{'textureId': textureId});
   }
 
   @override
@@ -1531,10 +1530,18 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
           return VideoEvent(
             eventType: VideoEventType.pipStart,
           );
-
         case 'pipStop':
           return VideoEvent(
             eventType: VideoEventType.pipStop,
+          );
+
+        case "startWindowFullscreen":
+          return VideoEvent(
+            eventType: VideoEventType.startWindowFullscreen,
+          );
+        case "exitWindowFullscreen":
+          return VideoEvent(
+            eventType: VideoEventType.exitWindowFullscreen,
           );
         default:
           return VideoEvent(

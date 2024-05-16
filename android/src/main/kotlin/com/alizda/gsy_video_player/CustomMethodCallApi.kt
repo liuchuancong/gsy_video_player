@@ -13,7 +13,8 @@ class CustomMethodCallApi(
         private var customBasicApi: CustomBasicApi,
         private var gSYVideoPlayer: CustomGSYVideoPlayerApi,
         private var customGSYVideoTypeApi: CustomGSYVideoTypeApi,
-        private var customOrientationUtilsApi: CustomOrientationUtilsApi
+        private var customOrientationUtilsApi: CustomOrientationUtilsApi,
+        private var  eventSink: QueuingEventSink
 ) {
 
     @RequiresApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
@@ -208,7 +209,11 @@ class CustomMethodCallApi(
             }
             // --------------------- CustomBasicApi [start] ----------------------------
             "startWindowFullscreen" -> {
-                customBasicApi.startWindowFullscreen(call, result)
+                customBasicApi.startWindowFullscreen(call, result,eventSink)
+            }
+
+            "exitWindowFullscreen" -> {
+                customBasicApi.exitWindowFullscreen(call, result,eventSink)
             }
 
             "showSmallVideo" -> {
