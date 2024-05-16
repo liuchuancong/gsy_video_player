@@ -1583,11 +1583,13 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
   }
 
   void onEnterFullScreen() {
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.landscapeLeft,
-      DeviceOrientation.landscapeRight,
-    ]);
+    setIfCurrentIsFullscreen(true);
+    value = value.copyWith(isFullScreen: true);
+  }
+
+  void onExitFullScreen() {
+    setIfCurrentIsFullscreen(false);
+    value = value.copyWith(isFullScreen: false);
   }
 
   void refresh() {

@@ -57,7 +57,7 @@ class _MyAppState extends State<MyApp> {
         appBar: AppBar(
           title: const Text('Plugin example app'),
         ),
-        body: Column(
+        body: ListView(
           children: [
             Container(
               color: Colors.black,
@@ -190,14 +190,14 @@ class _MyAppState extends State<MyApp> {
                     child: const Text('setMaximumLines')),
                 ElevatedButton(
                     onPressed: () async {
-                      // gsyVideoPlayerController.onEnterFullScreen();
-                      await gsyVideoPlayerController.setIfCurrentIsFullscreen(true);
+                      gsyVideoPlayerController.onEnterFullScreen();
+                      // await gsyVideoPlayerController.setIfCurrentIsFullscreen(true);
                     },
                     child: const Text('FullScreen')),
                 ElevatedButton(
                     onPressed: () async {
-                      // gsyVideoPlayerController.onEnterFullScreen();
-                      await gsyVideoPlayerController.setIfCurrentIsFullscreen(false);
+                      gsyVideoPlayerController.onExitFullScreen();
+                      // await gsyVideoPlayerController.setIfCurrentIsFullscreen(false);
                     },
                     child: const Text('normalScreen')),
                 ElevatedButton(

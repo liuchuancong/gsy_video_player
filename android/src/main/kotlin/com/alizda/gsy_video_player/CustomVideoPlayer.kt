@@ -50,7 +50,7 @@ class CustomVideoPlayer : StandardGSYVideoPlayer, GSYVideoProgressListener, Vide
     private var orientationUtils: CustomOrientationUtilsApi? = null
     private var videoIsInitialized: Boolean = false
     private var eventSink: QueuingEventSink ? = null
-
+    private var surface: Surface? = null
     constructor(context: Context?, fullFlag: Boolean?) : super(context, fullFlag)
     constructor(context: Context?) : super(context)
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
@@ -79,7 +79,7 @@ class CustomVideoPlayer : StandardGSYVideoPlayer, GSYVideoProgressListener, Vide
     }
 
     fun setVideoDisplay(surface: Surface){
-        gsyVideoManager.setDisplay(surface);
+        this.surface = surface
     }
 
     override fun updateStartImage() {
@@ -508,6 +508,7 @@ class CustomVideoPlayer : StandardGSYVideoPlayer, GSYVideoProgressListener, Vide
 
 
     override fun onPrepared() {
+        gsyVideoManager.player.mediaPlayer.setSurface(surface)
         if (!videoIsInitialized) {
             videoIsInitialized = true
             customGSYMediaPlayerListenerApi.sendVideoPlayerInitialized(eventSink!!)

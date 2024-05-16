@@ -20,7 +20,7 @@ class CustomRenderView(private  var surface: Surface) : GSYRenderView() {
         effect: ShaderInterface,
         transform: FloatArray,
         customRender: GSYVideoGLViewBaseRender,
-        mode: Int
+        mode: Int,
     ) {
         mShowView = CustomTextureSurface.addSurfaceView(
             context,
