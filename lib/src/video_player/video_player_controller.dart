@@ -53,7 +53,7 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
 
   bool _isDisposed = false;
 
-  late Completer<void> _initializingCompleter;
+  final Completer<void> _initializingCompleter = Completer<void>();
 
   StreamSubscription<dynamic>? _eventSubscription;
 

@@ -155,7 +155,7 @@ class _MyAppState extends State<MyApp> {
                     },
                     child: const Text('sendDanmaku')),
                 ElevatedButton(
-                    style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color(0xFFF44336))),
+                    style: ButtonStyle(backgroundColor: WidgetStateProperty.all(const Color(0xFFF44336))),
                     onPressed: () {
                       gsyVideoPlayerController.danmakuController.setDanmakuBold(true);
                     },

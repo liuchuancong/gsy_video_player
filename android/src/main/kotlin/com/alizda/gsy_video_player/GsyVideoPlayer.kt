@@ -14,7 +14,7 @@ import io.flutter.view.TextureRegistry
 class GsyVideoPlayer(
         private val context: Context,
         private val eventChannel: EventChannel,
-        private val textureEntry: TextureRegistry.SurfaceTextureEntry,
+        private val textureEntry: TextureRegistry.SurfaceProducer,
         private val call: MethodCall,
         private val result: MethodChannel.Result
 ) {
@@ -54,7 +54,7 @@ class GsyVideoPlayer(
                         eventSink.setDelegate(null)
                     }
                 })
-        surface = Surface(textureEntry.surfaceTexture())
+        surface = textureEntry.surface
         if(player != null){
             customBasicApi = CustomBasicApi(player!!, context)
             customGSYVideoManagerApi = CustomGSYVideoManagerApi(context)

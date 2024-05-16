@@ -96,7 +96,7 @@ class GsyVideoPlayerPlugin: FlutterPlugin, ActivityAware, MethodChannel.MethodCa
         isInitialized = true
       }
       "create"->{
-        val textureEntry = flutterState!!.textureRegistry!!.createSurfaceTexture()
+        val textureEntry: TextureRegistry.SurfaceProducer = flutterState!!.textureRegistry!!.createSurfaceProducer()
         val eventChannel = EventChannel(
           flutterState?.binaryMessenger, EVENTS_CHANNEL + textureEntry.id()
         )
