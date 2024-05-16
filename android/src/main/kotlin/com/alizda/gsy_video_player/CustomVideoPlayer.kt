@@ -667,13 +667,10 @@ class CustomVideoPlayer : StandardGSYVideoPlayer, GSYVideoProgressListener, Vide
         DanmukuSettings.projectionOffsetX = danmuStyleProjectionOffsetX
         DanmukuSettings.projectionOffsetY = danmuStyleProjectionOffsetY
         DanmukuSettings.projectionAlpha = danmuStyleProjectionAlpha
-
         when (danmakuStyle) {
             DANMAKU_STYLE_NONE -> danmakuContext!!.setDanmakuStyle(DANMAKU_STYLE_NONE)
             DANMAKU_STYLE_SHADOW -> danmakuContext!!.setDanmakuStyle(DanmukuSettings.danmakuStyle, DanmukuSettings.shadowRadius)
-
             DANMAKU_STYLE_STROKEN -> danmakuContext!!.setDanmakuStyle(DanmukuSettings.danmakuStyle, DanmukuSettings.strokenWidth)
-
             DANMAKU_STYLE_PROJECTION -> danmakuContext!!.setDanmakuStyle(DanmukuSettings.danmakuStyle, DanmukuSettings.projectionOffsetX, DanmukuSettings.projectionOffsetY, DanmukuSettings.projectionAlpha)
         }
     }

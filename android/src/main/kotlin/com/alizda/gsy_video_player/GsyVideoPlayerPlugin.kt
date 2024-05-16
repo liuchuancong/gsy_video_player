@@ -93,6 +93,7 @@ class GsyVideoPlayerPlugin: FlutterPlugin, ActivityAware, MethodChannel.MethodCa
     when (call.method) {
       "init"->{
         disposeAllPlayers()
+        isInitialized = true
       }
       "create"->{
         val textureEntry = flutterState!!.textureRegistry!!.createSurfaceTexture()

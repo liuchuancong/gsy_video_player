@@ -58,6 +58,7 @@ class _MyAppState extends State<MyApp> {
           title: const Text('Plugin example app'),
         ),
         body: ListView(
+          physics: const NeverScrollableScrollPhysics(),
           children: [
             Container(
               color: Colors.black,

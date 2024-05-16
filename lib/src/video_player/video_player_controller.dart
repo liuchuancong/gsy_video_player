@@ -81,8 +81,6 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     _lifeCycleObserver?.initialize();
     _textureId = (await _videoPlayerPlatform.create()) ?? kUninitializedTextureId;
     _creatingCompleter.complete(null);
-    _danmakuController = DanmakuController(this);
-    _danmakuController.initDanmaku();
     setEventListener();
   }
 
@@ -126,7 +124,6 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
       case VideoEventType.onEventStartPrepared:
         _postEvent(VideoEventType.onEventStartPrepared);
         break;
-
       case VideoEventType.onEventPrepared:
         _postEvent(VideoEventType.onEventPrepared);
         break;
@@ -578,6 +575,8 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
           value = value.copyWith(
             videoPlayerInitialized: true,
           );
+          _danmakuController = DanmakuController(this);
+          _danmakuController.initDanmaku();
           unawaited(_applyVolume());
           break;
         case VideoEventType.onEventStartPrepared:

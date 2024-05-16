@@ -18,6 +18,8 @@ class GsyPlayerVideoFullScreen extends StatefulWidget {
 class _GsyPlayerVideoFullScreenState extends State<GsyPlayerVideoFullScreen> with WidgetsBindingObserver {
   ///Flag which determines if widget has initialized
   bool _initialized = false;
+
+  bool _isFullScreen = false;
   @override
   void initState() {
     super.initState();
@@ -39,7 +41,8 @@ class _GsyPlayerVideoFullScreenState extends State<GsyPlayerVideoFullScreen> wit
   }
 
   void onControllerEvent(VideoEventType videoEventType) {
-    if (videoEventType == VideoEventType.onFullButtonClick) {
+    if (widget.controller.value.isFullScreen != _isFullScreen) {
+      _isFullScreen = widget.controller.value.isFullScreen;
       onFullScreenChanged();
     }
   }

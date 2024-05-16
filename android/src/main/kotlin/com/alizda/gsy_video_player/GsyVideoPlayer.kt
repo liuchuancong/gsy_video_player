@@ -44,6 +44,10 @@ class GsyVideoPlayer(
         eventChannel.setStreamHandler(
                 object : EventChannel.StreamHandler {
                     override fun onListen(o: Any?, sink: EventChannel.EventSink) {
+                        if(!isInitialized && customGSYMediaPlayerListenerApi != null){
+                            isInitialized = true
+                            customGSYMediaPlayerListenerApi!!.sendInitialized(eventSink)
+                        }
                         eventSink.setDelegate(sink)
                     }
                     override fun onCancel(o: Any?) {
@@ -51,7 +55,6 @@ class GsyVideoPlayer(
                     }
                 })
         surface = Surface(textureEntry.surfaceTexture())
-
         if(player != null){
             customBasicApi = CustomBasicApi(player!!, context)
             customGSYVideoManagerApi = CustomGSYVideoManagerApi(context)
