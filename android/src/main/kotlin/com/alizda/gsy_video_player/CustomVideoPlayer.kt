@@ -63,7 +63,7 @@ class CustomVideoPlayer : StandardGSYVideoPlayer, GSYVideoProgressListener, Vide
         super.init(context)
         initDanmaView()
     }
-    fun seteventSink(sink: QueuingEventSink){
+    fun setEventSink(sink: QueuingEventSink){
         eventSink = sink
     }
     fun setCustomOrientationUtilsApi(utils: CustomOrientationUtilsApi){

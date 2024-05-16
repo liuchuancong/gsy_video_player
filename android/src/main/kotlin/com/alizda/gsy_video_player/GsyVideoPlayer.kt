@@ -51,7 +51,7 @@ class GsyVideoPlayer(
             customGSYMediaPlayerListenerApi = CustomGSYMediaPlayerListenerApi(it)
             customGSYVideoPlayerApi = CustomGSYVideoPlayerApi(this,context,textureEntry.id())
             customMethodCallApi = CustomMethodCallApi(this,context, customGSYVideoManagerApi!!, customBasicApi!!,customGSYVideoPlayerApi!!,customGSYVideoTypeApi,customOrientationUtilsApi!!)
-            it.seteventSink(eventSink)
+            it.setEventSink(eventSink)
             it.setCustomOrientationUtilsApi(customOrientationUtilsApi!!)
             it.setVideoDisplay(surface!!)
         }
