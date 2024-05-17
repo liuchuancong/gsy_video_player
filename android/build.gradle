@@ -54,11 +54,6 @@ android {
     dependencies {
         testImplementation 'org.jetbrains.kotlin:kotlin-test'
         testImplementation 'org.mockito:mockito-core:5.0.0'
-        implementation "com.github.CarGuo.DanmakuFlameMaster:DanmakuFlameMaster:${danmakuFlameMasterSoVersion}"
-        implementation "com.github.CarGuo.DanmakuFlameMaster:ndkbitmap-armv7a:${danmakuFlameMasterSoVersion}"
-        implementation "com.github.CarGuo.DanmakuFlameMaster:ndkbitmap-x86:${danmakuFlameMasterSoVersion}"
-        implementation "com.github.CarGuo.DanmakuFlameMaster:ndkbitmap-armv5:${danmakuFlameMasterSoVersion}"
-        implementation 'com.github.CarGuo.GSYVideoPlayer:gsyVideoPlayer-java:v8.6.0-release-jitpack'
 
         implementation 'com.github.CarGuo.GSYVideoPlayer:gsyVideoPlayer-java:v8.6.0-release-jitpack'
 
@@ -68,8 +63,12 @@ android {
         //是否需要AliPlayer模式
         implementation 'com.github.CarGuo.GSYVideoPlayer:GSYVideoPlayer-aliplay:v8.6.0-release-jitpack'
 
-        //更多ijk的编码支持
-        implementation 'com.github.CarGuo.GSYVideoPlayer:gsyVideoPlayer-ex_so:v8.6.0-release-jitpack'
+        //根据你的需求ijk模式的so
+        implementation 'com.github.CarGuo.GSYVideoPlayer:gsyVideoPlayer-arm64:v8.6.0-release-jitpack'
+        implementation 'com.github.CarGuo.GSYVideoPlayer:gsyVideoPlayer-armv7a:v8.6.0-release-jitpack'
+        implementation 'com.github.CarGuo.GSYVideoPlayer:gsyVideoPlayer-armv5:v8.6.0-release-jitpack'
+        implementation 'com.github.CarGuo.GSYVideoPlayer:gsyVideoPlayer-x86:v8.6.0-release-jitpack'
+        implementation 'com.github.CarGuo.GSYVideoPlayer:gsyVideoPlayer-x64:v8.6.0-release-jitpack'
 
 
     }

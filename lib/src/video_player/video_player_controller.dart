@@ -29,22 +29,17 @@ VideoPlayerPlatform get _videoPlayerPlatform {
 /// After [dispose] all further calls are ignored.
 class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
   /// Constructs a [GsyVideoPlayerController] and creates video controller on platform side.
-  GsyVideoPlayerController({this.danmakuSettings = const DanmakuSettings()}) : super(VideoPlayerValue(duration: null)) {
+  GsyVideoPlayerController() : super(VideoPlayerValue(duration: null)) {
     _create();
   }
 
   static const int kUninitializedTextureId = -1;
   int _textureId = kUninitializedTextureId;
   int get textureId => _textureId;
-  final DanmakuSettings danmakuSettings;
 
   /// Initializes the video controller on platform side.
 
   final StreamController<VideoEvent> videoEventStreamController = StreamController.broadcast();
-
-  late final DanmakuController _danmakuController;
-
-  DanmakuController get danmakuController => _danmakuController;
 
   ///StreamSubscription for VideoEvent listener
   StreamSubscription<VideoEvent>? _videoEventStreamSubscription;
@@ -260,9 +255,6 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
         break;
       case VideoEventType.onListenerVideoResumeWithSeek:
         _postEvent(VideoEventType.onListenerVideoResumeWithSeek);
-        break;
-      case VideoEventType.onListenerInitDanmakuSuccess:
-        _postEvent(VideoEventType.onListenerInitDanmakuSuccess);
         break;
       case VideoEventType.pipStart:
         _postEvent(VideoEventType.pipStart);
@@ -594,8 +586,6 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
           value = value.copyWith(
             videoPlayerInitialized: true,
           );
-          _danmakuController = DanmakuController(this);
-          _danmakuController.initDanmaku();
           unawaited(_applyVolume());
           break;
         case VideoEventType.onEventStartPrepared:
@@ -770,8 +760,6 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
             playState: event.playState,
             seek: value.seek,
           );
-          break;
-        case VideoEventType.onListenerInitDanmakuSuccess:
           break;
         case VideoEventType.startWindowFullscreen:
           value = value.copyWith(isFullScreen: true);
@@ -1376,126 +1364,6 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
       return null;
     }
     return await _videoPlayerPlatform.getPlayPosition(_textureId);
-  }
-
-  Future<void> initDanmaku({required DanmakuSettings settings}) async {
-    await _creatingCompleter.future;
-    await _videoPlayerPlatform.initDanmaku(_textureId, settings: settings);
-  }
-
-  Future<void> showDanmaku() async {
-    await _creatingCompleter.future;
-    await _videoPlayerPlatform.showDanmaku(_textureId);
-  }
-
-  Future<bool> getDanmakuShow() async {
-    await _creatingCompleter.future;
-    return await _videoPlayerPlatform.getDanmakuShow(_textureId);
-  }
-
-  Future<void> hideDanmaku() async {
-    await _creatingCompleter.future;
-    await _videoPlayerPlatform.hideDanmaku(_textureId);
-  }
-
-  Future<void> setDanmakuStyle(DanmakuStyle danmakuStyle,
-      {double danmuStyleShadow = 0.0,
-      double danmuStyleStroked = 0.0,
-      double danmuStyleProjectionOffsetX = 0.0,
-      double danmuStyleProjectionOffsetY = 0.0,
-      double danmuStyleProjectionAlpha = 255.0}) async {
-    await _creatingCompleter.future;
-    await _videoPlayerPlatform.setDanmakuStyle(_textureId, danmakuStyle,
-        danmuStyleShadow: danmuStyleShadow,
-        danmuStyleStroked: danmuStyleStroked,
-        danmuStyleProjectionOffsetX: danmuStyleProjectionOffsetX,
-        danmuStyleProjectionOffsetY: danmuStyleProjectionOffsetY,
-        danmuStyleProjectionAlpha: danmuStyleProjectionAlpha.clamp(0.0, 255.0));
-  }
-
-  Future<void> setDanmakuBold(bool bold) async {
-    await _creatingCompleter.future;
-    await _videoPlayerPlatform.setDanmakuBold(_textureId, bold);
-  }
-
-  Future<void> setScrollSpeedFactor(double speedFactor) async {
-    await _creatingCompleter.future;
-    await _videoPlayerPlatform.setScrollSpeedFactor(_textureId, speedFactor);
-  }
-
-  Future<void> setDuplicateMergingEnabled(bool enabled) async {
-    await _creatingCompleter.future;
-    await _videoPlayerPlatform.setDuplicateMergingEnabled(_textureId, enabled);
-  }
-
-  Future<void> setMaximumLines(Map<DanmakuTypeScroll, int> maxLinesPair) async {
-    await _creatingCompleter.future;
-    await _videoPlayerPlatform.setMaximumLines(_textureId, maxLinesPair);
-  }
-
-  Future<void> preventOverlapping(Map<DanmakuTypeScroll, bool> preventPair) async {
-    await _creatingCompleter.future;
-    await _videoPlayerPlatform.preventOverlapping(_textureId, preventPair);
-  }
-
-  Future<void> setMarginTop(double marginTop) async {
-    await _creatingCompleter.future;
-    await _videoPlayerPlatform.setMarginTop(_textureId, marginTop);
-  }
-
-  Future<void> setDanmakuTransparency(double transparency) async {
-    await _creatingCompleter.future;
-    await _videoPlayerPlatform.setDanmakuTransparency(_textureId, transparency);
-  }
-
-  Future<void> setDanmakuMargin(double margin) async {
-    await _creatingCompleter.future;
-    await _videoPlayerPlatform.setDanmakuMargin(_textureId, margin);
-  }
-
-  Future<void> setScaleTextSize(double scale) async {
-    await _creatingCompleter.future;
-    await _videoPlayerPlatform.setScaleTextSize(_textureId, scale);
-  }
-
-  Future<void> setMaximumVisibleSizeInScreen(MaximumVisibleSizeInScreen maximumVisibleSizeInScreen) async {
-    await _creatingCompleter.future;
-    await _videoPlayerPlatform.setMaximumVisibleSizeInScreen(_textureId, maximumVisibleSizeInScreen);
-  }
-
-  Future<void> addDanmaku(BaseDanmaku danmaku) async {
-    await _creatingCompleter.future;
-    await _videoPlayerPlatform.addDanmaku(_textureId, danmaku);
-  }
-
-  Future<void> startDanmaku() async {
-    await _creatingCompleter.future;
-    await _videoPlayerPlatform.startDanmaku(_textureId);
-  }
-
-  Future<void> pauseDanmaku() async {
-    await _creatingCompleter.future;
-    await _videoPlayerPlatform.pauseDanmaku(_textureId);
-  }
-
-  Future<void> resumeDanmaku() async {
-    await _creatingCompleter.future;
-    await _videoPlayerPlatform.resumeDanmaku(_textureId);
-  }
-
-  Future<void> stopDanmaku() async {
-    await _creatingCompleter.future;
-    await _videoPlayerPlatform.stopDanmaku(_textureId);
-  }
-
-  Future<void> seekToDanmaku(Duration msec) async {
-    await _creatingCompleter.future;
-    await _videoPlayerPlatform.seekToDanmaku(_textureId, msec);
-  }
-
-  Future<Map<String, dynamic>> getDanmakuStatus() async {
-    await _creatingCompleter.future;
-    return await _videoPlayerPlatform.getDanmakuStatus(_textureId);
   }
 
   /// Sets the audio volume of [this].

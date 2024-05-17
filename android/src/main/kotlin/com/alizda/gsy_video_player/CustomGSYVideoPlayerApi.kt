@@ -23,7 +23,6 @@ class CustomGSYVideoPlayerApi(private var videoPlayer: GsyVideoPlayer, private v
         GSYVideoManager.instance().releaseMediaPlayer();
     }
 
-    @RequiresApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     fun getLayoutId(call: MethodCall, result: MethodChannel.Result) {
         val reply: MutableMap<String, Any> = HashMap()
         reply["layoutId"] =videoPlayer.getCurrentPlayer()!!.layoutId

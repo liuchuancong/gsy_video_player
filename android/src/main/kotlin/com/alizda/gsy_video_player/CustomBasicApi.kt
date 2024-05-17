@@ -276,8 +276,6 @@ class CustomBasicApi(private var videoPlayer: CustomVideoPlayer, private val con
     fun setIfCurrentIsFullscreen(call: MethodCall, result: MethodChannel.Result) {
         val isIfCurrentIsFullscreen = call.argument<Boolean>("isIfCurrentIsFullscreen")!!
         videoPlayer.isIfCurrentIsFullscreen = isIfCurrentIsFullscreen
-        videoPlayer.handleEnterFullScreen()
-
     }
 
     fun isLooping(call: MethodCall, result: MethodChannel.Result) {

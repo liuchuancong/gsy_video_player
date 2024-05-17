@@ -309,7 +309,8 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
     for (IjkOption option in optionModelList) {
       optionList.add({
         'name': option.name,
-        'valueInt': option.value,
+        'valueInt': option.valueInt,
+        'value': option.value,
         'category': option.category.index,
       });
     }
@@ -1039,189 +1040,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
   }
 
   @override
-  Future<void> initDanmaku(int? textureId, {required DanmakuSettings settings}) async {
-    await _channel.invokeMethod<void>("initDanmaku", <String, dynamic>{
-      'textureId': textureId,
-      "danmakuSettings": settings.toJson(),
-    });
-  }
-
-  @override
-  Future<void> showDanmaku(int? textureId) async {
-    await _channel.invokeMethod<void>("showDanmaku", <String, dynamic>{
-      'textureId': textureId,
-    });
-  }
-
-  @override
-  Future<bool> getDanmakuShow(int? textureId) async {
-    late final Map<String, dynamic>? response;
-    response = await _channel.invokeMethod<Map<String, dynamic>?>("getDanmakuShow", <String, dynamic>{
-      'textureId': textureId,
-    });
-    return response!["showDanmaku"];
-  }
-
-  @override
-  Future<void> hideDanmaku(int? textureId) async {
-    await _channel.invokeMethod<void>("hideDanmaku", <String, dynamic>{
-      'textureId': textureId,
-    });
-  }
-
-  @override
-  Future<void> setDanmakuStyle(int? textureId, DanmakuStyle danmakuStyle,
-      {double danmuStyleShadow = 0.0,
-      double danmuStyleStroked = 0.0,
-      double danmuStyleProjectionOffsetX = 0.0,
-      double danmuStyleProjectionOffsetY = 0.0,
-      double danmuStyleProjectionAlpha = 255.0}) async {
-    await _channel.invokeMethod<void>("setDanmakuStyle", <String, dynamic>{
-      'textureId': textureId,
-      "danmakuStyle": danmakuStyleToInt(danmakuStyle),
-      "danmuStyleShadow": danmuStyleShadow,
-      "danmuStyleStroked": danmuStyleStroked,
-      "danmuStyleProjectionOffsetX": danmuStyleProjectionOffsetX,
-      "danmuStyleProjectionOffsetY": danmuStyleProjectionOffsetY,
-      "danmuStyleProjectionAlpha": danmuStyleProjectionAlpha,
-    });
-  }
-
-  @override
-  Future<void> setDanmakuBold(int? textureId, bool bold) async {
-    await _channel.invokeMethod<void>("setDanmakuBold", <String, dynamic>{
-      'textureId': textureId,
-      "isBold": bold,
-    });
-  }
-
-  @override
-  Future<void> setScrollSpeedFactor(int? textureId, double speedFactor) async {
-    await _channel.invokeMethod<void>("setScrollSpeedFactor", <String, dynamic>{
-      'textureId': textureId,
-      "speedFactor": speedFactor,
-    });
-  }
-
-  @override
-  Future<void> setDuplicateMergingEnabled(int? textureId, bool enabled) async {
-    await _channel.invokeMethod<void>("setDuplicateMergingEnabled", <String, dynamic>{
-      'textureId': textureId,
-      "enabled": enabled,
-    });
-  }
-
-  @override
-  Future<void> setMaximumLines(int? textureId, Map<DanmakuTypeScroll, int> maxLinesPair) async {
-    await _channel.invokeMethod<void>("setMaximumLines", <String, dynamic>{
-      'textureId': textureId,
-      "maxLinesPair": maxLinesPair.map((key, value) => MapEntry(danmakuTypeScrollToInt(key), value)),
-    });
-  }
-
-  @override
-  Future<void> preventOverlapping(int? textureId, Map<DanmakuTypeScroll, bool> preventPair) async {
-    await _channel.invokeMethod<void>("preventOverlapping", <String, dynamic>{
-      'textureId': textureId,
-      "preventPair": preventPair.map((key, value) => MapEntry(danmakuTypeScrollToInt(key), value)),
-    });
-  }
-
-  @override
-  Future<void> setMarginTop(int? textureId, double marginTop) async {
-    await _channel.invokeMethod<void>("setMarginTop", <String, dynamic>{
-      'textureId': textureId,
-      "marginTop": marginTop,
-    });
-  }
-
-  @override
-  Future<void> setDanmakuTransparency(int? textureId, double transparency) async {
-    await _channel.invokeMethod<void>("setDanmakuTransparency", <String, dynamic>{
-      'textureId': textureId,
-      "transparency": transparency,
-    });
-  }
-
-  @override
-  Future<void> setDanmakuMargin(int? textureId, double margin) async {
-    await _channel.invokeMethod<void>("setDanmakuMargin", <String, dynamic>{
-      'textureId': textureId,
-      "margin": margin,
-    });
-  }
-
-  @override
-  Future<void> setScaleTextSize(int? textureId, double scale) async {
-    await _channel.invokeMethod<void>("setScaleTextSize", <String, dynamic>{
-      'textureId': textureId,
-      "scale": scale,
-    });
-  }
-
-  @override
-  Future<void> setMaximumVisibleSizeInScreen(
-      int? textureId, MaximumVisibleSizeInScreen maximumVisibleSizeInScreen) async {
-    await _channel.invokeMethod<void>("setMaximumVisibleSizeInScreen", <String, dynamic>{
-      'textureId': textureId,
-      "maximumVisibleSizeInScreen": getIntFromMaximumVisibleSizeInScreen(maximumVisibleSizeInScreen),
-    });
-  }
-
-  @override
-  Future<void> addDanmaku(int? textureId, BaseDanmaku danmaku) async {
-    await _channel.invokeMethod<void>("addDanmaku", <String, dynamic>{
-      'textureId': textureId,
-      "danmaku": danmaku.toJson(),
-    });
-  }
-
-  @override
-  Future<void> startDanmaku(int? textureId) async {
-    await _channel.invokeMethod<void>("startDanmaku", <String, dynamic>{
-      'textureId': textureId,
-    });
-  }
-
-  @override
-  Future<void> pauseDanmaku(int? textureId) async {
-    await _channel.invokeMethod<void>("pauseDanmaku", <String, dynamic>{
-      'textureId': textureId,
-    });
-  }
-
-  @override
-  Future<void> resumeDanmaku(int? textureId) async {
-    await _channel.invokeMethod<void>("resumeDanmaku", <String, dynamic>{
-      'textureId': textureId,
-    });
-  }
-
-  @override
-  Future<void> stopDanmaku(int? textureId) async {
-    await _channel.invokeMethod<void>("stopDanmaku", <String, dynamic>{
-      'textureId': textureId,
-    });
-  }
-
-  @override
-  Future<void> seekToDanmaku(int? textureId, Duration msec) async {
-    await _channel.invokeMethod<void>("seekToDanmaku", <String, dynamic>{
-      'textureId': textureId,
-      "ms": msec.inMilliseconds,
-    });
-  }
-
-  @override
-  Future<Map<String, dynamic>> getDanmakuStatus(int? textureId) async {
-    late final Map<String, dynamic>? response;
-    response = await _channel.invokeMethod<Map<String, dynamic>?>("getDanmakuStatus", <String, dynamic>{
-      'textureId': textureId,
-    });
-    return response!;
-  }
-
-  @override
   Future<void> enablePictureInPicture(int? textureId, double? top, double? left, double? width, double? height) async {
     return _channel.invokeMethod<void>(
       'enablePictureInPicture',
@@ -1524,8 +1342,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
             isPlaying: isPlaying,
             playState: getVideoPlayStateName(currentState),
           );
-        case 'onListenerInitDanmakuSuccess':
-          return VideoEvent(eventType: VideoEventType.onListenerInitDanmakuSuccess);
         case 'pipStart':
           return VideoEvent(
             eventType: VideoEventType.pipStart,

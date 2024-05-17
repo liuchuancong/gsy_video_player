@@ -10,7 +10,6 @@ import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.view.TextureRegistry
 
-@RequiresApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 class GsyVideoPlayer(
         private val context: Context,
         private val eventChannel: EventChannel,

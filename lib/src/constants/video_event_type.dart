@@ -85,8 +85,6 @@ enum VideoEventType {
 
   onListenerVideoResumeWithSeek,
 
-  onListenerInitDanmakuSuccess,
-
   onFullButtonClick,
 
   videoPlayerInitialized,

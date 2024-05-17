@@ -124,9 +124,15 @@ class CustomGSYVideoManagerApi(private val context: Context) {
         for (option in ijkOptions) {
             val category = (option["category"] as Number).toInt()
             val valueInt = (option["valueInt"] as Number).toInt()
+            val value = option["value"].toString()
             val name = option["name"].toString()
-            val videoOptionMode = VideoOptionModel(category, name, valueInt)
-            list.add(videoOptionMode)
+            if(value.isNotEmpty()){
+                val videoOptionMode = VideoOptionModel(category, name, value)
+                list.add(videoOptionMode)
+            }else{
+                val videoOptionMode = VideoOptionModel(category, name, valueInt)
+                list.add(videoOptionMode)
+            }
         }
         GSYVideoManager.instance().optionModelList = list
     }
