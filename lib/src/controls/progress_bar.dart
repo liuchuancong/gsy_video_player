@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gsy_video_player/gsy_video_player.dart';
-import 'package:gsy_video_player/src/controls/chewie_player.dart';
-import 'package:gsy_video_player/src/controls/chewie_progress_colors.dart';
 
 class VideoProgressBar extends StatefulWidget {
   VideoProgressBar(

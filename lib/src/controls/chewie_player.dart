@@ -5,12 +5,8 @@ import 'package:provider/provider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 import 'package:gsy_video_player/gsy_video_player.dart';
-import 'package:gsy_video_player/src/controls/models/option_item.dart';
 import 'package:gsy_video_player/src/controls/player_with_controls.dart';
-import 'package:gsy_video_player/src/controls/models/subtitle_model.dart';
-import 'package:gsy_video_player/src/controls/chewie_progress_colors.dart';
 import 'package:gsy_video_player/src/controls/notifiers/player_notifier.dart';
-import 'package:gsy_video_player/src/controls/models/options_translation.dart';
 
 typedef ChewieRoutePageBuilder = Widget Function(
   BuildContext context,

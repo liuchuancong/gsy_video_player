@@ -5,14 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:gsy_video_player/gsy_video_player.dart';
-import 'package:gsy_video_player/src/controls/chewie_player.dart';
 import 'package:gsy_video_player/src/controls/helpers/utils.dart';
 import 'package:gsy_video_player/src/controls/notifiers/index.dart';
 import 'package:gsy_video_player/src/controls/center_play_button.dart';
-import 'package:gsy_video_player/src/controls/models/option_item.dart';
 import 'package:gsy_video_player/src/controls/animated_play_pause.dart';
-import 'package:gsy_video_player/src/controls/models/subtitle_model.dart';
-import 'package:gsy_video_player/src/controls/chewie_progress_colors.dart';
 import 'package:gsy_video_player/src/controls/cupertino/cupertino_progress_bar.dart';
 import 'package:gsy_video_player/src/controls/cupertino/widgets/cupertino_options_dialog.dart';
 

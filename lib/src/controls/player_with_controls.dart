@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:gsy_video_player/gsy_video_player.dart';
-import 'package:gsy_video_player/src/controls/chewie_player.dart';
 import 'package:gsy_video_player/src/controls/notifiers/index.dart';
 import 'package:gsy_video_player/src/controls/helpers/adaptive_controls.dart';
 
