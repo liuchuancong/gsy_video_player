@@ -511,7 +511,7 @@ class _MaterialControlsState extends State<MaterialControls> with SingleTickerPr
 
         if (!controller.value.isInitialized) {
           controller.initialize().then((_) {
-            controller.resume();
+            controller.setBuilder(controller.videoOptionBuilder);
           });
         } else {
           if (isFinished) {

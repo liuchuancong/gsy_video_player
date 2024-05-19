@@ -492,7 +492,7 @@ class _MaterialDesktopControlsState extends State<MaterialDesktopControls> with 
       if (!controller.value.isInitialized) {
         controller.initialize().then((_) {
           //[GsyVideoPlayerController.play] If the video is at the end, this method starts playing from the beginning
-          controller.resume();
+          controller.setBuilder(controller.videoOptionBuilder);
         });
       } else {
         //[GsyVideoPlayerController.play] If the video is at the end, this method starts playing from the beginning

@@ -728,7 +728,7 @@ class _CupertinoControlsState extends State<CupertinoControls> with SingleTicker
 
         if (!controller.value.isInitialized) {
           controller.initialize().then((_) {
-            controller.resume();
+            controller.setBuilder(controller.videoOptionBuilder);
           });
         } else {
           if (isFinished) {
