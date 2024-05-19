@@ -15,9 +15,12 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
   int? textureId;
 
   @override
-  Future<int?> create() async {
+  Future<int?> create({double? width, double? height}) async {
     late final Map<String, dynamic>? response;
-    response = await _channel.invokeMapMethod<String, dynamic>('create');
+    response = await _channel.invokeMapMethod<String, dynamic>('create', <String, dynamic>{
+      'width': width,
+      'height': height,
+    });
     textureId = response?['textureId'];
     return textureId;
   }

@@ -4,23 +4,15 @@ package com.alizda.gsy_video_player
 import android.app.Activity
 import android.content.Context
 import android.content.res.Configuration
-import android.graphics.Color
 import android.util.AttributeSet
-import android.util.Log
-import android.view.MotionEvent
 import android.view.Surface
-import android.view.View
-import android.view.ViewGroup
-import android.widget.ImageView
+import com.aliyun.player.AliPlayer
 import com.shuyu.gsyvideoplayer.listener.GSYVideoProgressListener
 import com.shuyu.gsyvideoplayer.listener.VideoAllCallBack
-import com.shuyu.gsyvideoplayer.utils.GSYVideoType
 import com.shuyu.gsyvideoplayer.utils.OrientationUtils
 import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer
 import com.shuyu.gsyvideoplayer.video.base.GSYBaseVideoPlayer
-import com.shuyu.gsyvideoplayer.video.base.GSYVideoPlayer
-import io.flutter.plugin.common.MethodCall
-import io.flutter.plugin.common.MethodChannel
+import io.flutter.view.TextureRegistry
 
 
 class CustomVideoPlayer : StandardGSYVideoPlayer, GSYVideoProgressListener, VideoAllCallBack {
@@ -31,6 +23,7 @@ class CustomVideoPlayer : StandardGSYVideoPlayer, GSYVideoProgressListener, Vide
     private var videoIsInitialized: Boolean = false
     private var eventSink: QueuingEventSink ? = null
     private var surface: Surface? = null
+    private var textureEntry: TextureRegistry.SurfaceProducer? = null
     constructor(context: Context?, fullFlag: Boolean?) : super(context, fullFlag)
     constructor(context: Context?) : super(context)
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
@@ -44,8 +37,8 @@ class CustomVideoPlayer : StandardGSYVideoPlayer, GSYVideoProgressListener, Vide
         orientationUtils = utils
     }
 
-    fun setVideoDisplay(surface: Surface){
-        this.surface = surface
+    fun setVideoDisplay(textureEntry: TextureRegistry.SurfaceProducer){
+        this.textureEntry = textureEntry
     }
 
     override fun clickStartIcon() {
@@ -65,11 +58,12 @@ class CustomVideoPlayer : StandardGSYVideoPlayer, GSYVideoProgressListener, Vide
         customGSYMediaPlayerListenerApi.onConfigurationChanged(eventSink!!)
     }
 
-
     override fun onPrepared() {
-        gsyVideoManager.player.mediaPlayer.setSurface(surface)
         if (!videoIsInitialized) {
             videoIsInitialized = true
+            textureEntry!!.setSize(gsyVideoManager.player.mediaPlayer.videoWidth,gsyVideoManager.player.mediaPlayer.videoHeight)
+            surface = textureEntry!!.surface
+            gsyVideoManager.player.mediaPlayer.setSurface(surface)
             customGSYMediaPlayerListenerApi.sendVideoPlayerInitialized(eventSink!!)
         }
         super.onPrepared()

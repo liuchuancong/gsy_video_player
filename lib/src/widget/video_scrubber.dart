@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:gsy_video_player/gsy_video_player.dart';
 
-/// A scrubber to control [VideoPlayerController]s
+/// A scrubber to control [GsyVideoPlayerController]s
 class VideoScrubber extends StatefulWidget {
   /// Create a [VideoScrubber] handler with the given [child].
   ///
-  /// [controller] is the [VideoPlayerController] that will be controlled by
+  /// [controller] is the [GsyVideoPlayerController] that will be controlled by
   /// this scrubber.
   const VideoScrubber({
     super.key,
@@ -16,7 +16,7 @@ class VideoScrubber extends StatefulWidget {
   /// The widget that will be displayed inside the gesture detector.
   final Widget child;
 
-  /// The [VideoPlayerController] that will be controlled by this scrubber.
+  /// The [GsyVideoPlayerController] that will be controlled by this scrubber.
   final GsyVideoPlayerController controller;
 
   @override
@@ -34,7 +34,7 @@ class _VideoScrubberState extends State<VideoScrubber> {
       final RenderBox box = context.findRenderObject()! as RenderBox;
       final Offset tapPos = box.globalToLocal(globalPosition);
       final double relative = tapPos.dx / box.size.width;
-      final Duration position = controller.value.duration! * relative;
+      final Duration position = controller.value.duration * relative;
       controller.seekTo(position);
     }
 

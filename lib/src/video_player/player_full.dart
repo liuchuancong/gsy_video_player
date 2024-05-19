@@ -120,12 +120,7 @@ class _GsyEnterFullScreenState extends State<GsyEnterFullScreen> {
       body: Container(
         alignment: Alignment.center,
         color: Colors.black,
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            widget.controllerProvider,
-          ],
-        ),
+        child: widget.controllerProvider,
       ),
     );
   }

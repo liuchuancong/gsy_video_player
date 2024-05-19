@@ -29,8 +29,8 @@ VideoPlayerPlatform get _videoPlayerPlatform {
 /// After [dispose] all further calls are ignored.
 class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
   /// Constructs a [GsyVideoPlayerController] and creates video controller on platform side.
-  GsyVideoPlayerController() : super(VideoPlayerValue(duration: null)) {
-    _create();
+  GsyVideoPlayerController() : super(VideoPlayerValue(duration: Duration.zero, isInitialized: false)) {
+    initialize();
   }
 
   static const int kUninitializedTextureId = -1;
@@ -68,7 +68,7 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     _videoEventStreamSubscription = videoEventStreamController.stream.listen(_handleVideoEvent);
   }
 
-  Future<void> _create() async {
+  Future<void> initialize() async {
     final bool allowBackgroundPlayback = value.allowBackgroundPlayback;
     if (!allowBackgroundPlayback) {
       _lifeCycleObserver = _VideoAppLifeCycleObserver(this);
@@ -560,11 +560,11 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
       switch (event.eventType) {
         case VideoEventType.initialized:
           value = value.copyWith(
-            duration: event.duration,
-            rotationCorrection: event.rotationCorrection,
-            isInitialized: event.duration != null,
-            isCompleted: false,
-          );
+              duration: event.duration,
+              rotationCorrection: event.rotationCorrection,
+              isInitialized: event.duration != null,
+              isCompleted: false,
+              isPlaying: false);
           _initializingCompleter.complete(null);
           break;
         case VideoEventType.onFullButtonClick:
@@ -585,14 +585,20 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
         case VideoEventType.videoPlayerInitialized:
           value = value.copyWith(
             videoPlayerInitialized: true,
+            position: Duration(milliseconds: event.position!.inMilliseconds),
+            duration: Duration(milliseconds: event.duration!.inMilliseconds),
+            playState: event.playState,
+            size: event.size,
+            videoSarDen: event.videoSarDen,
+            videoSarNum: event.videoSarNum,
           );
           unawaited(_applyVolume());
           break;
         case VideoEventType.onEventStartPrepared:
-          value = value.copyWith(isPlaying: false);
+          value = value.copyWith(isPlaying: true);
           break;
         case VideoEventType.onEventPrepared:
-          value = value.copyWith(isPlaying: false);
+          value = value.copyWith(isPlaying: true);
           break;
         case VideoEventType.onEventClickStartIcon:
           value = value.copyWith(isPlaying: true);
@@ -726,6 +732,9 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
             position: Duration(milliseconds: event.position!.inMilliseconds),
             duration: Duration(milliseconds: event.duration!.inMilliseconds),
             playState: event.playState,
+            size: event.size,
+            videoSarDen: event.videoSarDen,
+            videoSarNum: event.videoSarNum,
           );
           break;
         case VideoEventType.onListenerBackFullscreen:
@@ -794,7 +803,7 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
       return;
     }
     value = VideoPlayerValue(
-      duration: null,
+      duration: Duration.zero,
       isLooping: value.isLooping,
       volume: value.volume,
     );

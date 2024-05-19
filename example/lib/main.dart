@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:gsy_video_player/gsy_video_player.dart';
@@ -15,18 +14,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  GsyVideoPlayerController gsyVideoPlayerController = GsyVideoPlayerController(
-    danmakuSettings: const DanmakuSettings(
-      danmakuStyle: DanmakuStyle.danmuStyleStroked,
-      opacity: 1,
-      strokenWidth: 5.0,
-      showDanmaku: true,
-      enableDanmakuDrawingCache: false,
-      maxLinesPair: {
-        DanmakuTypeScroll.scrollRL: 10,
-      },
-    ),
-  );
+  GsyVideoPlayerController gsyVideoPlayerController = GsyVideoPlayerController();
 
   @override
   void initState() {

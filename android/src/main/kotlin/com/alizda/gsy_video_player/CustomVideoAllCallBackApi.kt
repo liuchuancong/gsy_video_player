@@ -14,7 +14,7 @@ class CustomVideoAllCallBackApi(private var videoPlayer: CustomVideoPlayer) {
         reply["duration"] = videoDuration
         reply["position"] = videoPosition
         reply["currentState"] = getCurrentState()
-        reply["isPlaying"] = isPlaying()
+        reply["isPlaying"] = GSYVideoManager.instance().player.isPlaying
         sink.success(event)
     }
 
@@ -27,7 +27,7 @@ class CustomVideoAllCallBackApi(private var videoPlayer: CustomVideoPlayer) {
         reply["duration"] = videoDuration
         reply["position"] = videoPosition
         reply["currentState"] = getCurrentState()
-        reply["isPlaying"] = isPlaying()
+        reply["isPlaying"] = GSYVideoManager.instance().player.isPlaying
         sink.success(event)
     }
 
@@ -41,7 +41,7 @@ class CustomVideoAllCallBackApi(private var videoPlayer: CustomVideoPlayer) {
         reply["duration"] = videoDuration
         reply["position"] = videoPosition
         reply["currentState"] = getCurrentState()
-        reply["isPlaying"] = isPlaying()
+        reply["isPlaying"] = GSYVideoManager.instance().player.isPlaying
         sink.success(event)
     }
 
@@ -55,7 +55,7 @@ class CustomVideoAllCallBackApi(private var videoPlayer: CustomVideoPlayer) {
         reply["duration"] = videoDuration
         reply["position"] = videoPosition
         reply["currentState"] = getCurrentState()
-        reply["isPlaying"] = isPlaying()
+        reply["isPlaying"] = GSYVideoManager.instance().player.isPlaying
         sink.success(event)
     }
 
@@ -69,7 +69,7 @@ class CustomVideoAllCallBackApi(private var videoPlayer: CustomVideoPlayer) {
         reply["duration"] = videoDuration
         reply["position"] = videoPosition
         reply["currentState"] = getCurrentState()
-        reply["isPlaying"] = isPlaying()
+        reply["isPlaying"] = GSYVideoManager.instance().player.isPlaying
         sink.success(event)
     }
 
@@ -82,7 +82,7 @@ class CustomVideoAllCallBackApi(private var videoPlayer: CustomVideoPlayer) {
         reply["duration"] = videoDuration
         reply["position"] = videoPosition
         reply["currentState"] = getCurrentState()
-        reply["isPlaying"] = isPlaying()
+        reply["isPlaying"] = GSYVideoManager.instance().player.isPlaying
         sink.success(event)
     }
 
@@ -96,7 +96,7 @@ class CustomVideoAllCallBackApi(private var videoPlayer: CustomVideoPlayer) {
         reply["duration"] = videoDuration
         reply["position"] = videoPosition
         reply["currentState"] = getCurrentState()
-        reply["isPlaying"] = isPlaying()
+        reply["isPlaying"] = GSYVideoManager.instance().player.isPlaying
         sink.success(event)
     }
 
@@ -110,7 +110,7 @@ class CustomVideoAllCallBackApi(private var videoPlayer: CustomVideoPlayer) {
         reply["duration"] = videoDuration
         reply["position"] = videoPosition
         reply["currentState"] = getCurrentState()
-        reply["isPlaying"] = isPlaying()
+        reply["isPlaying"] = GSYVideoManager.instance().player.isPlaying
         sink.success(event)
     }
 
@@ -124,7 +124,7 @@ class CustomVideoAllCallBackApi(private var videoPlayer: CustomVideoPlayer) {
         reply["duration"] = videoDuration
         reply["position"] = videoPosition
         reply["currentState"] = getCurrentState()
-        reply["isPlaying"] = isPlaying()
+        reply["isPlaying"] = GSYVideoManager.instance().player.isPlaying
         sink.success(event)
     }
 
@@ -138,7 +138,7 @@ class CustomVideoAllCallBackApi(private var videoPlayer: CustomVideoPlayer) {
         reply["duration"] = videoDuration
         reply["position"] = videoPosition
         reply["currentState"] = getCurrentState()
-        reply["isPlaying"] = isPlaying()
+        reply["isPlaying"] = GSYVideoManager.instance().player.isPlaying
         sink.success(event)
     }
 
@@ -152,7 +152,7 @@ class CustomVideoAllCallBackApi(private var videoPlayer: CustomVideoPlayer) {
         reply["duration"] = videoDuration
         reply["position"] = videoPosition
         reply["currentState"] = getCurrentState()
-        reply["isPlaying"] = isPlaying()
+        reply["isPlaying"] = GSYVideoManager.instance().player.isPlaying
         sink.success(event)
     }
 
@@ -165,7 +165,7 @@ class CustomVideoAllCallBackApi(private var videoPlayer: CustomVideoPlayer) {
         reply["duration"] = videoDuration
         reply["position"] = videoPosition
         reply["currentState"] = getCurrentState()
-        reply["isPlaying"] = isPlaying()
+        reply["isPlaying"] = GSYVideoManager.instance().player.isPlaying
         sink.success(event)
     }
 
@@ -178,7 +178,7 @@ class CustomVideoAllCallBackApi(private var videoPlayer: CustomVideoPlayer) {
         reply["duration"] = videoDuration
         reply["position"] = videoPosition
         reply["currentState"] = getCurrentState()
-        reply["isPlaying"] = isPlaying()
+        reply["isPlaying"] = GSYVideoManager.instance().player.isPlaying
         sink.success(event)
     }
 
@@ -191,7 +191,7 @@ class CustomVideoAllCallBackApi(private var videoPlayer: CustomVideoPlayer) {
         reply["duration"] = videoDuration
         reply["position"] = videoPosition
         reply["currentState"] = getCurrentState()
-        reply["isPlaying"] = isPlaying()
+        reply["isPlaying"] = GSYVideoManager.instance().player.isPlaying
         sink.success(event)
     }
 
@@ -204,7 +204,7 @@ class CustomVideoAllCallBackApi(private var videoPlayer: CustomVideoPlayer) {
         reply["duration"] = videoDuration
         reply["position"] = videoPosition
         reply["currentState"] = getCurrentState()
-        reply["isPlaying"] = isPlaying()
+        reply["isPlaying"] = GSYVideoManager.instance().player.isPlaying
         sink.success(event)
     }
 
@@ -217,7 +217,7 @@ class CustomVideoAllCallBackApi(private var videoPlayer: CustomVideoPlayer) {
         reply["duration"] = videoDuration
         reply["position"] = videoPosition
         reply["currentState"] = getCurrentState()
-        reply["isPlaying"] = isPlaying()
+        reply["isPlaying"] = GSYVideoManager.instance().player.isPlaying
         sink.success(event)
     }
 
@@ -230,7 +230,7 @@ class CustomVideoAllCallBackApi(private var videoPlayer: CustomVideoPlayer) {
         reply["duration"] = videoDuration
         reply["position"] = videoPosition
         reply["currentState"] = getCurrentState()
-        reply["isPlaying"] = isPlaying()
+        reply["isPlaying"] = GSYVideoManager.instance().player.isPlaying
         sink.success(event)
     }
 
@@ -243,7 +243,7 @@ class CustomVideoAllCallBackApi(private var videoPlayer: CustomVideoPlayer) {
         reply["duration"] = videoDuration
         reply["position"] = videoPosition
         reply["currentState"] = getCurrentState()
-        reply["isPlaying"] = isPlaying()
+        reply["isPlaying"] = GSYVideoManager.instance().player.isPlaying
         sink.success(event)
     }
 
@@ -256,7 +256,7 @@ class CustomVideoAllCallBackApi(private var videoPlayer: CustomVideoPlayer) {
         reply["duration"] = videoDuration
         reply["position"] = videoPosition
         reply["currentState"] = getCurrentState()
-        reply["isPlaying"] = isPlaying()
+        reply["isPlaying"] = GSYVideoManager.instance().player.isPlaying
         sink.success(event)
     }
 
@@ -269,7 +269,7 @@ class CustomVideoAllCallBackApi(private var videoPlayer: CustomVideoPlayer) {
         reply["duration"] = videoDuration
         reply["position"] = videoPosition
         reply["currentState"] = getCurrentState()
-        reply["isPlaying"] = isPlaying()
+        reply["isPlaying"] = GSYVideoManager.instance().player.isPlaying
         sink.success(event)
     }
 
@@ -282,7 +282,7 @@ class CustomVideoAllCallBackApi(private var videoPlayer: CustomVideoPlayer) {
         reply["duration"] = videoDuration
         reply["position"] = videoPosition
         reply["currentState"] = getCurrentState()
-        reply["isPlaying"] = isPlaying()
+        reply["isPlaying"] = GSYVideoManager.instance().player.isPlaying
         sink.success(event)
     }
 
@@ -295,7 +295,7 @@ class CustomVideoAllCallBackApi(private var videoPlayer: CustomVideoPlayer) {
         reply["duration"] = videoDuration
         reply["position"] = videoPosition
         reply["currentState"] = getCurrentState()
-        reply["isPlaying"] = isPlaying()
+        reply["isPlaying"] = GSYVideoManager.instance().player.isPlaying
         sink.success(event)
     }
 
@@ -308,7 +308,7 @@ class CustomVideoAllCallBackApi(private var videoPlayer: CustomVideoPlayer) {
         reply["duration"] = videoDuration
         reply["position"] = videoPosition
         reply["currentState"] = getCurrentState()
-        reply["isPlaying"] = isPlaying()
+        reply["isPlaying"] = GSYVideoManager.instance().player.isPlaying
         sink.success(event)
     }
 
@@ -320,7 +320,7 @@ class CustomVideoAllCallBackApi(private var videoPlayer: CustomVideoPlayer) {
         reply["duration"] = duration
         reply["position"] = currentPosition
         reply["currentState"] = getCurrentState()
-        reply["isPlaying"] = isPlaying()
+        reply["isPlaying"] = GSYVideoManager.instance().player.isPlaying
         videoPosition = currentPosition
         videoDuration = duration
         sink.success(event)

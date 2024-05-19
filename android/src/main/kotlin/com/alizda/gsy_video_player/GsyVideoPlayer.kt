@@ -1,9 +1,7 @@
 package com.alizda.gsy_video_player
 
 import android.content.Context
-import android.os.Build
 import android.view.Surface
-import androidx.annotation.RequiresApi
 import com.shuyu.gsyvideoplayer.builder.GSYVideoOptionBuilder
 import io.flutter.plugin.common.EventChannel
 import io.flutter.plugin.common.MethodCall
@@ -53,7 +51,6 @@ class GsyVideoPlayer(
                         eventSink.setDelegate(null)
                     }
                 })
-        surface = textureEntry.surface
         if(player != null){
             customBasicApi = CustomBasicApi(player!!, context)
             customGSYVideoManagerApi = CustomGSYVideoManagerApi(context)
@@ -63,7 +60,7 @@ class GsyVideoPlayer(
             customMethodCallApi = CustomMethodCallApi(this, context, customGSYVideoManagerApi!!, customBasicApi!!, customGSYVideoPlayerApi!!, customGSYVideoTypeApi, customOrientationUtilsApi!!,eventSink)
             player!!.setEventSink(eventSink)
             player!!.setCustomOrientationUtilsApi(customOrientationUtilsApi!!)
-            player!!.setVideoDisplay(surface!!)
+            player!!.setVideoDisplay(textureEntry)
         }
         val reply: MutableMap<String, Any> = HashMap()
         reply["textureId"] = textureEntry.id()

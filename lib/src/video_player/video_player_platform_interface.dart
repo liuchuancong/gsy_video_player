@@ -41,7 +41,7 @@ abstract class VideoPlayerPlatform {
   }
 
   /// Returns a widget displaying the video with a given textureID.
-  Future<int?> create() async {
+  Future<int?> create({double? width, double? height}) async {
     throw UnimplementedError('create() has not been implemented.');
   }
 

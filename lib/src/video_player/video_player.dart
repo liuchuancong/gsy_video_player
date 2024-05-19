@@ -8,38 +8,39 @@ import 'package:gsy_video_player/src/constants/video_play_state.dart';
 class VideoPlayerValue {
   /// Constructs a video with the given values. Only [duration] is required. The
   /// rest will initialize with default values when unset.
-  VideoPlayerValue({
-    required this.duration,
-    this.size = Size.zero,
-    this.position = Duration.zero,
-    this.buffered = const <DurationRange>[],
-    this.isInitialized = false,
-    this.isPlaying = false,
-    this.isLooping = false,
-    this.isBuffering = false,
-    this.volume = 1.0,
-    this.speed = 1.0,
-    this.playbackSpeed = 1.0,
-    this.what,
-    this.extra,
-    this.percent,
-    this.seek,
-    this.errorDescription,
-    this.playState,
-    this.isPip = false,
-    this.isFullScreen = false,
-    this.rotationCorrection = 0,
-    this.videoPlayerInitialized = false,
-    this.allowBackgroundPlayback = true,
-    this.isCompleted = false,
-  });
+  VideoPlayerValue(
+      {required this.duration,
+      this.size = Size.zero,
+      this.position = Duration.zero,
+      this.buffered = const <DurationRange>[],
+      this.isInitialized = false,
+      this.isPlaying = false,
+      this.isLooping = false,
+      this.isBuffering = false,
+      this.volume = 1.0,
+      this.speed = 1.0,
+      this.playbackSpeed = 1.0,
+      this.what,
+      this.extra,
+      this.percent,
+      this.seek,
+      this.errorDescription,
+      this.playState,
+      this.isPip = false,
+      this.isFullScreen = false,
+      this.rotationCorrection = 0,
+      this.videoPlayerInitialized = false,
+      this.allowBackgroundPlayback = true,
+      this.isCompleted = false,
+      this.videoSarDen = 0,
+      this.videoSarNum = 0});
 
   /// Returns an instance for a video that hasn't been loaded.
   VideoPlayerValue.uninitialized() : this(duration: Duration.zero, isInitialized: false, videoPlayerInitialized: false);
 
   /// Returns an instance with a `null` [Duration] and the given
   /// [errorDescription].
-  VideoPlayerValue.erroneous(String errorDescription) : this(duration: null);
+  VideoPlayerValue.erroneous(String errorDescription) : this(duration: Duration.zero, isInitialized: false);
 
   final int? what;
 
@@ -56,7 +57,7 @@ class VideoPlayerValue {
   /// The total duration of the video.
   ///
   /// Is null when [initialized] is false.
-  final Duration? duration;
+  final Duration duration;
 
   final bool isFullScreen;
 
@@ -101,7 +102,7 @@ class VideoPlayerValue {
   final int rotationCorrection;
 
   /// Indicates whether or not the video has been loaded and is ready to play.
-  bool get initialized => duration != null;
+  bool get initialized => duration != Duration.zero;
 
   /// A description of the error if present.
   ///
@@ -126,6 +127,10 @@ class VideoPlayerValue {
   }
 
   final bool isCompleted;
+
+  final int videoSarNum;
+
+  final int videoSarDen;
 
   /// Returns a new instance that has the same values as this current instance,
   /// except for any overrides passed in as arguments to [copyWidth].
@@ -153,6 +158,8 @@ class VideoPlayerValue {
     int? rotationCorrection,
     bool? allowBackgroundPlayback,
     bool? isCompleted,
+    int? videoSarNum,
+    int? videoSarDen,
   }) {
     return VideoPlayerValue(
       duration: duration ?? this.duration,
@@ -178,6 +185,8 @@ class VideoPlayerValue {
       videoPlayerInitialized: videoPlayerInitialized ?? this.videoPlayerInitialized,
       allowBackgroundPlayback: allowBackgroundPlayback ?? this.allowBackgroundPlayback,
       isCompleted: isCompleted ?? this.isCompleted,
+      videoSarNum: videoSarNum ?? this.videoSarNum,
+      videoSarDen: videoSarDen ?? this.videoSarDen,
     );
   }
 
