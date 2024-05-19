@@ -726,7 +726,7 @@ class _CupertinoControlsState extends State<CupertinoControls> with SingleTicker
       } else {
         _cancelAndRestartTimer();
 
-        if (!controller.value.isInitialized) {
+        if (!controller.value.videoPlayerInitialized) {
           controller.initialize().then((_) {
             controller.setBuilder(controller.videoOptionBuilder);
           });

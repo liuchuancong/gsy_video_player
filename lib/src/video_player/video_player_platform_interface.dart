@@ -182,7 +182,7 @@ abstract class VideoPlayerPlatform {
   }
 
   /// Returns the play position of the video.
-  Future<int> getPlayPosition(int? textureId) async {
+  Future<Duration> getPlayPosition(int? textureId) async {
     throw UnimplementedError('getPlayPosition() has not been implemented.');
   }
 

@@ -15,10 +15,9 @@ class CustomGSYMediaPlayerListenerApi(private var videoPlayer: CustomVideoPlayer
             val reply: MutableMap<String, Any> = HashMap()
             val range: List<Number?> = listOf(0, bufferedPosition)
             event["event"] = "onListenerBufferingUpdate"
-            reply["duration"] = videoDuration
-            reply["position"] = videoPosition
+            reply["duration"] = GSYVideoManager.instance().player.mediaPlayer.duration
+            reply["position"] = GSYVideoManager.instance().player.mediaPlayer.currentPosition
             reply["isPlaying"] = GSYVideoManager.instance().player.isPlaying
-            reply["percent"] = percent
             reply["currentState"] = getCurrentState()
             reply["values"] = listOf(range)
             eventSink.success(event)
@@ -36,8 +35,8 @@ class CustomGSYMediaPlayerListenerApi(private var videoPlayer: CustomVideoPlayer
         val event: MutableMap<String, Any?> = HashMap()
         val reply: MutableMap<String, Any> = HashMap()
         event["event"] = "videoPlayerInitialized"
-        reply["duration"] = videoDuration
-        reply["position"] = videoPosition
+        reply["duration"] = GSYVideoManager.instance().player.mediaPlayer.duration
+        reply["position"] = GSYVideoManager.instance().player.mediaPlayer.currentPosition
         reply["isPlaying"] = true
         reply["currentState"] = getCurrentState()
         reply["width"] = GSYVideoManager.instance().player.videoWidth
@@ -52,8 +51,8 @@ class CustomGSYMediaPlayerListenerApi(private var videoPlayer: CustomVideoPlayer
         val event: MutableMap<String, Any?> = HashMap()
         val reply: MutableMap<String, Any> = HashMap()
         event["event"] = "onListenerConfigurationChanged"
-        reply["duration"] = videoDuration
-        reply["position"] = videoPosition
+        reply["duration"] = GSYVideoManager.instance().player.mediaPlayer.duration
+        reply["position"] = GSYVideoManager.instance().player.mediaPlayer.currentPosition
         reply["isPlaying"] = GSYVideoManager.instance().player.isPlaying
         reply["currentState"] = getCurrentState()
         event["reply"] = reply
@@ -64,8 +63,8 @@ class CustomGSYMediaPlayerListenerApi(private var videoPlayer: CustomVideoPlayer
         val event: MutableMap<String, Any?> = HashMap()
         val reply: MutableMap<String, Any> = HashMap()
         event["event"] = "onListenerPrepared"
-        reply["duration"] = videoDuration
-        reply["position"] = videoPosition
+        reply["duration"] = GSYVideoManager.instance().player.mediaPlayer.duration
+        reply["position"] = GSYVideoManager.instance().player.mediaPlayer.currentPosition
         reply["isPlaying"] = true
         reply["currentState"] = getCurrentState()
         event["reply"] = reply
@@ -76,9 +75,9 @@ class CustomGSYMediaPlayerListenerApi(private var videoPlayer: CustomVideoPlayer
         val event: MutableMap<String, Any?> = HashMap()
         val reply: MutableMap<String, Any> = HashMap()
         event["event"] = "onListenerAutoCompletion"
-        reply["duration"] = videoDuration
+        reply["duration"] = GSYVideoManager.instance().player.mediaPlayer.duration
         reply["isPlaying"] = false
-        reply["position"] = videoPosition
+        reply["position"] = GSYVideoManager.instance().player.mediaPlayer.currentPosition
         reply["currentState"] = getCurrentState()
         event["reply"] = reply
         sink.success(event)
@@ -88,8 +87,8 @@ class CustomGSYMediaPlayerListenerApi(private var videoPlayer: CustomVideoPlayer
         val event: MutableMap<String, Any?> = HashMap()
         val reply: MutableMap<String, Any> = HashMap()
         event["event"] = "onListenerCompletion"
-        reply["duration"] = videoDuration
-        reply["position"] = videoPosition
+        reply["duration"] = GSYVideoManager.instance().player.mediaPlayer.duration
+        reply["position"] = GSYVideoManager.instance().player.mediaPlayer.currentPosition
         reply["isPlaying"] = false
         reply["currentState"] = getCurrentState()
         event["reply"] = reply
@@ -104,8 +103,8 @@ class CustomGSYMediaPlayerListenerApi(private var videoPlayer: CustomVideoPlayer
         val event: MutableMap<String, Any?> = HashMap()
         val reply: MutableMap<String, Any> = HashMap()
         event["event"] = "onListenerSeekComplete"
-        reply["duration"] = videoDuration
-        reply["position"] = videoPosition
+        reply["duration"] = GSYVideoManager.instance().player.mediaPlayer.duration
+        reply["position"] = GSYVideoManager.instance().player.mediaPlayer.currentPosition
         reply["isPlaying"] = false
         reply["currentState"] = getCurrentState()
         event["reply"] = reply
@@ -120,8 +119,8 @@ class CustomGSYMediaPlayerListenerApi(private var videoPlayer: CustomVideoPlayer
         reply["what"] = what
         reply["extra"] = extra
         reply["currentState"] = getCurrentState()
-        reply["duration"] = videoDuration
-        reply["position"] = videoPosition
+        reply["duration"] = GSYVideoManager.instance().player.mediaPlayer.duration
+        reply["position"] = GSYVideoManager.instance().player.mediaPlayer.currentPosition
         reply["isPlaying"] = false
         sink.success(event)
     }
@@ -135,10 +134,26 @@ class CustomGSYMediaPlayerListenerApi(private var videoPlayer: CustomVideoPlayer
         reply["what"] = what
         reply["extra"] = extra
         reply["currentState"] = getCurrentState()
-        reply["duration"] = videoDuration
-        reply["position"] = videoPosition
+        reply["duration"] = GSYVideoManager.instance().player.mediaPlayer.duration
+        reply["position"] = GSYVideoManager.instance().player.mediaPlayer.currentPosition
         sink.success(event)
     }
+
+    fun onBufferingEnd(sink: QueuingEventSink, what: Int, extra: Int) {
+        val event: MutableMap<String, Any> = HashMap()
+        val reply: MutableMap<String, Any> = HashMap()
+        event["event"] = "onListenerBufferingEnd"
+        reply["isPlaying"] = GSYVideoManager.instance().player.isPlaying
+        event["reply"] = reply
+        reply["what"] = what
+        reply["extra"] = extra
+        reply["currentState"] = getCurrentState()
+        reply["duration"] = GSYVideoManager.instance().player.mediaPlayer.duration
+        reply["position"] = GSYVideoManager.instance().player.mediaPlayer.currentPosition
+        sink.success(event)
+    }
+
+
 
     fun onFullButtonClick(sink: QueuingEventSink) {
         val event: MutableMap<String, Any> = HashMap()
@@ -147,8 +162,8 @@ class CustomGSYMediaPlayerListenerApi(private var videoPlayer: CustomVideoPlayer
         reply["isPlaying"] = GSYVideoManager.instance().player.isPlaying
         event["reply"] = reply
         reply["currentState"] = getCurrentState()
-        reply["duration"] = videoDuration
-        reply["position"] = videoPosition
+        reply["duration"] = GSYVideoManager.instance().player.mediaPlayer.duration
+        reply["position"] = GSYVideoManager.instance().player.mediaPlayer.currentPosition
         sink.success(event)
     }
 
@@ -156,8 +171,8 @@ class CustomGSYMediaPlayerListenerApi(private var videoPlayer: CustomVideoPlayer
         val event: MutableMap<String, Any?> = HashMap()
         val reply: MutableMap<String, Any> = HashMap()
         event["event"] = "onListenerVideoSizeChanged"
-        reply["duration"] = videoDuration
-        reply["position"] = videoPosition
+        reply["duration"] = GSYVideoManager.instance().player.mediaPlayer.duration
+        reply["position"] = GSYVideoManager.instance().player.mediaPlayer.currentPosition
         reply["isPlaying"] = true
         reply["currentState"] = getCurrentState()
         event["reply"] = reply
@@ -168,8 +183,8 @@ class CustomGSYMediaPlayerListenerApi(private var videoPlayer: CustomVideoPlayer
         val event: MutableMap<String, Any?> = HashMap()
         val reply: MutableMap<String, Any> = HashMap()
         event["event"] = "onListenerBackFullscreen"
-        reply["duration"] = videoDuration
-        reply["position"] = videoPosition
+        reply["duration"] = GSYVideoManager.instance().player.mediaPlayer.duration
+        reply["position"] = GSYVideoManager.instance().player.mediaPlayer.currentPosition
         reply["isPlaying"] = GSYVideoManager.instance().player.isPlaying
         reply["currentState"] = getCurrentState()
         event["reply"] = reply
@@ -180,9 +195,9 @@ class CustomGSYMediaPlayerListenerApi(private var videoPlayer: CustomVideoPlayer
         val event: MutableMap<String, Any?> = HashMap()
         val reply: MutableMap<String, Any> = HashMap()
         event["event"] = "onListenerVideoPause"
-        reply["duration"] = videoDuration
+        reply["duration"] = GSYVideoManager.instance().player.mediaPlayer.duration
         reply["currentState"] = getCurrentState()
-        reply["position"] = videoPosition
+        reply["position"] = GSYVideoManager.instance().player.mediaPlayer.currentPosition
         reply["isPlaying"] = false
         event["reply"] = reply
         sink.success(event)
@@ -192,10 +207,10 @@ class CustomGSYMediaPlayerListenerApi(private var videoPlayer: CustomVideoPlayer
         val event: MutableMap<String, Any?> = HashMap()
         val reply: MutableMap<String, Any> = HashMap()
         event["event"] = "onListenerVideoResume"
-        reply["duration"] = videoDuration
+        reply["duration"] = GSYVideoManager.instance().player.mediaPlayer.duration
         reply["isPlaying"] = true
         reply["currentState"] = getCurrentState()
-        reply["position"] = videoPosition
+        reply["position"] = GSYVideoManager.instance().player.mediaPlayer.currentPosition
         event["reply"] = reply
         sink.success(event)
     }
@@ -204,8 +219,8 @@ class CustomGSYMediaPlayerListenerApi(private var videoPlayer: CustomVideoPlayer
         val event: MutableMap<String, Any?> = HashMap()
         val reply: MutableMap<String, Any> = HashMap()
         event["event"] = "onListenerVideoResumeWithSeek"
-        reply["duration"] = videoDuration
-        reply["position"] = videoPosition
+        reply["duration"] = GSYVideoManager.instance().player.mediaPlayer.duration
+        reply["position"] = GSYVideoManager.instance().player.mediaPlayer.currentPosition
         reply["currentState"] = getCurrentState()
         reply["seek"] = seek
         reply["isPlaying"] = true

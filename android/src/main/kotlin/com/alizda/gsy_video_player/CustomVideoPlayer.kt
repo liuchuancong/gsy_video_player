@@ -4,8 +4,11 @@ package com.alizda.gsy_video_player
 import android.app.Activity
 import android.content.Context
 import android.content.res.Configuration
+import android.media.MediaPlayer
 import android.util.AttributeSet
+import android.util.Log
 import android.view.Surface
+import android.widget.SeekBar
 import com.aliyun.player.AliPlayer
 import com.shuyu.gsyvideoplayer.listener.GSYVideoProgressListener
 import com.shuyu.gsyvideoplayer.listener.VideoAllCallBack
@@ -24,11 +27,13 @@ class CustomVideoPlayer : StandardGSYVideoPlayer, GSYVideoProgressListener, Vide
     private var eventSink: QueuingEventSink ? = null
     private var surface: Surface? = null
     private var textureEntry: TextureRegistry.SurfaceProducer? = null
+    private var bufferEnd = false
     constructor(context: Context?, fullFlag: Boolean?) : super(context, fullFlag)
     constructor(context: Context?) : super(context)
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
     override fun init(context: Context) {
         super.init(context)
+        setGSYVideoProgressListener(this)
     }
     fun setEventSink(sink: QueuingEventSink){
         eventSink = sink
@@ -98,6 +103,10 @@ class CustomVideoPlayer : StandardGSYVideoPlayer, GSYVideoProgressListener, Vide
 
     override fun onInfo(what: Int, extra: Int) {
         super.onInfo(what, extra)
+        if(!bufferEnd && what == MediaPlayer.MEDIA_INFO_BUFFERING_END){
+            bufferEnd = true
+            customGSYMediaPlayerListenerApi.onBufferingEnd(eventSink!!, what, extra)
+        }
         customGSYMediaPlayerListenerApi.onInfo(eventSink!!, what, extra)
     }
 
@@ -229,8 +238,8 @@ class CustomVideoPlayer : StandardGSYVideoPlayer, GSYVideoProgressListener, Vide
     override fun onComplete(url: String, vararg objects: Any) {
         customVideoAllCallBackApi.onComplete(eventSink!!, url, objects)
     }
-
     override fun onProgress(progress: Long, secProgress: Long, currentPosition: Long, duration: Long) {
-        customVideoAllCallBackApi.onProgress(eventSink!!, progress, secProgress, currentPosition, duration)
+        customVideoAllCallBackApi.onProgress(eventSink!!)
     }
+
 }

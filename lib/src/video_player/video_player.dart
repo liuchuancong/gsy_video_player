@@ -22,7 +22,7 @@ class VideoPlayerValue {
       this.playbackSpeed = 1.0,
       this.what,
       this.extra,
-      this.percent,
+      this.percent = 0.0,
       this.seek,
       this.errorDescription,
       this.playState,
@@ -40,13 +40,14 @@ class VideoPlayerValue {
 
   /// Returns an instance with a `null` [Duration] and the given
   /// [errorDescription].
-  VideoPlayerValue.erroneous(String errorDescription) : this(duration: Duration.zero, isInitialized: false);
+  VideoPlayerValue.erroneous(String errorDescription)
+      : this(duration: Duration.zero, isInitialized: false, percent: 0.0);
 
   final int? what;
 
   final int? extra;
 
-  final int? percent;
+  final double percent;
 
   final bool allowBackgroundPlayback;
 
@@ -102,7 +103,7 @@ class VideoPlayerValue {
   final int rotationCorrection;
 
   /// Indicates whether or not the video has been loaded and is ready to play.
-  bool get initialized => duration != Duration.zero;
+  bool get initialized => isInitialized;
 
   /// A description of the error if present.
   ///
@@ -150,7 +151,7 @@ class VideoPlayerValue {
     bool? isPip,
     int? what,
     int? extra,
-    int? percent,
+    double? percent,
     bool? seek,
     VideoPlayState? playState,
     bool? isFullScreen,
@@ -198,6 +199,7 @@ class VideoPlayerValue {
         'position: $position, '
         'buffered: [${buffered.join(', ')}], '
         'isInitialized: $isInitialized, '
+        'videoPlayerInitialized: $videoPlayerInitialized, '
         'isPlaying: $isPlaying, '
         'isLooping: $isLooping, '
         'isBuffering: $isBuffering, '

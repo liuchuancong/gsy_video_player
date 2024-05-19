@@ -79,7 +79,7 @@ class _VideoProgressBarState extends State<VideoProgressBar> {
     return chewieController.draggableProgressBar
         ? GestureDetector(
             onHorizontalDragStart: (DragStartDetails details) {
-              if (!controller.value.isInitialized) {
+              if (!controller.value.videoPlayerInitialized) {
                 return;
               }
               _controllerWasPlaying = controller.value.isPlaying;
@@ -90,7 +90,7 @@ class _VideoProgressBarState extends State<VideoProgressBar> {
               widget.onDragStart?.call();
             },
             onHorizontalDragUpdate: (DragUpdateDetails details) {
-              if (!controller.value.isInitialized) {
+              if (!controller.value.videoPlayerInitialized) {
                 return;
               }
               _latestDraggableOffset = details.globalPosition;
@@ -111,7 +111,7 @@ class _VideoProgressBarState extends State<VideoProgressBar> {
               widget.onDragEnd?.call();
             },
             onTapDown: (TapDownDetails details) {
-              if (!controller.value.isInitialized) {
+              if (!controller.value.videoPlayerInitialized) {
                 return;
               }
               _seekToRelativePosition(details.globalPosition);
@@ -143,6 +143,7 @@ class StaticProgressBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('value.position ${value.position}');
     return Container(
       height: MediaQuery.of(context).size.height,
       width: MediaQuery.of(context).size.width,
@@ -209,9 +210,7 @@ class _ProgressBarPainter extends CustomPainter {
     if (!value.isInitialized) {
       return;
     }
-    final double playedPartPercent =
-        (draggableValue != null ? draggableValue!.inMilliseconds : value.position.inMilliseconds) /
-            value.duration.inMilliseconds;
+    final double playedPartPercent = value.percent;
     final double playedPart = playedPartPercent > 1 ? size.width : playedPartPercent * size.width;
     for (final DurationRange range in value.buffered) {
       final double start = range.startFraction(value.duration) * size.width;

@@ -489,7 +489,7 @@ class _MaterialDesktopControlsState extends State<MaterialDesktopControls> with 
     } else {
       _cancelAndRestartTimer();
 
-      if (!controller.value.isInitialized) {
+      if (!controller.value.videoPlayerInitialized) {
         controller.initialize().then((_) {
           //[GsyVideoPlayerController.play] If the video is at the end, this method starts playing from the beginning
           controller.setBuilder(controller.videoOptionBuilder);

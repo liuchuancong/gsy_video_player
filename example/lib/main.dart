@@ -43,10 +43,13 @@ class _MyAppState extends State<MyApp> {
       showFullAnimation: true,
       showPauseCover: true,
       rotateWithSystem: true,
+      cacheWithPlay: true,
       isTouchWigetFull: true,
     );
     gsyVideoPlayerController.addEventsListener((VideoEventType event) {
-      if (gsyVideoPlayerController.value.initialized) {}
+      if (gsyVideoPlayerController.value.initialized) {
+        print('video event $event');
+      }
     });
   }
 
