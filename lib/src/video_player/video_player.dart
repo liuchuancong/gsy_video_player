@@ -1,4 +1,3 @@
-import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:gsy_video_player/src/video_player/video_event.dart';
 import 'package:gsy_video_player/src/constants/video_play_state.dart';
@@ -35,6 +34,7 @@ class VideoPlayerValue {
     this.videoSarDen = 0,
     this.videoSarNum = 0,
     this.bufferPercent = 0,
+    this.fit = BoxFit.contain,
   });
 
   /// Returns an instance for a video that hasn't been loaded.
@@ -78,6 +78,8 @@ class VideoPlayerValue {
 
   /// True if the video is currently buffering.
   final bool isBuffering;
+
+  final BoxFit fit;
 
   /// The current volume of the playback.
   final double volume;
@@ -166,6 +168,7 @@ class VideoPlayerValue {
     int? videoSarNum,
     int? videoSarDen,
     int? bufferPercent,
+    BoxFit? fit,
   }) {
     return VideoPlayerValue(
       duration: duration ?? this.duration,
@@ -194,6 +197,7 @@ class VideoPlayerValue {
       videoSarNum: videoSarNum ?? this.videoSarNum,
       videoSarDen: videoSarDen ?? this.videoSarDen,
       bufferPercent: bufferPercent ?? this.bufferPercent,
+      fit: fit ?? this.fit,
     );
   }
 
@@ -211,6 +215,9 @@ class VideoPlayerValue {
         'isBuffering: $isBuffering, '
         'volume: $volume, '
         'isFullScreen: $isFullScreen, '
+        'isPip: $isPip, '
+        'rotationCorrection: $rotationCorrection, '
+        'percent: $percent, '
         'errorDescription: $errorDescription, '
         'speed: $speed, '
         'allowBackgroundPlayback: $allowBackgroundPlayback, '
@@ -251,6 +258,7 @@ class VideoPlayerValue {
           errorDescription == other.errorDescription &&
           isPip == other.isPip &&
           speed == other.speed &&
+          fit == other.fit &&
           isFullScreen == other.isFullScreen &&
           playState == other.playState;
 

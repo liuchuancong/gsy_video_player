@@ -100,19 +100,19 @@ class _MyAppState extends State<MyApp> {
                     child: const Text('seekTo 10s')),
                 ElevatedButton(
                     onPressed: () async {
-                      gsyVideoPlayerController.onEnterFullScreen();
+                      gsyVideoPlayerController.setBoxFit(BoxFit.fitWidth);
                       // await gsyVideoPlayerController.setIfCurrentIsFullscreen(true);
                     },
                     child: const Text('FullScreen')),
                 ElevatedButton(
                     onPressed: () async {
-                      gsyVideoPlayerController.onExitFullScreen();
+                      gsyVideoPlayerController.setBoxFit(BoxFit.fitHeight);
                       // await gsyVideoPlayerController.setIfCurrentIsFullscreen(false);
                     },
                     child: const Text('normalScreen')),
                 ElevatedButton(
                     onPressed: () {
-                      gsyVideoPlayerController.showSmallVideo(const Size(500, 500), true, true);
+                      gsyVideoPlayerController.setBoxFit(BoxFit.fill);
                     },
                     child: const Text('showSmallVideo')),
               ],

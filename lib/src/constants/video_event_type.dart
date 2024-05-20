@@ -99,5 +99,7 @@ enum VideoEventType {
 
   exitWindowFullscreen,
 
+  changeBoxFit,
+
   unknown,
 }

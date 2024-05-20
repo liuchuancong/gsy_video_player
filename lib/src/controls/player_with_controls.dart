@@ -109,7 +109,7 @@ class CroppedVideoState extends State<CroppedVideo> {
   double get cropAspectRatio => widget.cropAspectRatio;
   bool initialized = false;
 
-  late VoidCallback listener;
+  BoxFit fit = BoxFit.contain;
 
   @override
   void initState() {
@@ -121,23 +121,30 @@ class CroppedVideoState extends State<CroppedVideo> {
   void didUpdateWidget(CroppedVideo oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.controller != controller) {
-      oldWidget.controller.removeListener(listener);
+      oldWidget.controller.removeEventsListener(eventListener);
       initialized = false;
+      fit = BoxFit.contain;
       _waitForInitialized();
     }
   }
 
   void _waitForInitialized() {
-    listener = () {
-      if (!mounted) {
-        return;
-      }
-      if (initialized == false && controller.value.videoPlayerInitialized) {
+    controller.addEventsListener(eventListener);
+  }
+
+  void eventListener(VideoEventType event) {
+    if (VideoEventType.changeBoxFit == event || initialized == false && controller.value.videoPlayerInitialized) {
+      setState(() {
+        fit = controller.value.fit;
         initialized = controller.value.videoPlayerInitialized;
-        setState(() {});
-      }
-    };
-    controller.addListener(listener);
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    controller.removeEventsListener(eventListener);
+    super.dispose();
   }
 
   @override
@@ -146,7 +153,7 @@ class CroppedVideoState extends State<CroppedVideo> {
       child: AspectRatio(
         aspectRatio: cropAspectRatio,
         child: FittedBox(
-          fit: BoxFit.cover,
+          fit: controller.value.fit,
           child: SizedBox(
             width: controller.value.size?.width ?? 0,
             height: controller.value.size?.height ?? 0,

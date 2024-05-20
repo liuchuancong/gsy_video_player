@@ -175,6 +175,10 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
         _postEvent(VideoEventType.onEventQuitSmallWidget);
         break;
 
+      case VideoEventType.changeBoxFit:
+        _postEvent(VideoEventType.changeBoxFit);
+        break;
+
       case VideoEventType.onEventEnterSmallWidget:
         _postEvent(VideoEventType.onEventEnterSmallWidget);
         break;
@@ -748,6 +752,8 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
         case VideoEventType.onEventQuitFullscreen:
           break;
         case VideoEventType.onEventQuitSmallWidget:
+          break;
+        case VideoEventType.changeBoxFit:
           break;
         case VideoEventType.onEventEnterSmallWidget:
           break;
@@ -1489,6 +1495,11 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
       value = value.copyWith(isPlaying: true);
     }
     _applyPlayPause();
+  }
+
+  void setBoxFit(BoxFit fit) {
+    value = value.copyWith(fit: fit);
+    _postEvent(VideoEventType.changeBoxFit);
   }
 
   Future<void> _applyPlayPause() async {
