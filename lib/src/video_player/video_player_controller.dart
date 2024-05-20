@@ -56,6 +56,8 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
 
   _VideoAppLifeCycleObserver? _lifeCycleObserver;
 
+  int _lastPosition = 0;
+
   ///List of event listeners, which listen to events.
   final List<Function(VideoEventType)?> _eventListeners = [];
 
@@ -821,6 +823,7 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
             isBuffering: event.isBuffering,
             bufferPercent: event.bufferPercent,
           );
+          _positionLisener();
           break;
         case VideoEventType.onListenerBufferingEnd:
           value = value.copyWith(
@@ -860,6 +863,7 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
             isBuffering: event.isBuffering,
             extra: event.extra,
           );
+          _positionLisener();
           break;
         case VideoEventType.onListenerVideoSizeChanged:
           value = value.copyWith(

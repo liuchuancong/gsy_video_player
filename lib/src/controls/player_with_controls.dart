@@ -133,7 +133,8 @@ class CroppedVideoState extends State<CroppedVideo> {
   }
 
   void eventListener(VideoEventType event) {
-    if (VideoEventType.changeBoxFit == event || initialized == false && controller.value.videoPlayerInitialized) {
+    if (VideoEventType.changeBoxFit == event && fit != controller.value.fit ||
+        initialized == false && controller.value.videoPlayerInitialized) {
       setState(() {
         fit = controller.value.fit;
         initialized = controller.value.videoPlayerInitialized;
@@ -153,10 +154,10 @@ class CroppedVideoState extends State<CroppedVideo> {
       child: AspectRatio(
         aspectRatio: cropAspectRatio,
         child: FittedBox(
-          fit: controller.value.fit,
+          fit: fit,
           child: SizedBox(
-            width: controller.value.size?.width ?? 0,
-            height: controller.value.size?.height ?? 0,
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
             child: AspectRatio(
               aspectRatio: controller.value.aspectRatio,
               child: GsyVideoPlayer(controller: controller),

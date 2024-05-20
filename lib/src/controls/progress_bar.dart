@@ -204,7 +204,7 @@ class _ProgressBarPainter extends CustomPainter {
       ),
       colors.backgroundPaint,
     );
-    if (!value.isInitialized) {
+    if (!value.videoPlayerInitialized) {
       return;
     }
     final double playedPartPercent =
