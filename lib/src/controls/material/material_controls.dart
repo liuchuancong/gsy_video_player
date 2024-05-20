@@ -348,7 +348,7 @@ class _MaterialControlsState extends State<MaterialControls> with SingleTickerPr
   }
 
   Widget _buildHitArea() {
-    final bool isFinished = _latestValue.position >= _latestValue.duration;
+    final bool isFinished = _latestValue.isCompleted;
     final bool showPlayButton = widget.showPlayButton && !_dragging && !notifier.hideStuff;
 
     return GestureDetector(
@@ -499,8 +499,7 @@ class _MaterialControlsState extends State<MaterialControls> with SingleTickerPr
   }
 
   void _playPause() {
-    final isFinished = _latestValue.position >= _latestValue.duration;
-
+    final bool isFinished = _latestValue.isCompleted;
     setState(() {
       if (controller.value.isPlaying) {
         notifier.hideStuff = false;
@@ -515,7 +514,9 @@ class _MaterialControlsState extends State<MaterialControls> with SingleTickerPr
           });
         } else {
           if (isFinished) {
-            controller.seekTo(Duration.zero);
+            controller.initialize().then((_) {
+              controller.setBuilder(controller.videoOptionBuilder);
+            });
           }
           controller.resume();
         }

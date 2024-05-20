@@ -239,7 +239,7 @@ class ChewieState extends State<Chewie> {
     final prevPosition = widget.controller.videoPlayerController.value.position;
     widget.controller.videoPlayerController.initialize().then((_) async {
       widget.controller._initialize();
-      widget.controller.videoPlayerController.seekTo(prevPosition);
+      widget.controller.videoPlayerController.setPlayPosition(prevPosition);
       await widget.controller.videoPlayerController.resume();
       widget.controller.videoPlayerController.pause();
     });

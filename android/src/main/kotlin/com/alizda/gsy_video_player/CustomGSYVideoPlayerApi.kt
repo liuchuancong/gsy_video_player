@@ -30,12 +30,10 @@ class CustomGSYVideoPlayerApi(private var videoPlayer: GsyVideoPlayer, private v
     }
 
     //开始播放
-    @RequiresApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     fun startPlayLogic(call: MethodCall, result: MethodChannel.Result) {
        videoPlayer.getCurrentPlayer()!!.startPlayLogic()
     }
 
-    @RequiresApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     fun setUp(call: MethodCall, result: MethodChannel.Result) {
         val setUpOptions = call.argument<Map<String, Any?>>("setUpOptions")!!
         val url = GsyVideoPlayerPlugin.getParameter(setUpOptions, "url", "")
@@ -51,8 +49,6 @@ class CustomGSYVideoPlayerApi(private var videoPlayer: GsyVideoPlayer, private v
     }
 
     //暂停
-
-    @RequiresApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     fun onVideoPause() {
        videoPlayer.getCurrentPlayer()!!.onVideoPause()
     }

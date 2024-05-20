@@ -49,7 +49,6 @@ class _MyAppState extends State<MyApp> {
     gsyVideoPlayerController.addEventsListener((VideoEventType event) {
       if (gsyVideoPlayerController.value.initialized) {
         print('video event $event');
-        print('video event ${gsyVideoPlayerController.value.toString()}');
       }
     });
   }

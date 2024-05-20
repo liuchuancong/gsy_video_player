@@ -32,7 +32,7 @@ class VideoProgressBar extends StatefulWidget {
 }
 
 class _VideoProgressBarState extends State<VideoProgressBar> {
-  void listener() {
+  void listener(VideoEventType event) {
     if (!mounted) return;
     setState(() {});
   }
@@ -46,12 +46,12 @@ class _VideoProgressBarState extends State<VideoProgressBar> {
   @override
   void initState() {
     super.initState();
-    controller.addListener(listener);
+    controller.addEventsListener(listener);
   }
 
   @override
   void deactivate() {
-    controller.removeListener(listener);
+    controller.removeEventsListener(listener);
     super.deactivate();
   }
 
@@ -94,8 +94,6 @@ class _VideoProgressBarState extends State<VideoProgressBar> {
                 return;
               }
               _latestDraggableOffset = details.globalPosition;
-              listener();
-
               widget.onDragUpdate?.call();
             },
             onHorizontalDragEnd: (DragEndDetails details) {
@@ -209,7 +207,9 @@ class _ProgressBarPainter extends CustomPainter {
     if (!value.isInitialized) {
       return;
     }
-    final double playedPartPercent = value.percent;
+    final double playedPartPercent =
+        (draggableValue != null ? draggableValue!.inMilliseconds : value.position.inMilliseconds) /
+            value.duration.inMilliseconds;
     final double playedPart = playedPartPercent > 1 ? size.width : playedPartPercent * size.width;
     for (final DurationRange range in value.buffered) {
       final double start = range.startFraction(value.duration) * size.width;

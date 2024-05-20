@@ -650,6 +650,23 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     );
   }
 
+  void _positionLisener() {
+    _timer?.cancel();
+    _timer = Timer.periodic(
+      const Duration(milliseconds: 500),
+      (Timer timer) async {
+        if (_isDisposed) {
+          return;
+        }
+        final Duration? newPosition = await position;
+        if (newPosition == null) {
+          return;
+        }
+        _updatePosition(newPosition);
+      },
+    );
+  }
+
   Future<void> setBuilder(VideoOptionBuilder builder) {
     return _setDataSource(builder);
   }
@@ -691,23 +708,11 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
             duration: Duration(milliseconds: event.duration!.inMilliseconds),
             playState: event.playState,
             size: event.size,
+            isBuffering: event.isBuffering,
             videoSarDen: event.videoSarDen,
             videoSarNum: event.videoSarNum,
           );
-          _timer?.cancel();
-          _timer = Timer.periodic(
-            const Duration(milliseconds: 500),
-            (Timer timer) async {
-              if (_isDisposed) {
-                return;
-              }
-              final Duration? newPosition = await position;
-              if (newPosition == null) {
-                return;
-              }
-              _updatePosition(newPosition);
-            },
-          );
+          _positionLisener();
           unawaited(_applyVolume());
           break;
         case VideoEventType.onEventStartPrepared:
@@ -791,6 +796,7 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
             isPlaying: event.isPlaying,
             duration: Duration(milliseconds: event.duration!.inMilliseconds),
             playState: event.playState,
+            isCompleted: true,
           );
           break;
         case VideoEventType.onListenerCompletion:
@@ -816,7 +822,7 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
             duration: Duration(milliseconds: event.duration!.inMilliseconds),
             playState: event.playState,
             buffered: event.buffered,
-            isBuffering: false,
+            isBuffering: event.isBuffering,
           );
           break;
 
@@ -825,7 +831,9 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
             isPlaying: event.isPlaying,
             duration: Duration(milliseconds: event.duration!.inMilliseconds),
             playState: event.playState,
+            isBuffering: event.isBuffering,
           );
+          _positionLisener();
           break;
         case VideoEventType.onListenerError:
           value = value.copyWith(
@@ -833,6 +841,7 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
             duration: Duration(milliseconds: event.duration!.inMilliseconds),
             playState: event.playState,
             what: event.what,
+            isBuffering: event.isBuffering,
             extra: event.extra,
           );
           break;
@@ -842,6 +851,7 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
             duration: Duration(milliseconds: event.duration!.inMilliseconds),
             playState: event.playState,
             what: event.what,
+            isBuffering: event.isBuffering,
             extra: event.extra,
           );
           break;
@@ -851,6 +861,7 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
             duration: Duration(milliseconds: event.duration!.inMilliseconds),
             playState: event.playState,
             size: event.size,
+            isBuffering: event.isBuffering,
             videoSarDen: event.videoSarDen,
             videoSarNum: event.videoSarNum,
           );
@@ -865,6 +876,7 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
         case VideoEventType.onListenerVideoPause:
           value = value.copyWith(
             isPlaying: event.isPlaying,
+            isBuffering: event.isBuffering,
             duration: Duration(milliseconds: event.duration!.inMilliseconds),
             playState: event.playState,
           );
@@ -872,6 +884,7 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
         case VideoEventType.onListenerVideoResume:
           value = value.copyWith(
             isPlaying: event.isPlaying,
+            isBuffering: event.isBuffering,
             duration: Duration(milliseconds: event.duration!.inMilliseconds),
             playState: event.playState,
           );
@@ -881,6 +894,7 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
             isPlaying: event.isPlaying,
             duration: Duration(milliseconds: event.duration!.inMilliseconds),
             playState: event.playState,
+            isBuffering: event.isBuffering,
             seek: value.seek,
           );
           break;
@@ -979,6 +993,9 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
 
   Future<void> onVideoResume() async {
     await _creatingCompleter!.future;
+    if (value.isCompleted) {
+      await seekTo(Duration.zero);
+    }
     value = value.copyWith(isPlaying: true);
     _applyPlayPause();
   }
@@ -1008,9 +1025,9 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     await _videoPlayerPlatform.setPlayTag(_textureId, tag);
   }
 
-  Future<void> setPlayPosition(int position) async {
+  Future<void> setPlayPosition(Duration position) async {
     await _creatingCompleter!.future;
-    await _videoPlayerPlatform.setPlayPosition(_textureId, position);
+    await _videoPlayerPlatform.setPlayPosition(_textureId, position.inMilliseconds);
   }
 
   Future<void> backFromWindowFull() async {
@@ -1080,6 +1097,9 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
 
   Future<void> onResume() async {
     await _creatingCompleter!.future;
+    if (value.isCompleted) {
+      await seekTo(Duration.zero);
+    }
     await _videoPlayerPlatform.onResume(_textureId);
   }
 
@@ -1405,12 +1425,13 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
 
   Future<void> seekTo(Duration msec) async {
     await _creatingCompleter!.future;
-    await _videoPlayerPlatform.seekTo(_textureId, msec.inMilliseconds);
     if (msec > value.duration) {
       msec = value.duration;
     } else if (msec < Duration.zero) {
       msec = Duration.zero;
     }
+
+    await _videoPlayerPlatform.seekTo(_textureId, msec.inMilliseconds);
     _updatePosition(msec);
   }
 
@@ -1449,6 +1470,9 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
   /// resume the video.
   Future<void> resume() async {
     await _creatingCompleter!.future;
+    if (value.isCompleted) {
+      await seekTo(Duration.zero);
+    }
     value = value.copyWith(isPlaying: true);
     await _applyPlayPause();
   }
@@ -1485,17 +1509,26 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
           _updatePosition(newPosition);
         },
       );
+      await _applyPlaybackSpeed();
     } else {
       _timer?.cancel();
       await _videoPlayerPlatform.onPause(_textureId);
     }
   }
 
-  void _updatePosition(Duration position) {
-    value = value.copyWith(
-      position: position,
-      isCompleted: position == value.duration,
+  Future<void> _applyPlaybackSpeed() async {
+    await _creatingCompleter!.future;
+    if (!value.isPlaying) {
+      return;
+    }
+    await _videoPlayerPlatform.setSpeed(
+      _textureId,
+      value.playbackSpeed,
     );
+  }
+
+  void _updatePosition(Duration position) {
+    value = value.copyWith(position: position);
   }
 
   Future<void> _applyVolume() async {

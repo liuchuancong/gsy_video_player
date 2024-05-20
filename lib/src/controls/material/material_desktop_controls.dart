@@ -310,7 +310,7 @@ class _MaterialDesktopControlsState extends State<MaterialDesktopControls> with 
   }
 
   Widget _buildHitArea() {
-    final bool isFinished = _latestValue.position >= _latestValue.duration;
+    final bool isFinished = _latestValue.isCompleted;
     final bool showPlayButton = widget.showPlayButton && !_dragging && !notifier.hideStuff;
 
     return GestureDetector(

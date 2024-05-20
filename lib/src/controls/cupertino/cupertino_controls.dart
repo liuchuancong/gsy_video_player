@@ -337,7 +337,7 @@ class _CupertinoControlsState extends State<CupertinoControls> with SingleTicker
   }
 
   Widget _buildHitArea() {
-    final bool isFinished = _latestValue.position >= _latestValue.duration;
+    final bool isFinished = _latestValue.isCompleted;
     final bool showPlayButton = widget.showPlayButton && !_latestValue.isPlaying && !_dragging;
 
     return GestureDetector(
@@ -716,7 +716,7 @@ class _CupertinoControlsState extends State<CupertinoControls> with SingleTicker
   }
 
   void _playPause() {
-    final isFinished = _latestValue.position >= _latestValue.duration;
+    final bool isFinished = _latestValue.isCompleted;
 
     setState(() {
       if (controller.value.isPlaying) {
@@ -732,7 +732,9 @@ class _CupertinoControlsState extends State<CupertinoControls> with SingleTicker
           });
         } else {
           if (isFinished) {
-            controller.seekTo(Duration.zero);
+            controller.initialize().then((_) {
+              controller.setBuilder(controller.videoOptionBuilder);
+            });
           }
           controller.resume();
         }

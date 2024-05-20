@@ -38,6 +38,7 @@ class CustomGSYMediaPlayerListenerApi(private var videoPlayer: CustomVideoPlayer
         reply["height"] = GSYVideoManager.instance().player.videoHeight
         reply["videoSarDen"] = GSYVideoManager.instance().player.videoSarDen
         reply["videoSarNum"] = GSYVideoManager.instance().player.videoSarNum
+        reply["isBuffering"] = getCurrentState() == CURRENT_STATE_PLAYING_BUFFERING_START
         event["reply"] = reply
         sink.success(event)
     }
@@ -49,6 +50,7 @@ class CustomGSYMediaPlayerListenerApi(private var videoPlayer: CustomVideoPlayer
         reply["duration"] = GSYVideoManager.instance().player.mediaPlayer.duration
         reply["position"] = GSYVideoManager.instance().player.mediaPlayer.currentPosition
         reply["isPlaying"] = GSYVideoManager.instance().player.isPlaying
+        reply["isBuffering"] = getCurrentState() == CURRENT_STATE_PLAYING_BUFFERING_START
         reply["currentState"] = getCurrentState()
         event["reply"] = reply
         sink.success(event)
@@ -60,6 +62,7 @@ class CustomGSYMediaPlayerListenerApi(private var videoPlayer: CustomVideoPlayer
         event["event"] = "onListenerPrepared"
         reply["duration"] = GSYVideoManager.instance().player.mediaPlayer.duration
         reply["position"] = GSYVideoManager.instance().player.mediaPlayer.currentPosition
+        reply["isBuffering"] = getCurrentState() == CURRENT_STATE_PLAYING_BUFFERING_START
         reply["isPlaying"] = true
         reply["currentState"] = getCurrentState()
         event["reply"] = reply
@@ -73,6 +76,7 @@ class CustomGSYMediaPlayerListenerApi(private var videoPlayer: CustomVideoPlayer
         reply["duration"] = GSYVideoManager.instance().player.mediaPlayer.duration
         reply["isPlaying"] = false
         reply["position"] = GSYVideoManager.instance().player.mediaPlayer.currentPosition
+        reply["isBuffering"] = getCurrentState() == CURRENT_STATE_PLAYING_BUFFERING_START
         reply["currentState"] = getCurrentState()
         event["reply"] = reply
         sink.success(event)
@@ -84,6 +88,7 @@ class CustomGSYMediaPlayerListenerApi(private var videoPlayer: CustomVideoPlayer
         event["event"] = "onListenerCompletion"
         reply["duration"] = GSYVideoManager.instance().player.mediaPlayer.duration
         reply["position"] = GSYVideoManager.instance().player.mediaPlayer.currentPosition
+        reply["isBuffering"] = getCurrentState() == CURRENT_STATE_PLAYING_BUFFERING_START
         reply["isPlaying"] = false
         reply["currentState"] = getCurrentState()
         event["reply"] = reply
@@ -100,6 +105,7 @@ class CustomGSYMediaPlayerListenerApi(private var videoPlayer: CustomVideoPlayer
         event["event"] = "onListenerSeekComplete"
         reply["duration"] = GSYVideoManager.instance().player.mediaPlayer.duration
         reply["position"] = GSYVideoManager.instance().player.mediaPlayer.currentPosition
+        reply["isBuffering"] = getCurrentState() == CURRENT_STATE_PLAYING_BUFFERING_START
         reply["isPlaying"] = false
         reply["currentState"] = getCurrentState()
         event["reply"] = reply
@@ -115,6 +121,7 @@ class CustomGSYMediaPlayerListenerApi(private var videoPlayer: CustomVideoPlayer
         reply["currentState"] = getCurrentState()
         reply["duration"] = GSYVideoManager.instance().player.mediaPlayer.duration
         reply["position"] = GSYVideoManager.instance().player.mediaPlayer.currentPosition
+        reply["isBuffering"] = getCurrentState() == CURRENT_STATE_PLAYING_BUFFERING_START
         reply["isPlaying"] = false
         event["reply"] = reply
         sink.success(event)
@@ -130,6 +137,7 @@ class CustomGSYMediaPlayerListenerApi(private var videoPlayer: CustomVideoPlayer
         reply["currentState"] = getCurrentState()
         reply["duration"] = GSYVideoManager.instance().player.mediaPlayer.duration
         reply["position"] = GSYVideoManager.instance().player.mediaPlayer.currentPosition
+        reply["isBuffering"] = getCurrentState() == CURRENT_STATE_PLAYING_BUFFERING_START
         event["reply"] = reply
         sink.success(event)
     }
@@ -144,6 +152,7 @@ class CustomGSYMediaPlayerListenerApi(private var videoPlayer: CustomVideoPlayer
         reply["currentState"] = getCurrentState()
         reply["duration"] = GSYVideoManager.instance().player.mediaPlayer.duration
         reply["position"] = GSYVideoManager.instance().player.mediaPlayer.currentPosition
+        reply["isBuffering"] = getCurrentState() == CURRENT_STATE_PLAYING_BUFFERING_START
         event["reply"] = reply
         sink.success(event)
     }
@@ -158,6 +167,7 @@ class CustomGSYMediaPlayerListenerApi(private var videoPlayer: CustomVideoPlayer
         reply["currentState"] = getCurrentState()
         reply["duration"] = GSYVideoManager.instance().player.mediaPlayer.duration
         reply["position"] = GSYVideoManager.instance().player.mediaPlayer.currentPosition
+        reply["isBuffering"] = getCurrentState() == CURRENT_STATE_PLAYING_BUFFERING_START
         event["reply"] = reply
         sink.success(event)
     }
@@ -168,6 +178,7 @@ class CustomGSYMediaPlayerListenerApi(private var videoPlayer: CustomVideoPlayer
         event["event"] = "onListenerVideoSizeChanged"
         reply["duration"] = GSYVideoManager.instance().player.mediaPlayer.duration
         reply["position"] = GSYVideoManager.instance().player.mediaPlayer.currentPosition
+        reply["isBuffering"] = getCurrentState() == CURRENT_STATE_PLAYING_BUFFERING_START
         reply["isPlaying"] = true
         reply["currentState"] = getCurrentState()
         event["reply"] = reply
@@ -180,6 +191,7 @@ class CustomGSYMediaPlayerListenerApi(private var videoPlayer: CustomVideoPlayer
         event["event"] = "onListenerBackFullscreen"
         reply["duration"] = GSYVideoManager.instance().player.mediaPlayer.duration
         reply["position"] = GSYVideoManager.instance().player.mediaPlayer.currentPosition
+        reply["isBuffering"] = getCurrentState() == CURRENT_STATE_PLAYING_BUFFERING_START
         reply["isPlaying"] = GSYVideoManager.instance().player.isPlaying
         reply["currentState"] = getCurrentState()
         event["reply"] = reply
@@ -193,6 +205,7 @@ class CustomGSYMediaPlayerListenerApi(private var videoPlayer: CustomVideoPlayer
         reply["duration"] = GSYVideoManager.instance().player.mediaPlayer.duration
         reply["currentState"] = getCurrentState()
         reply["position"] = GSYVideoManager.instance().player.mediaPlayer.currentPosition
+        reply["isBuffering"] = getCurrentState() == CURRENT_STATE_PLAYING_BUFFERING_START
         reply["isPlaying"] = false
         event["reply"] = reply
         sink.success(event)
@@ -206,6 +219,7 @@ class CustomGSYMediaPlayerListenerApi(private var videoPlayer: CustomVideoPlayer
         reply["isPlaying"] = true
         reply["currentState"] = getCurrentState()
         reply["position"] = GSYVideoManager.instance().player.mediaPlayer.currentPosition
+        reply["isBuffering"] = getCurrentState() == CURRENT_STATE_PLAYING_BUFFERING_START
         event["reply"] = reply
         sink.success(event)
     }
@@ -216,6 +230,7 @@ class CustomGSYMediaPlayerListenerApi(private var videoPlayer: CustomVideoPlayer
         event["event"] = "onListenerVideoResumeWithSeek"
         reply["duration"] = GSYVideoManager.instance().player.mediaPlayer.duration
         reply["position"] = GSYVideoManager.instance().player.mediaPlayer.currentPosition
+        reply["isBuffering"] = getCurrentState() == CURRENT_STATE_PLAYING_BUFFERING_START
         reply["currentState"] = getCurrentState()
         reply["seek"] = seek
         reply["isPlaying"] = true
