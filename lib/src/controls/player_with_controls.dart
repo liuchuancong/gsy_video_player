@@ -40,10 +40,12 @@ class PlayerWithControls extends StatelessWidget {
             maxScale: chewieController.maxScale,
             panEnabled: chewieController.zoomAndPan,
             scaleEnabled: chewieController.zoomAndPan,
-            child: AspectRatio(
-              aspectRatio: chewieController.aspectRatio ?? chewieController.videoPlayerController.value.aspectRatio,
-              child: GsyVideoPlayer(
-                controller: chewieController.videoPlayerController,
+            child: Center(
+              child: AspectRatio(
+                aspectRatio: chewieController.aspectRatio ?? chewieController.videoPlayerController.value.aspectRatio,
+                child: GsyVideoPlayer(
+                  controller: chewieController.videoPlayerController,
+                ),
               ),
             ),
           ),
