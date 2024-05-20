@@ -4,23 +4,18 @@ package com.alizda.gsy_video_player
 import android.app.Activity
 import android.content.Context
 import android.content.res.Configuration
-import android.graphics.Color
+import android.media.MediaPlayer
 import android.util.AttributeSet
 import android.util.Log
-import android.view.MotionEvent
 import android.view.Surface
-import android.view.View
-import android.view.ViewGroup
-import android.widget.ImageView
+import android.widget.SeekBar
+import com.aliyun.player.AliPlayer
 import com.shuyu.gsyvideoplayer.listener.GSYVideoProgressListener
 import com.shuyu.gsyvideoplayer.listener.VideoAllCallBack
-import com.shuyu.gsyvideoplayer.utils.GSYVideoType
 import com.shuyu.gsyvideoplayer.utils.OrientationUtils
 import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer
 import com.shuyu.gsyvideoplayer.video.base.GSYBaseVideoPlayer
-import com.shuyu.gsyvideoplayer.video.base.GSYVideoPlayer
-import io.flutter.plugin.common.MethodCall
-import io.flutter.plugin.common.MethodChannel
+import io.flutter.view.TextureRegistry
 
 
 class CustomVideoPlayer : StandardGSYVideoPlayer, GSYVideoProgressListener, VideoAllCallBack {
@@ -31,11 +26,14 @@ class CustomVideoPlayer : StandardGSYVideoPlayer, GSYVideoProgressListener, Vide
     private var videoIsInitialized: Boolean = false
     private var eventSink: QueuingEventSink ? = null
     private var surface: Surface? = null
+    private var textureEntry: TextureRegistry.SurfaceProducer? = null
+    private var bufferEnd = false
     constructor(context: Context?, fullFlag: Boolean?) : super(context, fullFlag)
     constructor(context: Context?) : super(context)
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
     override fun init(context: Context) {
         super.init(context)
+        setGSYVideoProgressListener(this)
     }
     fun setEventSink(sink: QueuingEventSink){
         eventSink = sink
@@ -44,8 +42,8 @@ class CustomVideoPlayer : StandardGSYVideoPlayer, GSYVideoProgressListener, Vide
         orientationUtils = utils
     }
 
-    fun setVideoDisplay(surface: Surface){
-        this.surface = surface
+    fun setVideoDisplay(textureEntry: TextureRegistry.SurfaceProducer){
+        this.textureEntry = textureEntry
     }
 
     override fun clickStartIcon() {
@@ -65,11 +63,12 @@ class CustomVideoPlayer : StandardGSYVideoPlayer, GSYVideoProgressListener, Vide
         customGSYMediaPlayerListenerApi.onConfigurationChanged(eventSink!!)
     }
 
-
     override fun onPrepared() {
-        gsyVideoManager.player.mediaPlayer.setSurface(surface)
         if (!videoIsInitialized) {
             videoIsInitialized = true
+            textureEntry!!.setSize(gsyVideoManager.player.mediaPlayer.videoWidth,gsyVideoManager.player.mediaPlayer.videoHeight)
+            surface = textureEntry!!.surface
+            gsyVideoManager.player.mediaPlayer.setSurface(surface)
             customGSYMediaPlayerListenerApi.sendVideoPlayerInitialized(eventSink!!)
         }
         super.onPrepared()
@@ -104,6 +103,10 @@ class CustomVideoPlayer : StandardGSYVideoPlayer, GSYVideoProgressListener, Vide
 
     override fun onInfo(what: Int, extra: Int) {
         super.onInfo(what, extra)
+        if(!bufferEnd && what == MediaPlayer.MEDIA_INFO_BUFFERING_END){
+            bufferEnd = true
+            customGSYMediaPlayerListenerApi.onBufferingEnd(eventSink!!, what, extra)
+        }
         customGSYMediaPlayerListenerApi.onInfo(eventSink!!, what, extra)
     }
 
@@ -235,8 +238,8 @@ class CustomVideoPlayer : StandardGSYVideoPlayer, GSYVideoProgressListener, Vide
     override fun onComplete(url: String, vararg objects: Any) {
         customVideoAllCallBackApi.onComplete(eventSink!!, url, objects)
     }
-
     override fun onProgress(progress: Long, secProgress: Long, currentPosition: Long, duration: Long) {
-        customVideoAllCallBackApi.onProgress(eventSink!!, progress, secProgress, currentPosition, duration)
+        customVideoAllCallBackApi.onProgress(eventSink!!)
     }
+
 }

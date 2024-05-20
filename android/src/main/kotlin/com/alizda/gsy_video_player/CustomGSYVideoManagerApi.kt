@@ -98,7 +98,7 @@ class CustomGSYVideoManagerApi(private val context: Context) {
     }
 
     fun getPlayPosition(call: MethodCall, result: MethodChannel.Result) {
-        val playPosition = GSYVideoManager.instance().playPosition
+        val playPosition = GSYVideoManager.instance().player.currentPosition
         val reply: MutableMap<String, Any> = HashMap()
         reply["playPosition"] = playPosition
         result.success(reply)

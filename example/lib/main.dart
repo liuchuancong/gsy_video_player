@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:gsy_video_player/gsy_video_player.dart';
@@ -15,27 +14,28 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  GsyVideoPlayerController gsyVideoPlayerController = GsyVideoPlayerController(
-    danmakuSettings: const DanmakuSettings(
-      danmakuStyle: DanmakuStyle.danmuStyleStroked,
-      opacity: 1,
-      strokenWidth: 5.0,
-      showDanmaku: true,
-      enableDanmakuDrawingCache: false,
-      maxLinesPair: {
-        DanmakuTypeScroll.scrollRL: 10,
-      },
-    ),
-  );
-
+  GsyVideoPlayerController gsyVideoPlayerController = GsyVideoPlayerController();
+  late ChewieController chewieController;
   @override
   void initState() {
     super.initState();
     initPlayer();
   }
 
+  @override
+  void dispose() {
+    chewieController.dispose();
+    gsyVideoPlayerController.dispose();
+    super.dispose();
+  }
+
   // Platform messages are asynchronous, so we initialize in an async method.
   Future<void> initPlayer() async {
+    chewieController = ChewieController(
+      videoPlayerController: gsyVideoPlayerController,
+      autoPlay: true,
+      looping: true,
+    );
     gsyVideoPlayerController.setLogLevel(LogLevel.logError);
     gsyVideoPlayerController.setNetWorkBuilder(
       'https://cloud.video.taobao.com//play/u/27349687/p/1/e/6/t/1/239880949246.mp4',
@@ -43,10 +43,13 @@ class _MyAppState extends State<MyApp> {
       showFullAnimation: true,
       showPauseCover: true,
       rotateWithSystem: true,
+      cacheWithPlay: true,
       isTouchWigetFull: true,
     );
     gsyVideoPlayerController.addEventsListener((VideoEventType event) {
-      if (gsyVideoPlayerController.value.initialized) {}
+      if (gsyVideoPlayerController.value.initialized) {
+        print('video event $event');
+      }
     });
   }
 
@@ -64,8 +67,8 @@ class _MyAppState extends State<MyApp> {
               color: Colors.black,
               width: double.infinity,
               height: 300,
-              child: GsyVideoPlayer(
-                controller: gsyVideoPlayerController,
+              child: Chewie(
+                controller: chewieController,
               ),
             ),
             Wrap(

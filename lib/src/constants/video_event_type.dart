@@ -69,6 +69,8 @@ enum VideoEventType {
 
   onListenerBufferingUpdate,
 
+  onListenerBufferingEnd,
+
   onListenerSeekComplete,
 
   onListenerError,

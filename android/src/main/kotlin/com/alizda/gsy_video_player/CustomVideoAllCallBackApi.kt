@@ -1,6 +1,7 @@
 package com.alizda.gsy_video_player
 
 import com.shuyu.gsyvideoplayer.GSYVideoManager
+import kotlin.math.floor
 
 class CustomVideoAllCallBackApi(private var videoPlayer: CustomVideoPlayer) {
     private fun isPlaying(): Boolean = GSYVideoManager.instance().isPlaying
@@ -11,10 +12,10 @@ class CustomVideoAllCallBackApi(private var videoPlayer: CustomVideoPlayer) {
         event["event"] = "onEventStartPrepared"
         event["reply"] = reply
         reply["url"] = url
-        reply["duration"] = videoDuration
-        reply["position"] = videoPosition
+        reply["duration"] = GSYVideoManager.instance().player.mediaPlayer.duration
+        reply["position"] = GSYVideoManager.instance().player.mediaPlayer.currentPosition
         reply["currentState"] = getCurrentState()
-        reply["isPlaying"] = isPlaying()
+        reply["isPlaying"] = GSYVideoManager.instance().player.isPlaying
         sink.success(event)
     }
 
@@ -24,10 +25,10 @@ class CustomVideoAllCallBackApi(private var videoPlayer: CustomVideoPlayer) {
         event["event"] = "onEventPrepared"
         event["reply"] = reply
         reply["url"] = url
-        reply["duration"] = videoDuration
-        reply["position"] = videoPosition
+        reply["duration"] = GSYVideoManager.instance().player.mediaPlayer.duration
+        reply["position"] = GSYVideoManager.instance().player.mediaPlayer.currentPosition
         reply["currentState"] = getCurrentState()
-        reply["isPlaying"] = isPlaying()
+        reply["isPlaying"] = GSYVideoManager.instance().player.isPlaying
         sink.success(event)
     }
 
@@ -38,10 +39,10 @@ class CustomVideoAllCallBackApi(private var videoPlayer: CustomVideoPlayer) {
         event["event"] = "onEventClickStartIcon"
         event["reply"] = reply
         reply["url"] = url
-        reply["duration"] = videoDuration
-        reply["position"] = videoPosition
+        reply["duration"] = GSYVideoManager.instance().player.mediaPlayer.duration
+        reply["position"] = GSYVideoManager.instance().player.mediaPlayer.currentPosition
         reply["currentState"] = getCurrentState()
-        reply["isPlaying"] = isPlaying()
+        reply["isPlaying"] = GSYVideoManager.instance().player.isPlaying
         sink.success(event)
     }
 
@@ -52,10 +53,10 @@ class CustomVideoAllCallBackApi(private var videoPlayer: CustomVideoPlayer) {
         event["event"] = "onEventClickStartError"
         event["reply"] = reply
         reply["url"] = url
-        reply["duration"] = videoDuration
-        reply["position"] = videoPosition
+        reply["duration"] = GSYVideoManager.instance().player.mediaPlayer.duration
+        reply["position"] = GSYVideoManager.instance().player.mediaPlayer.currentPosition
         reply["currentState"] = getCurrentState()
-        reply["isPlaying"] = isPlaying()
+        reply["isPlaying"] = GSYVideoManager.instance().player.isPlaying
         sink.success(event)
     }
 
@@ -66,10 +67,10 @@ class CustomVideoAllCallBackApi(private var videoPlayer: CustomVideoPlayer) {
         event["event"] = "onEventClickStop"
         event["reply"] = reply
         reply["url"] = url
-        reply["duration"] = videoDuration
-        reply["position"] = videoPosition
+        reply["duration"] = GSYVideoManager.instance().player.mediaPlayer.duration
+        reply["position"] = GSYVideoManager.instance().player.mediaPlayer.currentPosition
         reply["currentState"] = getCurrentState()
-        reply["isPlaying"] = isPlaying()
+        reply["isPlaying"] = GSYVideoManager.instance().player.isPlaying
         sink.success(event)
     }
 
@@ -79,10 +80,10 @@ class CustomVideoAllCallBackApi(private var videoPlayer: CustomVideoPlayer) {
         event["event"] = "onEventClickStopFullscreen"
         event["reply"] = reply
         reply["url"] = url
-        reply["duration"] = videoDuration
-        reply["position"] = videoPosition
+        reply["duration"] = GSYVideoManager.instance().player.mediaPlayer.duration
+        reply["position"] = GSYVideoManager.instance().player.mediaPlayer.currentPosition
         reply["currentState"] = getCurrentState()
-        reply["isPlaying"] = isPlaying()
+        reply["isPlaying"] = GSYVideoManager.instance().player.isPlaying
         sink.success(event)
     }
 
@@ -93,10 +94,10 @@ class CustomVideoAllCallBackApi(private var videoPlayer: CustomVideoPlayer) {
         event["event"] = "onEventClickResume"
         event["reply"] = reply
         reply["url"] = url
-        reply["duration"] = videoDuration
-        reply["position"] = videoPosition
+        reply["duration"] = GSYVideoManager.instance().player.mediaPlayer.duration
+        reply["position"] = GSYVideoManager.instance().player.mediaPlayer.currentPosition
         reply["currentState"] = getCurrentState()
-        reply["isPlaying"] = isPlaying()
+        reply["isPlaying"] = GSYVideoManager.instance().player.isPlaying
         sink.success(event)
     }
 
@@ -107,10 +108,10 @@ class CustomVideoAllCallBackApi(private var videoPlayer: CustomVideoPlayer) {
         event["event"] = "onEventClickResumeFullscreen"
         event["reply"] = reply
         reply["url"] = url
-        reply["duration"] = videoDuration
-        reply["position"] = videoPosition
+        reply["duration"] = GSYVideoManager.instance().player.mediaPlayer.duration
+        reply["position"] = GSYVideoManager.instance().player.mediaPlayer.currentPosition
         reply["currentState"] = getCurrentState()
-        reply["isPlaying"] = isPlaying()
+        reply["isPlaying"] = GSYVideoManager.instance().player.isPlaying
         sink.success(event)
     }
 
@@ -121,10 +122,10 @@ class CustomVideoAllCallBackApi(private var videoPlayer: CustomVideoPlayer) {
         event["event"] = "onEventClickSeekbar"
         event["reply"] = reply
         reply["url"] = url
-        reply["duration"] = videoDuration
-        reply["position"] = videoPosition
+        reply["duration"] = GSYVideoManager.instance().player.mediaPlayer.duration
+        reply["position"] = GSYVideoManager.instance().player.mediaPlayer.currentPosition
         reply["currentState"] = getCurrentState()
-        reply["isPlaying"] = isPlaying()
+        reply["isPlaying"] = GSYVideoManager.instance().player.isPlaying
         sink.success(event)
     }
 
@@ -135,10 +136,10 @@ class CustomVideoAllCallBackApi(private var videoPlayer: CustomVideoPlayer) {
         event["event"] = "onEventClickSeekbarFullscreen"
         event["reply"] = reply
         reply["url"] = url
-        reply["duration"] = videoDuration
-        reply["position"] = videoPosition
+        reply["duration"] = GSYVideoManager.instance().player.mediaPlayer.duration
+        reply["position"] = GSYVideoManager.instance().player.mediaPlayer.currentPosition
         reply["currentState"] = getCurrentState()
-        reply["isPlaying"] = isPlaying()
+        reply["isPlaying"] = GSYVideoManager.instance().player.isPlaying
         sink.success(event)
     }
 
@@ -149,10 +150,10 @@ class CustomVideoAllCallBackApi(private var videoPlayer: CustomVideoPlayer) {
         event["event"] = "onEventAutoComplete"
         event["reply"] = reply
         reply["url"] = url
-        reply["duration"] = videoDuration
-        reply["position"] = videoPosition
+        reply["duration"] = GSYVideoManager.instance().player.mediaPlayer.duration
+        reply["position"] = GSYVideoManager.instance().player.mediaPlayer.currentPosition
         reply["currentState"] = getCurrentState()
-        reply["isPlaying"] = isPlaying()
+        reply["isPlaying"] = GSYVideoManager.instance().player.isPlaying
         sink.success(event)
     }
 
@@ -162,10 +163,10 @@ class CustomVideoAllCallBackApi(private var videoPlayer: CustomVideoPlayer) {
         event["event"] = "onEventEnterFullscreen"
         event["reply"] = reply
         reply["url"] = url
-        reply["duration"] = videoDuration
-        reply["position"] = videoPosition
+        reply["duration"] = GSYVideoManager.instance().player.mediaPlayer.duration
+        reply["position"] = GSYVideoManager.instance().player.mediaPlayer.currentPosition
         reply["currentState"] = getCurrentState()
-        reply["isPlaying"] = isPlaying()
+        reply["isPlaying"] = GSYVideoManager.instance().player.isPlaying
         sink.success(event)
     }
 
@@ -175,10 +176,10 @@ class CustomVideoAllCallBackApi(private var videoPlayer: CustomVideoPlayer) {
         event["event"] = "onEventQuitFullscreen"
         event["reply"] = reply
         reply["url"] = url
-        reply["duration"] = videoDuration
-        reply["position"] = videoPosition
+        reply["duration"] = GSYVideoManager.instance().player.mediaPlayer.duration
+        reply["position"] = GSYVideoManager.instance().player.mediaPlayer.currentPosition
         reply["currentState"] = getCurrentState()
-        reply["isPlaying"] = isPlaying()
+        reply["isPlaying"] = GSYVideoManager.instance().player.isPlaying
         sink.success(event)
     }
 
@@ -188,10 +189,10 @@ class CustomVideoAllCallBackApi(private var videoPlayer: CustomVideoPlayer) {
         event["event"] = "onEventQuitSmallWidget"
         event["reply"] = reply
         reply["url"] = url
-        reply["duration"] = videoDuration
-        reply["position"] = videoPosition
+        reply["duration"] = GSYVideoManager.instance().player.mediaPlayer.duration
+        reply["position"] = GSYVideoManager.instance().player.mediaPlayer.currentPosition
         reply["currentState"] = getCurrentState()
-        reply["isPlaying"] = isPlaying()
+        reply["isPlaying"] = GSYVideoManager.instance().player.isPlaying
         sink.success(event)
     }
 
@@ -201,10 +202,10 @@ class CustomVideoAllCallBackApi(private var videoPlayer: CustomVideoPlayer) {
         event["event"] = "onEventEnterSmallWidget"
         event["reply"] = reply
         reply["url"] = url
-        reply["duration"] = videoDuration
-        reply["position"] = videoPosition
+        reply["duration"] = GSYVideoManager.instance().player.mediaPlayer.duration
+        reply["position"] = GSYVideoManager.instance().player.mediaPlayer.currentPosition
         reply["currentState"] = getCurrentState()
-        reply["isPlaying"] = isPlaying()
+        reply["isPlaying"] = GSYVideoManager.instance().player.isPlaying
         sink.success(event)
     }
 
@@ -214,10 +215,10 @@ class CustomVideoAllCallBackApi(private var videoPlayer: CustomVideoPlayer) {
         event["event"] = "onEventTouchScreenSeekVolume"
         event["reply"] = reply
         reply["url"] = url
-        reply["duration"] = videoDuration
-        reply["position"] = videoPosition
+        reply["duration"] = GSYVideoManager.instance().player.mediaPlayer.duration
+        reply["position"] = GSYVideoManager.instance().player.mediaPlayer.currentPosition
         reply["currentState"] = getCurrentState()
-        reply["isPlaying"] = isPlaying()
+        reply["isPlaying"] = GSYVideoManager.instance().player.isPlaying
         sink.success(event)
     }
 
@@ -227,10 +228,10 @@ class CustomVideoAllCallBackApi(private var videoPlayer: CustomVideoPlayer) {
         event["event"] = "onEventTouchScreenSeekPosition"
         event["reply"] = reply
         reply["url"] = url
-        reply["duration"] = videoDuration
-        reply["position"] = videoPosition
+        reply["duration"] = GSYVideoManager.instance().player.mediaPlayer.duration
+        reply["position"] = GSYVideoManager.instance().player.mediaPlayer.currentPosition
         reply["currentState"] = getCurrentState()
-        reply["isPlaying"] = isPlaying()
+        reply["isPlaying"] = GSYVideoManager.instance().player.isPlaying
         sink.success(event)
     }
 
@@ -240,10 +241,10 @@ class CustomVideoAllCallBackApi(private var videoPlayer: CustomVideoPlayer) {
         event["event"] = "onEventTouchScreenSeekLight"
         event["reply"] = reply
         reply["url"] = url
-        reply["duration"] = videoDuration
-        reply["position"] = videoPosition
+        reply["duration"] = GSYVideoManager.instance().player.mediaPlayer.duration
+        reply["position"] = GSYVideoManager.instance().player.mediaPlayer.currentPosition
         reply["currentState"] = getCurrentState()
-        reply["isPlaying"] = isPlaying()
+        reply["isPlaying"] = GSYVideoManager.instance().player.isPlaying
         sink.success(event)
     }
 
@@ -253,10 +254,10 @@ class CustomVideoAllCallBackApi(private var videoPlayer: CustomVideoPlayer) {
         event["event"] = "onEventPlayError"
         event["reply"] = reply
         reply["url"] = url
-        reply["duration"] = videoDuration
-        reply["position"] = videoPosition
+        reply["duration"] = GSYVideoManager.instance().player.mediaPlayer.duration
+        reply["position"] = GSYVideoManager.instance().player.mediaPlayer.currentPosition
         reply["currentState"] = getCurrentState()
-        reply["isPlaying"] = isPlaying()
+        reply["isPlaying"] = GSYVideoManager.instance().player.isPlaying
         sink.success(event)
     }
 
@@ -266,10 +267,10 @@ class CustomVideoAllCallBackApi(private var videoPlayer: CustomVideoPlayer) {
         event["event"] = "onEventClickStartThumb"
         event["reply"] = reply
         reply["url"] = url
-        reply["duration"] = videoDuration
-        reply["position"] = videoPosition
+        reply["duration"] = GSYVideoManager.instance().player.mediaPlayer.duration
+        reply["position"] = GSYVideoManager.instance().player.mediaPlayer.currentPosition
         reply["currentState"] = getCurrentState()
-        reply["isPlaying"] = isPlaying()
+        reply["isPlaying"] = GSYVideoManager.instance().player.isPlaying
         sink.success(event)
     }
 
@@ -279,10 +280,10 @@ class CustomVideoAllCallBackApi(private var videoPlayer: CustomVideoPlayer) {
         event["event"] = "onEventClickBlank"
         event["reply"] = reply
         reply["url"] = url
-        reply["duration"] = videoDuration
-        reply["position"] = videoPosition
+        reply["duration"] = GSYVideoManager.instance().player.mediaPlayer.duration
+        reply["position"] = GSYVideoManager.instance().player.mediaPlayer.currentPosition
         reply["currentState"] = getCurrentState()
-        reply["isPlaying"] = isPlaying()
+        reply["isPlaying"] = GSYVideoManager.instance().player.isPlaying
         sink.success(event)
     }
 
@@ -292,10 +293,10 @@ class CustomVideoAllCallBackApi(private var videoPlayer: CustomVideoPlayer) {
         event["event"] = "onEventClickBlankFullscreen"
         event["reply"] = reply
         reply["url"] = url
-        reply["duration"] = videoDuration
-        reply["position"] = videoPosition
+        reply["duration"] = GSYVideoManager.instance().player.mediaPlayer.duration
+        reply["position"] = GSYVideoManager.instance().player.mediaPlayer.currentPosition
         reply["currentState"] = getCurrentState()
-        reply["isPlaying"] = isPlaying()
+        reply["isPlaying"] = GSYVideoManager.instance().player.isPlaying
         sink.success(event)
     }
 
@@ -305,24 +306,26 @@ class CustomVideoAllCallBackApi(private var videoPlayer: CustomVideoPlayer) {
         event["event"] = "onEventComplete"
         event["reply"] = reply
         reply["url"] = url
-        reply["duration"] = videoDuration
-        reply["position"] = videoPosition
+        reply["duration"] = GSYVideoManager.instance().player.mediaPlayer.duration
+        reply["position"] = GSYVideoManager.instance().player.mediaPlayer.currentPosition
         reply["currentState"] = getCurrentState()
-        reply["isPlaying"] = isPlaying()
+        reply["isPlaying"] = GSYVideoManager.instance().player.isPlaying
         sink.success(event)
     }
 
-    fun onProgress(sink: QueuingEventSink, progress: Long, secProgress: Long, currentPosition: Long, duration: Long) {
+    fun onProgress(sink: QueuingEventSink) {
         val event: MutableMap<String, Any> = HashMap()
         val reply: MutableMap<String, Any> = HashMap()
         event["event"] = "onEventProgress"
         event["reply"] = reply
-        reply["duration"] = duration
-        reply["position"] = currentPosition
+        reply["duration"] = GSYVideoManager.instance().player.mediaPlayer.duration
+        reply["position"] = GSYVideoManager.instance().player.mediaPlayer.currentPosition
         reply["currentState"] = getCurrentState()
-        reply["isPlaying"] = isPlaying()
-        videoPosition = currentPosition
-        videoDuration = duration
+        reply["isPlaying"] = GSYVideoManager.instance().player.isPlaying
+        val percent = floor((GSYVideoManager.instance().player.mediaPlayer.duration / GSYVideoManager.instance().player.mediaPlayer.currentPosition).toDouble())
+        reply["percent"] = percent
+        videoPosition = GSYVideoManager.instance().player.mediaPlayer.currentPosition
+        videoDuration = GSYVideoManager.instance().player.mediaPlayer.duration
         sink.success(event)
     }
 

@@ -15,11 +15,11 @@ class VideoEvent {
     this.duration,
     this.size,
     this.buffered,
-    this.position,
+    this.position = Duration.zero,
     this.isPlaying,
     this.what,
     this.extra,
-    this.percent,
+    this.percent = 0.0,
     this.seek,
     this.videoSarDen,
     this.videoSarNum,
@@ -34,7 +34,7 @@ class VideoEvent {
 
   final int? extra;
 
-  final int? percent;
+  final double percent;
 
   final bool? seek;
 
@@ -69,7 +69,7 @@ class VideoEvent {
   final List<DurationRange>? buffered;
 
   ///Seek position
-  final Duration? position;
+  final Duration position;
 
   @override
   bool operator ==(Object other) {

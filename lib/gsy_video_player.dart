@@ -25,8 +25,9 @@ export 'src/video_player/video_player.dart';
 export 'src/video_player/video_player_controller.dart';
 export 'src/video_player/video_player_platform_interface.dart';
 
-export 'src/video_player/player_full.dart';
-
-export 'src/widget/video_progress_colors.dart';
-export 'src/widget/video_scrubber.dart';
-export 'src/widget/video_progress_indicator.dart';
+export 'src/controls/chewie_player.dart';
+export 'src/controls/chewie_progress_colors.dart';
+export 'src/controls/cupertino/cupertino_controls.dart';
+export 'src/controls/material/material_controls.dart';
+export 'src/controls/material/material_desktop_controls.dart';
+export 'src/controls/models/index.dart';
