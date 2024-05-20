@@ -8,32 +8,34 @@ import 'package:gsy_video_player/src/constants/video_play_state.dart';
 class VideoPlayerValue {
   /// Constructs a video with the given values. Only [duration] is required. The
   /// rest will initialize with default values when unset.
-  VideoPlayerValue(
-      {required this.duration,
-      this.size = Size.zero,
-      this.position = Duration.zero,
-      this.buffered = const <DurationRange>[],
-      this.isInitialized = false,
-      this.isPlaying = false,
-      this.isLooping = false,
-      this.isBuffering = false,
-      this.volume = 1.0,
-      this.speed = 1.0,
-      this.playbackSpeed = 1.0,
-      this.what,
-      this.extra,
-      this.percent = 0.0,
-      this.seek,
-      this.errorDescription,
-      this.playState,
-      this.isPip = false,
-      this.isFullScreen = false,
-      this.rotationCorrection = 0,
-      this.videoPlayerInitialized = false,
-      this.allowBackgroundPlayback = true,
-      this.isCompleted = false,
-      this.videoSarDen = 0,
-      this.videoSarNum = 0});
+  VideoPlayerValue({
+    required this.duration,
+    this.size = Size.zero,
+    this.position = Duration.zero,
+    this.buffered = const <DurationRange>[],
+    this.isInitialized = false,
+    this.isPlaying = false,
+    this.isLooping = false,
+    this.isBuffering = false,
+    this.volume = 1.0,
+    this.speed = 1.0,
+    this.playbackSpeed = 1.0,
+    this.what,
+    this.extra,
+    this.percent = 0.0,
+    this.seek,
+    this.errorDescription,
+    this.playState,
+    this.isPip = false,
+    this.isFullScreen = false,
+    this.rotationCorrection = 0,
+    this.videoPlayerInitialized = false,
+    this.allowBackgroundPlayback = true,
+    this.isCompleted = false,
+    this.videoSarDen = 0,
+    this.videoSarNum = 0,
+    this.bufferPercent = 0,
+  });
 
   /// Returns an instance for a video that hasn't been loaded.
   VideoPlayerValue.uninitialized() : this(duration: Duration.zero, isInitialized: false, videoPlayerInitialized: false);
@@ -102,6 +104,8 @@ class VideoPlayerValue {
   /// Degrees to rotate the video (clockwise) so it is displayed correctly.
   final int rotationCorrection;
 
+  final int bufferPercent;
+
   /// Indicates whether or not the video has been loaded and is ready to play.
   bool get initialized => isInitialized;
 
@@ -161,6 +165,7 @@ class VideoPlayerValue {
     bool? isCompleted,
     int? videoSarNum,
     int? videoSarDen,
+    int? bufferPercent,
   }) {
     return VideoPlayerValue(
       duration: duration ?? this.duration,
@@ -188,6 +193,7 @@ class VideoPlayerValue {
       isCompleted: isCompleted ?? this.isCompleted,
       videoSarNum: videoSarNum ?? this.videoSarNum,
       videoSarDen: videoSarDen ?? this.videoSarDen,
+      bufferPercent: bufferPercent ?? this.bufferPercent,
     );
   }
 
@@ -206,6 +212,12 @@ class VideoPlayerValue {
         'volume: $volume, '
         'isFullScreen: $isFullScreen, '
         'errorDescription: $errorDescription, '
+        'speed: $speed, '
+        'allowBackgroundPlayback: $allowBackgroundPlayback, '
+        'isCompleted: $isCompleted, '
+        'videoSarNum: $videoSarNum, '
+        'videoSarDen: $videoSarDen, '
+        'bufferPercent: $bufferPercent, '
         'playbackSpeed: $playbackSpeed, '
         'isPip: $isPip, '
         'rotationCorrection: $rotationCorrection, '

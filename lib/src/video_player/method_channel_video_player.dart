@@ -1222,8 +1222,9 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
           final int duration = reply["duration"];
           final bool isPlaying = reply["isPlaying"];
           final int currentState = reply["currentState"];
-          final double percent = reply["percent"];
-          final List<dynamic> values = reply['values'] as List;
+          final bool isBuffering = reply["isBuffering"];
+          final int bufferPercent = reply["bufferPercent"];
+          final List<dynamic> values = [0, (duration * bufferPercent / 100).ceil()];
           return VideoEvent(
             eventType: VideoEventType.onListenerBufferingUpdate,
             position: Duration(milliseconds: position),
@@ -1231,7 +1232,8 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
             duration: Duration(milliseconds: duration),
             buffered: values.map<DurationRange>(_toDurationRange).toList(),
             playState: getVideoPlayStateName(currentState),
-            percent: percent,
+            isBuffering: isBuffering,
+            bufferPercent: bufferPercent,
           );
         case 'onListenerBufferingEnd':
           final int position = reply!["position"];
@@ -1243,6 +1245,9 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
             position: Duration(milliseconds: position),
             isPlaying: isPlaying,
             duration: Duration(milliseconds: duration),
+            isBuffering: false,
+            bufferPercent: 100,
+            buffered: [0, duration].map<DurationRange>(_toDurationRange).toList(),
             playState: getVideoPlayStateName(currentState),
           );
 

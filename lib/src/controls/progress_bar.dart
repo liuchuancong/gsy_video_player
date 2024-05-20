@@ -143,7 +143,6 @@ class StaticProgressBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('value.position ${value.position}');
     return Container(
       height: MediaQuery.of(context).size.height,
       width: MediaQuery.of(context).size.width,

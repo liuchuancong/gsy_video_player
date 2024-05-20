@@ -25,6 +25,8 @@ class VideoEvent {
     this.videoSarNum,
     this.rotationCorrection,
     this.playState = VideoPlayState.unknown,
+    this.isBuffering = false,
+    this.bufferPercent = 0,
   });
 
   /// The type of the event.
@@ -45,6 +47,10 @@ class VideoEvent {
   final VideoPlayState playState;
 
   final bool? isPlaying;
+
+  final bool? isBuffering;
+
+  final int? bufferPercent;
 
   /// Degrees to rotate the video (clockwise) so it is displayed correctly.
   ///
@@ -88,6 +94,8 @@ class VideoEvent {
             videoSarDen == other.videoSarDen &&
             videoSarNum == other.videoSarNum &&
             playState == other.playState &&
+            isBuffering == other.isBuffering &&
+            bufferPercent == other.bufferPercent &&
             position == other.position &&
             listEquals(buffered, other.buffered);
   }
@@ -99,6 +107,16 @@ class VideoEvent {
         size,
         rotationCorrection,
         buffered,
+        position,
+        isBuffering,
+        bufferPercent,
+        what,
+        extra,
+        percent,
+        seek,
+        videoSarDen,
+        videoSarNum,
+        playState,
         isPlaying,
       );
 }

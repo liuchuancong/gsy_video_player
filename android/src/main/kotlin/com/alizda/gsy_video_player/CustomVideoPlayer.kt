@@ -87,8 +87,8 @@ class CustomVideoPlayer : StandardGSYVideoPlayer, GSYVideoProgressListener, Vide
     }
 
     override fun onBufferingUpdate(percent: Int) {
-        super.onBufferingUpdate(percent)
         customGSYMediaPlayerListenerApi.onBufferingUpdate(eventSink!!, percent)
+        super.onBufferingUpdate(percent)
     }
 
     override fun onSeekComplete() {

@@ -806,7 +806,8 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
             duration: Duration(milliseconds: event.duration!.inMilliseconds),
             playState: event.playState,
             buffered: event.buffered,
-            isBuffering: true,
+            isBuffering: event.isBuffering,
+            bufferPercent: event.bufferPercent,
           );
           break;
         case VideoEventType.onListenerBufferingEnd:
