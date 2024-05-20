@@ -1284,11 +1284,14 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
           final int duration = reply!["duration"];
           final int currentState = reply["currentState"];
           final bool isPlaying = reply["isPlaying"];
+          final int width = reply["width"];
+          final int height = reply["height"];
           return VideoEvent(
             eventType: VideoEventType.onListenerVideoSizeChanged,
             duration: Duration(milliseconds: duration),
             isPlaying: isPlaying,
             isBuffering: isBuffering,
+            size: Size(width.toDouble(), height.toDouble()),
             playState: getVideoPlayStateName(currentState),
           );
         case 'onListenerBackFullscreen':

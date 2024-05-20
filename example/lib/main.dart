@@ -32,10 +32,7 @@ class _MyAppState extends State<MyApp> {
   // Platform messages are asynchronous, so we initialize in an async method.
   Future<void> initPlayer() async {
     chewieController = ChewieController(
-      videoPlayerController: gsyVideoPlayerController,
-      autoPlay: true,
-      looping: true,
-    );
+        videoPlayerController: gsyVideoPlayerController, autoPlay: true, looping: true, aspectRatio: 16 / 9);
     gsyVideoPlayerController.setLogLevel(LogLevel.logError);
     gsyVideoPlayerController.setNetWorkBuilder(
       'https://cloud.video.taobao.com//play/u/27349687/p/1/e/6/t/1/239880949246.mp4',
@@ -49,6 +46,7 @@ class _MyAppState extends State<MyApp> {
     gsyVideoPlayerController.addEventsListener((VideoEventType event) {
       if (gsyVideoPlayerController.value.initialized) {
         print('video event $event');
+        print('video event ${gsyVideoPlayerController.value.size}');
       }
     });
   }

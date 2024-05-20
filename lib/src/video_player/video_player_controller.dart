@@ -56,8 +56,6 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
 
   _VideoAppLifeCycleObserver? _lifeCycleObserver;
 
-  int _lastPosition = 0;
-
   ///List of event listeners, which listen to events.
   final List<Function(VideoEventType)?> _eventListeners = [];
 

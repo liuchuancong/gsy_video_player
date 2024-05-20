@@ -40,9 +40,11 @@ class PlayerWithControls extends StatelessWidget {
             maxScale: chewieController.maxScale,
             panEnabled: chewieController.zoomAndPan,
             scaleEnabled: chewieController.zoomAndPan,
-            child: CroppedVideo(
-              controller: chewieController.videoPlayerController,
-              cropAspectRatio: chewieController.aspectRatio ?? chewieController.videoPlayerController.value.aspectRatio,
+            child: AspectRatio(
+              aspectRatio: chewieController.aspectRatio ?? chewieController.videoPlayerController.value.aspectRatio,
+              child: GsyVideoPlayer(
+                controller: chewieController.videoPlayerController,
+              ),
             ),
           ),
           if (chewieController.overlay != null) chewieController.overlay!,
@@ -90,81 +92,5 @@ class PlayerWithControls extends StatelessWidget {
         ),
       );
     });
-  }
-}
-
-class CroppedVideo extends StatefulWidget {
-  const CroppedVideo({super.key, required this.controller, required this.cropAspectRatio});
-
-  final GsyVideoPlayerController controller;
-  final double cropAspectRatio;
-
-  @override
-  CroppedVideoState createState() => CroppedVideoState();
-}
-
-class CroppedVideoState extends State<CroppedVideo> {
-  GsyVideoPlayerController get controller => widget.controller;
-
-  double get cropAspectRatio => widget.cropAspectRatio;
-  bool initialized = false;
-
-  BoxFit fit = BoxFit.contain;
-
-  @override
-  void initState() {
-    super.initState();
-    _waitForInitialized();
-  }
-
-  @override
-  void didUpdateWidget(CroppedVideo oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (oldWidget.controller != controller) {
-      oldWidget.controller.removeEventsListener(eventListener);
-      initialized = false;
-      fit = BoxFit.contain;
-      _waitForInitialized();
-    }
-  }
-
-  void _waitForInitialized() {
-    controller.addEventsListener(eventListener);
-  }
-
-  void eventListener(VideoEventType event) {
-    if (VideoEventType.changeBoxFit == event && fit != controller.value.fit ||
-        initialized == false && controller.value.videoPlayerInitialized) {
-      setState(() {
-        fit = controller.value.fit;
-        initialized = controller.value.videoPlayerInitialized;
-      });
-    }
-  }
-
-  @override
-  void dispose() {
-    controller.removeEventsListener(eventListener);
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: AspectRatio(
-        aspectRatio: cropAspectRatio,
-        child: FittedBox(
-          fit: fit,
-          child: SizedBox(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
-            child: AspectRatio(
-              aspectRatio: controller.value.aspectRatio,
-              child: GsyVideoPlayer(controller: controller),
-            ),
-          ),
-        ),
-      ),
-    );
   }
 }

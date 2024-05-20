@@ -1,5 +1,6 @@
 package com.alizda.gsy_video_player
 
+import android.util.Log
 import com.shuyu.gsyvideoplayer.GSYVideoManager
 import com.shuyu.gsyvideoplayer.video.base.GSYVideoView.CURRENT_STATE_PLAYING_BUFFERING_START
 
@@ -173,11 +174,14 @@ class CustomGSYMediaPlayerListenerApi(private var videoPlayer: CustomVideoPlayer
     }
 
     fun onVideoSizeChanged(sink: QueuingEventSink) {
+        Log.d("onVideoSizeChanged", "onVideoSizeChanged: ")
         val event: MutableMap<String, Any?> = HashMap()
         val reply: MutableMap<String, Any> = HashMap()
         event["event"] = "onListenerVideoSizeChanged"
         reply["duration"] = GSYVideoManager.instance().player.mediaPlayer.duration
         reply["position"] = GSYVideoManager.instance().player.mediaPlayer.currentPosition
+        reply["width"] = GSYVideoManager.instance().player.videoWidth
+        reply["height"] = GSYVideoManager.instance().player.videoHeight
         reply["isBuffering"] = getCurrentState() == CURRENT_STATE_PLAYING_BUFFERING_START
         reply["isPlaying"] = true
         reply["currentState"] = getCurrentState()
