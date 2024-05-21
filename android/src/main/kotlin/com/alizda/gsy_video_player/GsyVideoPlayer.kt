@@ -68,6 +68,10 @@ class GsyVideoPlayer(
     }
 
     fun dispose() {
+        if(customOrientationUtilsApi!=null){
+            customOrientationUtilsApi!!.releaseListener();
+            player!!.videoIsInitialized = false
+        }
         customGSYVideoPlayerApi!!.dispose()
     }
 

@@ -30,33 +30,6 @@ class CustomGSYVideoTypeApi {
         result.success(reply)
     }
 
-    fun getShowType(call: MethodCall, result: MethodChannel.Result) {
-        val reply: MutableMap<String, Any> = HashMap()
-        reply["type"] = GSYVideoType.getShowType()
-        result.success(reply)
-    }
-
-    fun setShowType(call: MethodCall, result: MethodChannel.Result) {
-        val showTypeOptions = call.argument<Map<String, Any?>>("showTypeOptions")!!
-        val showType = getParameter(showTypeOptions, "showType", 0);
-        val screenScaleRatio = getParameter(showTypeOptions, "screenScaleRatio", 0.0F);
-        when (showType) {
-            0 -> GSYVideoType.setShowType(GSYVideoType.SCREEN_MATCH_FULL);
-            1 -> GSYVideoType.setShowType(GSYVideoType.SCREEN_TYPE_16_9);
-            2 -> GSYVideoType.setShowType(GSYVideoType.SCREEN_TYPE_4_3);
-            3 -> GSYVideoType.setShowType(GSYVideoType.SCREEN_TYPE_FULL);
-            4 -> GSYVideoType.setShowType(GSYVideoType.SCREEN_MATCH_FULL);
-            5 -> GSYVideoType.setShowType(GSYVideoType.SCREEN_TYPE_18_9);
-            6 -> {
-                GSYVideoType.setShowType(GSYVideoType.SCREEN_TYPE_CUSTOM);
-                GSYVideoType.setScreenScaleRatio(screenScaleRatio)
-            }
-        }
-        val reply: MutableMap<String, Any> = HashMap()
-        reply["setShowType"] = true
-        result.success(reply)
-    }
-
     fun getRenderType(call: MethodCall, result: MethodChannel.Result) {
         val reply: MutableMap<String, Any> = HashMap()
         reply["renderType"] = GSYVideoType.getRenderType()

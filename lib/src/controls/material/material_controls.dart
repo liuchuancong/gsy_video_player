@@ -508,7 +508,7 @@ class _MaterialControlsState extends State<MaterialControls> with SingleTickerPr
       } else {
         _cancelAndRestartTimer();
 
-        if (!controller.value.videoPlayerInitialized) {
+        if (!controller.value.onVideoPlayerInitialized) {
           controller.initialize().then((_) {
             controller.setBuilder(controller.videoOptionBuilder);
           });

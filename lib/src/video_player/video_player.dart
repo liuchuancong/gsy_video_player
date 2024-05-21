@@ -28,7 +28,7 @@ class VideoPlayerValue {
     this.isPip = false,
     this.isFullScreen = false,
     this.rotationCorrection = 0,
-    this.videoPlayerInitialized = false,
+    this.onVideoPlayerInitialized = false,
     this.allowBackgroundPlayback = true,
     this.isCompleted = false,
     this.videoSarDen = 0,
@@ -38,7 +38,8 @@ class VideoPlayerValue {
   });
 
   /// Returns an instance for a video that hasn't been loaded.
-  VideoPlayerValue.uninitialized() : this(duration: Duration.zero, isInitialized: false, videoPlayerInitialized: false);
+  VideoPlayerValue.uninitialized()
+      : this(duration: Duration.zero, isInitialized: false, onVideoPlayerInitialized: false);
 
   /// Returns an instance with a `null` [Duration] and the given
   /// [errorDescription].
@@ -90,7 +91,7 @@ class VideoPlayerValue {
   /// Indicates whether or not the video has been loaded and is ready to play.
   final bool isInitialized;
 
-  final bool videoPlayerInitialized;
+  final bool onVideoPlayerInitialized;
 
   /// The [size] of the currently loaded video.
   ///
@@ -161,7 +162,7 @@ class VideoPlayerValue {
     bool? seek,
     VideoPlayState? playState,
     bool? isFullScreen,
-    bool? videoPlayerInitialized,
+    bool? onVideoPlayerInitialized,
     int? rotationCorrection,
     bool? allowBackgroundPlayback,
     bool? isCompleted,
@@ -191,7 +192,7 @@ class VideoPlayerValue {
       speed: speed ?? this.speed,
       isFullScreen: isFullScreen ?? this.isFullScreen,
       playState: playState ?? this.playState,
-      videoPlayerInitialized: videoPlayerInitialized ?? this.videoPlayerInitialized,
+      onVideoPlayerInitialized: onVideoPlayerInitialized ?? this.onVideoPlayerInitialized,
       allowBackgroundPlayback: allowBackgroundPlayback ?? this.allowBackgroundPlayback,
       isCompleted: isCompleted ?? this.isCompleted,
       videoSarNum: videoSarNum ?? this.videoSarNum,
@@ -209,7 +210,7 @@ class VideoPlayerValue {
         'position: $position, '
         'buffered: [${buffered.join(', ')}], '
         'isInitialized: $isInitialized, '
-        'videoPlayerInitialized: $videoPlayerInitialized, '
+        'onVideoPlayerInitialized: $onVideoPlayerInitialized, '
         'isPlaying: $isPlaying, '
         'isLooping: $isLooping, '
         'isBuffering: $isBuffering, '

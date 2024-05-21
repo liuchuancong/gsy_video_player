@@ -43,12 +43,6 @@ class _MyAppState extends State<MyApp> {
       cacheWithPlay: true,
       isTouchWigetFull: true,
     );
-    gsyVideoPlayerController.addEventsListener((VideoEventType event) {
-      if (gsyVideoPlayerController.value.initialized) {
-        print('video event $event');
-        print('video event ${gsyVideoPlayerController.value.size}');
-      }
-    });
   }
 
   @override

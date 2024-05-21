@@ -10,7 +10,6 @@ import io.flutter.plugin.common.MethodChannel
 import java.io.File
 
 class CustomGSYVideoOptionBuilderApi {
-    @RequiresApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     fun setVideoConfig(videoPlayer: GsyVideoPlayer, call: MethodCall, result: MethodChannel.Result): GSYVideoOptionBuilder {
         videoPlayer.getCurrentPlayer()!!.release()
         val gsyBuilder = GSYVideoOptionBuilder()
@@ -115,7 +114,6 @@ class CustomGSYVideoOptionBuilderApi {
         }
         videoPlayer.getCurrentPlayer()!!.backButton.visibility = View.GONE
         val autoPlay = GsyVideoPlayerPlugin.getParameter(videoOptions, "autoPlay", true)
-        CustomVideoPlayer.autoPlay = autoPlay
         gsyBuilder.build(videoPlayer.getCurrentPlayer()!!)
         if (autoPlay) {
             videoPlayer.getCurrentPlayer()!!.startPlayLogic()

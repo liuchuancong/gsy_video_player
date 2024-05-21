@@ -23,9 +23,6 @@ import io.flutter.view.TextureRegistry
 
 /** GsyVideoPlayerPlugin */
 class GsyVideoPlayerPlugin : FlutterPlugin, ActivityAware, MethodChannel.MethodCallHandler {
-
-
-    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
     private val videoPlayers = LongSparseArray<GsyVideoPlayer>()
     private var flutterState: FlutterState? = null
     private var activity: Activity? = null
@@ -85,8 +82,6 @@ class GsyVideoPlayerPlugin : FlutterPlugin, ActivityAware, MethodChannel.MethodC
         GsyVideoShared.activity = null
         GsyVideoShared.binding = null
     }
-
-    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
     private fun disposeAllPlayers() {
         for (i in 0 until videoPlayers.size()) {
             videoPlayers.valueAt(i).dispose()
@@ -131,7 +126,6 @@ class GsyVideoPlayerPlugin : FlutterPlugin, ActivityAware, MethodChannel.MethodC
         pipRunnable = null
     }
 
-    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
     override fun onMethodCall(call: MethodCall, result: MethodChannel.Result) {
         if (flutterState == null || flutterState?.textureRegistry == null) {
             result.error(

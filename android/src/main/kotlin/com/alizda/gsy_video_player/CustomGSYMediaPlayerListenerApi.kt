@@ -10,7 +10,7 @@ class CustomGSYMediaPlayerListenerApi(private var videoPlayer: CustomVideoPlayer
     private fun sendBufferingUpdate(eventSink: QueuingEventSink, percent: Int) {
         val event: MutableMap<String, Any> = HashMap()
         val reply: MutableMap<String, Any> = HashMap()
-        event["event"] = "onListenerBufferingUpdate"
+        event["event"] = "onBufferingUpdate"
         reply["duration"] = GSYVideoManager.instance().player.mediaPlayer.duration
         reply["position"] = GSYVideoManager.instance().player.mediaPlayer.currentPosition
         reply["isPlaying"] = GSYVideoManager.instance().player.isPlaying
@@ -30,10 +30,10 @@ class CustomGSYMediaPlayerListenerApi(private var videoPlayer: CustomVideoPlayer
     fun sendVideoPlayerInitialized(sink: QueuingEventSink) {
         val event: MutableMap<String, Any?> = HashMap()
         val reply: MutableMap<String, Any> = HashMap()
-        event["event"] = "videoPlayerInitialized"
+        event["event"] = "onVideoPlayerInitialized"
         reply["duration"] = GSYVideoManager.instance().player.mediaPlayer.duration
         reply["position"] = GSYVideoManager.instance().player.mediaPlayer.currentPosition
-        reply["isPlaying"] = true
+        reply["isPlaying"] = GSYVideoManager.instance().player.isPlaying
         reply["currentState"] = getCurrentState()
         reply["width"] = GSYVideoManager.instance().player.videoWidth
         reply["height"] = GSYVideoManager.instance().player.videoHeight
@@ -47,7 +47,7 @@ class CustomGSYMediaPlayerListenerApi(private var videoPlayer: CustomVideoPlayer
     fun onConfigurationChanged(sink: QueuingEventSink) {
         val event: MutableMap<String, Any?> = HashMap()
         val reply: MutableMap<String, Any> = HashMap()
-        event["event"] = "onListenerConfigurationChanged"
+        event["event"] = "onConfigurationChanged"
         reply["duration"] = GSYVideoManager.instance().player.mediaPlayer.duration
         reply["position"] = GSYVideoManager.instance().player.mediaPlayer.currentPosition
         reply["isPlaying"] = GSYVideoManager.instance().player.isPlaying
@@ -60,7 +60,7 @@ class CustomGSYMediaPlayerListenerApi(private var videoPlayer: CustomVideoPlayer
     fun onPrepared(sink: QueuingEventSink) {
         val event: MutableMap<String, Any?> = HashMap()
         val reply: MutableMap<String, Any> = HashMap()
-        event["event"] = "onListenerPrepared"
+        event["event"] = "onPrepared"
         reply["duration"] = GSYVideoManager.instance().player.mediaPlayer.duration
         reply["position"] = GSYVideoManager.instance().player.mediaPlayer.currentPosition
         reply["isBuffering"] = getCurrentState() == CURRENT_STATE_PLAYING_BUFFERING_START
@@ -73,7 +73,7 @@ class CustomGSYMediaPlayerListenerApi(private var videoPlayer: CustomVideoPlayer
     fun onAutoCompletion(sink: QueuingEventSink) {
         val event: MutableMap<String, Any?> = HashMap()
         val reply: MutableMap<String, Any> = HashMap()
-        event["event"] = "onListenerAutoCompletion"
+        event["event"] = "onAutoCompletion"
         reply["duration"] = GSYVideoManager.instance().player.mediaPlayer.duration
         reply["isPlaying"] = false
         reply["position"] = GSYVideoManager.instance().player.mediaPlayer.currentPosition
@@ -86,7 +86,7 @@ class CustomGSYMediaPlayerListenerApi(private var videoPlayer: CustomVideoPlayer
     fun onCompletion(sink: QueuingEventSink) {
         val event: MutableMap<String, Any?> = HashMap()
         val reply: MutableMap<String, Any> = HashMap()
-        event["event"] = "onListenerCompletion"
+        event["event"] = "onCompletion"
         reply["duration"] = GSYVideoManager.instance().player.mediaPlayer.duration
         reply["position"] = GSYVideoManager.instance().player.mediaPlayer.currentPosition
         reply["isBuffering"] = getCurrentState() == CURRENT_STATE_PLAYING_BUFFERING_START
@@ -103,7 +103,7 @@ class CustomGSYMediaPlayerListenerApi(private var videoPlayer: CustomVideoPlayer
     fun onSeekComplete(sink: QueuingEventSink) {
         val event: MutableMap<String, Any?> = HashMap()
         val reply: MutableMap<String, Any> = HashMap()
-        event["event"] = "onListenerSeekComplete"
+        event["event"] = "onSeekComplete"
         reply["duration"] = GSYVideoManager.instance().player.mediaPlayer.duration
         reply["position"] = GSYVideoManager.instance().player.mediaPlayer.currentPosition
         reply["isBuffering"] = getCurrentState() == CURRENT_STATE_PLAYING_BUFFERING_START
@@ -116,7 +116,7 @@ class CustomGSYMediaPlayerListenerApi(private var videoPlayer: CustomVideoPlayer
     fun onError(sink: QueuingEventSink, what: Int, extra: Int) {
         val event: MutableMap<String, Any> = HashMap()
         val reply: MutableMap<String, Any> = HashMap()
-        event["event"] = "onListenerError"
+        event["event"] = "onError"
         reply["what"] = what
         reply["extra"] = extra
         reply["currentState"] = getCurrentState()
@@ -131,7 +131,7 @@ class CustomGSYMediaPlayerListenerApi(private var videoPlayer: CustomVideoPlayer
     fun onInfo(sink: QueuingEventSink, what: Int, extra: Int) {
         val event: MutableMap<String, Any> = HashMap()
         val reply: MutableMap<String, Any> = HashMap()
-        event["event"] = "onListenerInfo"
+        event["event"] = "onInfo"
         reply["isPlaying"] = GSYVideoManager.instance().player.isPlaying
         reply["what"] = what
         reply["extra"] = extra
@@ -146,7 +146,7 @@ class CustomGSYMediaPlayerListenerApi(private var videoPlayer: CustomVideoPlayer
     fun onBufferingEnd(sink: QueuingEventSink, what: Int, extra: Int) {
         val event: MutableMap<String, Any> = HashMap()
         val reply: MutableMap<String, Any> = HashMap()
-        event["event"] = "onListenerBufferingEnd"
+        event["event"] = "onBufferingEnd"
         reply["isPlaying"] = GSYVideoManager.instance().player.isPlaying
         reply["what"] = what
         reply["extra"] = extra
@@ -174,10 +174,9 @@ class CustomGSYMediaPlayerListenerApi(private var videoPlayer: CustomVideoPlayer
     }
 
     fun onVideoSizeChanged(sink: QueuingEventSink) {
-        Log.d("onVideoSizeChanged", "onVideoSizeChanged: ")
         val event: MutableMap<String, Any?> = HashMap()
         val reply: MutableMap<String, Any> = HashMap()
-        event["event"] = "onListenerVideoSizeChanged"
+        event["event"] = "onVideoSizeChanged"
         reply["duration"] = GSYVideoManager.instance().player.mediaPlayer.duration
         reply["position"] = GSYVideoManager.instance().player.mediaPlayer.currentPosition
         reply["width"] = GSYVideoManager.instance().player.videoWidth
@@ -192,7 +191,7 @@ class CustomGSYMediaPlayerListenerApi(private var videoPlayer: CustomVideoPlayer
     fun onBackFullscreen(sink: QueuingEventSink) {
         val event: MutableMap<String, Any?> = HashMap()
         val reply: MutableMap<String, Any> = HashMap()
-        event["event"] = "onListenerBackFullscreen"
+        event["event"] = "onBackFullscreen"
         reply["duration"] = GSYVideoManager.instance().player.mediaPlayer.duration
         reply["position"] = GSYVideoManager.instance().player.mediaPlayer.currentPosition
         reply["isBuffering"] = getCurrentState() == CURRENT_STATE_PLAYING_BUFFERING_START
@@ -205,7 +204,7 @@ class CustomGSYMediaPlayerListenerApi(private var videoPlayer: CustomVideoPlayer
     fun onVideoPause(sink: QueuingEventSink) {
         val event: MutableMap<String, Any?> = HashMap()
         val reply: MutableMap<String, Any> = HashMap()
-        event["event"] = "onListenerVideoPause"
+        event["event"] = "onVideoPause"
         reply["duration"] = GSYVideoManager.instance().player.mediaPlayer.duration
         reply["currentState"] = getCurrentState()
         reply["position"] = GSYVideoManager.instance().player.mediaPlayer.currentPosition
@@ -218,7 +217,7 @@ class CustomGSYMediaPlayerListenerApi(private var videoPlayer: CustomVideoPlayer
     fun onVideoResume(sink: QueuingEventSink) {
         val event: MutableMap<String, Any?> = HashMap()
         val reply: MutableMap<String, Any> = HashMap()
-        event["event"] = "onListenerVideoResume"
+        event["event"] = "onVideoResume"
         reply["duration"] = GSYVideoManager.instance().player.mediaPlayer.duration
         reply["isPlaying"] = true
         reply["currentState"] = getCurrentState()
@@ -231,7 +230,7 @@ class CustomGSYMediaPlayerListenerApi(private var videoPlayer: CustomVideoPlayer
     fun onVideoResume(sink: QueuingEventSink, seek: Boolean) {
         val event: MutableMap<String, Any?> = HashMap()
         val reply: MutableMap<String, Any> = HashMap()
-        event["event"] = "onListenerVideoResumeWithSeek"
+        event["event"] = "onVideoResumeWithSeek"
         reply["duration"] = GSYVideoManager.instance().player.mediaPlayer.duration
         reply["position"] = GSYVideoManager.instance().player.mediaPlayer.currentPosition
         reply["isBuffering"] = getCurrentState() == CURRENT_STATE_PLAYING_BUFFERING_START

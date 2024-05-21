@@ -54,11 +54,6 @@ abstract class VideoPlayerPlatform {
     throw UnimplementedError('setVideoOptionBuilder() has not been implemented.');
   }
 
-  /// Returns the layout ID of the video.
-  Future<int> getLayoutId(int? textureId) async {
-    throw UnimplementedError('getLayoutId() has not been implemented.');
-  }
-
   Future<void> startPlayLogic(int? textureId) async {
     throw UnimplementedError('startPlayLogic() has not been implemented.');
   }
@@ -69,13 +64,13 @@ abstract class VideoPlayerPlatform {
   }
 
   /// Pauses the video.
-  Future<void> onVideoPause(int? textureId) async {
-    throw UnimplementedError('onVideoPause() has not been implemented.');
+  Future<void> pause(int? textureId) async {
+    throw UnimplementedError('pause() has not been implemented.');
   }
 
   /// Resumes the video.
-  Future<void> onVideoResume(int? textureId) async {
-    throw UnimplementedError('onVideoResume() has not been implemented.');
+  Future<void> resume(int? textureId) async {
+    throw UnimplementedError('resume() has not been implemented.');
   }
 
   /// Clears the current cache.
@@ -108,11 +103,6 @@ abstract class VideoPlayerPlatform {
     throw UnimplementedError('setPlayPosition() has not been implemented.');
   }
 
-  /// Backs from window full.
-  Future<void> backFromWindowFull(int? textureId) async {
-    throw UnimplementedError('backFromWindowFull() has not been implemented.');
-  }
-
   /// Returns the net speed of the video.
   Future<int> getNetSpeed(int? textureId) async {
     throw UnimplementedError('getNetSpeed() has not been implemented.');
@@ -134,13 +124,13 @@ abstract class VideoPlayerPlatform {
   }
 
   /// Sets the current player.
-  Future<GsyVideoPlayerType> setCurrentPlayer(int? textureId, GsyVideoPlayerType playerType) {
-    throw UnimplementedError('setCurrentPlayer() has not been implemented.');
+  Future<GsyVideoPlayerType> setPlayerFactory(int? textureId, GsyVideoPlayerType playerType) {
+    throw UnimplementedError('setPlayerFactory() has not been implemented.');
   }
 
   /// Returns the play manager.
-  Future<void> getPlayManager(int? textureId) async {
-    throw UnimplementedError('getPlayManager() has not been implemented.');
+  Future<void> getPlayFactory(int? textureId) async {
+    throw UnimplementedError('getPlayFactory() has not been implemented.');
   }
 
   /// Sets the exo cache manager.
@@ -166,14 +156,6 @@ abstract class VideoPlayerPlatform {
   /// Releases the media player.
   Future<void> releaseMediaPlayer(int? textureId) async {
     throw UnimplementedError('releaseMediaPlayer() has not been implemented.');
-  }
-
-  Future<void> onPause(int? textureId) async {
-    throw UnimplementedError('onPause() has not been implemented.');
-  }
-
-  Future<void> onResume(int? textureId) async {
-    throw UnimplementedError('onResume() has not been implemented.');
   }
 
   /// Returns the play tag of the video.
@@ -226,6 +208,10 @@ abstract class VideoPlayerPlatform {
     throw UnimplementedError('setLogLevel() has not been implemented.');
   }
 
+  Future<void> setVolume(int? textureId, double volume) {
+    throw UnimplementedError('setVolume() has not been implemented.');
+  }
+
   /// Returns whether the video is using media codec.
   Future<bool> isMediaCodec(int? textureId) async {
     throw UnimplementedError('isMediaCodec() has not been implemented.');
@@ -246,16 +232,6 @@ abstract class VideoPlayerPlatform {
     throw UnimplementedError('isMediaCodecTexture() has not been implemented.');
   }
 
-  /// Returns the show type of the video.
-  Future<PlayerVideoShowType> getShowType(int? textureId) async {
-    throw UnimplementedError('getShowType() has not been implemented.');
-  }
-
-  /// Sets the show type of the video.
-  Future<void> setShowType(int? textureId, PlayerVideoShowType showType, {double screenScaleRatio = 0.0}) {
-    throw UnimplementedError('setShowType() has not been implemented.');
-  }
-
   /// Returns the render type of the video.
   Future<GsyVideoPlayerRenderType> getRenderType(int? textureId) async {
     throw UnimplementedError('getRenderType() has not been implemented.');
@@ -274,238 +250,6 @@ abstract class VideoPlayerPlatform {
   /// Sets the media codec texture of the video.
   Future<void> setMediaCodecTexture(int? textureId, bool mediaCodecTexture) {
     throw UnimplementedError('setMediaCodecTexture() has not been implemented.');
-  }
-
-  /// Start window full screen.
-  Future<void> startWindowFullscreen(int? textureId) {
-    throw UnimplementedError('startWindowFullscreen() has not been implemented.');
-  }
-
-  /// Start window full screen.
-  Future<void> exitWindowFullscreen(int? textureId) {
-    throw UnimplementedError('exitWindowFullscreen() has not been implemented.');
-  }
-
-  /// Show small video.
-  Future<void> showSmallVideo(int? textureId, Size size, bool showActionBar, bool showStatusBar) {
-    throw UnimplementedError('showSmallVideo() has not been implemented.');
-  }
-
-  /// Hide small video.
-  Future<void> hideSmallVideo(int? textureId) async {
-    throw UnimplementedError('hideSmallVideo() has not been implemented.');
-  }
-
-  /// Whether show full animation.
-  Future<bool> isShowFullAnimation(int? textureId) async {
-    throw UnimplementedError('isShowFullAnimation() has not been implemented.');
-  }
-
-  /// Set show full animation.
-  Future<void> setShowFullAnimation(int? textureId, bool showFullAnimation) {
-    throw UnimplementedError('setShowFullAnimation() has not been implemented.');
-  }
-
-  /// Whether rotate view auto.
-  /// Whether the video view should rotate automatically based on device orientation.
-  Future<bool> isRotateViewAuto(int? textureId) async {
-    throw UnimplementedError('isRotateViewAuto() has not been implemented.');
-  }
-
-  /// Set rotate view auto.
-  Future<void> setRotateViewAuto(int? textureId, bool rotateViewAuto) {
-    throw UnimplementedError('setRotateViewAuto() has not been implemented.');
-  }
-
-  /// Whether lock land.
-  Future<bool> isLockLand(int? textureId) async {
-    throw UnimplementedError('isLockLand() has not been implemented.');
-  }
-
-  /// Set lock land.
-  Future<void> setLockLand(int? textureId, bool lockLand) {
-    throw UnimplementedError('setLockLand() has not been implemented.');
-  }
-
-  /// Whether rotate with system.
-  Future<bool> isRotateWithSystem(int? textureId) async {
-    throw UnimplementedError('isRotateWithSystem() has not been implemented.');
-  }
-
-  /// Set rotate with system.
-  Future<void> setRotateWithSystem(int? textureId, bool rotateWithSystem) {
-    throw UnimplementedError('setRotateWithSystem() has not been implemented.');
-  }
-
-  /// Initializes the UI state.
-  Future<void> initUIState(int? textureId) async {
-    throw UnimplementedError('initUIState() has not been implemented.');
-  }
-
-  /// Returns the enlarge image resource.
-  Future<int> getEnlargeImageRes(int? textureId) async {
-    throw UnimplementedError('getEnlargeImageRes() has not been implemented.');
-  }
-
-  /// Sets the enlarge image resource.
-  Future<void> setEnlargeImageRes(int? textureId, int res) {
-    throw UnimplementedError('setEnlargeImageRes() has not been implemented.');
-  }
-
-  /// Returns the shrink image resource.
-  Future<int> getShrinkImageRes(int? textureId) async {
-    throw UnimplementedError('getShrinkImageRes() has not been implemented.');
-  }
-
-  /// Sets the shrink image resource.
-  Future<void> setShrinkImageRes(int? textureId, int res) {
-    throw UnimplementedError('setShrinkImageRes() has not been implemented.');
-  }
-
-  /// Sets whether the video is touch full screen.
-  Future<void> setIsTouchWigetFull(int? textureId, bool isTouchWigetFull) {
-    throw UnimplementedError('setIsTouchWigetFull() has not been implemented.');
-  }
-
-  /// Returns whether the video is touch full screen.
-  Future<bool> getIsTouchWigetFull(int? textureId) async {
-    throw UnimplementedError('getIsTouchWigetFull() has not been implemented.');
-  }
-
-  /// Sets the thumb play of the video.
-  Future<void> setThumbPlay(int? textureId, bool thumbPlay) {
-    throw UnimplementedError('setThumbPlay() has not been implemented.');
-  }
-
-  Future<bool> isHideKeyBoard(int? textureId) async {
-    throw UnimplementedError('isHideKeyBoard() has not been implemented.');
-  }
-
-  Future<void> setHideKeyBoard(int? textureId, bool hideKeyBoard) {
-    throw UnimplementedError('setHideKeyBoard() has not been implemented.');
-  }
-
-  Future<bool> isNeedShowWifiTip(int? textureId) async {
-    throw UnimplementedError('isNeedShowWifiTip() has not been implemented.');
-  }
-
-  Future<void> setNeedShowWifiTip(int? textureId, bool needShowWifiTip) {
-    throw UnimplementedError('setNeedShowWifiTip() has not been implemented.');
-  }
-
-  Future<bool> isTouchWiget(int? textureId) async {
-    throw UnimplementedError('isTouchWiget() has not been implemented.');
-  }
-
-  Future<void> setTouchWiget(int? textureId, bool touchWiget) {
-    throw UnimplementedError('setTouchWiget() has not been implemented.');
-  }
-
-  Future<void> setSeekRatio(int? textureId, double seekRatio) {
-    throw UnimplementedError('setSeekRatio() has not been implemented.');
-  }
-
-  Future<double> getSeekRatio(int? textureId) async {
-    throw UnimplementedError('getSeekRatio() has not been implemented.');
-  }
-
-  Future<bool> isNeedLockFull(int? textureId) async {
-    throw UnimplementedError('isNeedLockFull() has not been implemented.');
-  }
-
-  Future<void> setNeedLockFull(int? textureId, bool needLockFull) {
-    throw UnimplementedError('setNeedLockFull() has not been implemented.');
-  }
-
-  /// Sets the dismiss control time of the video. The dismiss control time is the time in milliseconds
-  /// after which the video controls will be hidden.
-  Future<void> setDismissControlTime(int? textureId, int time) {
-    throw UnimplementedError('setDismissControlTime() has not been implemented.');
-  }
-
-  Future<int> getDismissControlTime(int? textureId) async {
-    throw UnimplementedError('getDismissControlTime() has not been implemented.');
-  }
-
-  /// Returns the dismiss control time of the video. The dismiss control time is the time in milliseconds
-  /// after which the video controls will be hidden.
-  Future<int> getSeekOnStart(int? textureId) async {
-    throw UnimplementedError('getSeekOnStart() has not been implemented.');
-  }
-
-  Future<bool> isIfCurrentIsFullscreen(int? textureId) async {
-    throw UnimplementedError('isIfCurrentIsFullscreen() has not been implemented.');
-  }
-
-  /// Returns the seek on start of the video.
-  Future<void> setIfCurrentIsFullscreen(int? textureId, bool ifCurrentIsFullscreen) {
-    throw UnimplementedError('setIfCurrentIsFullscreen() has not been implemented.');
-  }
-
-  /// Sets the looping of the video.
-  Future<void> setLooping(int? textureId, bool looping) {
-    throw UnimplementedError('setLooping() has not been implemented.');
-  }
-
-  /// Returns the looping of the video.
-  Future<bool> isLooping(int? textureId) async {
-    throw UnimplementedError('isLooping() has not been implemented.');
-  }
-
-  /// Sets the speed of the video.
-  Future<void> setSpeed(int? textureId, double speed, {bool soundTouch = true}) {
-    throw UnimplementedError('setSpeed() has not been implemented.');
-  }
-
-  /// Returns the speed of the video.
-  Future<double> getSpeed(int? textureId) async {
-    throw UnimplementedError('getSpeed() has not been implemented.');
-  }
-
-  /// Sets the speed playing of the video.
-  Future<void> setSpeedPlaying(int? textureId, double speed, {bool soundTouch = true}) {
-    throw UnimplementedError('setSpeedPlaying() has not been implemented.');
-  }
-
-  /// Sets the show pause cover of the video.
-  Future<void> setShowPauseCover(int? textureId, bool showPauseCover) {
-    throw UnimplementedError('setShowPauseCover() has not been implemented.');
-  }
-
-  /// Returns the show pause cover of the video.
-  Future<bool> isShowPauseCover(int? textureId) async {
-    throw UnimplementedError('isShowPauseCover() has not been implemented.');
-  }
-
-  /// Sets the show loading cover of the video.
-  Future<void> seekTo(int? textureId, int msec) {
-    throw UnimplementedError('seekTo() has not been implemented.');
-  }
-
-  /// Returns the show loading cover of the video.
-
-  Future<void> setMatrixGL(int? textureId, List<double> matrix) {
-    throw UnimplementedError('setMatrixGL() has not been implemented.');
-  }
-
-  Future<void> releaseWhenLossAudio(int? textureId) async {
-    throw UnimplementedError('releaseWhenLossAudio() has not been implemented.');
-  }
-
-  Future<void> setReleaseWhenLossAudio(int? textureId, bool releaseWhenLossAudio) {
-    throw UnimplementedError('setReleaseWhenLossAudio() has not been implemented.');
-  }
-
-  Future<void> setAutoFullWithSize(int? textureId, bool releaseWhenLossAudio) {
-    throw UnimplementedError('setAutoFullWithSize() has not been implemented.');
-  }
-
-  Future<bool> getAutoFullWithSize(int? textureId) async {
-    throw UnimplementedError('getAutoFullWithSize() has not been implemented.');
-  }
-
-  Future<void> setVolume(int? textureId, double volume) {
-    throw UnimplementedError('setVolume() has not been implemented.');
   }
 
   Future<void> resolveByClick(int? textureId) async {
@@ -588,8 +332,8 @@ abstract class VideoPlayerPlatform {
     throw UnimplementedError('setOrientationRotateWithSystem() has not been implemented.');
   }
 
-  Future<void> releaseOrientationListener(int? textureId) async {
-    throw UnimplementedError('releaseOrientationListener() has not been implemented.');
+  Future<void> releaseOrientation(int? textureId) async {
+    throw UnimplementedError('releaseOrientation() has not been implemented.');
   }
 
   ///Enables PiP mode.
@@ -604,6 +348,56 @@ abstract class VideoPlayerPlatform {
 
   Future<bool?> isPictureInPictureEnabled(int? textureId) {
     throw UnimplementedError('isPictureInPictureEnabled() has not been implemented.');
+  }
+
+  /// Returns the dismiss control time of the video. The dismiss control time is the time in milliseconds
+  /// after which the video controls will be hidden.
+  Future<int> getSeekOnStart(int? textureId) async {
+    throw UnimplementedError('getSeekOnStart() has not been implemented.');
+  }
+
+  /// Sets the looping of the video.
+  Future<void> setLooping(int? textureId, bool looping) {
+    throw UnimplementedError('setLooping() has not been implemented.');
+  }
+
+  /// Returns the looping of the video.
+  Future<bool> isLooping(int? textureId) async {
+    throw UnimplementedError('isLooping() has not been implemented.');
+  }
+
+  /// Sets the speed of the video.
+  Future<void> setSpeed(int? textureId, double speed, {bool soundTouch = true}) {
+    throw UnimplementedError('setSpeed() has not been implemented.');
+  }
+
+  /// Returns the speed of the video.
+  Future<double> getSpeed(int? textureId) async {
+    throw UnimplementedError('getSpeed() has not been implemented.');
+  }
+
+  /// Sets the speed playing of the video.
+  Future<void> setSpeedPlaying(int? textureId, double speed, {bool soundTouch = true}) {
+    throw UnimplementedError('setSpeedPlaying() has not been implemented.');
+  }
+
+  /// Sets the show loading cover of the video.
+  Future<void> seekTo(int? textureId, int msec) {
+    throw UnimplementedError('seekTo() has not been implemented.');
+  }
+
+  /// Returns the show loading cover of the video.
+
+  Future<void> setMatrixGL(int? textureId, List<double> matrix) {
+    throw UnimplementedError('setMatrixGL() has not been implemented.');
+  }
+
+  Future<void> releaseWhenLossAudio(int? textureId) async {
+    throw UnimplementedError('releaseWhenLossAudio() has not been implemented.');
+  }
+
+  Future<void> setReleaseWhenLossAudio(int? textureId, bool releaseWhenLossAudio) {
+    throw UnimplementedError('setReleaseWhenLossAudio() has not been implemented.');
   }
 
   Stream<VideoEvent> videoEventsFor(int? textureId) {

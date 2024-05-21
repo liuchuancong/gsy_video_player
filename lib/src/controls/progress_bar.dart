@@ -79,7 +79,7 @@ class _VideoProgressBarState extends State<VideoProgressBar> {
     return chewieController.draggableProgressBar
         ? GestureDetector(
             onHorizontalDragStart: (DragStartDetails details) {
-              if (!controller.value.videoPlayerInitialized) {
+              if (!controller.value.onVideoPlayerInitialized) {
                 return;
               }
               _controllerWasPlaying = controller.value.isPlaying;
@@ -90,7 +90,7 @@ class _VideoProgressBarState extends State<VideoProgressBar> {
               widget.onDragStart?.call();
             },
             onHorizontalDragUpdate: (DragUpdateDetails details) {
-              if (!controller.value.videoPlayerInitialized) {
+              if (!controller.value.onVideoPlayerInitialized) {
                 return;
               }
               _latestDraggableOffset = details.globalPosition;
@@ -109,7 +109,7 @@ class _VideoProgressBarState extends State<VideoProgressBar> {
               widget.onDragEnd?.call();
             },
             onTapDown: (TapDownDetails details) {
-              if (!controller.value.videoPlayerInitialized) {
+              if (!controller.value.onVideoPlayerInitialized) {
                 return;
               }
               _seekToRelativePosition(details.globalPosition);
@@ -204,7 +204,7 @@ class _ProgressBarPainter extends CustomPainter {
       ),
       colors.backgroundPaint,
     );
-    if (!value.videoPlayerInitialized) {
+    if (!value.onVideoPlayerInitialized) {
       return;
     }
     final double playedPartPercent =

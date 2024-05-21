@@ -117,156 +117,61 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
         break;
       case VideoEventType.onFullButtonClick:
         _postEvent(VideoEventType.onFullButtonClick);
-      case VideoEventType.videoPlayerInitialized:
-        _postEvent(VideoEventType.videoPlayerInitialized);
+      case VideoEventType.onVideoPlayerInitialized:
+        _postEvent(VideoEventType.onVideoPlayerInitialized);
         break;
-      case VideoEventType.onEventStartPrepared:
-        _postEvent(VideoEventType.onEventStartPrepared);
-        break;
-      case VideoEventType.onEventPrepared:
-        _postEvent(VideoEventType.onEventPrepared);
-        break;
-
-      case VideoEventType.onEventClickStartIcon:
-        _postEvent(VideoEventType.onEventClickStartIcon);
-        break;
-
-      case VideoEventType.onEventClickStartError:
-        _postEvent(VideoEventType.onEventClickStartError);
-        break;
-
-      case VideoEventType.onEventClickStop:
-        _postEvent(VideoEventType.onEventClickStop);
-        break;
-
-      case VideoEventType.onEventClickStopFullscreen:
-        _postEvent(VideoEventType.onEventClickStopFullscreen);
-        break;
-
-      case VideoEventType.onEventClickResume:
-        _postEvent(VideoEventType.onEventClickResume);
-        break;
-
-      case VideoEventType.onEventClickResumeFullscreen:
-        _postEvent(VideoEventType.onEventClickResumeFullscreen);
-        break;
-
-      case VideoEventType.onEventClickSeekbar:
-        _postEvent(VideoEventType.onEventClickSeekbar);
-        break;
-
-      case VideoEventType.onEventClickSeekbarFullscreen:
-        _postEvent(VideoEventType.onEventClickSeekbarFullscreen);
-        break;
-
-      case VideoEventType.onEventAutoComplete:
-        _postEvent(VideoEventType.onEventAutoComplete);
-        break;
-
-      case VideoEventType.onEventEnterFullscreen:
-        _postEvent(VideoEventType.onEventEnterFullscreen);
-        break;
-
-      case VideoEventType.onEventQuitFullscreen:
-        _postEvent(VideoEventType.onEventQuitFullscreen);
-        break;
-
-      case VideoEventType.onEventQuitSmallWidget:
-        _postEvent(VideoEventType.onEventQuitSmallWidget);
-        break;
-
       case VideoEventType.changeBoxFit:
         _postEvent(VideoEventType.changeBoxFit);
         break;
 
-      case VideoEventType.onEventEnterSmallWidget:
-        _postEvent(VideoEventType.onEventEnterSmallWidget);
+      case VideoEventType.onPrepared:
+        _postEvent(VideoEventType.onPrepared);
         break;
 
-      case VideoEventType.onEventTouchScreenSeekVolume:
-        _postEvent(VideoEventType.onEventTouchScreenSeekVolume);
+      case VideoEventType.onAutoCompletion:
+        _postEvent(VideoEventType.onAutoCompletion);
         break;
 
-      case VideoEventType.onEventTouchScreenSeekPosition:
-        _postEvent(VideoEventType.onEventTouchScreenSeekPosition);
+      case VideoEventType.onCompletion:
+        _postEvent(VideoEventType.onCompletion);
         break;
 
-      case VideoEventType.onEventTouchScreenSeekLight:
-        _postEvent(VideoEventType.onEventTouchScreenSeekLight);
+      case VideoEventType.onBufferingUpdate:
+        _postEvent(VideoEventType.onBufferingUpdate);
         break;
 
-      case VideoEventType.onEventPlayError:
-        _postEvent(VideoEventType.onEventPlayError);
+      case VideoEventType.onBufferingEnd:
+        _postEvent(VideoEventType.onBufferingEnd);
         break;
 
-      case VideoEventType.onEventClickStartThumb:
-        _postEvent(VideoEventType.onEventClickStartThumb);
+      case VideoEventType.onSeekComplete:
+        _postEvent(VideoEventType.onSeekComplete);
         break;
 
-      case VideoEventType.onEventClickBlank:
-        _postEvent(VideoEventType.onEventClickBlank);
+      case VideoEventType.onError:
+        _postEvent(VideoEventType.onError);
         break;
 
-      case VideoEventType.onEventClickBlankFullscreen:
-        _postEvent(VideoEventType.onEventClickBlankFullscreen);
+      case VideoEventType.onInfo:
+        _postEvent(VideoEventType.onInfo);
         break;
 
-      case VideoEventType.onEventComplete:
-        _postEvent(VideoEventType.onEventComplete);
+      case VideoEventType.onVideoSizeChanged:
+        _postEvent(VideoEventType.onVideoSizeChanged);
         break;
 
-      case VideoEventType.onEventProgress:
-        _postEvent(VideoEventType.onEventProgress);
+      case VideoEventType.onBackFullscreen:
+        _postEvent(VideoEventType.onBackFullscreen);
         break;
 
-      case VideoEventType.onListenerPrepared:
-        _postEvent(VideoEventType.onListenerPrepared);
+      case VideoEventType.onVideoPause:
+        _postEvent(VideoEventType.onVideoPause);
         break;
-
-      case VideoEventType.onListenerAutoCompletion:
-        _postEvent(VideoEventType.onListenerAutoCompletion);
+      case VideoEventType.onVideoResume:
+        _postEvent(VideoEventType.onVideoResume);
         break;
-
-      case VideoEventType.onListenerCompletion:
-        _postEvent(VideoEventType.onListenerCompletion);
-        break;
-
-      case VideoEventType.onListenerBufferingUpdate:
-        _postEvent(VideoEventType.onListenerBufferingUpdate);
-        break;
-
-      case VideoEventType.onListenerBufferingEnd:
-        _postEvent(VideoEventType.onListenerBufferingEnd);
-        break;
-
-      case VideoEventType.onListenerSeekComplete:
-        _postEvent(VideoEventType.onListenerSeekComplete);
-        break;
-
-      case VideoEventType.onListenerError:
-        _postEvent(VideoEventType.onListenerError);
-        break;
-
-      case VideoEventType.onListenerInfo:
-        _postEvent(VideoEventType.onListenerInfo);
-        break;
-
-      case VideoEventType.onListenerVideoSizeChanged:
-        _postEvent(VideoEventType.onListenerVideoSizeChanged);
-        break;
-
-      case VideoEventType.onListenerBackFullscreen:
-        _postEvent(VideoEventType.onListenerBackFullscreen);
-        break;
-
-      case VideoEventType.onListenerVideoPause:
-        _postEvent(VideoEventType.onListenerVideoPause);
-        break;
-      case VideoEventType.onListenerVideoResume:
-        _postEvent(VideoEventType.onListenerVideoResume);
-        break;
-      case VideoEventType.onListenerVideoResumeWithSeek:
-        _postEvent(VideoEventType.onListenerVideoResumeWithSeek);
+      case VideoEventType.onVideoResumeWithSeek:
+        _postEvent(VideoEventType.onVideoResumeWithSeek);
         break;
       case VideoEventType.pipStart:
         _postEvent(VideoEventType.pipStart);
@@ -706,9 +611,9 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
         case VideoEventType.pipStop:
           value = value.copyWith(isPip: false);
           break;
-        case VideoEventType.videoPlayerInitialized:
+        case VideoEventType.onVideoPlayerInitialized:
           value = value.copyWith(
-            videoPlayerInitialized: true,
+            onVideoPlayerInitialized: true,
             duration: Duration(milliseconds: event.duration!.inMilliseconds),
             playState: event.playState,
             size: event.size,
@@ -719,85 +624,23 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
           _positionLisener();
           unawaited(_applyVolume());
           break;
-        case VideoEventType.onEventStartPrepared:
-          value = value.copyWith(isPlaying: true);
-          break;
-        case VideoEventType.onEventPrepared:
-          value = value.copyWith(isPlaying: true);
-          break;
-        case VideoEventType.onEventClickStartIcon:
-          value = value.copyWith(isPlaying: true);
-          break;
-        case VideoEventType.onEventClickStartError:
-          break;
-        case VideoEventType.onEventClickStop:
-          value = value.copyWith(isPlaying: false);
-          break;
-        case VideoEventType.onEventClickStopFullscreen:
-          break;
-        case VideoEventType.onEventClickResume:
-          value = value.copyWith(isPlaying: true);
-          break;
-        case VideoEventType.onEventClickResumeFullscreen:
-          value = value.copyWith(isPlaying: true);
-          break;
-        case VideoEventType.onEventClickSeekbar:
-          break;
-        case VideoEventType.onEventClickSeekbarFullscreen:
-          break;
-        case VideoEventType.onEventAutoComplete:
-          break;
-        case VideoEventType.onEventEnterFullscreen:
-          break;
-        case VideoEventType.onEventQuitFullscreen:
-          break;
-        case VideoEventType.onEventQuitSmallWidget:
-          break;
         case VideoEventType.changeBoxFit:
           break;
-        case VideoEventType.onEventEnterSmallWidget:
-          break;
-        case VideoEventType.onEventTouchScreenSeekVolume:
-          break;
-        case VideoEventType.onEventTouchScreenSeekPosition:
-          break;
-        case VideoEventType.onEventTouchScreenSeekLight:
-          break;
-        case VideoEventType.onEventPlayError:
-          value = value.copyWith(isPlaying: false);
-          break;
-        case VideoEventType.onEventClickStartThumb:
-          break;
-        case VideoEventType.onEventClickBlank:
-          break;
-        case VideoEventType.onEventClickBlankFullscreen:
-          break;
-        case VideoEventType.onEventComplete:
-          value = value.copyWith(isPlaying: false);
-          break;
-        case VideoEventType.onEventProgress:
-          value = value.copyWith(
-            isPlaying: event.isPlaying,
-            duration: Duration(milliseconds: event.duration!.inMilliseconds),
-            playState: event.playState,
-            percent: event.percent,
-          );
-          break;
-        case VideoEventType.onListenerConfigurationChanged:
+        case VideoEventType.onConfigurationChanged:
           value = value.copyWith(
             isPlaying: event.isPlaying,
             duration: Duration(milliseconds: event.duration!.inMilliseconds),
             playState: event.playState,
           );
           break;
-        case VideoEventType.onListenerPrepared:
+        case VideoEventType.onPrepared:
           value = value.copyWith(
             isPlaying: event.isPlaying,
             duration: Duration(milliseconds: event.duration!.inMilliseconds),
             playState: event.playState,
           );
           break;
-        case VideoEventType.onListenerAutoCompletion:
+        case VideoEventType.onAutoCompletion:
           value = value.copyWith(
             isPlaying: event.isPlaying,
             duration: Duration(milliseconds: event.duration!.inMilliseconds),
@@ -805,14 +648,14 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
             isCompleted: true,
           );
           break;
-        case VideoEventType.onListenerCompletion:
+        case VideoEventType.onCompletion:
           value = value.copyWith(
             isPlaying: event.isPlaying,
             duration: Duration(milliseconds: event.duration!.inMilliseconds),
             playState: event.playState,
           );
           break;
-        case VideoEventType.onListenerBufferingUpdate:
+        case VideoEventType.onBufferingUpdate:
           value = value.copyWith(
             isPlaying: event.isPlaying,
             duration: Duration(milliseconds: event.duration!.inMilliseconds),
@@ -823,7 +666,7 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
           );
           _positionLisener();
           break;
-        case VideoEventType.onListenerBufferingEnd:
+        case VideoEventType.onBufferingEnd:
           value = value.copyWith(
             isPlaying: event.isPlaying,
             duration: Duration(milliseconds: event.duration!.inMilliseconds),
@@ -833,7 +676,7 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
           );
           break;
 
-        case VideoEventType.onListenerSeekComplete:
+        case VideoEventType.onSeekComplete:
           value = value.copyWith(
             isPlaying: event.isPlaying,
             duration: Duration(milliseconds: event.duration!.inMilliseconds),
@@ -842,7 +685,7 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
           );
           _positionLisener();
           break;
-        case VideoEventType.onListenerError:
+        case VideoEventType.onError:
           value = value.copyWith(
             isPlaying: event.isPlaying,
             duration: Duration(milliseconds: event.duration!.inMilliseconds),
@@ -852,7 +695,7 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
             extra: event.extra,
           );
           break;
-        case VideoEventType.onListenerInfo:
+        case VideoEventType.onInfo:
           value = value.copyWith(
             isPlaying: event.isPlaying,
             duration: Duration(milliseconds: event.duration!.inMilliseconds),
@@ -863,7 +706,7 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
           );
           _positionLisener();
           break;
-        case VideoEventType.onListenerVideoSizeChanged:
+        case VideoEventType.onVideoSizeChanged:
           value = value.copyWith(
             isPlaying: event.isPlaying,
             duration: Duration(milliseconds: event.duration!.inMilliseconds),
@@ -874,22 +717,14 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
             videoSarNum: event.videoSarNum,
           );
           break;
-        case VideoEventType.onListenerBackFullscreen:
+        case VideoEventType.onBackFullscreen:
           value = value.copyWith(
             isPlaying: event.isPlaying,
             duration: Duration(milliseconds: event.duration!.inMilliseconds),
             playState: event.playState,
           );
           break;
-        case VideoEventType.onListenerVideoPause:
-          value = value.copyWith(
-            isPlaying: event.isPlaying,
-            isBuffering: event.isBuffering,
-            duration: Duration(milliseconds: event.duration!.inMilliseconds),
-            playState: event.playState,
-          );
-          break;
-        case VideoEventType.onListenerVideoResume:
+        case VideoEventType.onVideoPause:
           value = value.copyWith(
             isPlaying: event.isPlaying,
             isBuffering: event.isBuffering,
@@ -897,7 +732,15 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
             playState: event.playState,
           );
           break;
-        case VideoEventType.onListenerVideoResumeWithSeek:
+        case VideoEventType.onVideoResume:
+          value = value.copyWith(
+            isPlaying: event.isPlaying,
+            isBuffering: event.isBuffering,
+            duration: Duration(milliseconds: event.duration!.inMilliseconds),
+            playState: event.playState,
+          );
+          break;
+        case VideoEventType.onVideoResumeWithSeek:
           value = value.copyWith(
             isPlaying: event.isPlaying,
             duration: Duration(milliseconds: event.duration!.inMilliseconds),
@@ -971,11 +814,6 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     await _videoPlayerPlatform.setVideoOptionBuilder(textureId, builder);
   }
 
-  Future<int> getLayoutId() async {
-    await _creatingCompleter!.future;
-    return await _videoPlayerPlatform.getLayoutId(textureId);
-  }
-
   Future<void> startPlayLogic() async {
     await _creatingCompleter!.future;
     value = value.copyWith(isPlaying: true);
@@ -991,21 +829,6 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     await _creatingCompleter!.future;
     value = value.copyWith(isPlaying: false);
     await _videoPlayerPlatform.setUp(_textureId, url, cacheWithPlay, cachePath, title);
-  }
-
-  Future<void> onVideoPause() async {
-    await _creatingCompleter!.future;
-    value = value.copyWith(isPlaying: false);
-    _applyPlayPause();
-  }
-
-  Future<void> onVideoResume() async {
-    await _creatingCompleter!.future;
-    if (value.isCompleted) {
-      await seekTo(Duration.zero);
-    }
-    value = value.copyWith(isPlaying: true);
-    _applyPlayPause();
   }
 
   Future<void> clearCurrentCache() async {
@@ -1038,11 +861,6 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     await _videoPlayerPlatform.setPlayPosition(_textureId, position.inMilliseconds);
   }
 
-  Future<void> backFromWindowFull() async {
-    await _creatingCompleter!.future;
-    await _videoPlayerPlatform.backFromWindowFull(_textureId);
-  }
-
   Future<int> getNetSpeed() async {
     await _creatingCompleter!.future;
     return await _videoPlayerPlatform.getNetSpeed(_textureId);
@@ -1063,14 +881,14 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     return await _videoPlayerPlatform.getBuffterPoint(_textureId);
   }
 
-  Future<GsyVideoPlayerType> setCurrentPlayer(GsyVideoPlayerType playerType) async {
+  Future<GsyVideoPlayerType> setPlayerFactory(GsyVideoPlayerType playerType) async {
     await _creatingCompleter!.future;
-    return await _videoPlayerPlatform.setCurrentPlayer(_textureId, playerType);
+    return await _videoPlayerPlatform.setPlayerFactory(_textureId, playerType);
   }
 
-  Future<void> getPlayManager() async {
+  Future<void> getPlayFactory() async {
     await _creatingCompleter!.future;
-    await _videoPlayerPlatform.getPlayManager(_textureId);
+    await _videoPlayerPlatform.getPlayFactory(_textureId);
   }
 
   Future<void> setExoCacheManager() async {
@@ -1096,19 +914,6 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
   Future<void> releaseMediaPlayer() async {
     await _creatingCompleter!.future;
     await _videoPlayerPlatform.releaseMediaPlayer(_textureId);
-  }
-
-  Future<void> onPause() async {
-    await _creatingCompleter!.future;
-    await _videoPlayerPlatform.onPause(_textureId);
-  }
-
-  Future<void> onResume() async {
-    await _creatingCompleter!.future;
-    if (value.isCompleted) {
-      await seekTo(Duration.zero);
-    }
-    await _videoPlayerPlatform.onResume(_textureId);
   }
 
   Future<String> getPlayTag() async {
@@ -1181,16 +986,6 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     return await _videoPlayerPlatform.isMediaCodecTexture(_textureId);
   }
 
-  Future<PlayerVideoShowType> getShowType() async {
-    await _creatingCompleter!.future;
-    return await _videoPlayerPlatform.getShowType(_textureId);
-  }
-
-  Future<void> setShowType(PlayerVideoShowType showType, {double screenScaleRatio = 0.0}) async {
-    await _creatingCompleter!.future;
-    await _videoPlayerPlatform.setShowType(_textureId, showType, screenScaleRatio: screenScaleRatio);
-  }
-
   Future<GsyVideoPlayerRenderType> getRenderType() async {
     await _creatingCompleter!.future;
     return await _videoPlayerPlatform.getRenderType(_textureId);
@@ -1211,179 +1006,9 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     await _videoPlayerPlatform.setMediaCodecTexture(_textureId, mediaCodecTexture);
   }
 
-  Future<void> startWindowFullscreen() async {
-    await _creatingCompleter!.future;
-    await _videoPlayerPlatform.startWindowFullscreen(_textureId);
-  }
-
-  Future<void> exitWindowFullscreen() async {
-    await _creatingCompleter!.future;
-    await _videoPlayerPlatform.exitWindowFullscreen(_textureId);
-  }
-
-  Future<void> showSmallVideo(Size size, bool showActionBar, bool showStatusBar) async {
-    await _creatingCompleter!.future;
-    await _videoPlayerPlatform.showSmallVideo(_textureId, size, showActionBar, showStatusBar);
-  }
-
-  Future<void> hideSmallVideo() async {
-    await _creatingCompleter!.future;
-    await _videoPlayerPlatform.hideSmallVideo(_textureId);
-  }
-
-  Future<bool> isShowFullAnimation() async {
-    await _creatingCompleter!.future;
-    return await _videoPlayerPlatform.isShowFullAnimation(_textureId);
-  }
-
-  Future<void> setShowFullAnimation(bool showFullAnimation) async {
-    await _creatingCompleter!.future;
-    await _videoPlayerPlatform.setShowFullAnimation(_textureId, showFullAnimation);
-  }
-
-  Future<bool> isRotateViewAuto() async {
-    await _creatingCompleter!.future;
-    return await _videoPlayerPlatform.isRotateViewAuto(_textureId);
-  }
-
-  Future<void> setRotateViewAuto(bool rotateViewAuto) async {
-    await _creatingCompleter!.future;
-    await _videoPlayerPlatform.setRotateViewAuto(_textureId, rotateViewAuto);
-  }
-
-  Future<bool> isLockLand() async {
-    await _creatingCompleter!.future;
-    return await _videoPlayerPlatform.isLockLand(_textureId);
-  }
-
-  Future<void> setLockLand(bool lockLand) async {
-    await _creatingCompleter!.future;
-    await _videoPlayerPlatform.setLockLand(_textureId, lockLand);
-  }
-
-  Future<bool> isRotateWithSystem() async {
-    await _creatingCompleter!.future;
-    return await _videoPlayerPlatform.isRotateWithSystem(_textureId);
-  }
-
-  Future<void> setRotateWithSystem(bool rotateWithSystem) async {
-    await _creatingCompleter!.future;
-    await _videoPlayerPlatform.setRotateWithSystem(_textureId, rotateWithSystem);
-  }
-
-  Future<void> initUIState() async {
-    await _creatingCompleter!.future;
-    await _videoPlayerPlatform.initUIState(_textureId);
-  }
-
-  Future<int> getEnlargeImageRes() async {
-    await _creatingCompleter!.future;
-    return await _videoPlayerPlatform.getEnlargeImageRes(_textureId);
-  }
-
-  Future<void> setEnlargeImageRes(int res) async {
-    await _creatingCompleter!.future;
-    await _videoPlayerPlatform.setEnlargeImageRes(_textureId, res);
-  }
-
-  Future<int> getShrinkImageRes() async {
-    await _creatingCompleter!.future;
-    return await _videoPlayerPlatform.getShrinkImageRes(_textureId);
-  }
-
-  Future<void> setShrinkImageRes(int res) async {
-    await _creatingCompleter!.future;
-    await _videoPlayerPlatform.setShrinkImageRes(_textureId, res);
-  }
-
-  Future<void> setIsTouchWigetFull(bool isTouchWigetFull) async {
-    await _creatingCompleter!.future;
-    await _videoPlayerPlatform.setIsTouchWigetFull(_textureId, isTouchWigetFull);
-  }
-
-  Future<bool> getIsTouchWigetFull() async {
-    await _creatingCompleter!.future;
-    return await _videoPlayerPlatform.getIsTouchWigetFull(_textureId);
-  }
-
-  Future<void> setThumbPlay(bool thumbPlay) async {
-    await _creatingCompleter!.future;
-    await _videoPlayerPlatform.setThumbPlay(_textureId, thumbPlay);
-  }
-
-  Future<bool> isHideKeyBoard() async {
-    await _creatingCompleter!.future;
-    return await _videoPlayerPlatform.isHideKeyBoard(_textureId);
-  }
-
-  Future<void> setHideKeyBoard(bool hideKeyBoard) async {
-    await _creatingCompleter!.future;
-    await _videoPlayerPlatform.setHideKeyBoard(_textureId, hideKeyBoard);
-  }
-
-  Future<bool> isNeedShowWifiTip() async {
-    await _creatingCompleter!.future;
-    return await _videoPlayerPlatform.isNeedShowWifiTip(_textureId);
-  }
-
-  Future<void> setNeedShowWifiTip(bool needShowWifiTip) async {
-    await _creatingCompleter!.future;
-    await _videoPlayerPlatform.setNeedShowWifiTip(_textureId, needShowWifiTip);
-  }
-
-  Future<bool> isTouchWiget() async {
-    await _creatingCompleter!.future;
-    return await _videoPlayerPlatform.isTouchWiget(_textureId);
-  }
-
-  Future<void> setTouchWiget(bool touchWiget) async {
-    await _creatingCompleter!.future;
-    await _videoPlayerPlatform.setTouchWiget(_textureId, touchWiget);
-  }
-
-  Future<void> setSeekRatio(double ratio) async {
-    await _creatingCompleter!.future;
-    await _videoPlayerPlatform.setSeekRatio(_textureId, ratio);
-  }
-
-  Future<double> getSeekRatio() async {
-    await _creatingCompleter!.future;
-    return await _videoPlayerPlatform.getSeekRatio(_textureId);
-  }
-
-  Future<bool> isNeedLockFull() async {
-    await _creatingCompleter!.future;
-    return await _videoPlayerPlatform.isNeedLockFull(_textureId);
-  }
-
-  Future<void> setNeedLockFull(bool needLockFull) async {
-    await _creatingCompleter!.future;
-    await _videoPlayerPlatform.setNeedLockFull(_textureId, needLockFull);
-  }
-
-  Future<void> setDismissControlTime(int msec) async {
-    await _creatingCompleter!.future;
-    await _videoPlayerPlatform.setDismissControlTime(_textureId, msec);
-  }
-
-  Future<int> getDismissControlTime() async {
-    await _creatingCompleter!.future;
-    return await _videoPlayerPlatform.getDismissControlTime(_textureId);
-  }
-
   Future<int> getSeekOnStart() async {
     await _creatingCompleter!.future;
     return await _videoPlayerPlatform.getSeekOnStart(_textureId);
-  }
-
-  Future<bool> isIfCurrentIsFullscreen() async {
-    await _creatingCompleter!.future;
-    return await _videoPlayerPlatform.isIfCurrentIsFullscreen(_textureId);
-  }
-
-  Future<void> setIfCurrentIsFullscreen(bool ifCurrentIsFullscreen) async {
-    await _creatingCompleter!.future;
-    await _videoPlayerPlatform.setIfCurrentIsFullscreen(_textureId, ifCurrentIsFullscreen);
   }
 
   Future<bool> isLooping() async {
@@ -1411,16 +1036,6 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
   Future<void> setSpeedPlaying(double speed, {bool soundTouch = true}) async {
     await _creatingCompleter!.future;
     await _videoPlayerPlatform.setSpeedPlaying(_textureId, speed, soundTouch: soundTouch);
-  }
-
-  Future<bool> isShowPauseCover() async {
-    await _creatingCompleter!.future;
-    return await _videoPlayerPlatform.isShowPauseCover(textureId);
-  }
-
-  Future<void> setShowPauseCover(bool showPauseCover) async {
-    await _creatingCompleter!.future;
-    await _videoPlayerPlatform.setShowPauseCover(_textureId, showPauseCover);
   }
 
   /// The position in the current video.
@@ -1458,21 +1073,11 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     await _videoPlayerPlatform.setReleaseWhenLossAudio(_textureId, releaseWhenLossAudio);
   }
 
-  Future<void> setAutoFullWithSize(bool releaseWhenLossAudio) async {
-    await _creatingCompleter!.future;
-    await _videoPlayerPlatform.setAutoFullWithSize(_textureId, releaseWhenLossAudio);
-  }
-
-  Future<bool> getAutoFullWithSize() async {
-    await _creatingCompleter!.future;
-    return await _videoPlayerPlatform.getAutoFullWithSize(_textureId);
-  }
-
   /// Pauses the video.
   Future<void> pause() async {
     await _creatingCompleter!.future;
     value = value.copyWith(isPlaying: false);
-    await _videoPlayerPlatform.onVideoPause(_textureId);
+    await _applyPlayPause();
   }
 
   /// resume the video.
@@ -1481,7 +1086,7 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     if (value.isCompleted) {
       await seekTo(Duration.zero);
     }
-    value = value.copyWith(isPlaying: true);
+    value = value.copyWith(isPlaying: true, position: Duration.zero);
     await _applyPlayPause();
   }
 
@@ -1507,7 +1112,7 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
   Future<void> _applyPlayPause() async {
     await _creatingCompleter!.future;
     if (value.isPlaying) {
-      await _videoPlayerPlatform.onResume(_textureId);
+      await _videoPlayerPlatform.resume(_textureId);
       _timer?.cancel();
       _timer = Timer.periodic(
         const Duration(milliseconds: 500),
@@ -1525,7 +1130,7 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
       await _applyPlaybackSpeed();
     } else {
       _timer?.cancel();
-      await _videoPlayerPlatform.onPause(_textureId);
+      await _videoPlayerPlatform.pause(_textureId);
     }
   }
 
@@ -1662,19 +1267,17 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     await _videoPlayerPlatform.setOrientationRotateWithSystem(_textureId, isRotateWithSystem);
   }
 
-  Future<void> releaseOrientationListener() async {
+  Future<void> releaseOrientation() async {
     await _creatingCompleter!.future;
-    await _videoPlayerPlatform.releaseOrientationListener(_textureId);
+    await _videoPlayerPlatform.releaseOrientation(_textureId);
   }
 
   Future<void> onEnterFullScreen() async {
     value = value.copyWith(isFullScreen: true);
-    startWindowFullscreen();
   }
 
   Future<void> onExitFullScreen() async {
     value = value.copyWith(isFullScreen: false);
-    exitWindowFullscreen();
   }
 
   Future<void> enablePictureInPicture({double? top, double? left, double? width, double? height}) async {

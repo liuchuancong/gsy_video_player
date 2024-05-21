@@ -50,15 +50,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
   }
 
   @override
-  Future<int> getLayoutId(int? textureId) async {
-    late final Map<String, dynamic>? response;
-    response = await _channel.invokeMethod<Map<String, dynamic>?>('getLayoutId', <String, dynamic>{
-      'textureId': textureId,
-    });
-    return response!["layoutId"];
-  }
-
-  @override
   Future<void> startPlayLogic(int? textureId) async {
     await _channel.invokeMethod<void>('startPlayLogic', <String, dynamic>{
       'textureId': textureId,
@@ -79,20 +70,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
         },
       },
     );
-  }
-
-  @override
-  Future<void> onVideoPause(int? textureId) async {
-    await _channel.invokeMethod<void>("onVideoPause", <String, dynamic>{
-      'textureId': textureId,
-    });
-  }
-
-  @override
-  Future<void> onVideoResume(int? textureId) async {
-    await _channel.invokeMethod<void>("onVideoResume", <String, dynamic>{
-      'textureId': textureId,
-    });
   }
 
   @override
@@ -144,13 +121,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
   }
 
   @override
-  Future<void> backFromWindowFull(int? textureId) async {
-    await _channel.invokeMethod<void>("backFromWindowFull", <String, dynamic>{
-      'textureId': textureId,
-    });
-  }
-
-  @override
   Future<int> getNetSpeed(int? textureId) async {
     late final Map<String, dynamic>? response;
     response = await _channel.invokeMethod<Map<String, dynamic>?>("getNetSpeed", <String, dynamic>{
@@ -186,9 +156,9 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
   }
 
   @override
-  Future<GsyVideoPlayerType> setCurrentPlayer(int? textureId, GsyVideoPlayerType playerType) async {
+  Future<GsyVideoPlayerType> setPlayerFactory(int? textureId, GsyVideoPlayerType playerType) async {
     await _channel.invokeMethod<void>(
-      'setCurrentPlayer',
+      'setPlayerFactory',
       <String, dynamic>{
         'textureId': textureId,
         'playerOptions': {'currentPlayer': getGsyVideoPlayerType(playerType)},
@@ -202,9 +172,9 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
   }
 
   @override
-  Future<GsyVideoPlayerType> getPlayManager(int? textureId) async {
+  Future<GsyVideoPlayerType> getPlayFactory(int? textureId) async {
     late final Map<String, dynamic>? response;
-    response = await _channel.invokeMethod<Map<String, dynamic>?>("getPlayManager", <String, dynamic>{
+    response = await _channel.invokeMethod<Map<String, dynamic>?>("getPlayFactory", <String, dynamic>{
       'textureId': textureId,
     });
     return getVideoPlayerType(response!["currentPlayer"]);
@@ -253,15 +223,15 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
   }
 
   @override
-  Future<void> onPause(int? textureId) async {
-    await _channel.invokeMethod<void>("onPause", <String, dynamic>{
+  Future<void> pause(int? textureId) async {
+    await _channel.invokeMethod<void>("pause", <String, dynamic>{
       'textureId': textureId,
     });
   }
 
   @override
-  Future<void> onResume(int? textureId) async {
-    await _channel.invokeMethod<void>("onResume", <String, dynamic>{
+  Future<void> resume(int? textureId) async {
+    await _channel.invokeMethod<void>("resume", <String, dynamic>{
       'textureId': textureId,
     });
   }
@@ -416,26 +386,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
   }
 
   @override
-  Future<PlayerVideoShowType> getShowType(int? textureId) async {
-    late final Map<String, dynamic>? response;
-    response = await _channel.invokeMethod<Map<String, dynamic>?>("getShowType", <String, dynamic>{
-      'textureId': textureId,
-    });
-    return getPlayerVideoShowType(response!["type"]);
-  }
-
-  @override
-  Future<void> setShowType(int? textureId, PlayerVideoShowType showType, {double screenScaleRatio = 0.0}) async {
-    await _channel.invokeMethod<void>("setShowType", <String, dynamic>{
-      'textureId': textureId,
-      "showTypeOptions": {
-        "showType": getPlayerVideoShowTypeIntValue(showType),
-        "screenScaleRatio": screenScaleRatio,
-      },
-    });
-  }
-
-  @override
   Future<GsyVideoPlayerRenderType> getRenderType(int? textureId) async {
     late final Map<String, dynamic>? response;
     response = await _channel.invokeMethod<Map<String, dynamic>?>("getRenderType", <String, dynamic>{
@@ -466,16 +416,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
       'textureId': textureId,
       "enableCodecTexture": mediaCodecTexture,
     });
-  }
-
-  @override
-  Future<void> startWindowFullscreen(int? textureId) async {
-    _channel.invokeMethod<void>("startWindowFullscreen", <String, dynamic>{'textureId': textureId});
-  }
-
-  @override
-  Future<void> exitWindowFullscreen(int? textureId) async {
-    _channel.invokeMethod<void>("exitWindowFullscreen", <String, dynamic>{'textureId': textureId});
   }
 
   @override
@@ -645,267 +585,9 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
   }
 
   @override
-  Future<void> releaseOrientationListener(int? textureId) async {
-    await _channel.invokeMethod<void>("releaseOrientationListener", <String, dynamic>{
+  Future<void> releaseOrientation(int? textureId) async {
+    await _channel.invokeMethod<void>("releaseOrientation", <String, dynamic>{
       'textureId': textureId,
-    });
-  }
-
-  @override
-  Future<void> showSmallVideo(int? textureId, Size size, bool showActionBar, bool showStatusBar) async {
-    _channel.invokeMethod<void>("showSmallVideo", <String, dynamic>{
-      'textureId': textureId,
-      "showSmallVideoOptions": {
-        "actionBar": showActionBar,
-        "statusBar": showStatusBar,
-        "size": {
-          "width": size.width.toInt(),
-          "height": size.height.toInt(),
-        }
-      }
-    });
-  }
-
-  @override
-  Future<void> hideSmallVideo(int? textureId) async {
-    _channel.invokeMethod<void>("hideSmallVideo", <String, dynamic>{
-      'textureId': textureId,
-    });
-  }
-
-  @override
-  Future<bool> isShowFullAnimation(int? textureId) async {
-    late final Map<String, dynamic>? response;
-    response = await _channel.invokeMethod<Map<String, dynamic>?>("isShowFullAnimation", <String, dynamic>{
-      'textureId': textureId,
-    });
-    return response!["isShowFullAnimation"];
-  }
-
-  @override
-  Future<void> setShowFullAnimation(int? textureId, bool showFullAnimation) async {
-    await _channel.invokeMethod<void>("setShowFullAnimation", <String, dynamic>{
-      'textureId': textureId,
-      "isShowFullAnimation": showFullAnimation,
-    });
-  }
-
-  @override
-  Future<bool> isRotateViewAuto(int? textureId) async {
-    late final Map<String, dynamic>? response;
-    response = await _channel.invokeMethod<Map<String, dynamic>?>("isRotateViewAuto", <String, dynamic>{
-      'textureId': textureId,
-    });
-    return response!["isRotateViewAuto"];
-  }
-
-  @override
-  Future<void> setRotateViewAuto(int? textureId, bool rotateViewAuto) async {
-    await _channel.invokeMethod<void>("setRotateViewAuto", <String, dynamic>{
-      'textureId': textureId,
-      "isRotateViewAuto": rotateViewAuto,
-    });
-  }
-
-  @override
-  Future<bool> isLockLand(int? textureId) async {
-    late final Map<String, dynamic>? response;
-    response = await _channel.invokeMethod<Map<String, dynamic>?>("isLockLand", <String, dynamic>{
-      'textureId': textureId,
-    });
-    return response!["isLockLand"];
-  }
-
-  @override
-  Future<void> setLockLand(int? textureId, bool lockLand) async {
-    await _channel.invokeMethod<void>("setLockLand", <String, dynamic>{
-      'textureId': textureId,
-      "isLockLand": lockLand,
-    });
-  }
-
-  @override
-  Future<bool> isRotateWithSystem(int? textureId) async {
-    late final Map<String, dynamic>? response;
-    response = await _channel.invokeMethod<Map<String, dynamic>?>("isRotateWithSystem", <String, dynamic>{
-      'textureId': textureId,
-    });
-    return response!["isRotateWithSystem"];
-  }
-
-  @override
-  Future<void> setRotateWithSystem(int? textureId, bool rotateWithSystem) async {
-    await _channel.invokeMethod<void>("setRotateWithSystem", <String, dynamic>{
-      'textureId': textureId,
-      "isRotateWithSystem": rotateWithSystem,
-    });
-  }
-
-  @override
-  Future<void> initUIState(int? textureId) async {
-    await _channel.invokeMethod<void>("initUIState", <String, dynamic>{
-      'textureId': textureId,
-    });
-  }
-
-  @override
-  Future<int> getEnlargeImageRes(int? textureId) async {
-    late final Map<String, dynamic>? response;
-    response = await _channel.invokeMethod<Map<String, dynamic>?>("getEnlargeImageRes", <String, dynamic>{
-      'textureId': textureId,
-    });
-    return response!["enlargeImageRes"];
-  }
-
-  @override
-  Future<void> setEnlargeImageRes(int? textureId, int res) async {
-    await _channel.invokeMethod<void>("setEnlargeImageRes", <String, dynamic>{
-      'textureId': textureId,
-      "enlargeImageRes": res,
-    });
-  }
-
-  @override
-  Future<int> getShrinkImageRes(int? textureId) async {
-    late final Map<String, dynamic>? response;
-    response = await _channel.invokeMethod<Map<String, dynamic>?>("getShrinkImageRes", <String, dynamic>{
-      'textureId': textureId,
-    });
-    return response!["shrinkImageRes"];
-  }
-
-  @override
-  Future<void> setShrinkImageRes(int? textureId, int res) async {
-    await _channel.invokeMethod<void>("setShrinkImageRes", <String, dynamic>{
-      'textureId': textureId,
-      "shrinkImageRes": res,
-    });
-  }
-
-  @override
-  Future<bool> getIsTouchWigetFull(int? textureId) async {
-    late final Map<String, dynamic>? response;
-    response = await _channel.invokeMethod<Map<String, dynamic>?>("getIsTouchWigetFull", <String, dynamic>{
-      'textureId': textureId,
-    });
-    return response!["isTouchWigetFull"];
-  }
-
-  @override
-  Future<void> setIsTouchWigetFull(int? textureId, bool isTouchWigetFull) async {
-    await _channel.invokeMethod<void>("setIsTouchWigetFull", <String, dynamic>{
-      'textureId': textureId,
-      "isTouchWigetFull": isTouchWigetFull,
-    });
-  }
-
-  @override
-  Future<void> setThumbPlay(int? textureId, bool thumbPlay) async {
-    await _channel.invokeMethod<void>("setThumbPlay", <String, dynamic>{
-      'textureId': textureId,
-      "thumbPlay": thumbPlay,
-    });
-  }
-
-  @override
-  Future<bool> isHideKeyBoard(int? textureId) async {
-    late final Map<String, dynamic>? response;
-    response = await _channel.invokeMethod<Map<String, dynamic>?>("isHideKeyBoard", <String, dynamic>{
-      'textureId': textureId,
-    });
-    return response!["isHideKeyBoard"];
-  }
-
-  @override
-  Future<void> setHideKeyBoard(int? textureId, bool hideKeyBoard) async {
-    await _channel.invokeMethod<void>("setHideKeyBoard", <String, dynamic>{
-      'textureId': textureId,
-      "isHideKeyBoard": hideKeyBoard,
-    });
-  }
-
-  @override
-  Future<bool> isNeedShowWifiTip(int? textureId) async {
-    late final Map<String, dynamic>? response;
-    response = await _channel.invokeMethod<Map<String, dynamic>?>("isNeedShowWifiTip", <String, dynamic>{
-      'textureId': textureId,
-    });
-    return response!["isNeedShowWifiTip"];
-  }
-
-  @override
-  Future<void> setNeedShowWifiTip(int? textureId, bool needShowWifiTip) async {
-    await _channel.invokeMethod<void>("setNeedShowWifiTip", <String, dynamic>{
-      'textureId': textureId,
-      "isNeedShowWifiTip": needShowWifiTip,
-    });
-  }
-
-  @override
-  Future<bool> isTouchWiget(int? textureId) async {
-    late final Map<String, dynamic>? response;
-    response = await _channel.invokeMethod<Map<String, dynamic>?>("isTouchWiget", <String, dynamic>{
-      'textureId': textureId,
-    });
-    return response!["isTouchWiget"];
-  }
-
-  @override
-  Future<void> setTouchWiget(int? textureId, bool touchWiget) async {
-    await _channel.invokeMethod<void>("setTouchWiget", <String, dynamic>{
-      'textureId': textureId,
-      "isTouchWiget": touchWiget,
-    });
-  }
-
-  @override
-  Future<double> getSeekRatio(int? textureId) async {
-    late final Map<String, dynamic>? response;
-    response = await _channel.invokeMethod<Map<String, dynamic>?>("getSeekRatio", <String, dynamic>{
-      'textureId': textureId,
-    });
-    return response!["seekRatio"] as double;
-  }
-
-  @override
-  Future<void> setSeekRatio(int? textureId, double seekRatio) async {
-    await _channel.invokeMethod<void>("setSeekRatio", <String, dynamic>{
-      'textureId': textureId,
-      "seekRatio": seekRatio,
-    });
-  }
-
-  @override
-  Future<bool> isNeedLockFull(int? textureId) async {
-    late final Map<String, dynamic>? response;
-    response = await _channel.invokeMethod<Map<String, dynamic>?>("isNeedLockFull", <String, dynamic>{
-      'textureId': textureId,
-    });
-    return response!["isNeedLockFull"];
-  }
-
-  @override
-  Future<void> setNeedLockFull(int? textureId, bool needLockFull) async {
-    await _channel.invokeMethod<void>("setNeedLockFull", <String, dynamic>{
-      'textureId': textureId,
-      "isNeedLockFull": needLockFull,
-    });
-  }
-
-  @override
-  Future<int> getDismissControlTime(int? textureId) async {
-    late final Map<String, dynamic>? response;
-    response = await _channel.invokeMethod<Map<String, dynamic>?>("getDismissControlTime", <String, dynamic>{
-      'textureId': textureId,
-    });
-    return response!["isNeedLockFull"];
-  }
-
-  @override
-  Future<void> setDismissControlTime(int? textureId, int time) async {
-    await _channel.invokeMethod<void>("setDismissControlTime", <String, dynamic>{
-      'textureId': textureId,
-      "dismissControlTime": time,
     });
   }
 
@@ -916,23 +598,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
       'textureId': textureId,
     });
     return response!["seekOnStart"];
-  }
-
-  @override
-  Future<bool> isIfCurrentIsFullscreen(int? textureId) async {
-    late final Map<String, dynamic>? response;
-    response = await _channel.invokeMethod<Map<String, dynamic>?>("isIfCurrentIsFullscreen", <String, dynamic>{
-      'textureId': textureId,
-    });
-    return response!["isIfCurrentIsFullscreen"];
-  }
-
-  @override
-  Future<void> setIfCurrentIsFullscreen(int? textureId, bool ifCurrentIsFullscreen) async {
-    await _channel.invokeMethod<void>("setIfCurrentIsFullscreen", <String, dynamic>{
-      'textureId': textureId,
-      "isIfCurrentIsFullscreen": ifCurrentIsFullscreen,
-    });
   }
 
   @override
@@ -977,7 +642,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
     });
   }
 
-  @override
   Future<bool> isShowPauseCover(int? textureId) async {
     late final Map<String, dynamic>? response;
     response = await _channel.invokeMethod<Map<String, dynamic>?>("isShowPauseCover", <String, dynamic>{
@@ -986,7 +650,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
     return response!["isShowPauseCover"];
   }
 
-  @override
   Future<void> setShowPauseCover(int? textureId, bool showPauseCover) async {
     await _channel.invokeMethod<void>("setShowPauseCover", <String, dynamic>{
       'textureId': textureId,
@@ -1017,21 +680,11 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
     });
   }
 
-  @override
   Future<void> setAutoFullWithSize(int? textureId, bool releaseWhenLossAudio) async {
     await _channel.invokeMethod<void>("setAutoFullWithSize", <String, dynamic>{
       'textureId': textureId,
       "autoFullWithSize": releaseWhenLossAudio,
     });
-  }
-
-  @override
-  Future<bool> getAutoFullWithSize(int? textureId) async {
-    late final Map<String, dynamic>? response;
-    response = await _channel.invokeMethod<Map<String, dynamic>?>("autoFullWithSize", <String, dynamic>{
-      'textureId': textureId,
-    });
-    return response!["autoFullWithSize"];
   }
 
   @override
@@ -1091,7 +744,7 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
           return VideoEvent(
             eventType: VideoEventType.initialized,
           );
-        case 'videoPlayerInitialized':
+        case 'onVideoPlayerInitialized':
           final int duration = reply!["duration"];
           final int currentState = reply["currentState"];
           final bool isPlaying = reply["isPlaying"];
@@ -1100,7 +753,7 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
           final int videoSarDen = reply["videoSarDen"];
           final int videoSarNum = reply["videoSarNum"];
           return VideoEvent(
-            eventType: VideoEventType.videoPlayerInitialized,
+            eventType: VideoEventType.onVideoPlayerInitialized,
             isPlaying: isPlaying,
             duration: Duration(milliseconds: duration),
             playState: getVideoPlayStateName(currentState),
@@ -1109,108 +762,48 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
             videoSarDen: videoSarDen,
             videoSarNum: videoSarNum,
           );
-        case 'onEventStartPrepared':
-          return VideoEvent(eventType: VideoEventType.onEventStartPrepared);
-        case 'onEventPrepared':
-          return VideoEvent(eventType: VideoEventType.onEventPrepared);
-        case 'onEventClickStartIcon':
-          return VideoEvent(eventType: VideoEventType.onEventClickStartIcon);
-        case 'onEventClickStartError':
-          return VideoEvent(eventType: VideoEventType.onEventClickStartError);
-        case 'onEventClickStop':
-          return VideoEvent(eventType: VideoEventType.onEventClickStop);
-        case 'onEventClickStopFullscreen':
-          return VideoEvent(eventType: VideoEventType.onEventClickStopFullscreen);
-        case 'onEventClickResume':
-          return VideoEvent(eventType: VideoEventType.onEventClickResume);
-        case 'onEventClickResumeFullscreen':
-          return VideoEvent(eventType: VideoEventType.onEventClickResumeFullscreen);
-        case 'onEventClickSeekbar':
-          return VideoEvent(eventType: VideoEventType.onEventClickSeekbar);
-        case 'onEventClickSeekbarFullscreen':
-          return VideoEvent(eventType: VideoEventType.onEventClickSeekbarFullscreen);
-        case 'onEventAutoComplete':
-          return VideoEvent(eventType: VideoEventType.onEventAutoComplete);
-        case 'onEventEnterFullscreen':
-          return VideoEvent(eventType: VideoEventType.onEventEnterFullscreen);
-        case 'onEventQuitFullscreen':
-          return VideoEvent(eventType: VideoEventType.onEventQuitFullscreen);
-        case 'onEventQuitSmallWidget':
-          return VideoEvent(eventType: VideoEventType.onEventQuitSmallWidget);
-        case 'onEventEnterSmallWidget':
-          return VideoEvent(eventType: VideoEventType.onEventEnterSmallWidget);
-        case 'onEventTouchScreenSeekVolume':
-          return VideoEvent(eventType: VideoEventType.onEventTouchScreenSeekVolume);
-        case 'onEventTouchScreenSeekPosition':
-          return VideoEvent(eventType: VideoEventType.onEventTouchScreenSeekPosition);
-        case 'onEventTouchScreenSeekLight':
-          return VideoEvent(eventType: VideoEventType.onEventTouchScreenSeekLight);
-        case 'onEventPlayError':
-          return VideoEvent(eventType: VideoEventType.onEventPlayError);
-        case 'onEventClickStartThumb':
-          return VideoEvent(eventType: VideoEventType.onEventClickStartThumb);
-        case 'onEventClickBlank':
-          return VideoEvent(eventType: VideoEventType.onEventClickBlank);
-        case 'onEventClickBlankFullscreen':
-          return VideoEvent(eventType: VideoEventType.onEventClickBlankFullscreen);
-        case 'onEventComplete':
-          return VideoEvent(eventType: VideoEventType.onEventComplete);
-        case 'onEventProgress':
-          final int duration = reply!["duration"];
-          final int currentState = reply["currentState"];
-          final bool isPlaying = reply["isPlaying"];
-          final double percent = reply["percent"];
-
-          return VideoEvent(
-            eventType: VideoEventType.onEventProgress,
-            isPlaying: isPlaying,
-            duration: Duration(milliseconds: duration),
-            isBuffering: isBuffering,
-            playState: getVideoPlayStateName(currentState),
-            percent: percent,
-          );
-        case 'onListenerConfigurationChanged':
+        case 'onConfigurationChanged':
           final int duration = reply!["duration"];
           final bool isPlaying = reply["isPlaying"];
           final int currentState = reply["currentState"];
           return VideoEvent(
-            eventType: VideoEventType.onListenerConfigurationChanged,
+            eventType: VideoEventType.onConfigurationChanged,
             isPlaying: isPlaying,
             isBuffering: isBuffering,
             duration: Duration(milliseconds: duration),
             playState: getVideoPlayStateName(currentState),
           );
-        case 'onListenerPrepared':
+        case 'onPrepared':
           final int duration = reply!["duration"];
           final bool isPlaying = reply["isPlaying"];
           final int currentState = reply["currentState"];
           return VideoEvent(
-            eventType: VideoEventType.onListenerPrepared,
+            eventType: VideoEventType.onPrepared,
             isPlaying: isPlaying,
             duration: Duration(milliseconds: duration),
             isBuffering: isBuffering,
             playState: getVideoPlayStateName(currentState),
           );
-        case 'onListenerAutoCompletion':
+        case 'onAutoCompletion':
           final int duration = reply!["duration"];
           final int currentState = reply["currentState"];
           final bool isPlaying = reply["isPlaying"];
           return VideoEvent(
-            eventType: VideoEventType.onListenerAutoCompletion,
+            eventType: VideoEventType.onAutoCompletion,
             duration: Duration(milliseconds: duration),
             isPlaying: isPlaying,
             playState: getVideoPlayStateName(currentState),
           );
-        case 'onListenerCompletion':
+        case 'onCompletion':
           final int duration = reply!["duration"];
           final int currentState = reply["currentState"];
           return VideoEvent(
-            eventType: VideoEventType.onListenerCompletion,
+            eventType: VideoEventType.onCompletion,
             isPlaying: false,
             duration: Duration(milliseconds: duration),
             playState: getVideoPlayStateName(currentState),
           );
-        case 'onListenerBufferingUpdate':
+        case 'onBufferingUpdate':
           final int duration = reply!["duration"];
           final bool isPlaying = reply["isPlaying"];
           final int currentState = reply["currentState"];
@@ -1219,7 +812,7 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
             [0, (duration * bufferPercent / 100).ceil()]
           ];
           return VideoEvent(
-            eventType: VideoEventType.onListenerBufferingUpdate,
+            eventType: VideoEventType.onBufferingUpdate,
             isPlaying: isPlaying,
             duration: Duration(milliseconds: duration),
             buffered: values.map<DurationRange>(_toDurationRange).toList(),
@@ -1227,12 +820,12 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
             isBuffering: isBuffering,
             bufferPercent: bufferPercent,
           );
-        case 'onListenerBufferingEnd':
+        case 'onBufferingEnd':
           final int duration = reply!["duration"];
           final bool isPlaying = reply["isPlaying"];
           final int currentState = reply["currentState"];
           return VideoEvent(
-            eventType: VideoEventType.onListenerBufferingEnd,
+            eventType: VideoEventType.onBufferingEnd,
             isPlaying: isPlaying,
             duration: Duration(milliseconds: duration),
             isBuffering: isBuffering,
@@ -1241,38 +834,38 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
             playState: getVideoPlayStateName(currentState),
           );
 
-        case 'onListenerSeekComplete':
+        case 'onSeekComplete':
           final int duration = reply!["duration"];
           final int currentState = reply["currentState"];
           return VideoEvent(
-            eventType: VideoEventType.onListenerSeekComplete,
+            eventType: VideoEventType.onSeekComplete,
             duration: Duration(milliseconds: duration),
             isPlaying: false,
             isBuffering: isBuffering,
             playState: getVideoPlayStateName(currentState),
           );
 
-        case 'onListenerError':
+        case 'onError':
           final int duration = reply!["duration"];
           final int currentState = reply["currentState"];
           final int what = reply["what"];
           final int extra = reply["extra"];
           return VideoEvent(
-            eventType: VideoEventType.onListenerError,
+            eventType: VideoEventType.onError,
             isPlaying: false,
             duration: Duration(milliseconds: duration),
             playState: getVideoPlayStateName(currentState),
             what: what,
             extra: extra,
           );
-        case 'onListenerInfo':
+        case 'onInfo':
           final int duration = reply!["duration"];
           final bool isPlaying = reply["isPlaying"];
           final int currentState = reply["currentState"];
           final int what = reply["what"];
           final int extra = reply["extra"];
           return VideoEvent(
-            eventType: VideoEventType.onListenerInfo,
+            eventType: VideoEventType.onInfo,
             isPlaying: isPlaying,
             isBuffering: isBuffering,
             duration: Duration(milliseconds: duration),
@@ -1280,58 +873,58 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
             what: what,
             extra: extra,
           );
-        case 'onListenerVideoSizeChanged':
+        case 'onVideoSizeChanged':
           final int duration = reply!["duration"];
           final int currentState = reply["currentState"];
           final bool isPlaying = reply["isPlaying"];
           final int width = reply["width"];
           final int height = reply["height"];
           return VideoEvent(
-            eventType: VideoEventType.onListenerVideoSizeChanged,
+            eventType: VideoEventType.onVideoSizeChanged,
             duration: Duration(milliseconds: duration),
             isPlaying: isPlaying,
             isBuffering: isBuffering,
             size: Size(width.toDouble(), height.toDouble()),
             playState: getVideoPlayStateName(currentState),
           );
-        case 'onListenerBackFullscreen':
+        case 'onBackFullscreen':
           final int duration = reply!["duration"];
           final int currentState = reply["currentState"];
           final bool isPlaying = reply["isPlaying"];
           return VideoEvent(
-            eventType: VideoEventType.onListenerBackFullscreen,
+            eventType: VideoEventType.onBackFullscreen,
             duration: Duration(milliseconds: duration),
             isPlaying: isPlaying,
             isBuffering: isBuffering,
             playState: getVideoPlayStateName(currentState),
           );
-        case 'onListenerVideoPause':
+        case 'onVideoPause':
           final int duration = reply!["duration"];
           final int currentState = reply["currentState"];
           return VideoEvent(
-            eventType: VideoEventType.onListenerVideoPause,
+            eventType: VideoEventType.onVideoPause,
             duration: Duration(milliseconds: duration),
             isPlaying: false,
             isBuffering: isBuffering,
             playState: getVideoPlayStateName(currentState),
           );
-        case 'onListenerVideoResume':
+        case 'onVideoResume':
           final int duration = reply!["duration"];
           final int currentState = reply["currentState"];
           return VideoEvent(
-            eventType: VideoEventType.onListenerVideoResume,
+            eventType: VideoEventType.onVideoResume,
             duration: Duration(milliseconds: duration),
             isPlaying: true,
             isBuffering: isBuffering,
             playState: getVideoPlayStateName(currentState),
           );
-        case 'onListenerVideoResumeWithSeek':
+        case 'onVideoResumeWithSeek':
           final int duration = reply!["duration"];
           final bool isPlaying = reply["isPlaying"];
           final int currentState = reply["currentState"];
           final bool seek = reply["seek"];
           return VideoEvent(
-            eventType: VideoEventType.onListenerVideoResumeWithSeek,
+            eventType: VideoEventType.onVideoResumeWithSeek,
             seek: seek,
             duration: Duration(milliseconds: duration),
             isPlaying: isPlaying,

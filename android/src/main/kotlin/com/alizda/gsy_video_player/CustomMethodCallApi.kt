@@ -16,32 +16,26 @@ class CustomMethodCallApi(
         private var customOrientationUtilsApi: CustomOrientationUtilsApi,
         private var  eventSink: QueuingEventSink
 ) {
-
-    @RequiresApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     fun handleMethod(call: MethodCall, result: MethodChannel.Result) {
         when (call.method) {
             // --------------------- CustomGSYVideoOptionBuilder  start ----------------------------
-            "setVideoOptionBuilder" -> {
-                videoPlayer.gsyVideoOptionBuilder =  CustomGSYVideoOptionBuilderApi().setVideoConfig(videoPlayer,call, result)
-            }
-            // --------------------- GSYVideoPlayer  start --------
-            "getLayoutId" -> {
-                gSYVideoPlayer.getLayoutId(call, result)
-            }
 
             "startPlayLogic" -> {
                 gSYVideoPlayer.startPlayLogic(call, result)
             }
 
+            "setVideoOptionBuilder" -> {
+                videoPlayer.gsyVideoOptionBuilder =  CustomGSYVideoOptionBuilderApi().setVideoConfig(videoPlayer,call, result)
+            }
             "setUp" -> {
                 gSYVideoPlayer.setUp(call, result)
             }
 
-            "onVideoPause" -> {
+            "pause" -> {
                 gSYVideoPlayer.onVideoPause()
             }
 
-            "onVideoResume" -> {
+            "resume" -> {
                 gSYVideoPlayer.onVideoResume()
             }
 
@@ -69,10 +63,6 @@ class CustomMethodCallApi(
                 gSYVideoPlayer.setPlayPosition(call, result)
             }
 
-            "backFromWindowFull" -> {
-                gSYVideoPlayer.backFromWindowFull(call, result)
-            }
-
             "getNetSpeed" -> {
                 gSYVideoPlayer.getNetSpeed(call, result)
             }
@@ -88,12 +78,12 @@ class CustomMethodCallApi(
             "getBuffterPoint" -> {
                 gSYVideoPlayer.getBuffterPoint(call, result)
             }
-            // --------------------- CustomGSYVideoManagerApi start ----------------------------
-            "setCurrentPlayer" -> {
+
+            "setPlayerFactory" -> {
                 customGSYVideoManagerApi.setCurrentPlayer(call, result)
             }
 
-            "getPlayManager" -> {
+            "getPlayFactory" -> {
                 customGSYVideoManagerApi.getPlayManager(call, result)
             }
 
@@ -115,14 +105,6 @@ class CustomMethodCallApi(
 
             "releaseMediaPlayer" -> {
                 customGSYVideoManagerApi.releaseMediaPlayer()
-            }
-
-            "onPause" -> {
-                customGSYVideoManagerApi.onPause()
-            }
-
-            "onResume" -> {
-                customGSYVideoManagerApi.onResume()
             }
 
             "getPlayTag" -> {
@@ -167,7 +149,7 @@ class CustomMethodCallApi(
             "setVolume" ->{
                 customGSYVideoManagerApi.setVolume(call, result)
             }
-            // --------------------- CustomGSYVideoType  start --------
+
             "isMediaCodec" -> {
                 customGSYVideoTypeApi.isMediaCodec(call, result)
             }
@@ -182,14 +164,6 @@ class CustomMethodCallApi(
 
             "isMediaCodecTexture" -> {
                 customGSYVideoTypeApi.isMediaCodecTexture(call, result)
-            }
-
-            "getShowType" -> {
-                customGSYVideoTypeApi.getShowType(call, result)
-            }
-
-            "setShowType" -> {
-                customGSYVideoTypeApi.setShowType(call, result)
             }
 
             "getRenderType" -> {
@@ -207,201 +181,11 @@ class CustomMethodCallApi(
             "setMediaCodecTexture" -> {
                 customGSYVideoTypeApi.setMediaCodecTexture(call, result)
             }
-            // --------------------- CustomBasicApi [start] ----------------------------
-            "startWindowFullscreen" -> {
-                customBasicApi.startWindowFullscreen(call, result,eventSink)
-            }
 
-            "exitWindowFullscreen" -> {
-                customBasicApi.exitWindowFullscreen(call, result,eventSink)
-            }
-
-            "showSmallVideo" -> {
-                customBasicApi.showSmallVideo(call, result)
-            }
-
-            "hideSmallVideo" -> {
-                customBasicApi.hideSmallVideo(call, result)
-            }
-
-            "isShowFullAnimation" -> {
-                customBasicApi.isShowFullAnimation(call, result)
-            }
-
-            "setShowFullAnimation" -> {
-                customBasicApi.setShowFullAnimation(call, result)
-            }
-
-            "isRotateViewAuto" -> {
-                customBasicApi.isRotateViewAuto(call, result)
-            }
-
-            "setRotateViewAuto" -> {
-                customBasicApi.setRotateViewAuto(call, result)
-            }
-
-            "isLockLand" -> {
-                customBasicApi.isLockLand(call, result)
-            }
-
-            "setLockLand" -> {
-                customBasicApi.setLockLand(call, result)
-            }
-
-            "isRotateWithSystem" -> {
-                customBasicApi.isRotateWithSystem(call, result)
-            }
-
-            "setRotateWithSystem" -> {
-                customBasicApi.setRotateWithSystem(call, result)
-            }
-
-            "initUIState" -> {
-                customBasicApi.initUIState()
-            }
-
-            "getEnlargeImageRes" -> {
-                customBasicApi.getEnlargeImageRes(call, result)
-            }
-
-            "setEnlargeImageRes" -> {
-                customBasicApi.setEnlargeImageRes(call, result)
-            }
-
-            "getShrinkImageRes" -> {
-                customBasicApi.getShrinkImageRes(call, result)
-            }
-
-            "setShrinkImageRes" -> {
-                customBasicApi.setShrinkImageRes(call, result)
-            }
-
-            "setIsTouchWigetFull" -> {
-                customBasicApi.setIsTouchWigetFull(call, result)
-            }
-
-            "getIsTouchWigetFull" -> {
-                customBasicApi.getIsTouchWigetFull(call, result)
-            }
-
-            "setThumbPlay" -> {
-                customBasicApi.setThumbPlay(call, result)
-            }
-
-            "isHideKeyBoard" -> {
-                customBasicApi.isHideKeyBoard(call, result)
-            }
-
-            "setHideKeyBoard" -> {
-                customBasicApi.setHideKeyBoard(call, result)
-            }
-
-            "isNeedShowWifiTip" -> {
-                customBasicApi.isNeedShowWifiTip(call, result)
-            }
-
-            "setNeedShowWifiTip" -> {
-                customBasicApi.setNeedShowWifiTip(call, result)
-            }
-
-            "isTouchWiget" -> {
-                customBasicApi.isTouchWiget(call, result)
-            }
-
-            "setTouchWiget" -> {
-                customBasicApi.setTouchWiget(call, result)
-            }
-
-            "setSeekRatio" -> {
-                customBasicApi.setSeekRatio(call, result)
-            }
-
-            "getSeekRatio" -> {
-                customBasicApi.getSeekRatio(call, result)
-            }
-
-            "isNeedLockFull" -> {
-                customBasicApi.isNeedLockFull(call, result)
-            }
-
-            "setNeedLockFull" -> {
-                customBasicApi.setNeedLockFull(call, result)
-            }
-
-            "setDismissControlTime" -> {
-                customBasicApi.setDismissControlTime(call, result)
-            }
-
-            "getDismissControlTime" ->{
-                customBasicApi.getDismissControlTime(call, result)
-            }
-
-            "getSeekOnStart" -> {
-                customBasicApi.getSeekOnStart(call, result)
-            }
-
-            "isIfCurrentIsFullscreen" -> {
-                customBasicApi.isIfCurrentIsFullscreen(call, result)
-            }
-
-            "setIfCurrentIsFullscreen" -> {
-                customBasicApi.setIfCurrentIsFullscreen(call, result)
-            }
-
-            "isLooping" -> {
-                customBasicApi.isLooping(call, result)
-            }
-
-            "setLooping" -> {
-                customBasicApi.setLooping(call, result)
-            }
-
-            "getSpeed" -> {
-                customBasicApi.getSpeed(call, result)
-            }
-
-            "setSpeed" -> {
-                customBasicApi.setSpeed(call, result)
-            }
-
-            "setSpeedPlaying" -> {
-                customBasicApi.setSpeedPlaying(call, result)
-            }
-
-            "isShowPauseCover" -> {
-                customBasicApi.isShowPauseCover(call, result)
-            }
-
-            "setShowPauseCover" -> {
-                customBasicApi.setShowPauseCover(call, result)
-            }
-
-            "seekTo" -> {
-                customBasicApi.seekTo(call, result)
-            }
-
-            "setMatrixGL" -> {
-                customBasicApi.setMatrixGL(call, result)
-            }
-
-            "releaseWhenLossAudio" -> {
-                customBasicApi.releaseWhenLossAudio(call, result)
-            }
-
-            "setReleaseWhenLossAudio" -> {
-                customBasicApi.setReleaseWhenLossAudio(call, result)
-            }
-
-            "setAutoFullWithSize" -> {
-                customBasicApi.setAutoFullWithSize(call, result)
-            }
-
-            "getAutoFullWithSize" -> {
-                customBasicApi.getAutoFullWithSize(call, result)
-            }
             "resolveByClick" ->{
                 customOrientationUtilsApi.resolveByClick()
             }
+
             "backToProtVideo" ->{
                 customOrientationUtilsApi.backToProtVideo()
             }
@@ -459,8 +243,48 @@ class CustomMethodCallApi(
             "setOrientationRotateWithSystem" ->{
                 customOrientationUtilsApi.setRotateWithSystem(call, result)
             }
-            "releaseOrientationListener" ->{
+            "releaseOrientation" ->{
                 customOrientationUtilsApi.releaseListener()
+            }
+
+            "getSeekOnStart" -> {
+                customBasicApi.getSeekOnStart(call, result)
+            }
+
+            "isLooping" -> {
+                customBasicApi.isLooping(call, result)
+            }
+
+            "setLooping" -> {
+                customBasicApi.setLooping(call, result)
+            }
+
+            "getSpeed" -> {
+                customBasicApi.getSpeed(call, result)
+            }
+
+            "setSpeed" -> {
+                customBasicApi.setSpeed(call, result)
+            }
+
+            "setSpeedPlaying" -> {
+                customBasicApi.setSpeedPlaying(call, result)
+            }
+
+            "seekTo" -> {
+                customBasicApi.seekTo(call, result)
+            }
+
+            "setMatrixGL" -> {
+                customBasicApi.setMatrixGL(call, result)
+            }
+
+            "releaseWhenLossAudio" -> {
+                customBasicApi.releaseWhenLossAudio(call, result)
+            }
+
+            "setReleaseWhenLossAudio" -> {
+                customBasicApi.setReleaseWhenLossAudio(call, result)
             }
         }
     }

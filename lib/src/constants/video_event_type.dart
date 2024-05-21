@@ -6,90 +6,37 @@ enum VideoEventType {
   /// The video has been initialized.
   initialized,
 
-  //开始加载
-  onEventStartPrepared,
+  onConfigurationChanged,
 
-  //加载成功
-  onEventPrepared,
+  onPrepared,
 
-  //点击了开始按键播放
-  onEventClickStartIcon,
+  onAutoCompletion,
 
-  //点击了错误状态下的开始按键
-  onEventClickStartError,
+  onCompletion,
 
-  //点击了播放状态下的开始按键
-  onEventClickStop,
-  //点击了全屏播放状态下的开始按键-
-  onEventClickStopFullscreen,
-  //点击了暂停状态下的开始按键
-  onEventClickResume,
-  //点击了全屏暂停状态下的开始按键
-  onEventClickResumeFullscreen,
-  //点击了空白弹出seekbar
-  onEventClickSeekbar,
-  //点击了全屏的seekbar
-  onEventClickSeekbarFullscreen,
-  //播放完了
-  onEventAutoComplete,
-  //进去全屏
-  onEventEnterFullscreen,
-  //退出全屏
-  onEventQuitFullscreen,
-  //进入小窗口
-  onEventQuitSmallWidget,
-  //退出小窗口
-  onEventEnterSmallWidget,
-  //触摸调整声音
-  onEventTouchScreenSeekVolume,
-  //触摸调整进度
-  onEventTouchScreenSeekPosition,
-  //触摸调整亮度
-  onEventTouchScreenSeekLight,
-  //播放错误
-  onEventPlayError,
-  //点击了空白区域开始播放
-  onEventClickStartThumb,
-  //点击了播放中的空白区域
-  onEventClickBlank,
-//点击了全屏播放中的空白区域
-  onEventClickBlankFullscreen,
-  //非正常播放完了
-  onEventComplete,
-  //进度回调
-  onEventProgress,
+  onBufferingUpdate,
 
-  onListenerConfigurationChanged,
+  onBufferingEnd,
 
-  onListenerPrepared,
+  onSeekComplete,
 
-  onListenerAutoCompletion,
+  onError,
 
-  onListenerCompletion,
+  onInfo,
 
-  onListenerBufferingUpdate,
+  onVideoSizeChanged,
 
-  onListenerBufferingEnd,
+  onBackFullscreen,
 
-  onListenerSeekComplete,
+  onVideoPause,
 
-  onListenerError,
+  onVideoResume,
 
-  onListenerInfo,
-
-  onListenerVideoSizeChanged,
-
-  onListenerBackFullscreen,
-
-  onListenerVideoPause,
-
-  onListenerVideoResume,
-
-  onListenerVideoResumeWithSeek,
+  onVideoResumeWithSeek,
 
   onFullButtonClick,
 
-  videoPlayerInitialized,
+  onVideoPlayerInitialized,
 
   pipStart,
 
