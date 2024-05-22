@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter/foundation.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 import 'package:gsy_video_player/gsy_video_player.dart';
 import 'package:gsy_video_player/src/controls/player_with_controls.dart';
@@ -35,21 +34,17 @@ class Chewie extends StatefulWidget {
 }
 
 class ChewieState extends State<Chewie> {
-  bool _isFullScreen = false;
-
-  bool get isControllerFullScreen => widget.controller.isFullScreen;
   late PlayerNotifier notifier;
-
   @override
   void initState() {
     super.initState();
-    widget.controller.addListener(listener);
+    widget.controller.videoPlayerController.addEventsListener(listener);
     notifier = PlayerNotifier.init();
   }
 
   @override
   void dispose() {
-    widget.controller.removeListener(listener);
+    widget.controller.videoPlayerController.removeEventsListener(listener);
     notifier.dispose();
     super.dispose();
   }
@@ -57,24 +52,22 @@ class ChewieState extends State<Chewie> {
   @override
   void didUpdateWidget(Chewie oldWidget) {
     if (oldWidget.controller != widget.controller) {
-      widget.controller.addListener(listener);
+      widget.controller.videoPlayerController.addEventsListener(listener);
     }
     super.didUpdateWidget(oldWidget);
-    if (_isFullScreen != isControllerFullScreen) {
-      widget.controller._isFullScreen = _isFullScreen;
-    }
   }
 
-  Future<void> listener() async {
-    if (isControllerFullScreen && !_isFullScreen) {
-      _isFullScreen = isControllerFullScreen;
-      await _pushFullScreenWidget(context);
-    } else if (_isFullScreen) {
-      Navigator.of(
-        context,
-        rootNavigator: widget.controller.useRootNavigator,
-      ).pop();
-      _isFullScreen = false;
+  Future<void> listener(VideoEventType event) async {
+    if (event == VideoEventType.startWindowFullscreen || event == VideoEventType.exitWindowFullscreen) {
+      final controller = widget.controller.videoPlayerController;
+      if (controller.value.isFullScreen) {
+        await _pushFullScreenWidget(context);
+      } else {
+        Navigator.of(
+          context,
+          rootNavigator: widget.controller.useRootNavigator,
+        ).pop();
+      }
     }
   }
 
@@ -163,13 +156,6 @@ class ChewieState extends State<Chewie> {
       rootNavigator: widget.controller.useRootNavigator,
     ).push(route);
 
-    if (kIsWeb) {
-      _reInitializeControllers();
-    }
-
-    _isFullScreen = false;
-    widget.controller.exitFullScreen();
-
     if (!widget.controller.allowedScreenSleep) {
       WakelockPlus.disable();
     }
@@ -184,21 +170,10 @@ class ChewieState extends State<Chewie> {
   }
 
   void onEnterFullScreen() {
-    final videoWidth = widget.controller.videoPlayerController.value.size?.width;
-    final videoHeight = widget.controller.videoPlayerController.value.size?.height;
+    final videoWidth = widget.controller.videoPlayerController.value.size.width;
+    final videoHeight = widget.controller.videoPlayerController.value.size.height;
 
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
-
-    // if (widget.controller.systemOverlaysOnEnterFullScreen != null) {
-    //   /// Optional user preferred settings
-    //   SystemChrome.setEnabledSystemUIMode(
-    //     SystemUiMode.manual,
-    //     overlays: widget.controller.systemOverlaysOnEnterFullScreen,
-    //   );
-    // } else {
-    //   /// Default behavior
-    //   SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: SystemUiOverlay.values);
-    // }
 
     if (widget.controller.deviceOrientationsOnEnterFullScreen != null) {
       /// Optional user preferred settings
@@ -206,7 +181,8 @@ class ChewieState extends State<Chewie> {
         widget.controller.deviceOrientationsOnEnterFullScreen!,
       );
     } else {
-      final isLandscapeVideo = videoWidth! > videoHeight!;
+      SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+      final isLandscapeVideo = videoWidth > videoHeight;
       final isPortraitVideo = videoWidth < videoHeight;
 
       /// Default behavior
@@ -231,18 +207,6 @@ class ChewieState extends State<Chewie> {
         SystemChrome.setPreferredOrientations(DeviceOrientation.values);
       }
     }
-  }
-
-  ///When viewing full screen on web, returning from full screen causes original video to lose the picture.
-  ///We re initialise controllers for web only when returning from full screen
-  void _reInitializeControllers() {
-    final prevPosition = widget.controller.videoPlayerController.value.position;
-    widget.controller.videoPlayerController.initialize().then((_) async {
-      widget.controller._initialize();
-      widget.controller.videoPlayerController.setPlayPosition(prevPosition);
-      await widget.controller.videoPlayerController.resume();
-      widget.controller.videoPlayerController.pause();
-    });
   }
 }
 
@@ -544,10 +508,6 @@ class ChewieController extends ChangeNotifier {
     return chewieControllerProvider.controller;
   }
 
-  bool _isFullScreen = false;
-
-  bool get isFullScreen => _isFullScreen;
-
   bool get isPlaying => videoPlayerController.value.isPlaying;
 
   Future<dynamic> _initialize() async {
@@ -557,43 +517,9 @@ class ChewieController extends ChangeNotifier {
       await videoPlayerController.initialize();
     }
 
-    if (autoPlay) {
-      if (fullScreenByDefault) {
-        enterFullScreen();
-      }
-
-      await videoPlayerController.resume();
-    }
-
     if (startAt != null) {
-      await videoPlayerController.seekTo(startAt!);
+      await videoPlayerController.setSeekOnStart(startAt!.inMilliseconds);
     }
-
-    if (fullScreenByDefault) {
-      videoPlayerController.addListener(_fullScreenListener);
-    }
-  }
-
-  Future<void> _fullScreenListener() async {
-    if (videoPlayerController.value.isPlaying && !_isFullScreen) {
-      enterFullScreen();
-      videoPlayerController.removeListener(_fullScreenListener);
-    }
-  }
-
-  void enterFullScreen() {
-    _isFullScreen = true;
-    notifyListeners();
-  }
-
-  void exitFullScreen() {
-    _isFullScreen = false;
-    notifyListeners();
-  }
-
-  void toggleFullScreen() {
-    _isFullScreen = !_isFullScreen;
-    notifyListeners();
   }
 
   void togglePause() {

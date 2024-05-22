@@ -245,14 +245,14 @@ class _MaterialControlsState extends State<MaterialControls> with SingleTickerPr
       opacity: notifier.hideStuff ? 0.0 : 1.0,
       duration: const Duration(milliseconds: 300),
       child: Container(
-        height: barHeight + (chewieController.isFullScreen ? 10.0 : 0),
+        height: barHeight + (chewieController.videoPlayerController.value.isFullScreen ? 10.0 : 0),
         padding: EdgeInsets.only(
           left: 20,
-          bottom: !chewieController.isFullScreen ? 10.0 : 0,
+          bottom: !chewieController.videoPlayerController.value.isFullScreen ? 10.0 : 0,
         ),
         child: SafeArea(
           top: false,
-          bottom: chewieController.isFullScreen,
+          bottom: chewieController.videoPlayerController.value.isFullScreen,
           minimum: chewieController.controlsSafeAreaMinimum,
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -270,7 +270,7 @@ class _MaterialControlsState extends State<MaterialControls> with SingleTickerPr
                 ),
               ),
               SizedBox(
-                height: chewieController.isFullScreen ? 15.0 : 0,
+                height: chewieController.videoPlayerController.value.isFullScreen ? 15.0 : 0,
               ),
               if (!chewieController.isLive)
                 Expanded(
@@ -330,7 +330,7 @@ class _MaterialControlsState extends State<MaterialControls> with SingleTickerPr
         opacity: notifier.hideStuff ? 0.0 : 1.0,
         duration: const Duration(milliseconds: 300),
         child: Container(
-          height: barHeight + (chewieController.isFullScreen ? 15.0 : 0),
+          height: barHeight + (chewieController.videoPlayerController.value.isFullScreen ? 15.0 : 0),
           margin: const EdgeInsets.only(right: 12.0),
           padding: const EdgeInsets.only(
             left: 8.0,
@@ -338,7 +338,7 @@ class _MaterialControlsState extends State<MaterialControls> with SingleTickerPr
           ),
           child: Center(
             child: Icon(
-              chewieController.isFullScreen ? Icons.fullscreen_exit : Icons.fullscreen,
+              chewieController.videoPlayerController.value.isFullScreen ? Icons.fullscreen_exit : Icons.fullscreen,
               color: Colors.white,
             ),
           ),
@@ -489,7 +489,7 @@ class _MaterialControlsState extends State<MaterialControls> with SingleTickerPr
     setState(() {
       notifier.hideStuff = true;
 
-      chewieController.toggleFullScreen();
+      chewieController.videoPlayerController.toggleFullScreen();
       _showAfterExpandCollapseTimer = Timer(const Duration(milliseconds: 300), () {
         setState(() {
           _cancelAndRestartTimer();

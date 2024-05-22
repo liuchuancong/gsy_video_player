@@ -920,17 +920,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
             isBuffering: isBuffering,
             playState: getVideoPlayStateName(currentState),
           );
-        case 'onFullButtonClick':
-          final int duration = reply!["duration"];
-          final bool isPlaying = reply["isPlaying"];
-          final int currentState = reply["currentState"];
-          return VideoEvent(
-            eventType: VideoEventType.onFullButtonClick,
-            duration: Duration(milliseconds: duration),
-            isPlaying: isPlaying,
-            isBuffering: isBuffering,
-            playState: getVideoPlayStateName(currentState),
-          );
         case 'pipStart':
           return VideoEvent(
             eventType: VideoEventType.pipStart,

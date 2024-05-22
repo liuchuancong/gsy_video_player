@@ -237,7 +237,7 @@ class _CupertinoControlsState extends State<CupertinoControls> with SingleTicker
     double barHeight,
   ) {
     return SafeArea(
-      bottom: chewieController.isFullScreen,
+      bottom: chewieController.videoPlayerController.value.isFullScreen,
       minimum: chewieController.controlsSafeAreaMinimum,
       child: AnimatedOpacity(
         opacity: notifier.hideStuff ? 0.0 : 1.0,
@@ -322,7 +322,7 @@ class _CupertinoControlsState extends State<CupertinoControls> with SingleTicker
               color: backgroundColor,
               child: Center(
                 child: Icon(
-                  chewieController.isFullScreen
+                  chewieController.videoPlayerController.value.isFullScreen
                       ? CupertinoIcons.arrow_down_right_arrow_up_left
                       : CupertinoIcons.arrow_up_left_arrow_down_right,
                   color: iconColor,
@@ -651,7 +651,7 @@ class _CupertinoControlsState extends State<CupertinoControls> with SingleTicker
     setState(() {
       notifier.hideStuff = true;
 
-      chewieController.toggleFullScreen();
+      chewieController.videoPlayerController.toggleFullScreen();
       _expandCollapseTimer = Timer(const Duration(milliseconds: 300), () {
         setState(() {
           _cancelAndRestartTimer();

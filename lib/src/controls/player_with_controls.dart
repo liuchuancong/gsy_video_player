@@ -42,7 +42,7 @@ class PlayerWithControls extends StatelessWidget {
             scaleEnabled: chewieController.zoomAndPan,
             child: Center(
               child: AspectRatio(
-                aspectRatio: chewieController.aspectRatio ?? chewieController.videoPlayerController.value.aspectRatio,
+                aspectRatio: chewieController.videoPlayerController.value.aspectRatio,
                 child: GsyVideoPlayer(
                   controller: chewieController.videoPlayerController,
                 ),
@@ -71,7 +71,7 @@ class PlayerWithControls extends StatelessWidget {
                 ),
               ),
             ),
-          if (!chewieController.isFullScreen)
+          if (!chewieController.videoPlayerController.value.isFullScreen)
             buildControls(context, chewieController)
           else
             SafeArea(

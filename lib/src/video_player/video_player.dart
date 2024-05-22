@@ -34,6 +34,7 @@ class VideoPlayerValue {
     this.videoSarDen = 0,
     this.videoSarNum = 0,
     this.bufferPercent = 0,
+    this.aspectRatio = 16 / 9,
     this.fit = BoxFit.contain,
   });
 
@@ -96,7 +97,7 @@ class VideoPlayerValue {
   /// The [size] of the currently loaded video.
   ///
   /// Is null when [initialized] is false.
-  final Size? size;
+  final Size size;
 
   /// The current speed of the playback.
   final double playbackSpeed;
@@ -123,16 +124,7 @@ class VideoPlayerValue {
 
   /// Returns [size.width] / [size.height] when size is non-null, or `1.0.` when
   /// size is null or the aspect ratio would be less than or equal to 0.0.
-  double get aspectRatio {
-    if (size == null || size!.width == 0.0 || size!.height == 0.0) {
-      return 1.0;
-    }
-    final double aspectRatio = size!.width / size!.height;
-    if (aspectRatio <= 0) {
-      return 1.0;
-    }
-    return aspectRatio;
-  }
+  final double aspectRatio;
 
   final bool isCompleted;
 
@@ -170,6 +162,7 @@ class VideoPlayerValue {
     int? videoSarDen,
     int? bufferPercent,
     BoxFit? fit,
+    double? aspectRatio,
   }) {
     return VideoPlayerValue(
       duration: duration ?? this.duration,
@@ -199,6 +192,7 @@ class VideoPlayerValue {
       videoSarDen: videoSarDen ?? this.videoSarDen,
       bufferPercent: bufferPercent ?? this.bufferPercent,
       fit: fit ?? this.fit,
+      aspectRatio: aspectRatio ?? this.aspectRatio,
     );
   }
 
@@ -226,6 +220,7 @@ class VideoPlayerValue {
         'videoSarNum: $videoSarNum, '
         'videoSarDen: $videoSarDen, '
         'bufferPercent: $bufferPercent, '
+        'aspectRatio: $aspectRatio, '
         'playbackSpeed: $playbackSpeed, '
         'isPip: $isPip, '
         'rotationCorrection: $rotationCorrection, '

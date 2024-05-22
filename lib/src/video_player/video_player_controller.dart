@@ -115,8 +115,6 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
       case VideoEventType.initialized:
         _postEvent(VideoEventType.initialized);
         break;
-      case VideoEventType.onFullButtonClick:
-        _postEvent(VideoEventType.onFullButtonClick);
       case VideoEventType.onVideoPlayerInitialized:
         _postEvent(VideoEventType.onVideoPlayerInitialized);
         break;
@@ -593,14 +591,6 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
           );
           _initializingCompleter!.complete(null);
           break;
-        case VideoEventType.onFullButtonClick:
-          value = value.copyWith(
-            isPlaying: event.isPlaying,
-            isFullScreen: true,
-            duration: Duration(milliseconds: event.duration!.inMilliseconds),
-            playState: event.playState,
-          );
-          break;
         case VideoEventType.pipStart:
           value = value.copyWith(isPip: true);
           break;
@@ -928,6 +918,24 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
   Future<bool> isNeedMute() async {
     await _creatingCompleter!.future;
     return await _videoPlayerPlatform.isNeedMute(_textureId);
+  }
+
+  void enterFullScreen() {
+    value = value.copyWith(isFullScreen: true);
+    _postEvent(VideoEventType.startWindowFullscreen);
+  }
+
+  void toggleFullScreen() {
+    if (value.isFullScreen) {
+      exitFullScreen();
+    } else {
+      enterFullScreen();
+    }
+  }
+
+  void exitFullScreen() {
+    value = value.copyWith(isFullScreen: false);
+    _postEvent(VideoEventType.exitWindowFullscreen);
   }
 
   Future<void> setNeedMute(bool needMute) async {

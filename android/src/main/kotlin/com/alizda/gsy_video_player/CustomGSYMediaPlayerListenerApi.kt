@@ -184,6 +184,7 @@ class CustomGSYMediaPlayerListenerApi(private var videoPlayer: CustomVideoPlayer
         reply["isBuffering"] = getCurrentState() == CURRENT_STATE_PLAYING_BUFFERING_START
         reply["isPlaying"] = true
         reply["currentState"] = getCurrentState()
+
         event["reply"] = reply
         sink.success(event)
     }

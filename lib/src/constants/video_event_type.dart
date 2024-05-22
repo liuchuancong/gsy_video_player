@@ -32,8 +32,6 @@ enum VideoEventType {
 
   onVideoResumeWithSeek,
 
-  onFullButtonClick,
-
   onVideoPlayerInitialized,
 
   pipStart,

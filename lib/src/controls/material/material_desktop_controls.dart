@@ -238,10 +238,10 @@ class _MaterialDesktopControlsState extends State<MaterialDesktopControls> with 
       opacity: notifier.hideStuff ? 0.0 : 1.0,
       duration: const Duration(milliseconds: 300),
       child: Container(
-        height: barHeight + (chewieController.isFullScreen ? 20.0 : 0),
-        padding: EdgeInsets.only(bottom: chewieController.isFullScreen ? 10.0 : 15),
+        height: barHeight + (chewieController.videoPlayerController.value.isFullScreen ? 20.0 : 0),
+        padding: EdgeInsets.only(bottom: chewieController.videoPlayerController.value.isFullScreen ? 10.0 : 15),
         child: SafeArea(
-          bottom: chewieController.isFullScreen,
+          bottom: chewieController.videoPlayerController.value.isFullScreen,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
@@ -269,7 +269,7 @@ class _MaterialDesktopControlsState extends State<MaterialDesktopControls> with 
                     padding: EdgeInsets.only(
                       right: 20,
                       left: 20,
-                      bottom: chewieController.isFullScreen ? 5.0 : 0,
+                      bottom: chewieController.videoPlayerController.value.isFullScreen ? 5.0 : 0,
                     ),
                     child: Row(
                       children: [
@@ -292,7 +292,7 @@ class _MaterialDesktopControlsState extends State<MaterialDesktopControls> with 
         opacity: notifier.hideStuff ? 0.0 : 1.0,
         duration: const Duration(milliseconds: 300),
         child: Container(
-          height: barHeight + (chewieController.isFullScreen ? 15.0 : 0),
+          height: barHeight + (chewieController.videoPlayerController.value.isFullScreen ? 15.0 : 0),
           margin: const EdgeInsets.only(right: 12.0),
           padding: const EdgeInsets.only(
             left: 8.0,
@@ -300,7 +300,7 @@ class _MaterialDesktopControlsState extends State<MaterialDesktopControls> with 
           ),
           child: Center(
             child: Icon(
-              chewieController.isFullScreen ? Icons.fullscreen_exit : Icons.fullscreen,
+              chewieController.videoPlayerController.value.isFullScreen ? Icons.fullscreen_exit : Icons.fullscreen,
               color: Colors.white,
             ),
           ),
@@ -469,8 +469,7 @@ class _MaterialDesktopControlsState extends State<MaterialDesktopControls> with 
       notifier.hideStuff = true;
     });
 
-    chewieController.toggleFullScreen();
-
+    chewieController.videoPlayerController.toggleFullScreen();
     _showAfterExpandCollapseTimer = Timer(const Duration(milliseconds: 300), () {
       setState(() {
         _cancelAndRestartTimer();
