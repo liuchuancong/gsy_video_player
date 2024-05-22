@@ -26,8 +26,6 @@ enum VideoEventType {
 
   onVideoSizeChanged,
 
-  onBackFullscreen,
-
   onVideoPause,
 
   onVideoResume,

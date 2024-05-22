@@ -160,10 +160,6 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
         _postEvent(VideoEventType.onVideoSizeChanged);
         break;
 
-      case VideoEventType.onBackFullscreen:
-        _postEvent(VideoEventType.onBackFullscreen);
-        break;
-
       case VideoEventType.onVideoPause:
         _postEvent(VideoEventType.onVideoPause);
         break;
@@ -715,13 +711,6 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
             isBuffering: event.isBuffering,
             videoSarDen: event.videoSarDen,
             videoSarNum: event.videoSarNum,
-          );
-          break;
-        case VideoEventType.onBackFullscreen:
-          value = value.copyWith(
-            isPlaying: event.isPlaying,
-            duration: Duration(milliseconds: event.duration!.inMilliseconds),
-            playState: event.playState,
           );
           break;
         case VideoEventType.onVideoPause:
