@@ -4,12 +4,37 @@ import 'package:gsy_video_player/gsy_video_player.dart';
 import 'package:gsy_video_player/src/controls/notifiers/index.dart';
 import 'package:gsy_video_player/src/controls/helpers/adaptive_controls.dart';
 
-class PlayerWithControls extends StatelessWidget {
+class PlayerWithControls extends StatefulWidget {
   const PlayerWithControls({super.key});
+
+  @override
+  State<PlayerWithControls> createState() => _PlayerWithControlsState();
+}
+
+class _PlayerWithControlsState extends State<PlayerWithControls> {
+  bool _initialized = false;
+
+  Future<void> listener(VideoEventType event) async {
+    if (event == VideoEventType.onVideoPlayerInitialized || event == VideoEventType.changeBoxFit) {
+      setState(() {});
+    }
+  }
+
+  @override
+  void deactivate() {
+    final ChewieController chewieController = ChewieController.of(context);
+    chewieController.videoPlayerController.removeEventsListener(listener);
+    _initialized = false;
+    super.deactivate();
+  }
 
   @override
   Widget build(BuildContext context) {
     final ChewieController chewieController = ChewieController.of(context);
+    if (!_initialized) {
+      chewieController.videoPlayerController.addEventsListener(listener);
+      _initialized = true;
+    }
 
     double calculateAspectRatio(BuildContext context) {
       final size = MediaQuery.of(context).size;
@@ -35,16 +60,26 @@ class PlayerWithControls extends StatelessWidget {
       return Stack(
         children: <Widget>[
           if (chewieController.placeholder != null) chewieController.placeholder!,
-          InteractiveViewer(
-            transformationController: chewieController.transformationController,
-            maxScale: chewieController.maxScale,
-            panEnabled: chewieController.zoomAndPan,
-            scaleEnabled: chewieController.zoomAndPan,
-            child: Center(
-              child: AspectRatio(
-                aspectRatio: chewieController.videoPlayerController.value.aspectRatio,
-                child: GsyVideoPlayer(
-                  controller: chewieController.videoPlayerController,
+          SizedBox.expand(
+            child: FittedBox(
+              fit: chewieController.videoPlayerController.value.fit,
+              child: SizedBox(
+                width: chewieController.videoPlayerController.value.size.width,
+                height: chewieController.videoPlayerController.value.size.height,
+                child: InteractiveViewer(
+                  transformationController: chewieController.transformationController,
+                  maxScale: chewieController.maxScale,
+                  panEnabled: chewieController.zoomAndPan,
+                  scaleEnabled: chewieController.zoomAndPan,
+                  child: Center(
+                    child: AspectRatio(
+                      aspectRatio:
+                          chewieController.aspectRatio ?? chewieController.videoPlayerController.value.aspectRatio,
+                      child: GsyVideoPlayer(
+                        controller: chewieController.videoPlayerController,
+                      ),
+                    ),
+                  ),
                 ),
               ),
             ),
