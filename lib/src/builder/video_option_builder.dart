@@ -199,6 +199,8 @@ class VideoOptionBuilder {
   //是否需要旋转的 OrientationUtils
   bool? needOrientationUtils;
 
+  bool? allowBackgroundPlayback;
+
   VideoOptionBuilder({
     required this.url,
     this.playVideoDataSourceType = PlayVideoDataSourceType.network,
@@ -241,6 +243,7 @@ class VideoOptionBuilder {
     this.needOrientationUtils = mNeedOrientationUtils,
     this.seekRatio = mSeekRatio,
     this.speed = mSpeed,
+    this.allowBackgroundPlayback = true,
   });
 
   /// 是否根据视频尺寸，自动选择竖屏全屏或者横屏全屏，注意，这时候默认旋转无效
@@ -449,8 +452,7 @@ class VideoOptionBuilder {
   }
 
   /// 中间进度条字体颜色
-  VideoOptionBuilder setDialogProgressColor(
-      int dialogProgressHighLightColor, int dialogProgressNormalColor) {
+  VideoOptionBuilder setDialogProgressColor(int dialogProgressHighLightColor, int dialogProgressNormalColor) {
     this.dialogProgressHighLightColor = dialogProgressHighLightColor;
     this.dialogProgressNormalColor = dialogProgressNormalColor;
     return this;
@@ -490,8 +492,7 @@ class VideoOptionBuilder {
     return this;
   }
 
-  VideoOptionBuilder setShowDragProgressTextOnSeekBar(
-      bool isShowDragProgressTextOnSeekBar) {
+  VideoOptionBuilder setShowDragProgressTextOnSeekBar(bool isShowDragProgressTextOnSeekBar) {
     this.isShowDragProgressTextOnSeekBar = isShowDragProgressTextOnSeekBar;
     return this;
   }
