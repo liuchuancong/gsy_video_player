@@ -4,13 +4,15 @@ import android.content.res.AssetManager
 import android.os.Build
 import android.view.View
 import androidx.annotation.RequiresApi
+import com.shuyu.gsyvideoplayer.GSYVideoManager
 import com.shuyu.gsyvideoplayer.builder.GSYVideoOptionBuilder
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
+import tv.danmaku.ijk.media.player.IjkMediaPlayer
 import java.io.File
 
 class CustomGSYVideoOptionBuilderApi {
-    fun setVideoConfig(videoPlayer: GsyVideoPlayer, call: MethodCall, result: MethodChannel.Result): GSYVideoOptionBuilder {
+    fun setVideoConfig(videoPlayer: GsyVideoPlayer, customGSYVideoManagerApi: CustomGSYVideoManagerApi, call: MethodCall, result: MethodChannel.Result): GSYVideoOptionBuilder {
         videoPlayer.getCurrentPlayer()!!.release()
         val gsyBuilder = GSYVideoOptionBuilder()
         val videoOptions = call.argument<Map<String, Any?>>("builderParams")!!
@@ -115,6 +117,8 @@ class CustomGSYVideoOptionBuilderApi {
         videoPlayer.getCurrentPlayer()!!.backButton.visibility = View.GONE
         val autoPlay = GsyVideoPlayerPlugin.getParameter(videoOptions, "autoPlay", true)
         gsyBuilder.build(videoPlayer.getCurrentPlayer()!!)
+        val useDefaultIjkOptions = GsyVideoPlayerPlugin.getParameter(videoOptions, "useDefaultIjkOptions", false)
+        GsyVideoPlayer.useDefaultIjkOptions = useDefaultIjkOptions
         if (autoPlay) {
             videoPlayer.getCurrentPlayer()!!.startPlayLogic()
         }

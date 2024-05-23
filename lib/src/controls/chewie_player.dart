@@ -224,13 +224,11 @@ class ChewieController extends ChangeNotifier {
   ChewieController({
     required this.videoPlayerController,
     this.optionsTranslation,
-    this.aspectRatio,
     this.autoInitialize = false,
     this.autoPlay = false,
     this.draggableProgressBar = true,
     this.startAt,
     this.looping = false,
-    this.fullScreenByDefault = false,
     this.cupertinoProgressColors,
     this.materialProgressColors,
     this.placeholder,
@@ -272,7 +270,6 @@ class ChewieController extends ChangeNotifier {
   ChewieController copyWith({
     GsyVideoPlayerController? videoPlayerController,
     OptionsTranslation? optionsTranslation,
-    double? aspectRatio,
     bool? autoInitialize,
     bool? autoPlay,
     bool? draggableProgressBar,
@@ -320,12 +317,10 @@ class ChewieController extends ChangeNotifier {
       draggableProgressBar: draggableProgressBar ?? this.draggableProgressBar,
       videoPlayerController: videoPlayerController ?? this.videoPlayerController,
       optionsTranslation: optionsTranslation ?? this.optionsTranslation,
-      aspectRatio: aspectRatio ?? this.aspectRatio,
       autoInitialize: autoInitialize ?? this.autoInitialize,
       autoPlay: autoPlay ?? this.autoPlay,
       startAt: startAt ?? this.startAt,
       looping: looping ?? this.looping,
-      fullScreenByDefault: fullScreenByDefault ?? this.fullScreenByDefault,
       cupertinoProgressColors: cupertinoProgressColors ?? this.cupertinoProgressColors,
       materialProgressColors: materialProgressColors ?? this.materialProgressColors,
       placeholder: placeholder ?? this.placeholder,
@@ -435,8 +430,6 @@ class ChewieController extends ChangeNotifier {
   /// The Aspect Ratio of the Video. Important to get the correct size of the
   /// video!
   ///
-  /// Will fallback to fitting within the space allowed.
-  final double? aspectRatio;
 
   /// The colors to use for controls on iOS. By default, the iOS player uses
   /// colors sampled from the original iOS 11 designs.
@@ -452,9 +445,6 @@ class ChewieController extends ChangeNotifier {
 
   /// A widget which is placed between the video and the controls
   final Widget? overlay;
-
-  /// Defines if the player will start in fullscreen when play is pressed
-  final bool fullScreenByDefault;
 
   /// Defines if the player will sleep in fullscreen or not
   final bool allowedScreenSleep;

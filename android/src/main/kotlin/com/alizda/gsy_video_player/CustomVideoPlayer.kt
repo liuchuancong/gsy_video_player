@@ -7,21 +7,25 @@ import android.content.res.Configuration
 import android.media.MediaPlayer
 import android.util.AttributeSet
 import android.view.Surface
+import com.alizda.gsy_video_player.GsyVideoPlayer.Companion.useDefaultIjkOptions
 import com.shuyu.gsyvideoplayer.GSYVideoManager
 import com.shuyu.gsyvideoplayer.utils.OrientationUtils
 import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer
 import com.shuyu.gsyvideoplayer.video.base.GSYBaseVideoPlayer
 import io.flutter.view.TextureRegistry
+import tv.danmaku.ijk.media.player.IjkMediaPlayer
 
 
-class CustomVideoPlayer : StandardGSYVideoPlayer{
-    private var customGSYMediaPlayerListenerApi: CustomGSYMediaPlayerListenerApi = CustomGSYMediaPlayerListenerApi(this)
+class CustomVideoPlayer : StandardGSYVideoPlayer {
+    private var customGSYMediaPlayerListenerApi: CustomGSYMediaPlayerListenerApi =
+        CustomGSYMediaPlayerListenerApi(this)
     private var orientationUtils: CustomOrientationUtilsApi? = null
     var videoIsInitialized: Boolean = false
     private var eventSink: QueuingEventSink? = null
     private var surface: Surface? = null
     private var textureEntry: TextureRegistry.SurfaceProducer? = null
     private var bufferEnd = false
+
     constructor(context: Context?) : super(context)
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
 
@@ -41,7 +45,11 @@ class CustomVideoPlayer : StandardGSYVideoPlayer{
         this.textureEntry = textureEntry
     }
 
-    override fun onConfigurationChanged(activity: Activity?, newConfig: Configuration?, orientationUtils: OrientationUtils?) {
+    override fun onConfigurationChanged(
+        activity: Activity?,
+        newConfig: Configuration?,
+        orientationUtils: OrientationUtils?
+    ) {
         super.onConfigurationChanged(activity, newConfig, orientationUtils!!)
         if (videoIsInitialized && GSYVideoManager.instance().player != null && GSYVideoManager.instance().player.mediaPlayer != null) {
             customGSYMediaPlayerListenerApi.onConfigurationChanged(eventSink!!)
@@ -52,12 +60,20 @@ class CustomVideoPlayer : StandardGSYVideoPlayer{
         super.onPrepared()
         if (!videoIsInitialized) {
             videoIsInitialized = true
-            textureEntry!!.setSize(gsyVideoManager.player.mediaPlayer.videoWidth, gsyVideoManager.player.mediaPlayer.videoHeight)
+            textureEntry!!.setSize(
+                gsyVideoManager.player.mediaPlayer.videoWidth,
+                gsyVideoManager.player.mediaPlayer.videoHeight
+            )
             surface = textureEntry!!.surface
             gsyVideoManager.player.mediaPlayer.setSurface(surface)
             customGSYMediaPlayerListenerApi.sendVideoPlayerInitialized(eventSink!!)
         }
         if (videoIsInitialized && GSYVideoManager.instance().player != null && GSYVideoManager.instance().player.mediaPlayer != null) {
+            if (GSYVideoManager.instance().player.mediaPlayer is IjkMediaPlayer) {
+                if (useDefaultIjkOptions) {
+                    GsyVideoPlayer.customGSYVideoManagerApi!!.setDefaultOptions()
+                }
+            }
             customGSYMediaPlayerListenerApi.onPrepared(eventSink!!)
         }
     }
