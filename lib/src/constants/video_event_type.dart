@@ -44,5 +44,7 @@ enum VideoEventType {
 
   changeBoxFit,
 
+  changeAspectRatio,
+
   unknown,
 }

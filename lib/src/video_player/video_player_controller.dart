@@ -607,6 +607,7 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
         case VideoEventType.pipStop:
           value = value.copyWith(isPip: false);
           break;
+
         case VideoEventType.onVideoPlayerInitialized:
           value = value.copyWith(
             onVideoPlayerInitialized: true,
@@ -740,6 +741,8 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
           break;
         case VideoEventType.startWindowFullscreen:
           value = value.copyWith(isFullScreen: true);
+          break;
+        case VideoEventType.changeAspectRatio:
           break;
         case VideoEventType.exitWindowFullscreen:
           value = value.copyWith(isFullScreen: false);
@@ -1180,6 +1183,11 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     await _creatingCompleter!.future;
     value = value.copyWith(volume: volume.clamp(0.0, 1.0));
     await _applyVolume();
+  }
+
+  void setAspectRatio(double aspectRatio) {
+    value = value.copyWith(aspectRatio: aspectRatio);
+    _postEvent(VideoEventType.changeAspectRatio);
   }
 
   Future<void> resolveByClick() {

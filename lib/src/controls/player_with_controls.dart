@@ -75,8 +75,7 @@ class _PlayerWithControlsState extends State<PlayerWithControls> {
                   scaleEnabled: chewieController.zoomAndPan,
                   child: Center(
                     child: AspectRatio(
-                      aspectRatio:
-                          chewieController.aspectRatio ?? chewieController.videoPlayerController.value.aspectRatio,
+                      aspectRatio: chewieController.videoPlayerController.value.aspectRatio,
                       child: GsyVideoPlayer(
                         controller: chewieController.videoPlayerController,
                       ),
