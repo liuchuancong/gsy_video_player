@@ -17,7 +17,8 @@ class _PlayerWithControlsState extends State<PlayerWithControls> {
   Future<void> listener(VideoEventType event) async {
     if (event == VideoEventType.onVideoPlayerInitialized ||
         event == VideoEventType.changeBoxFit ||
-        event == VideoEventType.onVideoSizeChanged) {
+        event == VideoEventType.onVideoSizeChanged ||
+        event == VideoEventType.changeAspectRatio) {
       setState(() {});
     }
   }
@@ -42,7 +43,6 @@ class _PlayerWithControlsState extends State<PlayerWithControls> {
       final size = MediaQuery.of(context).size;
       final width = size.width;
       final height = size.height;
-
       return width > height ? width / height : height / width;
     }
 
