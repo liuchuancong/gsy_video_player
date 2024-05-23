@@ -15,7 +15,9 @@ class _PlayerWithControlsState extends State<PlayerWithControls> {
   bool _initialized = false;
 
   Future<void> listener(VideoEventType event) async {
-    if (event == VideoEventType.onVideoPlayerInitialized || event == VideoEventType.changeBoxFit) {
+    if (event == VideoEventType.onVideoPlayerInitialized ||
+        event == VideoEventType.changeBoxFit ||
+        event == VideoEventType.onVideoSizeChanged) {
       setState(() {});
     }
   }
