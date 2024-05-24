@@ -68,6 +68,16 @@ class ChewieState extends State<Chewie> {
           rootNavigator: widget.controller.useRootNavigator,
         ).pop();
       }
+    } else if (event == VideoEventType.pipStart) {
+      final controller = widget.controller.videoPlayerController;
+      if (!controller.value.isFullScreen) {
+        await _pushPipStartScreenWidget(context);
+      }
+    } else if (event == VideoEventType.pipStop) {
+      Navigator.of(
+        context,
+        rootNavigator: widget.controller.useRootNavigator,
+      ).pop();
     }
   }
 
@@ -166,6 +176,36 @@ class ChewieState extends State<Chewie> {
     );
     SystemChrome.setPreferredOrientations(
       widget.controller.deviceOrientationsAfterFullScreen,
+    );
+  }
+
+  Future<dynamic> _pushPipStartScreenWidget(BuildContext context) async {
+    final TransitionRoute<void> route = PageRouteBuilder<void>(
+      pageBuilder: _fullScreenRoutePageBuilder,
+    );
+
+    onEnterFullScreen();
+
+    if (!widget.controller.allowedScreenSleep) {
+      WakelockPlus.enable();
+    }
+
+    await Navigator.of(
+      context,
+      rootNavigator: widget.controller.useRootNavigator,
+    ).push(route);
+
+    if (!widget.controller.allowedScreenSleep) {
+      WakelockPlus.disable();
+    }
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+
+    SystemChrome.setEnabledSystemUIMode(
+      SystemUiMode.manual,
+      overlays: widget.controller.systemOverlaysAfterFullScreen,
     );
   }
 
