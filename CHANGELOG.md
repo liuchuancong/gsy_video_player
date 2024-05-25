@@ -1,4 +1,12 @@
 
+
+## 0.0.4
+
+* removed Danmaku support.
+* Changed the way to initialize the plugin.
+* Added a new method to set the video source.
+* Use texture widget to display video on Android.
+
 ## 0.0.3
 
 * Added Danmaku support.
