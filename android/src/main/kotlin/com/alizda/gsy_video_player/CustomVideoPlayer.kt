@@ -11,7 +11,6 @@ import com.alizda.gsy_video_player.GsyVideoPlayer.Companion.useDefaultIjkOptions
 import com.shuyu.gsyvideoplayer.GSYVideoManager
 import com.shuyu.gsyvideoplayer.utils.OrientationUtils
 import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer
-import com.shuyu.gsyvideoplayer.video.base.GSYBaseVideoPlayer
 import io.flutter.view.TextureRegistry
 import tv.danmaku.ijk.media.player.IjkMediaPlayer
 
@@ -25,12 +24,13 @@ class CustomVideoPlayer : StandardGSYVideoPlayer {
     private var surface: Surface? = null
     private var textureEntry: TextureRegistry.SurfaceProducer? = null
     private var bufferEnd = false
-
+    private var customGSYVideoManagerApi: CustomGSYVideoManagerApi? = null
     constructor(context: Context?) : super(context)
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
 
     override fun init(context: Context) {
         super.init(context)
+        customGSYVideoManagerApi = CustomGSYVideoManagerApi(context)
     }
 
     fun setEventSink(sink: QueuingEventSink) {
@@ -71,7 +71,7 @@ class CustomVideoPlayer : StandardGSYVideoPlayer {
         if (videoIsInitialized && GSYVideoManager.instance().player != null && GSYVideoManager.instance().player.mediaPlayer != null) {
             if (GSYVideoManager.instance().player.mediaPlayer is IjkMediaPlayer) {
                 if (useDefaultIjkOptions) {
-                    GsyVideoPlayer.customGSYVideoManagerApi!!.setDefaultOptions()
+                    customGSYVideoManagerApi!!.setDefaultOptions()
                 }
             }
             customGSYMediaPlayerListenerApi.onPrepared(eventSink!!)

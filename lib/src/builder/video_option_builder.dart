@@ -26,9 +26,6 @@ class VideoOptionBuilder {
   //是否需要变速不变调
   static const bool mSounchTouch = true;
 
-  //Prepared之后是否自动开始播放
-  static const bool mStartAfterPrepared = true;
-
   //是否播放器当失去音频焦点
   static const bool mReleaseWhenLossAudio = true;
   //播放的tag，防止错误，因为普通的url也可能重复
@@ -101,7 +98,6 @@ class VideoOptionBuilder {
     this.looping = mLooping,
     this.cacheWithPlay = mCacheWithPlay,
     this.sounchTouch = mSounchTouch,
-    this.startAfterPrepared = mStartAfterPrepared,
     this.releaseWhenLossAudio = mReleaseWhenLossAudio,
     this.playTag = mPlayTag,
     this.overrideExtension = mOverrideExtension,

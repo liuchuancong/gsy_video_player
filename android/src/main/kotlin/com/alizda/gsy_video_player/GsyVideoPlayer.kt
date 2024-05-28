@@ -18,7 +18,7 @@ class GsyVideoPlayer(
     private var player: CustomVideoPlayer? = null
     private val eventSink = QueuingEventSink()
     private var isInitialized = false
-    private var surface: Surface? = null
+    private var customGSYVideoManagerApi: CustomGSYVideoManagerApi? = null
     var gsyVideoOptionBuilder: GSYVideoOptionBuilder? = null
     private var customBasicApi: CustomBasicApi? = null
     private var customGSYVideoTypeApi: CustomGSYVideoTypeApi = CustomGSYVideoTypeApi()
@@ -69,8 +69,9 @@ class GsyVideoPlayer(
     fun dispose() {
         if(customOrientationUtilsApi!=null){
             customOrientationUtilsApi!!.releaseListener();
-            player!!.videoIsInitialized = false
         }
+        player!!.videoIsInitialized = false
+        player = null
         customGSYVideoPlayerApi!!.dispose()
     }
 
@@ -85,7 +86,6 @@ class GsyVideoPlayer(
     }
 
     companion object{
-        var customGSYVideoManagerApi: CustomGSYVideoManagerApi? = null
         var useDefaultIjkOptions = false
     }
 }

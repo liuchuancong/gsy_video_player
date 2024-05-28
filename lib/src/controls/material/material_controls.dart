@@ -394,7 +394,7 @@ class _MaterialControlsState extends State<MaterialControls> with SingleTickerPr
     );
 
     if (chosenSpeed != null) {
-      controller.setSpeedPlaying(chosenSpeed);
+      controller.setSpeed(chosenSpeed);
     }
 
     if (_latestValue.isPlaying) {

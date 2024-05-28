@@ -548,7 +548,7 @@ class _CupertinoControlsState extends State<CupertinoControls> with SingleTicker
         );
 
         if (chosenSpeed != null) {
-          controller.setSpeedPlaying(chosenSpeed);
+          controller.setSpeed(chosenSpeed);
 
           selectedSpeed = chosenSpeed;
         }

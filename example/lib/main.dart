@@ -39,11 +39,7 @@ class _MyAppState extends State<MyApp> {
     gsyVideoPlayerController.setNetWorkBuilder(
       'https://cloud.video.taobao.com//play/u/27349687/p/1/e/6/t/1/239880949246.mp4',
       autoPlay: true,
-      showFullAnimation: true,
-      showPauseCover: true,
-      rotateWithSystem: true,
       cacheWithPlay: true,
-      isTouchWigetFull: true,
     );
   }
 

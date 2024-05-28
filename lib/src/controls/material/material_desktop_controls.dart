@@ -356,7 +356,7 @@ class _MaterialDesktopControlsState extends State<MaterialDesktopControls> with 
     );
 
     if (chosenSpeed != null) {
-      controller.setSpeedPlaying(chosenSpeed);
+      controller.setSpeed(chosenSpeed);
     }
 
     if (_latestValue.isPlaying) {
