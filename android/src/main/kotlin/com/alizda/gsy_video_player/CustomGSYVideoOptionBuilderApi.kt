@@ -1,14 +1,9 @@
 package com.alizda.gsy_video_player
 
 import android.content.res.AssetManager
-import android.os.Build
-import android.view.View
-import androidx.annotation.RequiresApi
-import com.shuyu.gsyvideoplayer.GSYVideoManager
 import com.shuyu.gsyvideoplayer.builder.GSYVideoOptionBuilder
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
-import tv.danmaku.ijk.media.player.IjkMediaPlayer
 import java.io.File
 
 class CustomGSYVideoOptionBuilderApi {
