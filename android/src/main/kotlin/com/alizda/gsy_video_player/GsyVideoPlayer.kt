@@ -21,7 +21,6 @@ class GsyVideoPlayer(
     private var surface: Surface? = null
     var gsyVideoOptionBuilder: GSYVideoOptionBuilder? = null
     private var customBasicApi: CustomBasicApi? = null
-    private var customGSYVideoManagerApi: CustomGSYVideoManagerApi? = null
     private var customGSYVideoTypeApi: CustomGSYVideoTypeApi = CustomGSYVideoTypeApi()
     private var customOrientationUtilsApi: CustomOrientationUtilsApi? = null
     private var customGSYMediaPlayerListenerApi: CustomGSYMediaPlayerListenerApi? = null
@@ -83,5 +82,10 @@ class GsyVideoPlayer(
         val event: MutableMap<String, Any> = HashMap()
         event["event"] = if (inPip) "pipStart" else "pipStop"
         eventSink.success(event)
+    }
+
+    companion object{
+        var customGSYVideoManagerApi: CustomGSYVideoManagerApi? = null
+        var useDefaultIjkOptions = false
     }
 }

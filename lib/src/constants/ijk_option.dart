@@ -8,7 +8,7 @@ class IjkOption {
   IjkOption({
     required this.category,
     required this.name,
-    this.valueInt = 0,
+    this.valueInt,
     this.value = '',
   });
 }

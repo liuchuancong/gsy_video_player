@@ -90,6 +90,8 @@ class VideoOptionBuilder {
   //是否需要旋转的 OrientationUtils
   bool? needOrientationUtils;
 
+  bool useDefaultIjkOptions;
+
   VideoOptionBuilder({
     required this.url,
     this.playVideoDataSourceType = PlayVideoDataSourceType.network,
@@ -109,6 +111,7 @@ class VideoOptionBuilder {
     this.needOrientationUtils = mNeedOrientationUtils,
     this.seekRatio = 1.0,
     this.speed = mSpeed,
+    this.useDefaultIjkOptions = false,
   });
 
   Map<String, dynamic> toJson() {
@@ -132,6 +135,7 @@ class VideoOptionBuilder {
       "cachePath": cachePath,
       "mapHeadData": mapHeadData,
       "needOrientationUtils": needOrientationUtils,
+      "useDefaultIjkOptions": useDefaultIjkOptions
     };
   }
 }

@@ -13,14 +13,13 @@ To use this plugin, add `gsy_video_player` as a dependency in your pubspec.yaml 
 
 ```yaml
 dependencies:
-  gsy_video_player: ^0.0.3
+  gsy_video_player: ^0.0.4
 ```
 
 
 ## Example
 
 ```dart
-import 'dart:math';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:gsy_video_player/gsy_video_player.dart';
@@ -37,34 +36,37 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  GsyVideoPlayerController gsyVideoPlayerController = GsyVideoPlayerController(
-    danmakuSettings: const DanmakuSettings(
-      danmakuStyle: DanmakuStyle.danmuStyleStroked,
-      opacity: 1,
-      strokenWidth: 5.0,
-      showDanmaku: true,
-      enableDanmakuDrawingCache: false,
-      maxLinesPair: {
-        DanmakuTypeScroll.scrollRL: 10,
-      },
-    ),
-  );
-
+  GsyVideoPlayerController gsyVideoPlayerController = GsyVideoPlayerController();
+  late ChewieController chewieController;
   @override
   void initState() {
     super.initState();
     initPlayer();
   }
 
+  @override
+  void dispose() {
+    chewieController.dispose();
+    gsyVideoPlayerController.dispose();
+    super.dispose();
+  }
+
   // Platform messages are asynchronous, so we initialize in an async method.
   Future<void> initPlayer() async {
+    chewieController = ChewieController(
+      videoPlayerController: gsyVideoPlayerController,
+      looping: false,
+    );
     gsyVideoPlayerController.setLogLevel(LogLevel.logError);
     gsyVideoPlayerController.setNetWorkBuilder(
-        'https://cloud.video.taobao.com//play/u/27349687/p/1/e/6/t/1/239880949246.mp4',
-        autoPlay: false);
-    gsyVideoPlayerController.addEventsListener((VideoEventType event) {
-      if (gsyVideoPlayerController.value.initialized) {}
-    });
+      'https://cloud.video.taobao.com//play/u/27349687/p/1/e/6/t/1/239880949246.mp4',
+      autoPlay: true,
+      showFullAnimation: true,
+      showPauseCover: true,
+      rotateWithSystem: true,
+      cacheWithPlay: true,
+      isTouchWigetFull: true,
+    );
   }
 
   @override
@@ -74,17 +76,15 @@ class _MyAppState extends State<MyApp> {
         appBar: AppBar(
           title: const Text('Plugin example app'),
         ),
-        body: Column(
+        body: ListView(
+          physics: const NeverScrollableScrollPhysics(),
           children: [
             Container(
               color: Colors.black,
               width: double.infinity,
               height: 300,
-              child: Container(
-                color: Colors.blue,
-                child: GsyVideoPlayer(
-                  controller: gsyVideoPlayerController,
-                ),
+              child: Chewie(
+                controller: chewieController,
               ),
             ),
             Wrap(
@@ -115,89 +115,22 @@ class _MyAppState extends State<MyApp> {
                     },
                     child: const Text('seekTo 10s')),
                 ElevatedButton(
-                    onPressed: () {
-                      gsyVideoPlayerController.danmakuController.showDanmaku();
+                    onPressed: () async {
+                      gsyVideoPlayerController.setBoxFit(BoxFit.fitWidth);
+                      // await gsyVideoPlayerController.setIfCurrentIsFullscreen(true);
                     },
-                    child: const Text('showDanmaku')),
+                    child: const Text('FullScreen')),
+                ElevatedButton(
+                    onPressed: () async {
+                      gsyVideoPlayerController.setBoxFit(BoxFit.fitHeight);
+                      // await gsyVideoPlayerController.setIfCurrentIsFullscreen(false);
+                    },
+                    child: const Text('normalScreen')),
                 ElevatedButton(
                     onPressed: () {
-                      gsyVideoPlayerController.danmakuController.hideDanmaku();
+                      gsyVideoPlayerController.setBoxFit(BoxFit.fill);
                     },
-                    child: const Text('hideDanmaku')),
-                ElevatedButton(
-                    onPressed: () {
-                      gsyVideoPlayerController.danmakuController.addDanmaku(BaseDanmaku(
-                        text: [
-                          'I love Flutter',
-                          'I like Flutter',
-                          'I use Flutter',
-                          'Flutter is awesome',
-                          'Flutter is amazing',
-                          'Flutter is so cool',
-                          'Flutter is so beautiful',
-                          'Flutter is so powerful',
-                          'Flutter is so amazing',
-                          'Flutter is so perfect',
-                          'Flutter is so beautiful',
-                          'Flutter is so powerful',
-                          'Flutter is so amazing',
-                          'Flutter is so great',
-                        ][Random().nextInt(10)],
-                        textColor: [
-                          Colors.green,
-                          Colors.red,
-                          Colors.black,
-                          Colors.white,
-                          Colors.blue,
-                          Colors.yellow,
-                          Colors.purple,
-                          Colors.orange,
-                          Colors.brown,
-                          Colors.pink,
-                          Colors.indigo,
-                        ][Random().nextInt(10)],
-                        textSize: 35,
-                        time: 500,
-                        priority: 8,
-                        type: DanmakuTypeScroll.scrollRL,
-                      ));
-                    },
-                    child: const Text('sendDanmaku')),
-                ElevatedButton(
-                    style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color(0xFFF44336))),
-                    onPressed: () {
-                      gsyVideoPlayerController.danmakuController.setDanmakuBold(true);
-                    },
-                    child: const Text('setDanmakuBold')),
-                ElevatedButton(
-                    onPressed: () {
-                      gsyVideoPlayerController.danmakuController.setDanmakuMargin(20);
-                    },
-                    child: const Text('setDanmakuMargin')),
-                ElevatedButton(
-                    onPressed: () {
-                      gsyVideoPlayerController.danmakuController.setMarginTop(20);
-                    },
-                    child: const Text('setMarginTop')),
-                ElevatedButton(
-                    onPressed: () {
-                      gsyVideoPlayerController.danmakuController
-                          .setDanmakuStyle(DanmakuStyle.danmuStyleShadow, danmuStyleShadow: 5.0);
-                    },
-                    child: const Text('setDanmakuStyle')),
-                ElevatedButton(
-                    onPressed: () {
-                      gsyVideoPlayerController.danmakuController.setDanmakuTransparency(0.9);
-                    },
-                    child: const Text('setDanmakuTransparency')),
-                ElevatedButton(
-                    onPressed: () {
-                      gsyVideoPlayerController.danmakuController.setMaximumLines({
-                        DanmakuTypeScroll.scrollRL: 10,
-                        DanmakuTypeScroll.fixTop: 10,
-                      });
-                    },
-                    child: const Text('setMaximumLines')),
+                    child: const Text('showSmallVideo')),
               ],
             )
           ],

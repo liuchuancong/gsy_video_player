@@ -25,7 +25,7 @@ class CustomMethodCallApi(
             }
 
             "setVideoOptionBuilder" -> {
-                videoPlayer.gsyVideoOptionBuilder =  CustomGSYVideoOptionBuilderApi().setVideoConfig(videoPlayer,call, result)
+                videoPlayer.gsyVideoOptionBuilder =  CustomGSYVideoOptionBuilderApi().setVideoConfig(videoPlayer,customGSYVideoManagerApi,call, result)
             }
             "setUp" -> {
                 gSYVideoPlayer.setUp(call, result)

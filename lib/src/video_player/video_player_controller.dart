@@ -31,13 +31,15 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
   /// Constructs a [GsyVideoPlayerController] and creates video controller on platform side.
   GsyVideoPlayerController({bool allowBackgroundPlayback = true})
       : super(VideoPlayerValue(duration: Duration.zero, isInitialized: false)) {
-    value = value.copyWith(allowBackgroundPlayback: allowBackgroundPlayback);
+    _allowBackgroundPlayback = allowBackgroundPlayback;
     initialize();
   }
 
   static const int kUninitializedTextureId = -1;
   int _textureId = kUninitializedTextureId;
   int get textureId => _textureId;
+
+  bool _allowBackgroundPlayback = true;
 
   /// Initializes the video controller on platform side.
 
@@ -73,7 +75,8 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
   }
 
   Future<void> initialize() async {
-    final bool allowBackgroundPlayback = value.allowBackgroundPlayback;
+    final bool allowBackgroundPlayback = _allowBackgroundPlayback;
+    value = value.copyWith(allowBackgroundPlayback: allowBackgroundPlayback);
     if (!allowBackgroundPlayback) {
       _lifeCycleObserver = _VideoAppLifeCycleObserver(this);
     }
@@ -233,7 +236,7 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     bool? needOrientationUtils,
     PlayVideoDataSourceType? playVideoDataSourceType,
     bool? autoPlay,
-    bool? allowBackgroundPlayback,
+    bool? useDefaultIjkOptions,
   }) {
     return _setDataSource(
       VideoOptionBuilder(
@@ -254,6 +257,7 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
         mapHeadData: mapHeadData ?? VideoOptionBuilder.mMapHeadData,
         needOrientationUtils: needOrientationUtils ?? VideoOptionBuilder.mNeedOrientationUtils,
         playVideoDataSourceType: PlayVideoDataSourceType.asset,
+        useDefaultIjkOptions: useDefaultIjkOptions ?? false,
       ),
     );
   }
@@ -300,7 +304,7 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     Map<String, String>? mapHeadData,
     bool? needOrientationUtils,
     PlayVideoDataSourceType? playVideoDataSourceType,
-    bool? allowBackgroundPlayback,
+    bool? useDefaultIjkOptions,
   }) {
     return _setDataSource(
       VideoOptionBuilder(
@@ -321,6 +325,7 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
         mapHeadData: mapHeadData ?? VideoOptionBuilder.mMapHeadData,
         needOrientationUtils: needOrientationUtils ?? VideoOptionBuilder.mNeedOrientationUtils,
         playVideoDataSourceType: PlayVideoDataSourceType.network,
+        useDefaultIjkOptions: useDefaultIjkOptions ?? false,
       ),
     );
   }
@@ -367,7 +372,7 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     Map<String, String>? mapHeadData,
     bool? needOrientationUtils,
     PlayVideoDataSourceType? playVideoDataSourceType,
-    bool? allowBackgroundPlayback,
+    bool? useDefaultIjkOptions,
   }) {
     return _setDataSource(
       VideoOptionBuilder(
@@ -388,6 +393,7 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
         mapHeadData: mapHeadData ?? VideoOptionBuilder.mMapHeadData,
         needOrientationUtils: needOrientationUtils ?? VideoOptionBuilder.mNeedOrientationUtils,
         playVideoDataSourceType: PlayVideoDataSourceType.file,
+        useDefaultIjkOptions: useDefaultIjkOptions ?? false,
       ),
     );
   }
@@ -434,7 +440,7 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     Map<String, String>? mapHeadData,
     bool? needOrientationUtils,
     PlayVideoDataSourceType? playVideoDataSourceType,
-    bool? allowBackgroundPlayback,
+    bool? useDefaultIjkOptions,
   }) {
     return _setDataSource(
       VideoOptionBuilder(
@@ -455,6 +461,7 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
         mapHeadData: mapHeadData ?? VideoOptionBuilder.mMapHeadData,
         needOrientationUtils: needOrientationUtils ?? VideoOptionBuilder.mNeedOrientationUtils,
         playVideoDataSourceType: playVideoDataSourceType ?? PlayVideoDataSourceType.network,
+        useDefaultIjkOptions: useDefaultIjkOptions ?? false,
       ),
     );
   }
@@ -671,17 +678,7 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
       return;
     }
     videoOptionBuilder = builder;
-    value = VideoPlayerValue(
-      duration: Duration.zero,
-      isLooping: value.isLooping,
-      volume: value.volume,
-      allowBackgroundPlayback: value.allowBackgroundPlayback,
-    );
-    final bool allowBackgroundPlayback = value.allowBackgroundPlayback;
-    if (!allowBackgroundPlayback) {
-      _lifeCycleObserver = _VideoAppLifeCycleObserver(this);
-    }
-    _lifeCycleObserver?.initialize();
+    value = VideoPlayerValue(duration: Duration.zero, isLooping: value.isLooping, volume: value.volume);
     await VideoPlayerPlatform.instance.setVideoOptionBuilder(textureId, builder);
   }
 
@@ -1190,11 +1187,15 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
   }
 
   Future<void> onEnterFullScreen() async {
+    await _creatingCompleter!.future;
     value = value.copyWith(isFullScreen: true);
+    _postEvent(VideoEventType.startWindowFullscreen);
   }
 
   Future<void> onExitFullScreen() async {
+    await _creatingCompleter!.future;
     value = value.copyWith(isFullScreen: false);
+    _postEvent(VideoEventType.exitWindowFullscreen);
   }
 
   Future<void> enablePictureInPicture({double? top, double? left, double? width, double? height}) async {
