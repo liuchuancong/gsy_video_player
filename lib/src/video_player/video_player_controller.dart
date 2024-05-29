@@ -543,6 +543,8 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
           break;
         case VideoEventType.changeAspectRatio:
           break;
+        case VideoEventType.onRotateChanged:
+          break;
         case VideoEventType.exitWindowFullscreen:
           value = value.copyWith(isFullScreen: false);
           break;

@@ -18,7 +18,8 @@ class _PlayerWithControlsState extends State<PlayerWithControls> {
     if (event == VideoEventType.onVideoPlayerInitialized ||
         event == VideoEventType.changeBoxFit ||
         event == VideoEventType.onVideoSizeChanged ||
-        event == VideoEventType.changeAspectRatio) {
+        event == VideoEventType.changeAspectRatio ||
+        event == VideoEventType.onRotateChanged) {
       setState(() {});
     }
   }

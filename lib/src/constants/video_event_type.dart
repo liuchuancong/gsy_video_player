@@ -46,5 +46,7 @@ enum VideoEventType {
 
   changeAspectRatio,
 
+  onRotateChanged,
+
   unknown,
 }

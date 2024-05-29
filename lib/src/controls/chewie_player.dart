@@ -620,22 +620,45 @@ class _FullScreenPageState extends State<FullScreenPage> {
           double x = event.x;
           double y = event.y;
           double newRotation = rotation;
-          if (y < -3.0) {
-            // 屏幕向上
-            newRotation = 90.0;
-          } else if (y > 3.0) {
-            // 屏幕向下
-            newRotation = -90.0;
-          } else if (x < -3.0) {
-            // 屏幕向右
-            newRotation = 180.0;
-          } else if (x > 3.0) {
-            // 屏幕向左
-            newRotation = 0.0;
+          double width = widget.controller.videoPlayerController.value.size.width;
+          double height = widget.controller.videoPlayerController.value.size.height;
+          if (width != 0 && height != 0 && width > height) {
+            if (y < -3.0) {
+              // 屏幕向上
+              newRotation = 90.0;
+            } else if (y > 3.0) {
+              // 屏幕向下
+              newRotation = -90.0;
+            } else if (x < -3.0) {
+              // 屏幕向右
+              newRotation = 180.0;
+            } else if (x > 3.0) {
+              // 屏幕向左
+              newRotation = 0.0;
+            }
+          } else if (width != 0 && height != 0 && width < height) {
+            if (y < -3.0) {
+              // 屏幕向上
+
+              newRotation = 180.0;
+            } else if (y > 3.0) {
+              // 屏幕向下
+              newRotation = 0.0;
+            } else if (x < -3.0) {
+              // 屏幕向右
+              newRotation = -90.0;
+            } else if (x > 3.0) {
+              // 屏幕向左
+              newRotation = 90.0;
+            }
           }
+
           if (rotation != newRotation) {
             setState(() {
               rotation = newRotation;
+            });
+            Timer(const Duration(milliseconds: 100), () {
+              widget.controller.videoPlayerController.postEvent(VideoEventType.onRotateChanged);
             });
           }
         }),
@@ -657,12 +680,15 @@ class _FullScreenPageState extends State<FullScreenPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: Transform.rotate(
-        angle: rotation * (pi / 180),
-        child: Container(
-          alignment: Alignment.center,
-          color: Colors.black,
-          child: widget.controllerProvider,
+      body: Container(
+        color: Colors.black,
+        child: Transform.rotate(
+          angle: rotation * (pi / 180),
+          child: Container(
+            alignment: Alignment.center,
+            color: Colors.black,
+            child: widget.controllerProvider,
+          ),
         ),
       ),
     );
