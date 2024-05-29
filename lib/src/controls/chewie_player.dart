@@ -1,7 +1,9 @@
+import 'dart:math';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:sensors_plus/sensors_plus.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 import 'package:gsy_video_player/gsy_video_player.dart';
 import 'package:gsy_video_player/src/controls/player_with_controls.dart';
@@ -97,13 +99,9 @@ class ChewieState extends State<Chewie> {
     Animation<double> animation,
     ChewieControllerProvider controllerProvider,
   ) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: Container(
-        alignment: Alignment.center,
-        color: Colors.black,
-        child: controllerProvider,
-      ),
+    return FullScreenPage(
+      controllerProvider: controllerProvider,
+      controller: widget.controller,
     );
   }
 
@@ -286,6 +284,7 @@ class ChewieController extends ChangeNotifier {
     this.customControls,
     this.errorBuilder,
     this.allowedScreenSleep = true,
+    this.rotateWithSystem = false,
     this.isLive = false,
     this.allowFullScreen = true,
     this.allowMuting = true,
@@ -333,6 +332,7 @@ class ChewieController extends ChangeNotifier {
     Widget? customControls,
     Widget Function(BuildContext, String)? errorBuilder,
     bool? allowedScreenSleep,
+    bool? rotateWithSystem,
     bool? isLive,
     bool? allowFullScreen,
     bool? allowMuting,
@@ -361,6 +361,7 @@ class ChewieController extends ChangeNotifier {
       autoPlay: autoPlay ?? this.autoPlay,
       startAt: startAt ?? this.startAt,
       looping: looping ?? this.looping,
+      rotateWithSystem: rotateWithSystem ?? this.rotateWithSystem,
       cupertinoProgressColors: cupertinoProgressColors ?? this.cupertinoProgressColors,
       materialProgressColors: materialProgressColors ?? this.materialProgressColors,
       placeholder: placeholder ?? this.placeholder,
@@ -458,6 +459,8 @@ class ChewieController extends ChangeNotifier {
 
   /// Max scale when zooming
   final double maxScale;
+
+  final bool rotateWithSystem;
 
   /// Defines customised controls. Check [MaterialControls] or
   /// [CupertinoControls] for reference.
@@ -593,4 +596,75 @@ class ChewieControllerProvider extends InheritedWidget {
 
   @override
   bool updateShouldNotify(ChewieControllerProvider oldWidget) => controller != oldWidget.controller;
+}
+
+class FullScreenPage extends StatefulWidget {
+  const FullScreenPage({super.key, required this.controllerProvider, required this.controller});
+  final ChewieControllerProvider controllerProvider;
+
+  final ChewieController controller;
+  @override
+  State<FullScreenPage> createState() => _FullScreenPageState();
+}
+
+class _FullScreenPageState extends State<FullScreenPage> {
+  double rotation = 0.0;
+  final _streamSubscriptions = <StreamSubscription<dynamic>>[];
+  @override
+  void initState() {
+    // 订阅设备的旋转角度事件
+
+    if (widget.controller.rotateWithSystem) {
+      _streamSubscriptions.add(
+        accelerometerEventStream().listen((AccelerometerEvent event) {
+          double x = event.x;
+          double y = event.y;
+          double newRotation = rotation;
+          if (y < -3.0) {
+            // 屏幕向上
+            newRotation = 90.0;
+          } else if (y > 3.0) {
+            // 屏幕向下
+            newRotation = -90.0;
+          } else if (x < -3.0) {
+            // 屏幕向右
+            newRotation = 180.0;
+          } else if (x > 3.0) {
+            // 屏幕向左
+            newRotation = 0.0;
+          }
+          if (rotation != newRotation) {
+            setState(() {
+              rotation = newRotation;
+            });
+          }
+        }),
+      );
+    }
+
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    for (final subscription in _streamSubscriptions) {
+      subscription.cancel();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      body: Transform.rotate(
+        angle: rotation * (pi / 180),
+        child: Container(
+          alignment: Alignment.center,
+          color: Colors.black,
+          child: widget.controllerProvider,
+        ),
+      ),
+    );
+  }
 }

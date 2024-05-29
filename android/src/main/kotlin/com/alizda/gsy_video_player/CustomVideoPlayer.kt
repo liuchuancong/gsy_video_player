@@ -109,9 +109,7 @@ class CustomVideoPlayer : StandardGSYVideoPlayer {
 
     override fun onError(what: Int, extra: Int) {
         super.onError(what, extra)
-        if (videoIsInitialized && GSYVideoManager.instance().player != null && GSYVideoManager.instance().player.mediaPlayer != null) {
-            customGSYMediaPlayerListenerApi.onError(eventSink!!, what, extra)
-        }
+        customGSYMediaPlayerListenerApi.onError(eventSink!!, what, extra)
     }
 
     override fun onInfo(what: Int, extra: Int) {
@@ -121,16 +119,13 @@ class CustomVideoPlayer : StandardGSYVideoPlayer {
                 bufferEnd = true
                 customGSYMediaPlayerListenerApi.onBufferingEnd(eventSink!!, what, extra)
             }
-            customGSYMediaPlayerListenerApi.onInfo(eventSink!!, what, extra)
         }
-
+        customGSYMediaPlayerListenerApi.onInfo(eventSink!!, what, extra)
     }
 
     override fun onVideoSizeChanged() {
         super.onVideoSizeChanged()
-        if (videoIsInitialized && GSYVideoManager.instance().player != null && GSYVideoManager.instance().player.mediaPlayer != null) {
-            customGSYMediaPlayerListenerApi.onVideoSizeChanged(eventSink!!)
-        }
+        customGSYMediaPlayerListenerApi.onVideoSizeChanged(eventSink!!)
     }
 
     override fun onBackFullscreen() {
