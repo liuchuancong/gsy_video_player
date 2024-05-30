@@ -62,15 +62,18 @@ class _PlayerWithControlsState extends State<PlayerWithControls> {
     ) {
       return Stack(
         children: <Widget>[
-          if (chewieController.placeholder != null) chewieController.placeholder!,
+          if (chewieController.placeholder != null)
+            chewieController.placeholder!,
           SizedBox.expand(
             child: FittedBox(
               fit: chewieController.videoPlayerController.value.fit,
               child: SizedBox(
                 width: chewieController.videoPlayerController.value.size.width,
-                height: chewieController.videoPlayerController.value.size.height,
+                height:
+                    chewieController.videoPlayerController.value.size.height,
                 child: InteractiveViewer(
-                  transformationController: chewieController.transformationController,
+                  transformationController:
+                      chewieController.transformationController,
                   maxScale: chewieController.maxScale,
                   panEnabled: chewieController.zoomAndPan,
                   scaleEnabled: chewieController.zoomAndPan,
@@ -116,7 +119,8 @@ class _PlayerWithControlsState extends State<PlayerWithControls> {
       );
     }
 
-    return LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints) {
+    return LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints constraints) {
       return Center(
         child: SizedBox(
           height: constraints.maxHeight,

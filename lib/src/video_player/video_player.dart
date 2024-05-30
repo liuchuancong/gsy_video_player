@@ -40,7 +40,10 @@ class VideoPlayerValue {
 
   /// Returns an instance for a video that hasn't been loaded.
   VideoPlayerValue.uninitialized()
-      : this(duration: Duration.zero, isInitialized: false, onVideoPlayerInitialized: false);
+      : this(
+            duration: Duration.zero,
+            isInitialized: false,
+            onVideoPlayerInitialized: false);
 
   /// Returns an instance with a `null` [Duration] and the given
   /// [errorDescription].
@@ -185,8 +188,10 @@ class VideoPlayerValue {
       speed: speed ?? this.speed,
       isFullScreen: isFullScreen ?? this.isFullScreen,
       playState: playState ?? this.playState,
-      onVideoPlayerInitialized: onVideoPlayerInitialized ?? this.onVideoPlayerInitialized,
-      allowBackgroundPlayback: allowBackgroundPlayback ?? this.allowBackgroundPlayback,
+      onVideoPlayerInitialized:
+          onVideoPlayerInitialized ?? this.onVideoPlayerInitialized,
+      allowBackgroundPlayback:
+          allowBackgroundPlayback ?? this.allowBackgroundPlayback,
       isCompleted: isCompleted ?? this.isCompleted,
       videoSarNum: videoSarNum ?? this.videoSarNum,
       videoSarDen: videoSarDen ?? this.videoSarDen,

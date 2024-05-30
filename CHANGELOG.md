@@ -1,4 +1,10 @@
 
+## 0.0.5
+
+* Fixed a bug related to hot restart on Android.
+* Fixed player speed on Android.
+* Fix - Formatting
+
 
 ## 0.0.4
 
