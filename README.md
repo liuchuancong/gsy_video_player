@@ -6,16 +6,14 @@
 
 https://github.com/CarGuo/GSYVideoPlayer/wiki
 
-
 ## Usage
 
 To use this plugin, add `gsy_video_player` as a dependency in your pubspec.yaml file.
 
 ```yaml
 dependencies:
-  gsy_video_player: ^0.0.4
+  gsy_video_player: ^0.0.5
 ```
-
 
 ## Example
 
@@ -36,7 +34,8 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  GsyVideoPlayerController gsyVideoPlayerController = GsyVideoPlayerController();
+  GsyVideoPlayerController gsyVideoPlayerController =
+      GsyVideoPlayerController();
   late ChewieController chewieController;
   @override
   void initState() {
@@ -54,18 +53,14 @@ class _MyAppState extends State<MyApp> {
   // Platform messages are asynchronous, so we initialize in an async method.
   Future<void> initPlayer() async {
     chewieController = ChewieController(
-      videoPlayerController: gsyVideoPlayerController,
-      looping: false,
-    );
+        videoPlayerController: gsyVideoPlayerController,
+        looping: false,
+        rotateWithSystem: true);
     gsyVideoPlayerController.setLogLevel(LogLevel.logError);
     gsyVideoPlayerController.setNetWorkBuilder(
       'https://cloud.video.taobao.com//play/u/27349687/p/1/e/6/t/1/239880949246.mp4',
       autoPlay: true,
-      showFullAnimation: true,
-      showPauseCover: true,
-      rotateWithSystem: true,
       cacheWithPlay: true,
-      isTouchWigetFull: true,
     );
   }
 
@@ -111,7 +106,8 @@ class _MyAppState extends State<MyApp> {
                     child: const Text('LogLevel')),
                 ElevatedButton(
                     onPressed: () {
-                      gsyVideoPlayerController.seekTo(const Duration(seconds: 11));
+                      gsyVideoPlayerController
+                          .seekTo(const Duration(seconds: 11));
                     },
                     child: const Text('seekTo 10s')),
                 ElevatedButton(
@@ -119,13 +115,13 @@ class _MyAppState extends State<MyApp> {
                       gsyVideoPlayerController.setBoxFit(BoxFit.fitWidth);
                       // await gsyVideoPlayerController.setIfCurrentIsFullscreen(true);
                     },
-                    child: const Text('FullScreen')),
+                    child: const Text('fitWidth')),
                 ElevatedButton(
                     onPressed: () async {
-                      gsyVideoPlayerController.setBoxFit(BoxFit.fitHeight);
+                      chewieController.disableRotation();
                       // await gsyVideoPlayerController.setIfCurrentIsFullscreen(false);
                     },
-                    child: const Text('normalScreen')),
+                    child: const Text('disableRotation')),
                 ElevatedButton(
                     onPressed: () {
                       gsyVideoPlayerController.setBoxFit(BoxFit.fill);
@@ -141,7 +137,7 @@ class _MyAppState extends State<MyApp> {
 }
 
 
+
 ```
 
 ## 灵感
-https://github.com/CarGuo/GSYVideoPlayer

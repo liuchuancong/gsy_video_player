@@ -5,7 +5,6 @@
 * Fixed player speed on Android.
 * Fix - Formatting
 
-
 ## 0.0.4
 
 * removed Danmaku support.
