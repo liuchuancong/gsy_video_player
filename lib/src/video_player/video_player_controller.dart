@@ -29,10 +29,11 @@ VideoPlayerPlatform get _videoPlayerPlatform {
 /// After [dispose] all further calls are ignored.
 class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
   /// Constructs a [GsyVideoPlayerController] and creates video controller on platform side.
-  GsyVideoPlayerController({bool allowBackgroundPlayback = true})
+  GsyVideoPlayerController({bool allowBackgroundPlayback = true, GsyVideoPlayerType player = GsyVideoPlayerType.ijk})
       : super(VideoPlayerValue(duration: Duration.zero, isInitialized: false)) {
     _allowBackgroundPlayback = allowBackgroundPlayback;
     initialize();
+    player = player;
   }
 
   static const int kUninitializedTextureId = -1;
@@ -41,10 +42,11 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
 
   bool _allowBackgroundPlayback = true;
 
+  GsyVideoPlayerType player = GsyVideoPlayerType.ijk;
+
   /// Initializes the video controller on platform side.
 
-  final StreamController<VideoEvent> videoEventStreamController =
-      StreamController.broadcast();
+  final StreamController<VideoEvent> videoEventStreamController = StreamController.broadcast();
 
   ///StreamSubscription for VideoEvent listener
   StreamSubscription<VideoEvent>? _videoEventStreamSubscription;
@@ -65,16 +67,14 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
   final List<Function(VideoEventType)?> _eventListeners = [];
 
   ///Expose all active eventListeners
-  List<Function(VideoEventType)?> get eventListeners =>
-      _eventListeners.sublist(1);
+  List<Function(VideoEventType)?> get eventListeners => _eventListeners.sublist(1);
 
   late VideoOptionBuilder videoOptionBuilder;
 
   Future _initializeVideo() async {
     _videoEventStreamSubscription?.cancel();
     _videoEventStreamSubscription = null;
-    _videoEventStreamSubscription =
-        videoEventStreamController.stream.listen(_handleVideoEvent);
+    _videoEventStreamSubscription = videoEventStreamController.stream.listen(_handleVideoEvent);
   }
 
   Future<void> initialize() async {
@@ -85,8 +85,8 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     }
     _lifeCycleObserver?.initialize();
     _creatingCompleter = Completer<void>();
-    _textureId =
-        (await _videoPlayerPlatform.create()) ?? kUninitializedTextureId;
+    _textureId = (await _videoPlayerPlatform.create()) ?? kUninitializedTextureId;
+    await setPlayerFactory(player);
     _initializingCompleter = Completer<void>();
     setEventListener();
     _creatingCompleter!.complete(null);
@@ -227,17 +227,13 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
         looping: looping ?? VideoOptionBuilder.mLooping,
         cacheWithPlay: cacheWithPlay ?? VideoOptionBuilder.mCacheWithPlay,
         sounchTouch: sounchTouch ?? VideoOptionBuilder.mSounchTouch,
-        releaseWhenLossAudio:
-            releaseWhenLossAudio ?? VideoOptionBuilder.mReleaseWhenLossAudio,
+        releaseWhenLossAudio: releaseWhenLossAudio ?? VideoOptionBuilder.mReleaseWhenLossAudio,
         playTag: playTag ?? VideoOptionBuilder.mPlayTag,
-        overrideExtension:
-            overrideExtension ?? VideoOptionBuilder.mOverrideExtension,
-        isUseCustomCachePath:
-            isUseCustomCachePath ?? VideoOptionBuilder.mIsUseCustomCachePath,
+        overrideExtension: overrideExtension ?? VideoOptionBuilder.mOverrideExtension,
+        isUseCustomCachePath: isUseCustomCachePath ?? VideoOptionBuilder.mIsUseCustomCachePath,
         cachePath: cachePath ?? VideoOptionBuilder.mCachePath,
         mapHeadData: mapHeadData ?? VideoOptionBuilder.mMapHeadData,
-        needOrientationUtils:
-            needOrientationUtils ?? VideoOptionBuilder.mNeedOrientationUtils,
+        needOrientationUtils: needOrientationUtils ?? VideoOptionBuilder.mNeedOrientationUtils,
         playVideoDataSourceType: PlayVideoDataSourceType.asset,
         useDefaultIjkOptions: useDefaultIjkOptions ?? false,
       ),
@@ -273,17 +269,13 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
         looping: looping ?? VideoOptionBuilder.mLooping,
         cacheWithPlay: cacheWithPlay ?? VideoOptionBuilder.mCacheWithPlay,
         sounchTouch: sounchTouch ?? VideoOptionBuilder.mSounchTouch,
-        releaseWhenLossAudio:
-            releaseWhenLossAudio ?? VideoOptionBuilder.mReleaseWhenLossAudio,
+        releaseWhenLossAudio: releaseWhenLossAudio ?? VideoOptionBuilder.mReleaseWhenLossAudio,
         playTag: playTag ?? VideoOptionBuilder.mPlayTag,
-        overrideExtension:
-            overrideExtension ?? VideoOptionBuilder.mOverrideExtension,
-        isUseCustomCachePath:
-            isUseCustomCachePath ?? VideoOptionBuilder.mIsUseCustomCachePath,
+        overrideExtension: overrideExtension ?? VideoOptionBuilder.mOverrideExtension,
+        isUseCustomCachePath: isUseCustomCachePath ?? VideoOptionBuilder.mIsUseCustomCachePath,
         cachePath: cachePath ?? VideoOptionBuilder.mCachePath,
         mapHeadData: mapHeadData ?? VideoOptionBuilder.mMapHeadData,
-        needOrientationUtils:
-            needOrientationUtils ?? VideoOptionBuilder.mNeedOrientationUtils,
+        needOrientationUtils: needOrientationUtils ?? VideoOptionBuilder.mNeedOrientationUtils,
         playVideoDataSourceType: PlayVideoDataSourceType.network,
         useDefaultIjkOptions: useDefaultIjkOptions ?? false,
       ),
@@ -319,17 +311,13 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
         looping: looping ?? VideoOptionBuilder.mLooping,
         cacheWithPlay: cacheWithPlay ?? VideoOptionBuilder.mCacheWithPlay,
         sounchTouch: sounchTouch ?? VideoOptionBuilder.mSounchTouch,
-        releaseWhenLossAudio:
-            releaseWhenLossAudio ?? VideoOptionBuilder.mReleaseWhenLossAudio,
+        releaseWhenLossAudio: releaseWhenLossAudio ?? VideoOptionBuilder.mReleaseWhenLossAudio,
         playTag: playTag ?? VideoOptionBuilder.mPlayTag,
-        overrideExtension:
-            overrideExtension ?? VideoOptionBuilder.mOverrideExtension,
-        isUseCustomCachePath:
-            isUseCustomCachePath ?? VideoOptionBuilder.mIsUseCustomCachePath,
+        overrideExtension: overrideExtension ?? VideoOptionBuilder.mOverrideExtension,
+        isUseCustomCachePath: isUseCustomCachePath ?? VideoOptionBuilder.mIsUseCustomCachePath,
         cachePath: cachePath ?? VideoOptionBuilder.mCachePath,
         mapHeadData: mapHeadData ?? VideoOptionBuilder.mMapHeadData,
-        needOrientationUtils:
-            needOrientationUtils ?? VideoOptionBuilder.mNeedOrientationUtils,
+        needOrientationUtils: needOrientationUtils ?? VideoOptionBuilder.mNeedOrientationUtils,
         playVideoDataSourceType: PlayVideoDataSourceType.file,
         useDefaultIjkOptions: useDefaultIjkOptions ?? false,
       ),
@@ -365,19 +353,14 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
         looping: looping ?? VideoOptionBuilder.mLooping,
         cacheWithPlay: cacheWithPlay ?? VideoOptionBuilder.mCacheWithPlay,
         sounchTouch: sounchTouch ?? VideoOptionBuilder.mSounchTouch,
-        releaseWhenLossAudio:
-            releaseWhenLossAudio ?? VideoOptionBuilder.mReleaseWhenLossAudio,
+        releaseWhenLossAudio: releaseWhenLossAudio ?? VideoOptionBuilder.mReleaseWhenLossAudio,
         playTag: playTag ?? VideoOptionBuilder.mPlayTag,
-        overrideExtension:
-            overrideExtension ?? VideoOptionBuilder.mOverrideExtension,
-        isUseCustomCachePath:
-            isUseCustomCachePath ?? VideoOptionBuilder.mIsUseCustomCachePath,
+        overrideExtension: overrideExtension ?? VideoOptionBuilder.mOverrideExtension,
+        isUseCustomCachePath: isUseCustomCachePath ?? VideoOptionBuilder.mIsUseCustomCachePath,
         cachePath: cachePath ?? VideoOptionBuilder.mCachePath,
         mapHeadData: mapHeadData ?? VideoOptionBuilder.mMapHeadData,
-        needOrientationUtils:
-            needOrientationUtils ?? VideoOptionBuilder.mNeedOrientationUtils,
-        playVideoDataSourceType:
-            playVideoDataSourceType ?? PlayVideoDataSourceType.network,
+        needOrientationUtils: needOrientationUtils ?? VideoOptionBuilder.mNeedOrientationUtils,
+        playVideoDataSourceType: playVideoDataSourceType ?? PlayVideoDataSourceType.network,
         useDefaultIjkOptions: useDefaultIjkOptions ?? false,
       ),
     );
@@ -587,9 +570,7 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
       }
     }
 
-    _eventSubscription = _videoPlayerPlatform
-        .videoEventsFor(_textureId)
-        .listen(eventListener, onError: errorListener);
+    _eventSubscription = _videoPlayerPlatform.videoEventsFor(_textureId).listen(eventListener, onError: errorListener);
     await _initializeVideo();
   }
 
@@ -599,12 +580,8 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
       return;
     }
     videoOptionBuilder = builder;
-    value = VideoPlayerValue(
-        duration: Duration.zero,
-        isLooping: value.isLooping,
-        volume: value.volume);
-    await VideoPlayerPlatform.instance
-        .setVideoOptionBuilder(textureId, builder);
+    value = VideoPlayerValue(duration: Duration.zero, isLooping: value.isLooping, volume: value.volume);
+    await VideoPlayerPlatform.instance.setVideoOptionBuilder(textureId, builder);
   }
 
   @override
@@ -644,8 +621,7 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
   ) async {
     await _creatingCompleter!.future;
     value = value.copyWith(isPlaying: false);
-    await _videoPlayerPlatform.setUp(
-        _textureId, url, cacheWithPlay, cachePath, title);
+    await _videoPlayerPlatform.setUp(_textureId, url, cacheWithPlay, cachePath, title);
   }
 
   Future<void> clearCurrentCache() async {
@@ -675,8 +651,7 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
 
   Future<void> setPlayPosition(Duration position) async {
     await _creatingCompleter!.future;
-    await _videoPlayerPlatform.setPlayPosition(
-        _textureId, position.inMilliseconds);
+    await _videoPlayerPlatform.setPlayPosition(_textureId, position.inMilliseconds);
   }
 
   Future<int> getNetSpeed() async {
@@ -699,8 +674,7 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     return await _videoPlayerPlatform.getBuffterPoint(_textureId);
   }
 
-  Future<GsyVideoPlayerType> setPlayerFactory(
-      GsyVideoPlayerType playerType) async {
+  Future<GsyVideoPlayerType> setPlayerFactory(GsyVideoPlayerType playerType) async {
     await _creatingCompleter!.future;
     return await _videoPlayerPlatform.setPlayerFactory(_textureId, playerType);
   }
@@ -795,8 +769,7 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
 
   Future<void> setTimeOut(int timeOut, {bool needTimeOutOther = false}) async {
     await _creatingCompleter!.future;
-    await _videoPlayerPlatform.setTimeOut(_textureId, timeOut,
-        needTimeOutOther: needTimeOutOther);
+    await _videoPlayerPlatform.setTimeOut(_textureId, timeOut, needTimeOutOther: needTimeOutOther);
   }
 
   Future<void> setLogLevel(LogLevel level) async {
@@ -841,8 +814,7 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
 
   Future<void> setMediaCodecTexture(bool mediaCodecTexture) async {
     await _creatingCompleter!.future;
-    await _videoPlayerPlatform.setMediaCodecTexture(
-        _textureId, mediaCodecTexture);
+    await _videoPlayerPlatform.setMediaCodecTexture(_textureId, mediaCodecTexture);
   }
 
   Future<int> getSeekOnStart() async {
@@ -874,8 +846,7 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
 
   Future<void> setSpeedPlaying(double speed, {bool soundTouch = true}) async {
     await _creatingCompleter!.future;
-    await _videoPlayerPlatform.setSpeedPlaying(_textureId, speed,
-        soundTouch: soundTouch);
+    await _videoPlayerPlatform.setSpeedPlaying(_textureId, speed, soundTouch: soundTouch);
   }
 
   /// The position in the current video.
@@ -910,8 +881,7 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
 
   Future<void> setReleaseWhenLossAudio(bool releaseWhenLossAudio) async {
     await _creatingCompleter!.future;
-    await _videoPlayerPlatform.setReleaseWhenLossAudio(
-        _textureId, releaseWhenLossAudio);
+    await _videoPlayerPlatform.setReleaseWhenLossAudio(_textureId, releaseWhenLossAudio);
   }
 
   /// Pauses the video.
@@ -1045,15 +1015,12 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
 
   Future<OrientationScreenType> getOrientationRotateScreenType() async {
     await _creatingCompleter!.future;
-    return await _videoPlayerPlatform
-        .getOrientationRotateScreenType(_textureId);
+    return await _videoPlayerPlatform.getOrientationRotateScreenType(_textureId);
   }
 
-  Future<void> setOrientationRotateScreenType(
-      OrientationScreenType screenType) async {
+  Future<void> setOrientationRotateScreenType(OrientationScreenType screenType) async {
     await _creatingCompleter!.future;
-    await _videoPlayerPlatform.setOrientationRotateScreenType(
-        _textureId, screenType);
+    await _videoPlayerPlatform.setOrientationRotateScreenType(_textureId, screenType);
   }
 
   Future<bool> isOrientationRotateClick() async {
@@ -1073,8 +1040,7 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
 
   Future<void> setOrientationRotateIsClickLand(bool isClickLand) async {
     await _creatingCompleter!.future;
-    await _videoPlayerPlatform.setOrientationRotateIsClickLand(
-        _textureId, isClickLand);
+    await _videoPlayerPlatform.setOrientationRotateIsClickLand(_textureId, isClickLand);
   }
 
   Future<bool> isOrientationRotateClickPort() async {
@@ -1084,8 +1050,7 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
 
   Future<void> setOrientationRotateIslickPort(bool islickPort) async {
     await _creatingCompleter!.future;
-    await _videoPlayerPlatform.setOrientationRotateIslickPort(
-        _textureId, islickPort);
+    await _videoPlayerPlatform.setOrientationRotateIslickPort(_textureId, islickPort);
   }
 
   Future<bool> isOrientationRotatePause() async {
@@ -1100,15 +1065,12 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
 
   Future<bool> isOrientationRotateOnlyRotateLand() async {
     await _creatingCompleter!.future;
-    return await _videoPlayerPlatform
-        .isOrientationRotateOnlyRotateLand(_textureId);
+    return await _videoPlayerPlatform.isOrientationRotateOnlyRotateLand(_textureId);
   }
 
-  Future<void> setOrientationRotateIsOnlyRotateLand(
-      bool isOnlyRotateLand) async {
+  Future<void> setOrientationRotateIsOnlyRotateLand(bool isOnlyRotateLand) async {
     await _creatingCompleter!.future;
-    await _videoPlayerPlatform.setOrientationRotateIsOnlyRotateLand(
-        _textureId, isOnlyRotateLand);
+    await _videoPlayerPlatform.setOrientationRotateIsOnlyRotateLand(_textureId, isOnlyRotateLand);
   }
 
   Future<bool> isOrientationRotateWithSystem() async {
@@ -1118,8 +1080,7 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
 
   Future<void> setOrientationRotateWithSystem(bool isRotateWithSystem) async {
     await _creatingCompleter!.future;
-    await _videoPlayerPlatform.setOrientationRotateWithSystem(
-        _textureId, isRotateWithSystem);
+    await _videoPlayerPlatform.setOrientationRotateWithSystem(_textureId, isRotateWithSystem);
   }
 
   Future<void> releaseOrientation() async {
@@ -1139,10 +1100,8 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     _postEvent(VideoEventType.exitWindowFullscreen);
   }
 
-  Future<void> enablePictureInPicture(
-      {double? top, double? left, double? width, double? height}) async {
-    await _videoPlayerPlatform.enablePictureInPicture(
-        textureId, top, left, width, height);
+  Future<void> enablePictureInPicture({double? top, double? left, double? width, double? height}) async {
+    await _videoPlayerPlatform.enablePictureInPicture(textureId, top, left, width, height);
   }
 
   Future<void> disablePictureInPicture() async {
