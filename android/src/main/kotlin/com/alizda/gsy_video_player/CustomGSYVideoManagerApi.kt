@@ -205,7 +205,9 @@ class CustomGSYVideoManagerApi(private val context: Context) {
 
     fun setNeedMute(call: MethodCall, result: MethodChannel.Result) {
         val isNeedMute = call.argument<Boolean>("isNeedMute")!!
-        GSYVideoManager.instance().isNeedMute = isNeedMute
+        if (GSYVideoManager.instance().player != null) {
+            GSYVideoManager.instance().isNeedMute = isNeedMute
+        }
     }
 
     fun getTimeOut(call: MethodCall, result: MethodChannel.Result) {

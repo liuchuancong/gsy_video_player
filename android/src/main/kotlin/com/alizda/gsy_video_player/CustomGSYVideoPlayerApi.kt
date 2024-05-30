@@ -8,7 +8,11 @@ import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import java.io.File
 
-class CustomGSYVideoPlayerApi(private var videoPlayer: GsyVideoPlayer, private val context: Context, private val id: Long) {
+class CustomGSYVideoPlayerApi(
+    private var videoPlayer: GsyVideoPlayer,
+    private val context: Context,
+    private val id: Long
+) {
     //当前UI
     fun create(call: MethodCall, result: MethodChannel.Result) {
         val reply: MutableMap<String, Any> = HashMap()
@@ -17,9 +21,11 @@ class CustomGSYVideoPlayerApi(private var videoPlayer: GsyVideoPlayer, private v
     }
 
     fun dispose() {
-        GSYVideoManager.instance().player.stop()
-        GSYVideoManager.instance().player.release()
-        GSYVideoManager.instance().player.releaseSurface()
+        if (GSYVideoManager.instance().player != null) {
+            GSYVideoManager.instance().player.stop()
+            GSYVideoManager.instance().player.release()
+            GSYVideoManager.instance().player.releaseSurface()
+        }
         GSYVideoManager.instance().releaseMediaPlayer();
     }
 

@@ -33,7 +33,7 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
       : super(VideoPlayerValue(duration: Duration.zero, isInitialized: false)) {
     _allowBackgroundPlayback = allowBackgroundPlayback;
     initialize();
-    player = player;
+    currentPlayer = player;
   }
 
   static const int kUninitializedTextureId = -1;
@@ -42,7 +42,7 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
 
   bool _allowBackgroundPlayback = true;
 
-  GsyVideoPlayerType player = GsyVideoPlayerType.ijk;
+  GsyVideoPlayerType currentPlayer = GsyVideoPlayerType.ijk;
 
   /// Initializes the video controller on platform side.
 
@@ -86,10 +86,10 @@ class GsyVideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     _lifeCycleObserver?.initialize();
     _creatingCompleter = Completer<void>();
     _textureId = (await _videoPlayerPlatform.create()) ?? kUninitializedTextureId;
-    await setPlayerFactory(player);
     _initializingCompleter = Completer<void>();
     setEventListener();
     _creatingCompleter!.complete(null);
+    await setPlayerFactory(currentPlayer);
   }
 
   ///Send player event. Shouldn't be used manually.
