@@ -91,13 +91,13 @@ class _MyAppState extends State<MyApp> {
                       gsyVideoPlayerController.setBoxFit(BoxFit.fitWidth);
                       // await gsyVideoPlayerController.setIfCurrentIsFullscreen(true);
                     },
-                    child: const Text('FullScreen')),
+                    child: const Text('fitWidth')),
                 ElevatedButton(
                     onPressed: () async {
-                      gsyVideoPlayerController.setBoxFit(BoxFit.fitHeight);
+                      chewieController.disableRotation();
                       // await gsyVideoPlayerController.setIfCurrentIsFullscreen(false);
                     },
-                    child: const Text('normalScreen')),
+                    child: const Text('disableRotation')),
                 ElevatedButton(
                     onPressed: () {
                       gsyVideoPlayerController.setBoxFit(BoxFit.fill);

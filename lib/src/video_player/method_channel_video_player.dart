@@ -630,7 +630,7 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
   Future<void> setSpeed(int? textureId, double speed, {bool soundTouch = true}) async {
     await _channel.invokeMethod<void>("setSpeed", <String, dynamic>{
       'textureId': textureId,
-      "speedOptions": {"speed": 1.0, "soundTouch": soundTouch},
+      "speedOptions": {"speed": speed, "soundTouch": soundTouch},
     });
   }
 
@@ -638,7 +638,7 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
   Future<void> setSpeedPlaying(int? textureId, double speed, {bool soundTouch = true}) async {
     await _channel.invokeMethod<void>("setSpeedPlaying", <String, dynamic>{
       'textureId': textureId,
-      "speedPlayingOptions": {"speed": 1.0, "soundTouch": soundTouch},
+      "speedPlayingOptions": {"speed": speed, "soundTouch": soundTouch},
     });
   }
 

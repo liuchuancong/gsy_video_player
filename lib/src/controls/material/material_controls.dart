@@ -389,7 +389,7 @@ class _MaterialControlsState extends State<MaterialControls> with SingleTickerPr
       useRootNavigator: chewieController.useRootNavigator,
       builder: (context) => PlaybackSpeedDialog(
         speeds: chewieController.playbackSpeeds,
-        selected: _latestValue.playbackSpeed,
+        selected: _latestValue.speed,
       ),
     );
 

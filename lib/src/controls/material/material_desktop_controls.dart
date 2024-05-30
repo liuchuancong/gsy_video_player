@@ -351,7 +351,7 @@ class _MaterialDesktopControlsState extends State<MaterialDesktopControls> with 
       useRootNavigator: chewieController.useRootNavigator,
       builder: (context) => PlaybackSpeedDialog(
         speeds: chewieController.playbackSpeeds,
-        selected: _latestValue.playbackSpeed,
+        selected: _latestValue.speed,
       ),
     );
 

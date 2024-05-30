@@ -543,7 +543,7 @@ class _CupertinoControlsState extends State<CupertinoControls> with SingleTicker
           useRootNavigator: chewieController.useRootNavigator,
           builder: (context) => _PlaybackSpeedDialog(
             speeds: chewieController.playbackSpeeds,
-            selected: _latestValue.playbackSpeed,
+            selected: _latestValue.speed,
           ),
         );
 

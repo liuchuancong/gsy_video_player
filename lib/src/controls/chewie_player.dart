@@ -304,6 +304,7 @@ class ChewieController extends ChangeNotifier {
           'The playbackSpeeds values must all be greater than 0',
         ) {
     _initialize();
+    isRotateWithSystem = rotateWithSystem;
   }
 
   ChewieController copyWith({
@@ -462,6 +463,8 @@ class ChewieController extends ChangeNotifier {
 
   final bool rotateWithSystem;
 
+  bool isRotateWithSystem = false;
+
   /// Defines customised controls. Check [MaterialControls] or
   /// [CupertinoControls] for reference.
   final Widget? customControls;
@@ -572,6 +575,18 @@ class ChewieController extends ChangeNotifier {
     await videoPlayerController.pause();
   }
 
+  void disableRotation() {
+    if (isRotateWithSystem) {
+      isRotateWithSystem = false;
+    }
+  }
+
+  void enableRotation() {
+    if (!isRotateWithSystem) {
+      isRotateWithSystem = true;
+    }
+  }
+
   Future<void> seekTo(Duration moment) async {
     await videoPlayerController.seekTo(moment);
   }
@@ -653,7 +668,7 @@ class _FullScreenPageState extends State<FullScreenPage> {
             }
           }
 
-          if (rotation != newRotation) {
+          if (rotation != newRotation && widget.controller.isRotateWithSystem) {
             setState(() {
               rotation = newRotation;
             });
