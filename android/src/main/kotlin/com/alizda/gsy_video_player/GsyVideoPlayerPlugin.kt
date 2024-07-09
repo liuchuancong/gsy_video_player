@@ -87,6 +87,7 @@ class GsyVideoPlayerPlugin : FlutterPlugin, ActivityAware, MethodChannel.MethodC
             videoPlayers.valueAt(i).dispose()
         }
         videoPlayers.clear()
+        GSYVideoManager.releaseAllVideos();
     }
 
     private fun enablePictureInPicture(player: GsyVideoPlayer) {
