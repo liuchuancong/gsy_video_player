@@ -3,7 +3,7 @@ version '1.0-SNAPSHOT'
 
 buildscript {
     ext.kotlin_version = '1.7.10'
-    ext.gsyVideoVersion  = 'v8.6.0-release-jitpack'
+    ext.gsyVideoVersion  = 'v9.0.0-release-jitpack'
     ext.danmakuFlameMasterSoVersion  = '0.9.25'
     repositories {
         google()
@@ -55,16 +55,16 @@ android {
         testImplementation 'org.jetbrains.kotlin:kotlin-test'
         testImplementation 'org.mockito:mockito-core:5.0.0'
 
-        implementation 'com.github.CarGuo.GSYVideoPlayer:gsyVideoPlayer-java:v8.6.0-release-jitpack'
+        implementation 'com.github.CarGuo.GSYVideoPlayer:gsyVideoPlayer-java:v9.0.0-release-jitpack'
 
         //是否需要ExoPlayer模式
-        implementation 'com.github.CarGuo.GSYVideoPlayer:GSYVideoPlayer-exo2:v8.6.0-release-jitpack'
+        implementation 'com.github.CarGuo.GSYVideoPlayer:GSYVideoPlayer-exo2:v9.0.0-release-jitpack'
 
         //是否需要AliPlayer模式
-        implementation 'com.github.CarGuo.GSYVideoPlayer:GSYVideoPlayer-aliplay:v8.6.0-release-jitpack'
+        implementation 'com.github.CarGuo.GSYVideoPlayer:GSYVideoPlayer-aliplay:v9.0.0-release-jitpack'
 
         //根据你的需求ijk模式的so
-        implementation 'com.github.CarGuo.GSYVideoPlayer:gsyVideoPlayer-ex_so:v8.6.0-release-jitpack'
+        implementation 'com.github.CarGuo.GSYVideoPlayer:gsyVideoPlayer-ex_so:v9.0.0-release-jitpack'
 
 
     }
