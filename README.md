@@ -5,7 +5,13 @@
 ## Getting Started
 
 https://github.com/CarGuo/GSYVideoPlayer/wiki
-
+allprojects {
+    repositories {
+		...
+        maven { url 'https://jitpack.io' }
+        maven { url "https://maven.aliyun.com/repository/public" }
+    }
+}
 ## Usage
 
 To use this plugin, add `gsy_video_player` as a dependency in your pubspec.yaml file.
