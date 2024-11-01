@@ -22,7 +22,7 @@ class CustomGSYVideoOptionBuilderApi {
         } else {
             gsyBuilder.setUrl(url)
         }
-        val releaseWhenLossAudio = GsyVideoPlayerPlugin.getParameter(videoOptions, "releaseWhenLossAudio", true)
+        val releaseWhenLossAudio = GsyVideoPlayerPlugin.getParameter(videoOptions, "releaseWhenLossAudio", false)
         gsyBuilder.setReleaseWhenLossAudio(releaseWhenLossAudio)
         val seekRatio = GsyVideoPlayerPlugin.getParameter(videoOptions, "seekRatio", 1.0)
         gsyBuilder.setSeekRatio(seekRatio.toFloat())

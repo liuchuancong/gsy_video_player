@@ -12,7 +12,7 @@ To use this plugin, add `gsy_video_player` as a dependency in your pubspec.yaml 
 
 ```yaml
 dependencies:
-  gsy_video_player: ^0.0.5
+  gsy_video_player: ^0.0.6
 ```
 
 ## Example

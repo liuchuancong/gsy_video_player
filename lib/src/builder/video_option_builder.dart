@@ -27,7 +27,7 @@ class VideoOptionBuilder {
   static const bool mSounchTouch = true;
 
   //是否播放器当失去音频焦点
-  static const bool mReleaseWhenLossAudio = true;
+  static const bool mReleaseWhenLossAudio = false;
   //播放的tag，防止错误，因为普通的url也可能重复
   static const String mPlayTag = "";
   // 是否需要覆盖拓展类型

@@ -1,6 +1,6 @@
 name: gsy_video_player
 description: "GSYVideoPlayer is a video player for flutter.The video_player plugin support IJKplayer,ExoPlayer,MediaPlayer,AliPlayer"
-version: 0.0.5
+version: 0.0.6
 homepage: https://github.com/liuchuancong/gsy_video_player
 repository: https://github.com/liuchuancong/gsy_video_player
 documentation: https://github.com/CarGuo/GSYVideoPlayer

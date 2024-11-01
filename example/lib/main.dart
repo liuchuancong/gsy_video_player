@@ -14,8 +14,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  GsyVideoPlayerController gsyVideoPlayerController =
-      GsyVideoPlayerController();
+  GsyVideoPlayerController gsyVideoPlayerController = GsyVideoPlayerController(player: GsyVideoPlayerType.ijk);
   late ChewieController chewieController;
   @override
   void initState() {
@@ -33,14 +32,16 @@ class _MyAppState extends State<MyApp> {
   // Platform messages are asynchronous, so we initialize in an async method.
   Future<void> initPlayer() async {
     chewieController = ChewieController(
-        videoPlayerController: gsyVideoPlayerController,
-        looping: false,
-        rotateWithSystem: true);
+      videoPlayerController: gsyVideoPlayerController,
+      looping: false,
+      rotateWithSystem: true,
+    );
     gsyVideoPlayerController.setLogLevel(LogLevel.logError);
     gsyVideoPlayerController.setNetWorkBuilder(
       'https://cloud.video.taobao.com//play/u/27349687/p/1/e/6/t/1/239880949246.mp4',
       autoPlay: true,
       cacheWithPlay: true,
+      releaseWhenLossAudio: false,
     );
   }
 
@@ -86,8 +87,7 @@ class _MyAppState extends State<MyApp> {
                     child: const Text('LogLevel')),
                 ElevatedButton(
                     onPressed: () {
-                      gsyVideoPlayerController
-                          .seekTo(const Duration(seconds: 11));
+                      gsyVideoPlayerController.seekTo(const Duration(seconds: 11));
                     },
                     child: const Text('seekTo 10s')),
                 ElevatedButton(

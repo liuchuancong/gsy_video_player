@@ -1,8 +1,6 @@
 package com.alizda.gsy_video_player
 
 import android.content.Context
-import android.os.Build
-import androidx.annotation.RequiresApi
 import com.shuyu.gsyvideoplayer.GSYVideoManager
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
@@ -26,7 +24,7 @@ class CustomGSYVideoPlayerApi(
             GSYVideoManager.instance().player.release()
             GSYVideoManager.instance().player.releaseSurface()
         }
-        GSYVideoManager.instance().releaseMediaPlayer();
+        GSYVideoManager.instance().releaseMediaPlayer()
     }
 
     fun getLayoutId(call: MethodCall, result: MethodChannel.Result) {
@@ -45,7 +43,6 @@ class CustomGSYVideoPlayerApi(
         val url = GsyVideoPlayerPlugin.getParameter(setUpOptions, "url", "")
         val cacheWithPlay = GsyVideoPlayerPlugin.getParameter(setUpOptions, "cacheWithPlay", true)
         val cachePath = GsyVideoPlayerPlugin.getParameter(setUpOptions, "cachePath", "")
-
         val title = GsyVideoPlayerPlugin.getParameter(setUpOptions, "title", "")
         if (cachePath.isNotEmpty()) {
             videoPlayer.getCurrentPlayer()!!.setUp(url, cacheWithPlay, File(cachePath), title)
