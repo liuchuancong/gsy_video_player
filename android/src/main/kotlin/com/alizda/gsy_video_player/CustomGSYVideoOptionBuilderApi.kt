@@ -58,7 +58,7 @@ class CustomGSYVideoOptionBuilderApi {
         val seekOnStart = GsyVideoPlayerPlugin.getParameter(videoOptions, "seekOnStart", -1)
         gsyBuilder.setSeekOnStart(seekOnStart.toLong())
 
-        val surfaceErrorPlay = GsyVideoPlayerPlugin.getParameter(videoOptions, "surfaceErrorPlay", true)
+        val surfaceErrorPlay = GsyVideoPlayerPlugin.getParameter(videoOptions, "surfaceErrorPlay", false)
         gsyBuilder.setSurfaceErrorPlay(surfaceErrorPlay)
 
         val overrideExtension = GsyVideoPlayerPlugin.getParameter(videoOptions, "overrideExtension", "")
