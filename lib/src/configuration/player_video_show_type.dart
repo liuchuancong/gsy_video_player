@@ -52,7 +52,5 @@ int getPlayerVideoShowTypeIntValue(PlayerVideoShowType showType) {
       return 5;
     case PlayerVideoShowType.screenTypeCustom:
       return 6;
-    default:
-      return 0;
   }
 }

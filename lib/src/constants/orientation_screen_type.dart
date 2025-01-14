@@ -111,7 +111,5 @@ int getOrientationScreenTypeIntValue(OrientationScreenType type) {
       return 13;
     case OrientationScreenType.screenOrientationLocked:
       return 14;
-    default:
-      return -2;
   }
 }

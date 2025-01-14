@@ -17,7 +17,5 @@ int getIntFromMaximumVisibleSizeInScreen(MaximumVisibleSizeInScreen value) {
       return -1;
     case MaximumVisibleSizeInScreen.unlimited:
       return 0;
-    default:
-      return -1;
   }
 }

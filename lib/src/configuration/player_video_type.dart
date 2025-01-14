@@ -30,7 +30,5 @@ int getGsyVideoPlayerType(GsyVideoPlayerType type) {
       return 2;
     case GsyVideoPlayerType.ali:
       return 3;
-    default:
-      return 0;
   }
 }
