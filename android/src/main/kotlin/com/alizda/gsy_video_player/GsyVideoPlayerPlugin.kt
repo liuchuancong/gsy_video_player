@@ -52,7 +52,6 @@ class GsyVideoPlayerPlugin : FlutterPlugin, ActivityAware, MethodChannel.MethodC
         flutterState?.startListening(this)
     }
 
-    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
     override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) {
         if (flutterState == null) {
             Log.wtf(TAG, "Detached from the engine before registering to it.")
