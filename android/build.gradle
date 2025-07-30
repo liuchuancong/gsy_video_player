@@ -3,7 +3,7 @@ version '1.0-SNAPSHOT'
 
 buildscript {
     ext.kotlin_version = '1.7.10'
-    ext.gsyVideoVersion  = 'v10.0.0'
+    ext.gsyVideoVersion  = '11.0.0'
     ext.danmakuFlameMasterSoVersion  = '0.9.25'
     repositories {
         google()
@@ -33,7 +33,7 @@ android {
         namespace 'com.alizda.gsy_video_player'
     }
 
-    compileSdk 34
+    compileSdk 35
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -50,7 +50,7 @@ android {
     }
 
     defaultConfig {
-        minSdkVersion 19
+        minSdkVersion 21
     }
 
     dependencies {
